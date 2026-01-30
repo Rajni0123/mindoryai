@@ -1,0 +1,151 @@
+/* ================================================================
+   MINDORY - DESIGN SYSTEM
+   Font: Outfit (Google Fonts)
+   Primary: Deep Teal (#0D9488)
+   Secondary: Solar Gold (#F59E0B)
+   ================================================================ */
+
+/* Import Outfit Font */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply antialiased font-sans;
+        font-family: 'Outfit', system-ui, sans-serif;
+        background-color: #F0FDFA; /* Mint White */
+        color: #0F172A; /* Slate Dark */
+    }
+
+    /* Typography Base Styles */
+    h1, .h1 {
+        @apply font-bold;
+        font-size: 26px;
+        line-height: 32px;
+        letter-spacing: -0.02em;
+        color: #0F172A;
+    }
+
+    h2, .h2 {
+        @apply font-semibold;
+        font-size: 18px;
+        line-height: 24px;
+        letter-spacing: -0.02em;
+        color: #0F172A;
+    }
+
+    .question-text {
+        @apply font-medium;
+        font-size: 16px;
+        line-height: 22px;
+        color: #0F172A;
+    }
+
+    .body-text {
+        @apply font-normal;
+        font-size: 14px;
+        line-height: 21px; /* 1.5 for better reading */
+        color: #475569; /* Muted Grey */
+    }
+
+    .caption-text {
+        @apply font-light;
+        font-size: 12px;
+        line-height: 16px;
+        color: #64748B;
+    }
+}
+
+@layer components {
+    /* Primary Button - Deep Teal */
+    .btn-primary {
+        background-color: #0D9488;
+        color: #FFFFFF;
+        @apply font-semibold py-3 px-6 rounded-button;
+        box-shadow: 0px 4px 14px rgba(13, 148, 136, 0.3);
+        transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+        box-shadow: 0px 6px 18px rgba(13, 148, 136, 0.4);
+        transform: translateY(-1px);
+    }
+
+    /* Pro/Upgrade Button - Solar Gold */
+    .btn-pro {
+        background-color: #F59E0B;
+        color: #0F172A; /* Slate Dark text on gold */
+        @apply font-semibold py-3 px-6 rounded-button;
+        box-shadow: 0px 4px 14px rgba(245, 158, 11, 0.3);
+        transition: all 0.2s ease;
+    }
+
+    .btn-pro:hover {
+        box-shadow: 0px 6px 18px rgba(245, 158, 11, 0.4);
+        transform: translateY(-1px);
+    }
+
+    /* Input Field */
+    .input-field {
+        @apply w-full border border-slate-200 bg-white rounded-button px-4 py-3;
+        font-size: 14px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: #0D9488; /* Teal on focus */
+        border-width: 2px;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+
+    /* Quiz Card */
+    .quiz-card {
+        @apply bg-white rounded-card p-4;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+        transition: box-shadow 0.2s ease;
+    }
+
+    .quiz-card:hover {
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.12);
+    }
+}
+
+@layer utilities {
+    /* Gradient Text */
+    .text-gradient {
+        background: linear-gradient(90deg, #0D9488 0%, #F59E0B 50%, #0D9488 100%);
+        background-size: 200% 100%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Gradient Backgrounds */
+    .bg-gradient-teal {
+        background: linear-gradient(135deg, #0D9488 0%, #99F6E4 100%);
+    }
+
+    .bg-gradient-gold {
+        background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);
+    }
+
+    /* Animations */
+    .animate-fade-in {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}

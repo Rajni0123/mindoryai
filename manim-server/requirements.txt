@@ -1,0 +1,10 @@
+flask==3.1.0
+flask-cors==5.0.1
+manim==0.18.1
+edge-tts==6.1.12
+Pillow==11.1.0
+google-generativeai==0.8.4
+python-dotenv==1.0.1
+gunicorn==23.0.0
+celery[redis]==5.4.0
+redis==5.2.1

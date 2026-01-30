@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindory App Icon Exporter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+        .preview {
+            background: #f5f5f5;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        canvas {
+            max-width: 250px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin: 20px auto;
+            display: block;
+            background: white;
+        }
+        .size-selector {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        .size-btn {
+            padding: 15px 30px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            color: #333;
+        }
+        .size-btn:hover {
+            border-color: #cc785c;
+            background: #cc785c;
+            color: white;
+            transform: translateY(-2px);
+        }
+        .size-btn.active {
+            border-color: #cc785c;
+            background: #cc785c;
+            color: white;
+        }
+        .download-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #cc785c 0%, #0df259 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(204, 120, 92, 0.4);
+        }
+        .info {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            color: #666;
+            font-size: 14px;
+        }
+        .color-variant {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .color-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+        .color-btn.active {
+            border-color: #333;
+        }
+        .color-btn.light {
+            background: white;
+            border: 2px solid #e0e0e0;
+        }
+        .color-btn.dark {
+            background: #1e1e1e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Mindory App Icon Exporter</h1>
+        <p class="subtitle">Choose size, color variant, and download your app icon</p>
+
+        <div class="preview">
+            <canvas id="iconCanvas" width="512" height="512"></canvas>
+        </div>
+
+        <div class="color-variant">
+            <button class="color-btn active" data-color="colored" title="Colored Gradient" style="background: linear-gradient(135deg, #cc785c 0%, #0df259 100%);"></button>
+            <button class="color-btn light" data-color="light" title="Light Mode"></button>
+            <button class="color-btn dark" data-color="dark" title="Dark Mode"></button>
+        </div>
+
+        <div class="size-selector">
+            <button class="size-btn active" data-size="512">512x512<br><small>Android/iOS</small></button>
+            <button class="size-btn" data-size="256">256x256<br><small>iPad</small></button>
+            <button class="size-btn" data-size="128">128x128<br><small>iPhone</small></button>
+            <button class="size-btn" data-size="64">64x64<br><small>Favicon</small></button>
+            <button class="size-btn" data-size="192">192x192<br><small>Android Adaptive</small></button>
+        </div>
+
+        <button class="download-btn" onclick="downloadIcon()">Download icon.png</button>
+
+        <div class="info">
+            <strong>Current size:</strong> <span id="currentSize">512x512</span> pixels<br>
+            <strong>Variant:</strong> <span id="currentVariant">Colored Gradient</span><br><br>
+            Choose different sizes for various platforms. The icon will be downloaded as PNG.
+        </div>
+    </div>
+
+    <script>
+        let currentSize = 512;
+        let currentColor = 'colored';
+
+        function drawIcon(size, colorVariant) {
+            const canvas = document.getElementById('iconCanvas');
+            const ctx = canvas.getContext('2d');
+            const scale = size / 24;
+
+            canvas.width = size;
+            canvas.height = size;
+
+            // Background
+            if (colorVariant === 'light') {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, size, size);
+            } else if (colorVariant === 'dark') {
+                ctx.fillStyle = '#1e1e1e';
+                ctx.fillRect(0, 0, size, size);
+            } else {
+                // Colored gradient background
+                const gradient = ctx.createLinearGradient(0, 0, size, size);
+                gradient.addColorStop(0, '#cc785c');
+                gradient.addColorStop(1, '#0df259');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, size, size);
+            }
+
+            // Draw bulb icon
+            ctx.strokeStyle = colorVariant === 'light' ? '#cc785c' :
+                           colorVariant === 'dark' ? '#0df259' : '#ffffff';
+            ctx.lineWidth = 2 * scale;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Draw the exact path from chat.blade.php
+            ctx.beginPath();
+            ctx.moveTo(9.663 * scale, 17 * scale);
+            ctx.lineTo(14.336 * scale, 17 * scale);
+            ctx.moveTo(12 * scale, 3 * scale);
+            ctx.lineTo(12 * scale, 4 * scale);
+            ctx.moveTo(18.364 * scale, 4.636 * scale);
+            ctx.lineTo(17.657 * scale, 5.343 * scale);
+            ctx.moveTo(21 * scale, 12 * scale);
+            ctx.lineTo(20 * scale, 12 * scale);
+            ctx.moveTo(4 * scale, 12 * scale);
+            ctx.lineTo(3 * scale, 12 * scale);
+            ctx.moveTo(6.343 * scale, 6.343 * scale);
+            ctx.lineTo(5.636 * scale, 5.636 * scale);
+            ctx.moveTo(14.828 * scale, 11.9 * scale);
+            ctx.arc(12 * scale, 12 * scale, 5 * scale, 0.928, 5.213, false);
+            ctx.moveTo(15.452 * scale, 14.453 * scale);
+            ctx.bezierCurveTo(15.012 * scale, 15.898 * scale, 14 * scale, 17 * scale, 14 * scale, 18.469 * scale);
+            ctx.lineTo(14 * scale, 19 * scale);
+            ctx.arc(12 * scale, 19 * scale, 2 * scale, 0, Math.PI * 2, true);
+            ctx.moveTo(10 * scale, 19 * scale);
+            ctx.bezierCurveTo(10 * scale, 18.105 * scale, 10.356 * scale, 17.246 * scale, 10.988 * scale, 16.614 * scale);
+            ctx.moveTo(11.536 * scale, 16.067 * scale);
+            ctx.stroke();
+        }
+
+        function downloadIcon() {
+            const canvas = document.getElementById('iconCanvas');
+            const url = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = `icon-${currentSize}x${currentSize}.png`;
+            link.href = url;
+            link.click();
+        }
+
+        // Size buttons
+        document.querySelectorAll('.size-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentSize = parseInt(btn.dataset.size);
+                document.getElementById('currentSize').textContent = `${currentSize}x${currentSize}`;
+                drawIcon(currentSize, currentColor);
+            });
+        });
+
+        // Color variant buttons
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentColor = btn.dataset.color;
+                const variantNames = {
+                    'colored': 'Colored Gradient',
+                    'light': 'Light Mode',
+                    'dark': 'Dark Mode'
+                };
+                document.getElementById('currentVariant').textContent = variantNames[currentColor];
+                drawIcon(currentSize, currentColor);
+            });
+        });
+
+        // Initial draw
+        drawIcon(512, 'colored');
+    </script>
+</body>
+</html>
