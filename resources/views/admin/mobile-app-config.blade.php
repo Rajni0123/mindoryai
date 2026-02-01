@@ -117,6 +117,10 @@
                             <span class="material-icons-outlined align-middle mr-1" style="font-size: 16px;">article</span>
                             Content
                         </button>
+                        <button onclick="switchTab('ads')" class="tab-btn px-4 py-3 text-sm font-medium text-gray-400 hover:text-blue-400 transition-colors whitespace-nowrap" id="tab-ads">
+                            <span class="material-icons-outlined align-middle mr-1" style="font-size: 16px;">ads_click</span>
+                            Ads
+                        </button>
                     </div>
                 </div>
 
@@ -603,6 +607,178 @@
                                 <button type="submit" class="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2">
                                     <span class="material-icons-outlined" style="font-size: 16px;">save</span>
                                     Save Content Settings
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tab Content: Ads -->
+                <div id="content-ads" class="tab-content hidden">
+                    <form action="{{ route('admin.mobile-app-config.update-ads') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="space-y-6">
+                            <!-- Info Box -->
+                            <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                                <div class="flex items-start gap-3">
+                                    <span class="material-icons-outlined text-blue-400" style="font-size: 20px;">info</span>
+                                    <div class="text-sm text-blue-300">
+                                        <p class="font-medium mb-1">How Ads Work</p>
+                                        <p class="text-blue-400/80">Ads are shown <strong>only to free-tier users</strong>. Users on paid plans will never see ads. Configure your Google AdMob unit IDs below. Use test IDs during development.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Global Toggle -->
+                            <div class="bg-white/[0.02] border border-white/5 rounded-lg p-5">
+                                <h3 class="text-sm font-semibold text-blue-400 flex items-center gap-1.5 mb-4">
+                                    <span class="material-icons-outlined" style="font-size: 16px;">toggle_on</span>
+                                    Global Ad Control
+                                </h3>
+                                <label class="flex items-center gap-3 cursor-pointer">
+                                    <input type="hidden" name="ads_enabled" value="0">
+                                    <input type="checkbox" name="ads_enabled" value="1" {{ $configs['ads_enabled'] ? 'checked' : '' }}
+                                           class="w-5 h-5 rounded bg-white/5 border-white/20 text-blue-500 focus:ring-blue-500 focus:ring-offset-0">
+                                    <div>
+                                        <span class="text-sm text-white font-medium">Enable Ads</span>
+                                        <p class="text-[10px] text-gray-500">Master switch - disabling this turns off ALL ads for ALL users</p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- AdMob App IDs -->
+                            <div class="bg-white/[0.02] border border-white/5 rounded-lg p-5">
+                                <h3 class="text-sm font-semibold text-blue-400 flex items-center gap-1.5 mb-4">
+                                    <span class="material-icons-outlined" style="font-size: 16px;">key</span>
+                                    AdMob App IDs
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">Android App ID</label>
+                                        <input type="text" name="admob_app_id_android" value="{{ $configs['admob_app_id_android'] }}"
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                                               placeholder="ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX">
+                                        <p class="mt-1 text-[10px] text-gray-500">From Google AdMob Console > Apps</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">iOS App ID</label>
+                                        <input type="text" name="admob_app_id_ios" value="{{ $configs['admob_app_id_ios'] }}"
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                                               placeholder="ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX">
+                                        <p class="mt-1 text-[10px] text-gray-500">From Google AdMob Console > Apps</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Banner Ads -->
+                            <div class="bg-white/[0.02] border border-white/5 rounded-lg p-5">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-sm font-semibold text-green-400 flex items-center gap-1.5">
+                                        <span class="material-icons-outlined" style="font-size: 16px;">view_agenda</span>
+                                        Banner Ads
+                                    </h3>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="hidden" name="ads_banner_enabled" value="0">
+                                        <input type="checkbox" name="ads_banner_enabled" value="1" {{ $configs['ads_banner_enabled'] ? 'checked' : '' }}
+                                               class="w-4 h-4 rounded bg-white/5 border-white/20 text-green-500 focus:ring-green-500 focus:ring-offset-0">
+                                        <span class="text-xs text-gray-400">Enabled</span>
+                                    </label>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">Android Banner Unit ID</label>
+                                        <input type="text" name="admob_banner_id_android" value="{{ $configs['admob_banner_id_android'] }}"
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors font-mono"
+                                               placeholder="ca-app-pub-XXXX/XXXXXXXX">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">iOS Banner Unit ID</label>
+                                        <input type="text" name="admob_banner_id_ios" value="{{ $configs['admob_banner_id_ios'] }}"
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors font-mono"
+                                               placeholder="ca-app-pub-XXXX/XXXXXXXX">
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-[10px] text-gray-500">Shown at bottom of Home, History, and Quiz screens</p>
+                            </div>
+
+                            <!-- Interstitial Ads -->
+                            <div class="bg-white/[0.02] border border-white/5 rounded-lg p-5">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-sm font-semibold text-yellow-400 flex items-center gap-1.5">
+                                        <span class="material-icons-outlined" style="font-size: 16px;">fullscreen</span>
+                                        Interstitial Ads
+                                    </h3>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="hidden" name="ads_interstitial_enabled" value="0">
+                                        <input type="checkbox" name="ads_interstitial_enabled" value="1" {{ $configs['ads_interstitial_enabled'] ? 'checked' : '' }}
+                                               class="w-4 h-4 rounded bg-white/5 border-white/20 text-yellow-500 focus:ring-yellow-500 focus:ring-offset-0">
+                                        <span class="text-xs text-gray-400">Enabled</span>
+                                    </label>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">Android Interstitial Unit ID</label>
+                                        <input type="text" name="admob_interstitial_id_android" value="{{ $configs['admob_interstitial_id_android'] }}"
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors font-mono"
+                                               placeholder="ca-app-pub-XXXX/XXXXXXXX">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">iOS Interstitial Unit ID</label>
+                                        <input type="text" name="admob_interstitial_id_ios" value="{{ $configs['admob_interstitial_id_ios'] }}"
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors font-mono"
+                                               placeholder="ca-app-pub-XXXX/XXXXXXXX">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-2">Show Every N Actions</label>
+                                    <input type="number" name="ads_interstitial_frequency" value="{{ $configs['ads_interstitial_frequency'] }}" min="1" max="50"
+                                           class="w-32 px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors">
+                                    <p class="mt-1 text-[10px] text-gray-500">Show full-screen ad every N quiz completions / chat sessions</p>
+                                </div>
+                            </div>
+
+                            <!-- Rewarded Ads -->
+                            <div class="bg-white/[0.02] border border-white/5 rounded-lg p-5">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-sm font-semibold text-purple-400 flex items-center gap-1.5">
+                                        <span class="material-icons-outlined" style="font-size: 16px;">card_giftcard</span>
+                                        Rewarded Ads
+                                    </h3>
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="hidden" name="ads_rewarded_enabled" value="0">
+                                        <input type="checkbox" name="ads_rewarded_enabled" value="1" {{ $configs['ads_rewarded_enabled'] ? 'checked' : '' }}
+                                               class="w-4 h-4 rounded bg-white/5 border-white/20 text-purple-500 focus:ring-purple-500 focus:ring-offset-0">
+                                        <span class="text-xs text-gray-400">Enabled</span>
+                                    </label>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">Android Rewarded Unit ID</label>
+                                        <input type="text" name="admob_rewarded_id_android" value="{{ $configs['admob_rewarded_id_android'] }}"
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors font-mono"
+                                               placeholder="ca-app-pub-XXXX/XXXXXXXX">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">iOS Rewarded Unit ID</label>
+                                        <input type="text" name="admob_rewarded_id_ios" value="{{ $configs['admob_rewarded_id_ios'] }}"
+                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors font-mono"
+                                               placeholder="ca-app-pub-XXXX/XXXXXXXX">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-2">Credits Per Ad Watch</label>
+                                    <input type="number" name="ads_rewarded_credits" value="{{ $configs['ads_rewarded_credits'] }}" min="1" max="50"
+                                           class="w-32 px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors">
+                                    <p class="mt-1 text-[10px] text-gray-500">Free credits earned when user watches a rewarded ad</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 flex justify-end">
+                                <button type="submit" class="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-2">
+                                    <span class="material-icons-outlined" style="font-size: 16px;">save</span>
+                                    Save Ad Settings
                                 </button>
                             </div>
                         </div>

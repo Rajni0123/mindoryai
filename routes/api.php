@@ -283,6 +283,53 @@ Route::middleware('auth:sanctum')->get('/credits/balance', function (Request $re
     ]);
 });
 
+// Ad Reward - Grant credits after watching a rewarded ad
+Route::middleware('auth:sanctum')->post('/credits/ad-reward', function (Request $request) {
+    $user = $request->user();
+
+    // Only free-tier users can earn ad rewards
+    $activePlan = $user->activePlan ?? null;
+    $isPaid = $activePlan && $activePlan->price > 0;
+    if ($isPaid) {
+        return response()->json(['success' => false, 'message' => 'Ad rewards are only available for free-tier users.'], 403);
+    }
+
+    // Check if ads are enabled
+    $adsEnabled = filter_var(\App\Models\DynamicAppConfig::getValue('ads.enabled', false), FILTER_VALIDATE_BOOLEAN);
+    $rewardedEnabled = filter_var(\App\Models\DynamicAppConfig::getValue('ads.rewarded_enabled', false), FILTER_VALIDATE_BOOLEAN);
+    if (!$adsEnabled || !$rewardedEnabled) {
+        return response()->json(['success' => false, 'message' => 'Ad rewards are currently disabled.'], 403);
+    }
+
+    // Rate limit: max 10 rewards per day
+    $todayRewards = \Illuminate\Support\Facades\Cache::get("ad_rewards:{$user->id}:" . now()->toDateString(), 0);
+    if ($todayRewards >= 10) {
+        return response()->json(['success' => false, 'message' => 'Daily ad reward limit reached.'], 429);
+    }
+
+    $creditsPerWatch = (int) \App\Models\DynamicAppConfig::getValue('ads.rewarded_credits', 1);
+
+    // Increment the user's message limit for today
+    $usageService = app(\App\Services\UsageLimitService::class);
+    $planConfig = $usageService->getPlanConfig($user);
+    $currentLimit = $planConfig['ai_messages'] ?? 50;
+
+    // Add bonus credits by temporarily increasing the daily limit via cache
+    $bonusKey = "ad_bonus_credits:{$user->id}:" . now()->toDateString();
+    $currentBonus = (int) \Illuminate\Support\Facades\Cache::get($bonusKey, 0);
+    \Illuminate\Support\Facades\Cache::put($bonusKey, $currentBonus + $creditsPerWatch, now()->endOfDay());
+
+    // Track daily reward count
+    \Illuminate\Support\Facades\Cache::put("ad_rewards:{$user->id}:" . now()->toDateString(), $todayRewards + 1, now()->endOfDay());
+
+    return response()->json([
+        'success' => true,
+        'credits_earned' => $creditsPerWatch,
+        'total_bonus_today' => $currentBonus + $creditsPerWatch,
+        'rewards_remaining' => 10 - ($todayRewards + 1),
+    ]);
+});
+
 // User Payment History
 Route::middleware('auth:sanctum')->get('/payments', function (Request $request) {
     $user = $request->user();
@@ -561,7 +608,6 @@ Route::get('/app-config', function () {
         // Get pricing plans (synced with admin panel)
         $plans = DB::table('user_plans')
             ->where('is_active', true)
-            ->where('id', '>', 1) // Exclude free plan from upgrade options
             ->orderBy('order')
             ->get()
             ->map(function ($plan) {
@@ -580,6 +626,7 @@ Route::get('/app-config', function () {
                     'savings' => $features['savings'] ?? null,
                     'popular' => $isPopular, // Add popular flag from features data
                     'features' => $featureList, // ✅ INCLUDE FEATURES ARRAY
+                    'ads' => (bool) ($features['ads'] ?? true), // Whether this plan shows ads
                 ];
             });
 
@@ -640,6 +687,28 @@ Route::get('/app-config', function () {
             'timeout' => (int) \App\Models\DynamicAppConfig::getValue('ai.timeout_seconds', 30),
         ];
 
+        // Ads settings from DynamicAppConfig (synced with admin panel)
+        $adsConfig = [
+            'enabled' => filter_var(\App\Models\DynamicAppConfig::getValue('ads.enabled', false), FILTER_VALIDATE_BOOLEAN),
+            'banner' => [
+                'enabled' => filter_var(\App\Models\DynamicAppConfig::getValue('ads.banner_enabled', false), FILTER_VALIDATE_BOOLEAN),
+                'android_unit_id' => \App\Models\DynamicAppConfig::getValue('ads.banner_id_android', ''),
+                'ios_unit_id' => \App\Models\DynamicAppConfig::getValue('ads.banner_id_ios', ''),
+            ],
+            'interstitial' => [
+                'enabled' => filter_var(\App\Models\DynamicAppConfig::getValue('ads.interstitial_enabled', false), FILTER_VALIDATE_BOOLEAN),
+                'android_unit_id' => \App\Models\DynamicAppConfig::getValue('ads.interstitial_id_android', ''),
+                'ios_unit_id' => \App\Models\DynamicAppConfig::getValue('ads.interstitial_id_ios', ''),
+                'frequency' => (int) \App\Models\DynamicAppConfig::getValue('ads.interstitial_frequency', 3),
+            ],
+            'rewarded' => [
+                'enabled' => filter_var(\App\Models\DynamicAppConfig::getValue('ads.rewarded_enabled', false), FILTER_VALIDATE_BOOLEAN),
+                'android_unit_id' => \App\Models\DynamicAppConfig::getValue('ads.rewarded_id_android', ''),
+                'ios_unit_id' => \App\Models\DynamicAppConfig::getValue('ads.rewarded_id_ios', ''),
+                'credits_per_watch' => (int) \App\Models\DynamicAppConfig::getValue('ads.rewarded_credits', 1),
+            ],
+        ];
+
         // Return complete configuration
         return response()->json([
             'appName' => \App\Models\FrontendConfig::getValue('mobile.app_name', 'Mindory AI'),
@@ -669,6 +738,7 @@ Route::get('/app-config', function () {
             'plans' => $plans,
             'exams' => $exams,
             'policies' => $policies,
+            'ads' => $adsConfig,
         ]);
     } catch (\Exception $e) {
         // Fallback configuration when database is not available

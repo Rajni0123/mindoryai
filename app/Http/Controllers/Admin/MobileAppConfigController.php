@@ -75,6 +75,22 @@ class MobileAppConfigController extends Controller
             'help_url' => DynamicAppConfig::getValue('content.help_url'),
             'privacy_policy_url' => DynamicAppConfig::getValue('content.privacy_policy_url'),
             'terms_url' => DynamicAppConfig::getValue('content.terms_url'),
+
+            // Ad Settings
+            'ads_enabled' => DynamicAppConfig::getValue('ads.enabled', false),
+            'admob_app_id_android' => DynamicAppConfig::getValue('ads.admob_app_id_android', ''),
+            'admob_app_id_ios' => DynamicAppConfig::getValue('ads.admob_app_id_ios', ''),
+            'admob_banner_id_android' => DynamicAppConfig::getValue('ads.banner_id_android', ''),
+            'admob_banner_id_ios' => DynamicAppConfig::getValue('ads.banner_id_ios', ''),
+            'admob_interstitial_id_android' => DynamicAppConfig::getValue('ads.interstitial_id_android', ''),
+            'admob_interstitial_id_ios' => DynamicAppConfig::getValue('ads.interstitial_id_ios', ''),
+            'admob_rewarded_id_android' => DynamicAppConfig::getValue('ads.rewarded_id_android', ''),
+            'admob_rewarded_id_ios' => DynamicAppConfig::getValue('ads.rewarded_id_ios', ''),
+            'ads_banner_enabled' => DynamicAppConfig::getValue('ads.banner_enabled', true),
+            'ads_interstitial_enabled' => DynamicAppConfig::getValue('ads.interstitial_enabled', true),
+            'ads_rewarded_enabled' => DynamicAppConfig::getValue('ads.rewarded_enabled', false),
+            'ads_interstitial_frequency' => DynamicAppConfig::getValue('ads.interstitial_frequency', 3),
+            'ads_rewarded_credits' => DynamicAppConfig::getValue('ads.rewarded_credits', 5),
         ];
 
         return view('admin.mobile-app-config', compact('configs'));
@@ -328,6 +344,50 @@ class MobileAppConfigController extends Controller
             return redirect()->back()->with('success', 'Content settings updated successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to update content settings: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update ad settings
+     */
+    public function updateAds(Request $request)
+    {
+        $validated = $request->validate([
+            'ads_enabled' => 'boolean',
+            'admob_app_id_android' => 'nullable|string|max:255',
+            'admob_app_id_ios' => 'nullable|string|max:255',
+            'admob_banner_id_android' => 'nullable|string|max:255',
+            'admob_banner_id_ios' => 'nullable|string|max:255',
+            'admob_interstitial_id_android' => 'nullable|string|max:255',
+            'admob_interstitial_id_ios' => 'nullable|string|max:255',
+            'admob_rewarded_id_android' => 'nullable|string|max:255',
+            'admob_rewarded_id_ios' => 'nullable|string|max:255',
+            'ads_banner_enabled' => 'boolean',
+            'ads_interstitial_enabled' => 'boolean',
+            'ads_rewarded_enabled' => 'boolean',
+            'ads_interstitial_frequency' => 'required|integer|min:1|max:50',
+            'ads_rewarded_credits' => 'required|integer|min:1|max:50',
+        ]);
+
+        try {
+            DynamicAppConfig::setValue('ads.enabled', $request->boolean('ads_enabled'), 'boolean');
+            DynamicAppConfig::setValue('ads.admob_app_id_android', $request->admob_app_id_android);
+            DynamicAppConfig::setValue('ads.admob_app_id_ios', $request->admob_app_id_ios);
+            DynamicAppConfig::setValue('ads.banner_id_android', $request->admob_banner_id_android);
+            DynamicAppConfig::setValue('ads.banner_id_ios', $request->admob_banner_id_ios);
+            DynamicAppConfig::setValue('ads.interstitial_id_android', $request->admob_interstitial_id_android);
+            DynamicAppConfig::setValue('ads.interstitial_id_ios', $request->admob_interstitial_id_ios);
+            DynamicAppConfig::setValue('ads.rewarded_id_android', $request->admob_rewarded_id_android);
+            DynamicAppConfig::setValue('ads.rewarded_id_ios', $request->admob_rewarded_id_ios);
+            DynamicAppConfig::setValue('ads.banner_enabled', $request->boolean('ads_banner_enabled'), 'boolean');
+            DynamicAppConfig::setValue('ads.interstitial_enabled', $request->boolean('ads_interstitial_enabled'), 'boolean');
+            DynamicAppConfig::setValue('ads.rewarded_enabled', $request->boolean('ads_rewarded_enabled'), 'boolean');
+            DynamicAppConfig::setValue('ads.interstitial_frequency', (int) $request->ads_interstitial_frequency, 'number');
+            DynamicAppConfig::setValue('ads.rewarded_credits', (int) $request->ads_rewarded_credits, 'number');
+
+            return redirect()->back()->with('success', 'Ad settings updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update ad settings: ' . $e->getMessage());
         }
     }
 

@@ -440,6 +440,7 @@ Route::put('/update', 'update')->name('update');                // Update brandi
                 Route::put('/ai', 'updateAiSettings')->name('update-ai');       // Update AI settings
                 Route::put('/credits', 'updateCredits')->name('update-credits'); // Update credit settings
                 Route::put('/content', 'updateContent')->name('update-content'); // Update content settings
+                Route::put('/ads', 'updateAds')->name('update-ads');             // Update ad settings
                 Route::post('/force-update', 'triggerForceUpdate')->name('trigger-force-update'); // Trigger force update
             });
 
