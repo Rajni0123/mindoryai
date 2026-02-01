@@ -71,4 +71,9 @@ return [
         'cache_ttl' => (int) env('PYTHON_AI_CACHE_TTL', 3600),
     ],
 
+    'subdomains' => [
+        'admin_url' => env('ADMIN_SUBDOMAIN_URL'),
+        'chat_url' => env('CHAT_SUBDOMAIN_URL'),
+    ],
+
 ];

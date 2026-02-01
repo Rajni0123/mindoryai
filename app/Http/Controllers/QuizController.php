@@ -8,7 +8,7 @@ use App\Models\QuizCache;
 use App\Services\UnifiedAIService;
 use App\Services\QuizPdfGenerator;
 use App\Services\StudentDoubtSolverService;
-use App\Services\CreditService;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -240,19 +240,7 @@ class QuizController extends Controller
             $bookMode = $request->input('book_mode', false);
             $generatePdf = $request->input('generate_pdf', false);
 
-            // Check and deduct credits (3 credits per quiz from image)
-            $creditService = new CreditService();
-            $creditCost = 3;
-
-            $creditCheck = $creditService->canPerformAction($user, 'quiz_from_image', $creditCost);
-            if (!$creditCheck['has_credits']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Insufficient credits. You need ' . $creditCost . ' credits to generate a quiz from image.',
-                    'credits_required' => $creditCost,
-                    'credits_available' => $creditCheck['balance'],
-                ], 402);
-            }
+            // Credits removed — access controlled by plan limits
 
             // Calculate image hash for caching (SHA-256)
             $imageHash = hash_file('sha256', $file->getRealPath());
@@ -463,20 +451,10 @@ class QuizController extends Controller
                 'last_used_at' => now(),
             ]);
 
-            // Deduct credits after successful generation
-            $deductResult = $creditService->deductCredits(
-                $user,
-                'quiz_from_image',
-                $creditCost,
-                'Quiz generated from uploaded image/PDF'
-            );
-
             \Log::info('Quiz generated and cached', [
                 'user_id' => $user->id,
                 'quiz_cache_id' => $cachedQuiz->id,
                 'question_count' => count($quizData['questions']),
-                'credits_deducted' => $creditCost,
-                'new_balance' => $deductResult['new_balance'],
             ]);
 
             return response()->json([
@@ -484,8 +462,6 @@ class QuizController extends Controller
                 'cached' => false,
                 'book_mode' => $bookMode,
                 'pdf_available' => true,
-                'credits_used' => $creditCost,
-                'credits_remaining' => $deductResult['new_balance'],
                 'quiz' => [
                     'id' => $cachedQuiz->id,
                     'title' => $bookMode ? 'Quiz from Book' : 'Quiz from Image',
@@ -1056,20 +1032,6 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                 $questionCount = $this->calculateQuestionCount($duration, $difficulty);
             }
 
-            // Check and deduct credits (3 credits per quiz generation)
-            $creditService = new CreditService();
-            $creditCost = 3; // Cost per quiz generation
-
-            $creditCheck = $creditService->canPerformAction($user, 'quiz_generation', $creditCost);
-            if (!$creditCheck['has_credits']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Insufficient credits. You need ' . $creditCost . ' credits to generate a quiz.',
-                    'credits_required' => $creditCost,
-                    'credits_available' => $creditCheck['balance'],
-                ], 402);
-            }
-
             \Log::info('Generating quiz by topic', [
                 'user_id' => $user->id,
                 'topic' => $topic,
@@ -1165,20 +1127,6 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                 ], 500);
             }
 
-            // Deduct credits after successful generation
-            $deductResult = $creditService->deductCredits(
-                $user,
-                'quiz_generation',
-                $creditCost,
-                "Quiz generated: {$topic}"
-            );
-
-            \Log::info('Credits deducted for quiz', [
-                'user_id' => $user->id,
-                'credits_deducted' => $creditCost,
-                'new_balance' => $deductResult['new_balance'],
-            ]);
-
             // Add metadata to quiz data
             $quizData['topic'] = $topic;
             $quizData['subject'] = $subject;
@@ -1190,8 +1138,6 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
 
             return response()->json([
                 'success' => true,
-                'credits_used' => $creditCost,
-                'credits_remaining' => $deductResult['new_balance'],
                 'quiz' => [
                     'title' => "Quiz: {$topic}",
                     'description' => $subject ? "Subject: {$subject}" : "Topic-based quiz",
@@ -1246,20 +1192,6 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             $questionCount = $request->input('question_count');
             if (!$questionCount) {
                 $questionCount = $this->calculateQuestionCount($duration, $difficulty);
-            }
-
-            // Check and deduct credits (3 credits per quiz generation)
-            $creditService = new CreditService();
-            $creditCost = 3;
-
-            $creditCheck = $creditService->canPerformAction($user, 'quiz_generation', $creditCost);
-            if (!$creditCheck['has_credits']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Insufficient credits. You need ' . $creditCost . ' credits to generate a quiz.',
-                    'credits_required' => $creditCost,
-                    'credits_available' => $creditCheck['balance'],
-                ], 402);
             }
 
             \Log::info('Generating reasoning quiz', [
@@ -1341,24 +1273,8 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                 ], 500);
             }
 
-            // Deduct credits after successful generation
-            $deductResult = $creditService->deductCredits(
-                $user,
-                'quiz_generation',
-                $creditCost,
-                "Reasoning Quiz: {$category}"
-            );
-
-            \Log::info('Credits deducted for reasoning quiz', [
-                'user_id' => $user->id,
-                'credits_deducted' => $creditCost,
-                'new_balance' => $deductResult['new_balance'],
-            ]);
-
             return response()->json([
                 'success' => true,
-                'credits_used' => $creditCost,
-                'credits_remaining' => $deductResult['new_balance'],
                 'quiz' => [
                     'title' => "Reasoning Quiz: {$category}",
                     'description' => "Reasoning & Aptitude - {$difficulty} level",

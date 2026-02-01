@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DoubtCache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class AIDoubtSolverController extends Controller
@@ -13,7 +15,7 @@ class AIDoubtSolverController extends Controller
 
     public function __construct()
     {
-        $this->apiKey = env('OPENAI_API_KEY');
+        $this->apiKey = config('services.openai.api_key');
     }
 
     /**
@@ -123,7 +125,7 @@ EOT;
             }
 
             $response = $http->post($this->apiUrl, [
-                'model' => 'gpt-4-turbo-preview',
+                'model' => 'gpt-4o-mini',
                 'messages' => $messages,
                 'temperature' => 0.7,
                 'max_tokens' => 2500,
@@ -169,6 +171,22 @@ EOT;
         try {
             // Get uploaded image
             $image = $request->file('image');
+
+            // Calculate image hash for cache lookup
+            $imageHash = hash_file('sha256', $image->getRealPath());
+            $questionText = $request->question;
+
+            // Check cache
+            $cached = DoubtCache::findCached('image', $imageHash, $questionText);
+            if ($cached) {
+                Log::info('Image doubt cache HIT', ['hash' => substr($imageHash, 0, 12), 'usage_count' => $cached->usage_count]);
+                return response()->json([
+                    'success' => true,
+                    'answer' => $cached->solution,
+                    'tokens_used' => $cached->tokens_used,
+                    'cached' => true,
+                ]);
+            }
 
             // Convert image to base64
             $imageData = base64_encode(file_get_contents($image->getRealPath()));
@@ -219,7 +237,7 @@ EOT;
             }
 
             $response = $http->post($this->apiUrl, [
-                'model' => 'gpt-4-vision-preview',
+                'model' => 'gpt-4o-mini',
                 'messages' => $messages,
                 'max_tokens' => 2500,
                 'temperature' => 0.7
@@ -227,11 +245,17 @@ EOT;
 
             if ($response->successful()) {
                 $aiResponse = $response->json()['choices'][0]['message']['content'];
+                $tokensUsed = $response->json()['usage']['total_tokens'] ?? 0;
+
+                // Store in cache
+                DoubtCache::storeSolution('image', $imageHash, $questionText, $request->subject, $aiResponse, $tokensUsed);
+                Log::info('Image doubt cached', ['hash' => substr($imageHash, 0, 12)]);
 
                 return response()->json([
                     'success' => true,
                     'answer' => $aiResponse,
-                    'tokens_used' => $response->json()['usage']['total_tokens'] ?? 0
+                    'tokens_used' => $tokensUsed,
+                    'cached' => false,
                 ]);
             } else {
                 return response()->json([
@@ -275,6 +299,21 @@ EOT;
             $pdfParsed = $parser->parseFile($pdf->getRealPath());
             $pdfText = substr($pdfParsed->getText(), 0, 12000); // Limit text
 
+            // Calculate content hash for cache lookup
+            $contentHash = hash('sha256', $pdfText);
+            $questionText = $request->question;
+
+            // Check cache
+            $cached = DoubtCache::findCached('pdf', $contentHash, $questionText);
+            if ($cached) {
+                Log::info('PDF doubt cache HIT', ['hash' => substr($contentHash, 0, 12), 'usage_count' => $cached->usage_count]);
+                return response()->json([
+                    'success' => true,
+                    'answer' => $cached->solution,
+                    'cached' => true,
+                ]);
+            }
+
             $userMessage = "I have the following content from a PDF document:\n\n---\n{$pdfText}\n---\n\n";
 
             if ($request->subject) {
@@ -309,7 +348,7 @@ EOT;
             }
 
             $response = $http->post($this->apiUrl, [
-                'model' => 'gpt-4-turbo-preview',
+                'model' => 'gpt-4o-mini',
                 'messages' => $messages,
                 'temperature' => 0.7,
                 'max_tokens' => 2500
@@ -317,10 +356,16 @@ EOT;
 
             if ($response->successful()) {
                 $aiResponse = $response->json()['choices'][0]['message']['content'];
+                $tokensUsed = $response->json()['usage']['total_tokens'] ?? 0;
+
+                // Store in cache
+                DoubtCache::storeSolution('pdf', $contentHash, $questionText, $request->subject, $aiResponse, $tokensUsed);
+                Log::info('PDF doubt cached', ['hash' => substr($contentHash, 0, 12)]);
 
                 return response()->json([
                     'success' => true,
-                    'answer' => $aiResponse
+                    'answer' => $aiResponse,
+                    'cached' => false,
                 ]);
             } else {
                 return response()->json([

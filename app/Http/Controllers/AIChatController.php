@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\UnifiedAIService;
-use App\Services\CreditService;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -428,23 +428,7 @@ GIVE THE DETAILED EXPLANATION NOW.";
             ], 422);
         }
 
-        // Check and deduct credits (2 credits per scan/solve action)
         $user = auth()->user();
-        if ($user) {
-            $creditService = new CreditService();
-            $creditCost = 2;
-
-            $creditCheck = $creditService->canPerformAction($user, 'scan_solve', $creditCost);
-            if (!$creditCheck['has_credits']) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Insufficient credits. You need ' . $creditCost . ' credits to solve from image.',
-                    'credits_required' => $creditCost,
-                    'credits_available' => $creditCheck['balance'],
-                ], 402);
-            }
-        }
-
         $fileExtension = $uploadedFile->getClientOriginalExtension();
         $action = $request->action;
 
@@ -471,34 +455,11 @@ GIVE THE DETAILED EXPLANATION NOW.";
 
         $response = $this->getAIResponse($prompt, $systemPrompt, [], 'detail', $uploadedFile);
 
-        // Deduct credits after successful response
-        $creditsUsed = 0;
-        $creditsRemaining = 0;
-        if ($user) {
-            $deductResult = $creditService->deductCredits(
-                $user,
-                'scan_solve',
-                $creditCost,
-                "Scan & {$action}: " . $uploadedFile->getClientOriginalName()
-            );
-            $creditsUsed = $creditCost;
-            $creditsRemaining = $deductResult['new_balance'];
-
-            Log::info('Credits deducted for scan/solve', [
-                'user_id' => $user->id,
-                'action' => $action,
-                'credits_deducted' => $creditCost,
-                'new_balance' => $creditsRemaining,
-            ]);
-        }
-
         return response()->json([
             'success' => true,
             'response' => $response,
             'action' => $action,
             'file_type' => $fileExtension,
-            'credits_used' => $creditsUsed,
-            'credits_remaining' => $creditsRemaining,
         ]);
     }
 

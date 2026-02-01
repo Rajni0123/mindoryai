@@ -62,6 +62,7 @@ class ExamService
         $subject = $options['subject'] ?? 'all';
         $year = $options['year'] ?? (int) date('Y');
         $difficulty = $options['difficulty'] ?? 'mixed';
+        $isBoardExam = in_array($exam->category, ['board']);
 
         // Check how many questions we have
         $existingQuery = ExamQuestion::where('exam_id', $examId)->where('is_active', true);
@@ -77,8 +78,9 @@ class ExamService
 
         $existingCount = $existingQuery->count();
 
-        // Auto-generate if we don't have enough questions
-        if ($existingCount < $questionCount) {
+        // For board exams (CBSE), prefer real PYQ questions - do NOT auto-generate
+        // For competitive exams (JEE, NEET etc.), auto-generate if needed
+        if ($existingCount < $questionCount && !$isBoardExam) {
             $needed = $questionCount - $existingCount;
             Log::info("ExamService: auto-generating {$needed} questions for {$exam->name}", [
                 'subject' => $subject,
@@ -91,11 +93,10 @@ class ExamService
                 $this->questionGenerator->generate($exam, $subject, $year, $needed, $difficulty);
             } catch (\Exception $e) {
                 Log::error("ExamService: auto-generation failed", ['error' => $e->getMessage()]);
-                // Continue with whatever questions we have
             }
         }
 
-        // Now fetch questions for the mock test
+        // For board exams: fetch all available real PYQ questions (across years if needed)
         $query = ExamQuestion::where('exam_id', $examId)->where('is_active', true);
 
         if ($subject !== 'all') {
@@ -110,6 +111,21 @@ class ExamService
             $query->where('year', $year);
         }
 
+        // For board exams, prioritize real PYQ (tagged 'real-paper') and order by year desc
+        if ($isBoardExam) {
+            $query->where(function ($q) {
+                $q->where('tags', 'like', '%real-paper%');
+            })->orderBy('year', 'desc');
+
+            // If no real PYQ found, fallback to all available questions
+            if ($query->count() === 0) {
+                $query = ExamQuestion::where('exam_id', $examId)->where('is_active', true);
+                if ($subject !== 'all') $query->where('subject', $subject);
+                if ($difficulty !== 'mixed') $query->where('difficulty', $difficulty);
+                if (!empty($options['year'])) $query->where('year', $year);
+            }
+        }
+
         $questions = $query->inRandomOrder()->limit($questionCount)->get();
 
         $duration = $options['duration_minutes'] ?? $exam->config['duration_minutes'] ?? 60;
@@ -122,6 +138,11 @@ class ExamService
             $title .= ' (' . $options['year'] . ')';
         }
 
+        // Check if questions are real PYQ
+        $hasRealPYQ = $questions->contains(function ($q) {
+            return is_array($q->tags) && in_array('real-paper', $q->tags);
+        });
+
         return MockTest::create([
             'user_id' => $user->id,
             'exam_id' => $examId,
@@ -132,6 +153,8 @@ class ExamService
             'config' => [
                 'marking_scheme' => $exam->config['marking_scheme'] ?? ['correct' => 4, 'wrong' => -1],
                 'negative_marking' => $exam->config['negative_marking'] ?? true,
+                'is_real_pyq' => $hasRealPYQ,
+                'source' => $hasRealPYQ ? 'cbse-board-paper' : 'ai-generated',
             ],
             'status' => 'pending',
         ]);
@@ -287,6 +310,135 @@ class ExamService
             $query->where('subject', $subject);
         }
 
-        return $query->orderBy('subject')->get();
+        return $query->orderBy('subject')
+            ->orderBy('difficulty')
+            ->get();
+    }
+
+    /**
+     * Get available PYQ years for an exam (years that actually have questions in DB).
+     */
+    public function getAvailablePYQYears(int $examId): array
+    {
+        $years = ExamQuestion::where('exam_id', $examId)
+            ->where('is_active', true)
+            ->whereNotNull('year')
+            ->selectRaw('year, COUNT(*) as question_count')
+            ->groupBy('year')
+            ->orderBy('year', 'desc')
+            ->get();
+
+        return $years->map(function ($row) {
+            return [
+                'year' => $row->year,
+                'question_count' => $row->question_count,
+            ];
+        })->toArray();
+    }
+
+    /**
+     * Get a full PYQ paper for a given year and optional subject.
+     * Returns questions in original paper order (by section/difficulty).
+     */
+    public function getPYQPaper(int $examId, int $year, ?string $subject = null): array
+    {
+        $exam = Exam::findOrFail($examId);
+
+        $query = ExamQuestion::where('exam_id', $examId)
+            ->where('year', $year)
+            ->where('is_active', true);
+
+        if ($subject) {
+            $query->where('subject', $subject);
+        }
+
+        // Order by difficulty (easy=Section A, medium=Section B/C, hard=Section D)
+        $questions = $query->orderByRaw("FIELD(difficulty, 'easy', 'medium', 'hard')")
+            ->orderBy('subject')
+            ->get();
+
+        // Get available subjects for this year
+        $availableSubjects = ExamQuestion::where('exam_id', $examId)
+            ->where('year', $year)
+            ->where('is_active', true)
+            ->selectRaw('subject, COUNT(*) as question_count')
+            ->groupBy('subject')
+            ->get();
+
+        return [
+            'exam' => [
+                'id' => $exam->id,
+                'name' => $exam->name,
+                'slug' => $exam->slug,
+                'category' => $exam->category,
+                'config' => $exam->config,
+            ],
+            'year' => $year,
+            'subject' => $subject,
+            'total_questions' => $questions->count(),
+            'total_marks' => $exam->config['total_marks'] ?? 80,
+            'duration_minutes' => $exam->config['duration_minutes'] ?? 180,
+            'sections' => $exam->config['sections'] ?? null,
+            'available_subjects' => $availableSubjects,
+            'questions' => $questions->map(function ($q) {
+                return [
+                    'id' => $q->id,
+                    'question_text' => $q->question_text,
+                    'type' => $q->type,
+                    'options' => $q->options,
+                    'subject' => $q->subject,
+                    'topic' => $q->topic,
+                    'difficulty' => $q->difficulty,
+                    'tags' => $q->tags,
+                ];
+            }),
+        ];
+    }
+
+    /**
+     * Create a mock test from a full PYQ paper (all questions from that year, in order).
+     */
+    public function createPYQMockTest(User $user, int $examId, int $year, ?string $subject = null): MockTest
+    {
+        $exam = Exam::findOrFail($examId);
+
+        $query = ExamQuestion::where('exam_id', $examId)
+            ->where('year', $year)
+            ->where('is_active', true);
+
+        if ($subject) {
+            $query->where('subject', $subject);
+        }
+
+        // Get ALL questions for this year (not random - preserve original paper order)
+        $questions = $query->orderByRaw("FIELD(difficulty, 'easy', 'medium', 'hard')")
+            ->orderBy('subject')
+            ->get();
+
+        if ($questions->isEmpty()) {
+            throw new \Exception("No PYQ questions found for {$exam->name} {$year}" . ($subject ? " - {$subject}" : ""));
+        }
+
+        $title = "{$exam->name} {$year} Previous Year Paper";
+        if ($subject) {
+            $title = "{$exam->name} {$subject} {$year} - Previous Year Paper";
+        }
+
+        return MockTest::create([
+            'user_id' => $user->id,
+            'exam_id' => $examId,
+            'title' => $title,
+            'question_ids' => $questions->pluck('id')->toArray(),
+            'total_questions' => $questions->count(),
+            'duration_minutes' => $exam->config['duration_minutes'] ?? 180,
+            'config' => [
+                'marking_scheme' => $exam->config['marking_scheme'] ?? ['correct' => 1, 'wrong' => 0],
+                'negative_marking' => $exam->config['negative_marking'] ?? false,
+                'is_pyq' => true,
+                'pyq_year' => $year,
+                'pyq_subject' => $subject,
+            ],
+            'status' => 'pending',
+        ]);
     }
 }

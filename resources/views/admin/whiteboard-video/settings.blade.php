@@ -481,21 +481,6 @@
                         </div>
                     </div>
 
-                    <!-- Credit Cost Configuration -->
-                    <div class="card rounded-lg p-4">
-                        <h3 class="text-sm font-semibold text-white mb-3">Credit Cost</h3>
-                        <p class="text-[10px] text-gray-500 mb-4">Credits are deducted based on video duration (1 second = 1 credit)</p>
-
-                        <div class="space-y-3">
-                            <div class="p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-                                <p class="text-[10px] text-yellow-300 flex items-center gap-2">
-                                    <span class="material-icons-outlined" style="font-size: 14px;">info</span>
-                                    <span>Credits are automatically deducted based on final video duration. A 60-second video costs 60 credits.</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Feature Information -->
                     <div class="card rounded-lg p-4 bg-blue-500/5 border-blue-500/20">
                         <div class="flex gap-3">

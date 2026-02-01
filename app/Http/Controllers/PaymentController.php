@@ -105,6 +105,7 @@ class PaymentController extends Controller
 
         $user->update([
             'plan_id' => $plan->id,
+            'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
             'is_active' => true,
             'token_limit' => $plan->message_tokens ?? 10000,
             'tokens_used' => 0,
@@ -353,6 +354,132 @@ class PaymentController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Payment verified successfully',
+        ]);
+    }
+
+    /**
+     * Web: Create Razorpay order (called via AJAX from pricing page)
+     */
+    public function createRazorpayOrder(Request $request)
+    {
+        $request->validate([
+            'plan_id' => 'required|exists:user_plans,id',
+        ]);
+
+        $user = Auth::user();
+        $plan = PricingPlan::findOrFail($request->plan_id);
+
+        // Check Razorpay gateway is enabled
+        $gateway = PaymentGateway::where('name', 'razorpay')
+            ->where('is_enabled', true)
+            ->first();
+
+        if (!$gateway || !$gateway->isConfigured()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Razorpay payment gateway is not available. Please contact administrator.',
+            ], 400);
+        }
+
+        $paymentService = new PaymentService();
+        $result = $paymentService->createOrder(
+            'razorpay',
+            $plan->price,
+            'plan_purchase_' . $plan->id,
+            $user->id,
+            ['plan_id' => $plan->id]
+        );
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'order_id' => $result['gateway_order_id'],
+            'razorpay_key' => $result['gateway_data']['key'],
+            'amount' => $plan->price * 100,
+            'currency' => 'INR',
+            'transaction_id' => $result['transaction_id'],
+            'user_name' => $user->name,
+            'user_email' => $user->email ?? '',
+            'user_phone' => $user->mobile ?? '',
+        ]);
+    }
+
+    /**
+     * Web: Verify Razorpay payment (called via AJAX after popup success)
+     */
+    public function verifyRazorpayOrder(Request $request)
+    {
+        $request->validate([
+            'razorpay_payment_id' => 'required|string',
+            'razorpay_order_id' => 'required|string',
+            'razorpay_signature' => 'required|string',
+            'plan_id' => 'required|exists:user_plans,id',
+            'transaction_id' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+        $plan = PricingPlan::findOrFail($request->plan_id);
+
+        // Find the transaction
+        $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)->first();
+
+        if (!$transaction) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transaction not found.',
+            ], 400);
+        }
+
+        // Verify using PaymentService
+        $paymentService = new PaymentService();
+        $result = $paymentService->verifyPayment($request->transaction_id, [
+            'razorpay_payment_id' => $request->razorpay_payment_id,
+            'razorpay_signature' => $request->razorpay_signature,
+            'payment_id' => $request->razorpay_payment_id,
+        ]);
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 400);
+        }
+
+        // Activate user plan
+        $user->update([
+            'plan_id' => $plan->id,
+            'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
+            'is_active' => true,
+            'token_limit' => $plan->message_tokens ?? 10000,
+            'tokens_used' => 0,
+            'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
+            'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
+            'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
+            'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
+        ]);
+
+        // Create Payment record for admin visibility
+        Payment::create([
+            'user_id' => $user->id,
+            'plan_id' => $plan->id,
+            'amount' => $plan->price,
+            'transaction_id' => $request->razorpay_payment_id,
+            'payment_method' => 'razorpay',
+            'status' => 'completed',
+            'upi_transaction_id' => $request->razorpay_order_id,
+            'verified_at' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment successful! Your plan has been activated.',
+            'redirect_url' => '/chat',
         ]);
     }
 

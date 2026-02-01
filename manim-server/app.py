@@ -61,7 +61,7 @@ os.makedirs(Config.OUTPUT_DIR, exist_ok=True)
 os.makedirs(Config.TEMP_DIR, exist_ok=True)
 
 
-def process_video(job_id: str, topic: str, voice: str, rate: str, gemini_api_key: str = None, gemini_model: str = None, mode: str = "simple", language: str = "en", image_settings: dict = None, storyboard_settings: dict = None):
+def process_video(job_id: str, topic: str, voice: str, rate: str, gemini_api_key: str = None, gemini_model: str = None, mode: str = "simple", language: str = "en", image_settings: dict = None, storyboard_settings: dict = None, max_scenes: int = 5):
     """
     Background video generation pipeline
 
@@ -87,25 +87,34 @@ def process_video(job_id: str, topic: str, voice: str, rate: str, gemini_api_key
             model_name=gemini_model,
             storyboard_settings=sb_settings,
         )
-        storyboard = storyboard_gen.generate(topic, language=language)
+        storyboard = storyboard_gen.generate(topic, language=language, max_scenes=max_scenes)
         scenes = storyboard["scenes"]
         job["total_scenes"] = len(scenes)
         job["storyboard"] = storyboard
         job["progress"] = 20
 
-        # Step 2: Generate audio for each scene using Edge TTS
+        # Step 2: Generate audio for ALL scenes in parallel using Edge TTS
         job["status"] = "generating_audio"
         tts = TTSService(voice=voice, rate=rate)
         audio_paths = {}
-        for i, scene in enumerate(scenes):
-            audio_file = os.path.join(audio_dir, f"scene_{scene['scene_number']}.mp3")
-            duration = tts.generate(scene["narration"], audio_file)
-            audio_paths[scene["scene_number"]] = {
-                "path": audio_file,
-                "duration": duration,
-            }
-            job["processed_scenes"] = i + 1
-            job["progress"] = 20 + int((i + 1) / len(scenes) * 25)
+
+        import concurrent.futures
+
+        def _gen_audio(scene):
+            sn = scene["scene_number"]
+            audio_file = os.path.join(audio_dir, f"scene_{sn}.mp3")
+            dur = tts.generate(scene["narration"], audio_file)
+            return sn, audio_file, dur
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=min(len(scenes), 4)) as pool:
+            futures = {pool.submit(_gen_audio, s): s for s in scenes}
+            done_count = 0
+            for future in concurrent.futures.as_completed(futures):
+                sn, audio_file, dur = future.result()
+                audio_paths[sn] = {"path": audio_file, "duration": dur}
+                done_count += 1
+                job["processed_scenes"] = done_count
+                job["progress"] = 20 + int(done_count / len(scenes) * 25)
 
         # Step 3: Render Manim whiteboard animations for each scene
         job["status"] = "generating_assets"
@@ -241,6 +250,7 @@ def generate_video():
     laravel_job_id = data.get("laravel_job_id")  # To sync with Laravel
     gemini_api_key = data.get("gemini_api_key")  # From Laravel admin panel
     gemini_model = data.get("gemini_model")  # From Laravel admin panel
+    max_scenes = data.get("max_scenes", 5)  # From user's plan config
 
     # Storyboard AI settings from Laravel admin panel
     storyboard_settings = {
@@ -256,6 +266,7 @@ def generate_video():
         "enabled": data.get("image_generation_enabled", False),
         "provider": data.get("image_provider", "gemini_imagen"),
         "api_key": data.get("image_api_key"),
+        "fallback_provider": data.get("image_fallback_provider", ""),
     }
 
     # Validate mode
@@ -288,7 +299,7 @@ def generate_video():
     # Start processing in background thread
     thread = threading.Thread(
         target=process_video,
-        args=(job_id, topic, voice, rate, gemini_api_key, gemini_model, mode, language, image_settings, storyboard_settings),
+        args=(job_id, topic, voice, rate, gemini_api_key, gemini_model, mode, language, image_settings, storyboard_settings, max_scenes),
         daemon=True,
     )
     thread.start()

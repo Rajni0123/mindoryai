@@ -1,12 +1,20 @@
 """
 Storyboard Generator - Uses AI (Gemini / OpenAI / DeepSeek) to create structured scene storyboards from topics
+Includes file-based caching to avoid regenerating storyboards for same topics.
 """
 
 import os
 import json
 import re
 import time
+import hashlib
+from pathlib import Path
 from config import Config
+
+# Storyboard cache directory
+STORYBOARD_CACHE_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) / "cache" / "storyboards"
+STORYBOARD_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+STORYBOARD_CACHE_TTL = 30 * 24 * 3600  # 30 days in seconds
 
 
 
@@ -113,8 +121,52 @@ class StoryboardGenerator:
         "ru": "Russian",
     }
 
-    def generate(self, topic: str, max_retries: int = 3, language: str = "en") -> dict:
-        """Generate a structured storyboard from a topic/document with retry"""
+    def _get_cache_key(self, topic: str, language: str) -> str:
+        """Generate cache key from normalized topic + language"""
+        normalized = " ".join(topic.lower().strip().split())
+        return hashlib.md5(f"{normalized}:{language}".encode()).hexdigest()
+
+    def _get_cached_storyboard(self, cache_key: str) -> dict | None:
+        """Check file cache for existing storyboard"""
+        cache_file = STORYBOARD_CACHE_DIR / f"{cache_key}.json"
+        if not cache_file.exists():
+            return None
+
+        # Check TTL
+        age = time.time() - cache_file.stat().st_mtime
+        if age > STORYBOARD_CACHE_TTL:
+            cache_file.unlink(missing_ok=True)
+            return None
+
+        try:
+            data = json.loads(cache_file.read_text(encoding="utf-8"))
+            if isinstance(data, dict) and "scenes" in data:
+                print(f"[STORYBOARD] Cache HIT (age: {int(age/3600)}h)")
+                return data
+        except Exception as e:
+            print(f"[STORYBOARD] Cache read error: {e}")
+            cache_file.unlink(missing_ok=True)
+
+        return None
+
+    def _save_to_cache(self, cache_key: str, storyboard: dict):
+        """Save storyboard to file cache"""
+        try:
+            cache_file = STORYBOARD_CACHE_DIR / f"{cache_key}.json"
+            cache_file.write_text(json.dumps(storyboard, ensure_ascii=False), encoding="utf-8")
+            print(f"[STORYBOARD] Saved to cache: {cache_key}")
+        except Exception as e:
+            print(f"[STORYBOARD] Cache save error: {e}")
+
+    def generate(self, topic: str, max_retries: int = 3, language: str = "en", max_scenes: int = 5) -> dict:
+        """Generate a structured storyboard from a topic/document with retry and caching"""
+
+        # Check cache first
+        cache_key = self._get_cache_key(topic, language)
+        cached = self._get_cached_storyboard(cache_key)
+        if cached:
+            return cached
+
         prompt = self._build_prompt(topic, language)
         last_error = None
 
@@ -141,8 +193,12 @@ class StoryboardGenerator:
                 storyboard = self._normalize(storyboard)
 
                 self._validate(storyboard)
-                self._remove_filler_scenes(storyboard)
-                print(f"[STORYBOARD] Success: {len(storyboard['scenes'])} scenes generated")
+                self._remove_filler_scenes(storyboard, max_scenes=max_scenes)
+                print(f"[STORYBOARD] Success: {len(storyboard['scenes'])} scenes generated (max: {max_scenes})")
+
+                # Save to cache for future use
+                self._save_to_cache(cache_key, storyboard)
+
                 return storyboard
 
             except json.JSONDecodeError as e:
@@ -240,7 +296,7 @@ class StoryboardGenerator:
 
         raise ValueError(f"Cannot find scenes in response. Keys: {list(data.keys())}")
 
-    def _remove_filler_scenes(self, storyboard: dict):
+    def _remove_filler_scenes(self, storyboard: dict, max_scenes: int = 5):
         """Remove intro/welcome/outro filler scenes that add no educational value."""
         filler_words = ["welcome", "introduction", "let's begin", "let's start", "hello", "hi there",
                         "in this video", "today we", "let's explore", "let's learn", "conclusion",
@@ -255,9 +311,14 @@ class StoryboardGenerator:
         # Keep at least 3 scenes
         if len(filtered) >= 3:
             storyboard["scenes"] = filtered
-            # Re-number scenes
-            for i, scene in enumerate(storyboard["scenes"]):
-                scene["scene_number"] = i + 1
+
+        # Cap at max_scenes (plan-based limit)
+        if len(storyboard["scenes"]) > max_scenes:
+            storyboard["scenes"] = storyboard["scenes"][:max_scenes]
+
+        # Re-number scenes
+        for i, scene in enumerate(storyboard["scenes"]):
+            scene["scene_number"] = i + 1
 
     def _build_prompt(self, topic: str, language: str = "en") -> str:
         lang_name = self.LANGUAGE_NAMES.get(language, "English")
@@ -289,9 +350,9 @@ Convert the following topic into a structured JSON storyboard. Each scene shows 
 CRITICAL RULES:
 1. Output MUST be valid JSON only - no markdown, no code blocks, no explanations
 2. Root object MUST have "scenes" array and "title" string
-3. Create 5-7 scenes, each 8-12 seconds long
-4. MULTI-IMAGE GRID: each scene shows 2-4 small diagrams on ONE screen, connected by arrows
-5. key_concepts MUST have 2-4 items per scene — each becomes ONE small image in the grid
+3. Create 4-5 scenes, each 8-12 seconds long (keep it concise!)
+4. MULTI-IMAGE GRID: each scene shows 2 small diagrams on ONE screen, connected by arrows
+5. key_concepts MUST have exactly 2 items per scene — each becomes ONE small image in the grid
 6. narration: 1-2 sentences ONLY — just describe what's on screen, nothing extra
 7. bullet_points: one SHORT label per image (3-6 words), same count as key_concepts
 8. visual_description: describe the GRID layout and what each small diagram shows
@@ -300,12 +361,13 @@ CRITICAL RULES:
 MULTI-IMAGE GRID DESIGN RULES:
 - Each key_concept = ONE small focused diagram in the grid (not a complex multi-part image)
 - All images appear on the SAME screen simultaneously, connected by arrows
-- Think of it like a teacher's whiteboard: multiple small labeled diagrams, arrows showing relationships
+- Think of it like a teacher's whiteboard: 2 small labeled diagrams side by side, arrows showing relationships
 - Example GOOD key_concepts for "Newton's Laws":
-  ["Ball at rest on table (no motion)", "Hand pushing a box (force applied)", "Rocket launching upward (acceleration)", "F=ma equation with labels"]
+  ["Ball at rest on table (no motion)", "Hand pushing a box (force applied)"]
 - Example BAD key_concepts: ["Newton's first law", "Newton's second law"] (too vague — not drawable)
 - Each concept must describe a SINGLE SPECIFIC drawable thing (object, diagram, equation, process step)
-- bullet_points are SHORT labels shown below each image: "Object at rest", "Force applied", "Acceleration"
+- ALWAYS have exactly 2 key_concepts per scene — no more, no less
+- bullet_points are SHORT labels shown below each image: "Object at rest", "Force applied"
 - Keep bullet_points count EQUAL to key_concepts count (one label per image)
 - narration is voiceover only — keep it MINIMAL, images teach the concept
 
@@ -317,9 +379,9 @@ REQUIRED JSON STRUCTURE:
       "scene_number": 1,
       "title": "Scene Title",
       "narration": "One or two short sentences describing what's on screen",
-      "visual_description": "Grid of 2-4 diagrams: top-left shows X, top-right shows Y, connected by arrows",
+      "visual_description": "Two diagrams side by side: left shows X, right shows Y, connected by arrow",
       "duration": 10,
-      "key_concepts": ["Specific drawable diagram 1", "Specific drawable diagram 2", "Specific drawable diagram 3"],
+      "key_concepts": ["Specific drawable diagram 1", "Specific drawable diagram 2"],
       "elements": {{
         "title_text": "Main heading",
         "bullet_points": [

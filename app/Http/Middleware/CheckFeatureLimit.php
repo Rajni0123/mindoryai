@@ -48,7 +48,8 @@ class CheckFeatureLimit
             return $next($request);
         }
 
-        $check = $this->usageService->canUse($user, $featureType);
+        // checkAndRecord: checks limit AND records usage in one call
+        $check = $this->usageService->checkAndRecord($user, $featureType);
 
         if (!$check['allowed']) {
             return response()->json([

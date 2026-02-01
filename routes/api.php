@@ -277,7 +277,7 @@ Route::middleware('auth:sanctum')->get('/credits/balance', function (Request $re
         'balance' => max(0, $totalCredits - $usedCredits),
         'total' => $totalCredits,
         'used' => $usedCredits,
-        'unlimited' => $user->is_admin || ($planConfig['is_unlimited'] ?? false),
+        'unlimited' => $user->role === 'admin' || ($planConfig['is_unlimited'] ?? false),
         'usage' => $usage,
         'plan_config' => $planConfig,
     ]);
@@ -413,15 +413,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Quiz generation from image with caching
     Route::post('/quiz/generate-from-image', [\App\Http\Controllers\QuizController::class, 'generateFromImage'])
-        ->middleware('check.feature:quizzes_per_day');
+        ->middleware('check.feature:video_quiz');
 
     // Quiz generation by topic (without image)
     Route::get('/quiz/generate-by-topic', [\App\Http\Controllers\QuizController::class, 'generateByTopic'])
-        ->middleware('check.feature:quizzes_per_day');
+        ->middleware('check.feature:topic_quiz');
 
     // Reasoning quiz generation
     Route::get('/quiz/generate-reasoning', [\App\Http\Controllers\QuizController::class, 'generateReasoningQuiz'])
-        ->middleware('check.feature:quizzes_per_day');
+        ->middleware('check.feature:topic_quiz');
 
     // Quiz PDF download - download generated quiz as PDF
     Route::post('/quiz/download-pdf', [\App\Http\Controllers\QuizController::class, 'downloadQuizPdf']);
@@ -1068,7 +1068,7 @@ Route::prefix('pages')->group(function () {
 // ========================================
 // ADMIN APP CONFIG ROUTES (Mobile Admin)
 // ========================================
-Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+Route::middleware(['auth:sanctum', 'admin.only'])->prefix('admin')->group(function () {
     // Get app config for admin
     Route::get('/app-config', function () {
         return response()->json([
@@ -1252,6 +1252,7 @@ Route::middleware('auth:sanctum')->post('/subscribe', function (Request $request
 
     // For free plan, activate immediately
     if ($amount == 0) {
+        $endDate = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
         DB::table('user_subscriptions')->insert([
             'user_id' => $user->id,
             'plan_id' => $plan->id,
@@ -1259,8 +1260,8 @@ Route::middleware('auth:sanctum')->post('/subscribe', function (Request $request
             'billing_cycle' => $billingCycle,
             'amount_paid' => 0,
             'start_date' => now(),
-            'end_date' => now()->addMonth(),
-            'next_billing_date' => now()->addMonth(),
+            'end_date' => $endDate,
+            'next_billing_date' => $endDate,
             'payment_method' => 'free',
             'created_at' => now(),
             'updated_at' => now(),
@@ -1279,6 +1280,7 @@ Route::middleware('auth:sanctum')->post('/subscribe', function (Request $request
     }
 
     // For paid plans, create pending subscription
+    $pendingEndDate = $billingCycle === 'yearly' ? now()->addYear() : now()->addMonth();
     $subscriptionId = DB::table('user_subscriptions')->insertGetId([
         'user_id' => $user->id,
         'plan_id' => $plan->id,
@@ -1286,7 +1288,7 @@ Route::middleware('auth:sanctum')->post('/subscribe', function (Request $request
         'billing_cycle' => $billingCycle,
         'amount_paid' => $amount,
         'start_date' => now(),
-        'end_date' => now()->addMonth(),
+        'end_date' => $pendingEndDate,
         'payment_method' => $validated['payment_method'],
         'created_at' => now(),
         'updated_at' => now(),
@@ -1568,8 +1570,8 @@ Route::get('/payment/cashfree/callback', [\App\Http\Controllers\PaymentControlle
 Route::get('/payment/callback/{gateway}', [\App\Http\Controllers\PaymentController::class, 'gatewayCallback']);
 Route::post('/payment/callback/{gateway}', [\App\Http\Controllers\PaymentController::class, 'gatewayCallback']);
 
-// Mindory AI Routes
-Route::prefix('mindory')->group(function () {
+// Mindory AI Routes (authenticated + rate-limited)
+Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('mindory')->group(function () {
 
     // Main chat endpoint
     Route::post('/chat', [AIChatController::class, 'chat']);
@@ -1597,7 +1599,7 @@ Route::get('/app/icon', [\App\Http\Controllers\Api\DynamicAppController::class, 
 Route::middleware('auth:sanctum')->get('/app/features', [\App\Http\Controllers\Api\DynamicAppController::class, 'getFeatureFlags']);
 
 // Admin routes for managing app configs (auth required)
-Route::middleware('auth:sanctum')->prefix('admin/app')->group(function () {
+Route::middleware(['auth:sanctum', 'admin.only'])->prefix('admin/app')->group(function () {
     Route::get('/configs', [\App\Http\Controllers\Api\DynamicAppController::class, 'getAllConfigs']);
     Route::post('/configs', [\App\Http\Controllers\Api\DynamicAppController::class, 'updateConfigs']);
     Route::post('/icon/upload', [\App\Http\Controllers\Api\DynamicAppController::class, 'uploadIcon']);
@@ -1614,6 +1616,14 @@ Route::middleware('auth:sanctum')->prefix('exams')->group(function () {
     Route::get('/{exam}/questions', [\App\Http\Controllers\Api\ExamController::class, 'getQuestions']);
     Route::post('/{exam}/generate-questions', [\App\Http\Controllers\Api\ExamController::class, 'generateQuestions'])
         ->middleware('check.feature:exam_prep');
+
+    // PYQ (Previous Year Questions) Routes
+    Route::get('/{exam}/pyq-years', [\App\Http\Controllers\Api\ExamController::class, 'getAvailablePYQYears']);
+    Route::get('/{exam}/pyq/{year}', [\App\Http\Controllers\Api\ExamController::class, 'getPYQPaper']);
+    Route::post('/pyq-mock-test/generate', [\App\Http\Controllers\Api\ExamController::class, 'generatePYQMockTest'])
+        ->middleware('check.feature:exam_prep');
+
+    // Mock Test Routes
     Route::post('/mock-test/generate', [\App\Http\Controllers\Api\ExamController::class, 'generateMockTest'])
         ->middleware('check.feature:exam_prep');
     Route::post('/mock-test/{mockTest}/start', [\App\Http\Controllers\Api\ExamController::class, 'startMockTest']);
@@ -1628,7 +1638,7 @@ Route::middleware('auth:sanctum')->prefix('exams')->group(function () {
 // ============================================================
 Route::middleware('auth:sanctum')->prefix('whiteboard-video')->group(function () {
     Route::post('/create', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'create'])
-        ->middleware('check.feature:whiteboard_videos_per_day');
+        ->middleware('check.feature:whiteboard_video');
     Route::get('/status/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'status']);
     Route::get('/list', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'list']);
     Route::delete('/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'delete']);
@@ -1652,7 +1662,7 @@ Route::get('/ai/health', [\App\Http\Controllers\Api\AIController::class, 'health
 // ============================================================
 // REAL-TIME USAGE TRACKING (PUBLIC - For mobile/website dashboard)
 // ============================================================
-Route::get('/usage/stats', function (Request $request) {
+Route::middleware(['auth:sanctum', 'admin.only'])->get('/usage/stats', function (Request $request) {
     try {
         $days = $request->input('days', 7); // Default to last 7 days for mobile/website
 

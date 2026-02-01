@@ -38,6 +38,23 @@ class ExamController extends Controller
         try {
             $detail = $this->examService->getExamDetail($examId);
 
+            // Add PYQ availability info for board exams
+            $exam = \App\Models\Exam::find($examId);
+            if ($exam && $exam->category === 'board') {
+                $realPYQCount = \App\Models\ExamQuestion::where('exam_id', $examId)
+                    ->where('is_active', true)
+                    ->where('tags', 'like', '%real-paper%')
+                    ->count();
+
+                $detail['pyq_info'] = [
+                    'has_real_pyq' => $realPYQCount > 0,
+                    'real_question_count' => $realPYQCount,
+                    'pyq_available' => $exam->config['pyq_available'] ?? false,
+                    'pyq_years' => $exam->config['pyq_years'] ?? [],
+                    'source' => $realPYQCount > 0 ? 'Real CBSE Board Papers' : 'AI Generated',
+                ];
+            }
+
             return response()->json([
                 'success' => true,
                 'data' => $detail,
@@ -151,6 +168,7 @@ class ExamController extends Controller
         $questions = \App\Models\ExamQuestion::whereIn('id', $mockTest->question_ids)
             ->get()
             ->map(function ($q) {
+                $isRealPYQ = is_array($q->tags) && in_array('real-paper', $q->tags);
                 return [
                     'id' => $q->id,
                     'question_text' => $q->question_text,
@@ -159,6 +177,9 @@ class ExamController extends Controller
                     'subject' => $q->subject,
                     'topic' => $q->topic,
                     'difficulty' => $q->difficulty,
+                    'year' => $q->year,
+                    'is_real_pyq' => $isRealPYQ,
+                    'source' => $isRealPYQ ? 'CBSE Board Paper' : 'AI Generated',
                 ];
             });
 
@@ -235,6 +256,103 @@ class ExamController extends Controller
             'success' => true,
             'data' => $analysis,
         ]);
+    }
+
+    /**
+     * Get available PYQ years for an exam.
+     * GET /api/exams/{exam}/pyq-years
+     */
+    public function getAvailablePYQYears(int $examId): JsonResponse
+    {
+        try {
+            $years = $this->examService->getAvailablePYQYears($examId);
+
+            return response()->json([
+                'success' => true,
+                'data' => $years,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to get PYQ years.',
+            ], 400);
+        }
+    }
+
+    /**
+     * Get a full PYQ paper for a specific year.
+     * GET /api/exams/{exam}/pyq/{year}?subject=Mathematics
+     */
+    public function getPYQPaper(Request $request, int $examId, int $year): JsonResponse
+    {
+        $request->validate([
+            'subject' => 'nullable|string',
+        ]);
+
+        try {
+            $paper = $this->examService->getPYQPaper($examId, $year, $request->query('subject'));
+
+            return response()->json([
+                'success' => true,
+                'data' => $paper,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'PYQ paper not found.',
+            ], 404);
+        }
+    }
+
+    /**
+     * Start a PYQ mock test (full paper for a specific year).
+     * POST /api/exams/pyq-mock-test/generate
+     */
+    public function generatePYQMockTest(Request $request): JsonResponse
+    {
+        $request->validate([
+            'exam_id' => 'required|exists:exams,id',
+            'year' => 'required|integer|min:2018|max:2030',
+            'subject' => 'nullable|string',
+        ]);
+
+        $user = $request->user();
+
+        // Check exam prep usage
+        $check = $this->usageLimitService->checkAndRecord($user, 'exam_prep');
+        if (!$check['allowed']) {
+            return response()->json([
+                'success' => false,
+                'message' => $check['message'],
+                'upgrade_required' => true,
+            ], 429);
+        }
+
+        try {
+            $mockTest = $this->examService->createPYQMockTest(
+                $user,
+                $request->exam_id,
+                $request->year,
+                $request->subject,
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'PYQ mock test created successfully.',
+                'data' => $mockTest,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('ExamController: generatePYQMockTest failed', [
+                'error' => $e->getMessage(),
+                'user_id' => $user->id,
+                'exam_id' => $request->exam_id,
+                'year' => $request->year,
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 400);
+        }
     }
 
     /**

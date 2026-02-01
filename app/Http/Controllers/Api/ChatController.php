@@ -9,22 +9,18 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\AiModel;
 use App\Services\UnifiedAIService;
-use App\Services\CreditService;
 use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
     protected $aiService;
-    protected $creditService;
     protected $fileStorageService;
 
-    public function __construct(UnifiedAIService $aiService, CreditService $creditService, FileStorageService $fileStorageService)
+    public function __construct(UnifiedAIService $aiService, FileStorageService $fileStorageService)
     {
         $this->aiService = $aiService;
-        $this->creditService = $creditService;
         $this->fileStorageService = $fileStorageService;
     }
 
@@ -110,8 +106,6 @@ class ChatController extends Controller
         ]);
 
         try {
-            DB::beginTransaction();
-
             $user = Auth::user();
             $message = $validated['message'] ?? '';
             $chatId = $validated['chat_id'] ?? null;
@@ -207,21 +201,6 @@ class ChatController extends Controller
                 'image' => $imageData,
             ]);
 
-            // Check if user has credits (2 credits if image attached, 1 otherwise)
-            $action = $hasImage ? 'chat_message_with_image' : 'chat_message';
-            $creditCheck = $this->creditService->canPerformAction($user, $action);
-            if (!$creditCheck['has_credits']) {
-                DB::rollBack();
-                return response()->json([
-                    'success' => false,
-                    'message' => $creditCheck['reason'] ?? 'You have reached your credit limit. Please upgrade your plan.',
-                    'credits' => [
-                        'balance' => $creditCheck['balance'],
-                        'required' => $creditCheck['cost'],
-                    ]
-                ], 403);
-            }
-
             // Get AI response
             $aiResponse = $this->getAIResponse($user, $message, $chatId, $modelId, $imageData);
 
@@ -236,27 +215,8 @@ class ChatController extends Controller
                 'content' => $aiResponse,
             ]);
 
-            // Deduct credits
-            try {
-                $this->creditService->deductCredits(
-                    $user,
-                    $action,
-                    null,
-                    "Chat message in chat #{$chatId}",
-                    null,
-                    $chatId
-                );
-            } catch (\Exception $e) {
-                \Log::error('Credit deduction failed', [
-                    'error' => $e->getMessage(),
-                    'chat_id' => $chatId
-                ]);
-            }
-
             // Update chat timestamp
             $chat->touch();
-
-            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -266,7 +226,6 @@ class ChatController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            DB::rollBack();
             \Log::error('Chat send error: ' . $e->getMessage(), [
                 'user_id' => Auth::id(),
                 'message' => $request->message,

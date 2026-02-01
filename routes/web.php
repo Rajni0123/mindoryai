@@ -178,6 +178,10 @@ Route::get('/contact', function() {
         Route::post('/payment/{payment}/verify', [\App\Http\Controllers\PaymentController::class, 'verifyPayment'])->name('payment.verify');
         Route::get('/payment/{payment}/status', [\App\Http\Controllers\PaymentController::class, 'paymentStatus'])->name('payment.status');
 
+        // Razorpay direct checkout (AJAX from pricing page)
+        Route::post('/payment/create-razorpay-order', [\App\Http\Controllers\PaymentController::class, 'createRazorpayOrder'])->name('payment.razorpay.create');
+        Route::post('/payment/verify-razorpay', [\App\Http\Controllers\PaymentController::class, 'verifyRazorpayOrder'])->name('payment.razorpay.verify');
+
         // AI Chat interface (for users only) - requires active subscription
         Route::get('/chat', [HomeController::class, 'index'])->middleware('subscription.active')->name('chat');
 
@@ -453,17 +457,6 @@ Route::put('/update', 'update')->name('update');                // Update brandi
             Route::prefix('seo-settings')->name('seo-settings.')->controller(\App\Http\Controllers\Admin\SeoSettingsController::class)->group(function () {
                 Route::get('/', 'index')->name('index');                        // View SEO settings
                 Route::put('/update', 'update')->name('update');                // Update SEO settings
-            });
-
-            // Credit & Feature Management (Admin Only)
-            Route::prefix('credits')->name('credits.')->controller(\App\Http\Controllers\Admin\CreditManagementController::class)->group(function () {
-                Route::get('/', 'index')->name('index');                                    // Dashboard
-                Route::post('/feature/{id}', 'updateFeatureFlagAjax');                     // Toggle feature (AJAX)
-                Route::post('/adjust', 'adjustUserCredits')->name('adjust');                // Adjust user credits
-                Route::post('/unlimited', 'toggleUnlimitedMode')->name('unlimited');        // Toggle unlimited mode
-                Route::get('/user/{userId}', 'showUserCredits')->name('user');              // View user credit details
-                Route::get('/search-users', 'searchUsers')->name('search-users');           // Search users (AJAX)
-                Route::get('/export', 'exportTransactions')->name('export');                // Export transactions CSV
             });
 
             // Testimonials Management (Admin Only)

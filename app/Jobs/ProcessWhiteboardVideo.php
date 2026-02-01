@@ -16,6 +16,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use App\Jobs\CheckManimVideoStatus;
 use Illuminate\Support\Facades\Storage;
 use Exception;
 
@@ -60,9 +61,54 @@ class ProcessWhiteboardVideo implements ShouldQueue
                 'job_id' => $this->video->job_id,
             ]);
 
+            // Generate and store topic hash
+            $topicHash = WhiteboardVideo::generateTopicHash($this->video->document_content);
             $this->video->update([
                 'status' => 'processing',
                 'started_at' => now(),
+                'topic_hash' => $topicHash,
+            ]);
+
+            // Check for cached video with same topic
+            $cachedVideo = WhiteboardVideo::where('topic_hash', $topicHash)
+                ->where('status', 'completed')
+                ->whereNotNull('final_video_url')
+                ->where('id', '!=', $this->video->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($cachedVideo) {
+                Log::info('Cache HIT - reusing existing whiteboard video', [
+                    'video_id' => $this->video->id,
+                    'cached_from' => $cachedVideo->id,
+                    'topic_hash' => $topicHash,
+                ]);
+
+                $this->video->update([
+                    'status' => 'completed',
+                    'final_video_url' => $cachedVideo->final_video_url,
+                    'final_video_path' => $cachedVideo->final_video_path,
+                    'storyboard' => $cachedVideo->storyboard,
+                    'total_scenes' => $cachedVideo->total_scenes,
+                    'processed_scenes' => $cachedVideo->total_scenes,
+                    'duration_seconds' => $cachedVideo->duration_seconds,
+                    'cached_from_id' => $cachedVideo->id,
+                    'completed_at' => now(),
+                    'metadata' => array_merge($this->video->metadata ?? [], [
+                        'cached' => true,
+                        'cached_from_video_id' => $cachedVideo->id,
+                        'thumbnail_path' => $cachedVideo->metadata['thumbnail_path'] ?? null,
+                        'pipeline' => $cachedVideo->metadata['pipeline'] ?? 'cached',
+                        'cloud_uploaded' => $cachedVideo->metadata['cloud_uploaded'] ?? false,
+                    ]),
+                ]);
+
+                return;
+            }
+
+            Log::info('Cache MISS - generating new whiteboard video', [
+                'video_id' => $this->video->id,
+                'topic_hash' => $topicHash,
             ]);
 
             // Check which pipeline to use: manim (Python) or php (legacy)
@@ -95,6 +141,13 @@ class ProcessWhiteboardVideo implements ShouldQueue
             return;
         }
 
+        // Get max scenes from user's plan config
+        $usageService = app(\App\Services\UsageLimitService::class);
+        $planConfig = $usageService->getPlanConfig($this->video->user);
+        $maxVideoSeconds = $planConfig['max_video_length_seconds'] ?? 30;
+        // Each scene is ~10 seconds, calculate max scenes (minimum 3)
+        $maxScenes = max(3, (int) floor($maxVideoSeconds / 10));
+
         // Start generation on Python server
         $this->video->updateStatus('generating_storyboard');
         $metadata = $this->video->metadata ?? [];
@@ -104,6 +157,7 @@ class ProcessWhiteboardVideo implements ShouldQueue
             laravelJobId: $this->video->job_id,
             language: $metadata['language'] ?? 'en',
             voice: $metadata['voice'] ?? null,
+            maxScenes: $maxScenes,
         );
 
         Log::info('Manim server accepted job', [
@@ -111,150 +165,11 @@ class ProcessWhiteboardVideo implements ShouldQueue
             'manim_job_id' => $result['job_id'] ?? null,
         ]);
 
-        // Poll for completion (max 20 minutes)
-        $maxWait = 1200; // seconds
-        $elapsed = 0;
-        $pollInterval = 5; // seconds
-        $unknownCount = 0;
-        $maxUnknown = 6; // After 30s of consecutive unknowns (6 * 5s), assume job is lost
-
-        while ($elapsed < $maxWait) {
-            sleep($pollInterval);
-            $elapsed += $pollInterval;
-
-            $status = $manimService->getStatus($this->video->job_id);
-
-            // Track consecutive unknown/404 responses
-            if (($status['status'] ?? '') === 'unknown') {
-                $unknownCount++;
-                Log::debug('Status check returned unknown', [
-                    'video_id' => $this->video->id,
-                    'elapsed' => $elapsed,
-                    'unknown_count' => $unknownCount,
-                ]);
-
-                // If too many consecutive unknowns, the job was lost (server restarted)
-                if ($unknownCount >= $maxUnknown) {
-                    throw new Exception('Manim server lost track of job after ' . ($unknownCount * $pollInterval) . 's of unknown status. Server may have restarted.');
-                }
-                continue;
-            }
-
-            // Reset unknown counter on any valid response
-            $unknownCount = 0;
-
-            // Map Python server statuses to valid Laravel DB statuses
-            $statusMap = [
-                'pending' => 'pending',
-                'generating_storyboard' => 'generating_storyboard',
-                'generating_audio' => 'generating_assets',
-                'generating_assets' => 'generating_assets',
-                'stitching_video' => 'stitching_video',
-                'completed' => 'completed',
-                'failed' => 'failed',
-            ];
-            $mappedStatus = $statusMap[$status['status'] ?? 'processing'] ?? 'processing';
-
-            // Update local progress
-            $this->video->update([
-                'status' => $mappedStatus,
-                'total_scenes' => $status['total_scenes'] ?? $this->video->total_scenes,
-                'processed_scenes' => $status['processed_scenes'] ?? $this->video->processed_scenes,
-            ]);
-
-            if (($status['status'] ?? '') === 'completed') {
-                // Download the final video from Python server to local temp
-                $storagePath = "videos/{$this->video->job_id}/final_video.mp4";
-                $fullPath = storage_path("app/{$storagePath}");
-
-                $dir = dirname($fullPath);
-                if (!is_dir($dir)) {
-                    mkdir($dir, 0755, true);
-                }
-
-                $downloaded = $manimService->downloadVideo($this->video->job_id, $fullPath);
-                if (!$downloaded) {
-                    throw new Exception('Failed to download video from Manim server');
-                }
-
-                // Download thumbnail
-                $thumbPath = storage_path("app/videos/{$this->video->job_id}/thumbnail.jpg");
-                $manimService->downloadThumbnail($this->video->job_id, $thumbPath);
-
-                // Upload to cloud storage if active
-                $videoUrl = Storage::url($storagePath);
-                $thumbnailCloudPath = "videos/{$this->video->job_id}/thumbnail.jpg";
-                $cloudUploaded = false;
-
-                $fileStorageService = app(FileStorageService::class);
-                if ($fileStorageService->isActive()) {
-                    try {
-                        $videoUpload = $fileStorageService->uploadFromPath(
-                            $fullPath,
-                            "whiteboard-videos/{$this->video->job_id}/final_video.mp4",
-                            'video/mp4'
-                        );
-                        if ($videoUpload) {
-                            $videoUrl = $videoUpload['file_url'];
-                            $cloudUploaded = true;
-                            Log::info('Video uploaded to cloud storage', ['url' => $videoUrl]);
-                        }
-
-                        // Upload thumbnail to cloud
-                        if (file_exists($thumbPath)) {
-                            $thumbUpload = $fileStorageService->uploadFromPath(
-                                $thumbPath,
-                                "whiteboard-videos/{$this->video->job_id}/thumbnail.jpg",
-                                'image/jpeg'
-                            );
-                            if ($thumbUpload) {
-                                $thumbnailCloudPath = $thumbUpload['file_url'];
-                            }
-                        }
-                    } catch (Exception $e) {
-                        Log::warning('Cloud upload failed for video, using local: ' . $e->getMessage());
-                    }
-                }
-
-                $this->video->markAsCompleted($storagePath, $videoUrl);
-
-                $totalDuration = (int) ($status['duration_seconds'] ?? 0);
-                $existingMeta = $this->video->metadata ?? [];
-                $this->video->update([
-                    'duration_seconds' => $totalDuration,
-                    'metadata' => array_merge($existingMeta, [
-                        'thumbnail_path' => $thumbnailCloudPath,
-                        'pipeline' => 'manim',
-                        'cloud_uploaded' => $cloudUploaded,
-                    ]),
-                ]);
-
-                $this->deductCreditsForVideo($totalDuration);
-
-                // Cleanup on Python server
-                $manimService->deleteJob($this->video->job_id);
-
-                // Clean up local files if uploaded to cloud
-                if ($cloudUploaded) {
-                    @unlink($fullPath);
-                    @unlink($thumbPath);
-                    @rmdir(dirname($fullPath));
-                }
-
-                Log::info('Manim video completed', [
-                    'video_id' => $this->video->id,
-                    'duration' => $totalDuration,
-                    'cloud_uploaded' => $cloudUploaded,
-                ]);
-                return;
-            }
-
-            if (($status['status'] ?? '') === 'failed') {
-                throw new Exception('Manim server: ' . ($status['error_message'] ?? 'Unknown error'));
-            }
-        }
-
-        throw new Exception('Manim video generation timed out after 20 minutes');
+        // Dispatch a delayed check job instead of blocking the queue worker with polling.
+        // The Manim server will call back via /api/whiteboard-video/callback when done.
+        // As a safety net, re-dispatch this job after 30s to check status once.
+        CheckManimVideoStatus::dispatch($this->video, $manimService)
+            ->delay(now()->addSeconds(30));
     }
 
     /**
@@ -331,9 +246,6 @@ class ProcessWhiteboardVideo implements ShouldQueue
                 'cloud_uploaded' => $cloudUploaded,
             ],
         ]);
-
-        // Deduct credits
-        $this->deductCreditsForVideo($totalDuration);
 
         // Clean up
         $this->cleanup();

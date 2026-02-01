@@ -17,6 +17,26 @@ use Illuminate\Support\Facades\Log;
 class UsageLimitService
 {
     /**
+     * Alias map: maps legacy/alternative feature keys to canonical keys
+     */
+    private const FEATURE_ALIASES = [
+        'quizzes_per_day'             => 'video_quiz',
+        'whiteboard_videos_per_day'   => 'whiteboard_video',
+        'whiteboard_videos_per_month' => 'whiteboard_video',
+        'topic_quiz_per_day'          => 'topic_quiz',
+        'topic_quiz_per_month'        => 'topic_quiz',
+        'video_quiz_per_day'          => 'video_quiz',
+        'quiz_per_day'                => 'video_quiz',
+        'quiz_per_month'              => 'video_quiz',
+        'exam_prep_per_day'           => 'exam_prep',
+        'exam_prep_per_month'         => 'exam_prep',
+        'scan_solve_per_day'          => 'scan_solve',
+        'scan_solve_per_month'        => 'scan_solve',
+        'pdf_uploads_per_day'         => 'pdf_upload',
+        'pdf_uploads_per_month'       => 'pdf_upload',
+    ];
+
+    /**
      * Feature type → DB column mapping
      */
     private const COLUMN_MAP = [
@@ -55,9 +75,22 @@ class UsageLimitService
      */
     public function canUse(User $user, string $feature): array
     {
+        // Resolve aliases to canonical feature names
+        $feature = self::FEATURE_ALIASES[$feature] ?? $feature;
+
         // Admins bypass all limits
         if ($user->role === 'admin') {
             return $this->allowed('Admin bypass');
+        }
+
+        // Check if paid plan has expired
+        if ($user->plan_id && $user->plan_expires_at && now()->gt($user->plan_expires_at)) {
+            // Downgrade to free plan
+            $user->update([
+                'plan_id' => null,
+                'plan_expires_at' => null,
+            ]);
+            $user->refresh();
         }
 
         // Get user's plan
@@ -73,11 +106,23 @@ class UsageLimitService
         // Get the limit key for this feature
         $limitKey = self::LIMIT_KEY_MAP[$feature] ?? null;
         if (!$limitKey) {
-            return $this->allowed('Unknown feature, allowed by default');
+            Log::warning('Unknown feature key passed to canUse', ['feature' => $feature]);
+            return $this->blocked('Unknown feature. Access denied.', 0, 0);
         }
 
-        // Check if the limit exists in the plan
+        // Check if the limit exists in the plan (try primary key, then all aliases)
         $limit = $dailyLimits[$limitKey] ?? null;
+
+        // If not found by primary key, search all alias keys for this feature
+        if ($limit === null) {
+            foreach (self::FEATURE_ALIASES as $aliasKey => $canonicalFeature) {
+                if ($canonicalFeature === $feature && isset($dailyLimits[$aliasKey])) {
+                    $limitKey = $aliasKey;
+                    $limit = $dailyLimits[$aliasKey];
+                    break;
+                }
+            }
+        }
 
         // Special case: Free plan whiteboard uses monthly limit
         if ($feature === 'whiteboard_video' && $plan->slug === 'free') {
@@ -86,7 +131,8 @@ class UsageLimitService
         }
 
         if ($limit === null) {
-            return $this->allowed('No limit configured');
+            // No limit configured = feature not available on this plan
+            return $this->blocked('This feature is not available on your plan. Please upgrade.', 0, 0);
         }
 
         $limit = (int) $limit;
@@ -128,6 +174,7 @@ class UsageLimitService
      */
     public function recordUsage(User $user, string $feature): void
     {
+        $feature = self::FEATURE_ALIASES[$feature] ?? $feature;
         $column = self::COLUMN_MAP[$feature] ?? null;
         if (!$column) {
             return;
@@ -217,6 +264,18 @@ class UsageLimitService
             }
 
             $limit = $dailyLimits[$actualLimitKey] ?? null;
+
+            // If not found by primary key, search all aliases for this feature
+            if ($limit === null) {
+                foreach (self::FEATURE_ALIASES as $aliasKey => $canonicalFeature) {
+                    if ($canonicalFeature === $feature && isset($dailyLimits[$aliasKey])) {
+                        $actualLimitKey = $aliasKey;
+                        $limit = $dailyLimits[$aliasKey];
+                        break;
+                    }
+                }
+            }
+
             $isMonthly = $this->isMonthlyFeature($feature, $plan);
             $used = $record ? (int) ($record->$column ?? 0) : 0;
 
@@ -278,10 +337,39 @@ class UsageLimitService
     {
         if (!$user->plan_id) {
             // Default to free plan
-            return DB::table('user_plans')
+            $freePlan = DB::table('user_plans')
                 ->where('slug', 'free')
                 ->where('is_active', true)
                 ->first();
+
+            // Safety: if free plan doesn't exist, create a minimal one
+            if (!$freePlan) {
+                Log::warning('Free plan not found in database - creating default free plan');
+                $id = DB::table('user_plans')->insertGetId([
+                    'name' => 'Free',
+                    'slug' => 'free',
+                    'description' => 'Free plan with basic features',
+                    'price' => 0,
+                    'billing_period' => 'monthly',
+                    'validity_days' => 0,
+                    'is_active' => true,
+                    'order' => 0,
+                    'features' => json_encode([
+                        'daily_limits' => [
+                            'quizzes_per_day' => 3,
+                            'whiteboard_videos_per_month' => 2,
+                            'exam_prep_per_day' => 2,
+                        ],
+                        'ads' => true,
+                        'watermark' => true,
+                    ]),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+                $freePlan = DB::table('user_plans')->find($id);
+            }
+
+            return $freePlan;
         }
 
         return DB::table('user_plans')

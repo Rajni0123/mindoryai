@@ -1794,21 +1794,22 @@
                         </div>
                     </div>
 
-                    <!-- Plan Section -->
+                    <!-- Plan & Usage Section -->
                     <div>
                         <h3 class="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-3">Plan</h3>
                         <div class="space-y-3">
                             @php
-                                $userPlan = auth()->user()->activeSubscription ? auth()->user()->activeSubscription->plan : null;
+                                $userPlan = auth()->user()->plan;
                                 $planName = $userPlan ? $userPlan->name : 'Free';
-                                $planCredits = $userPlan ? $userPlan->credits_per_month : '100';
-                                $isFree = !$userPlan || $userPlan->price_monthly == 0;
+                                $isFree = !$userPlan || $userPlan->price == 0;
+                                $usageService = app(\App\Services\UsageLimitService::class);
+                                $usageSummary = $usageService->getUsageSummary(auth()->user());
                             @endphp
 
                             <div class="flex items-center justify-between p-4 bg-[var(--bg-secondary)] rounded-lg">
                                 <div>
                                     <div class="font-medium">{{ $planName }} Plan</div>
-                                    <div class="text-sm text-[var(--text-secondary)]">{{ $planCredits }} credits/month</div>
+                                    <div class="text-sm text-[var(--text-secondary)]">{{ $userPlan ? $userPlan->billing_description : 'Free forever' }}</div>
                                 </div>
                                 @if($isFree)
                                 <a href="{{ route('plans') }}" class="px-4 py-2 bg-[var(--accent-color)] hover:opacity-90 text-white text-sm font-medium rounded-lg transition-colors">
@@ -1827,7 +1828,7 @@
                                     </svg>
                                     <div>
                                         <div class="font-medium text-sm">Upgrade your plan</div>
-                                        <div class="text-xs text-[var(--text-secondary)] mt-1">Get more credits, priority support, and exclusive features.</div>
+                                        <div class="text-xs text-[var(--text-secondary)] mt-1">Get more quizzes, videos, and priority support.</div>
                                     </div>
                                 </div>
                             </div>
@@ -1835,30 +1836,51 @@
                         </div>
                     </div>
 
-                    <!-- Credits Usage -->
+                    <!-- Today's Usage -->
                     <div>
-                        <h3 class="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-3">Credits</h3>
-                        <div class="space-y-3">
+                        <h3 class="text-sm font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-3">Today's Usage</h3>
+                        <div class="space-y-2">
                             @php
-                                $userCredits = auth()->user()->credits;
-                                $availableCredits = $userCredits ? $userCredits->available_credits : 0;
-                                $totalEarned = $userCredits ? $userCredits->total_earned : 0;
-                                $totalSpent = $userCredits ? $userCredits->total_spent : 0;
+                                $usageItems = [
+                                    'topic_quiz' => ['label' => 'Topic Quiz', 'icon' => 'quiz'],
+                                    'video_quiz' => ['label' => 'Video Quiz', 'icon' => 'play_circle'],
+                                    'whiteboard_video' => ['label' => 'Whiteboard Video', 'icon' => 'video_library'],
+                                    'exam_prep' => ['label' => 'Exam Prep', 'icon' => 'school'],
+                                    'scan_solve' => ['label' => 'Scan & Solve', 'icon' => 'document_scanner'],
+                                ];
                             @endphp
-
-                            <div class="p-4 bg-[var(--bg-secondary)] rounded-lg">
-                                <div class="flex items-center justify-between mb-3">
-                                    <span class="text-sm">Available Credits</span>
-                                    <span class="text-lg font-semibold">{{ number_format($availableCredits) }}</span>
-                                </div>
-                                <div class="w-full bg-[var(--bg-hover)] rounded-full h-2 overflow-hidden">
-                                    <div class="bg-[var(--accent-color)] h-full transition-all" style="width: {{ $totalEarned > 0 ? min(100, ($availableCredits / $totalEarned) * 100) : 0 }}%"></div>
-                                </div>
-                                <div class="flex justify-between text-xs text-[var(--text-secondary)] mt-2">
-                                    <span>Earned: {{ number_format($totalEarned) }}</span>
-                                    <span>Spent: {{ number_format($totalSpent) }}</span>
-                                </div>
-                            </div>
+                            @foreach($usageItems as $key => $item)
+                                @if(isset($usageSummary[$key]))
+                                    @php
+                                        $usage = $usageSummary[$key];
+                                        $isUnlimited = $usage['limit'] === 'Unlimited';
+                                        $used = $usage['used'];
+                                        $limit = $isUnlimited ? null : (int) $usage['limit'];
+                                        $pct = (!$isUnlimited && $limit > 0) ? min(100, ($used / $limit) * 100) : 0;
+                                        $remaining = $isUnlimited ? 'Unlimited' : $usage['remaining'];
+                                    @endphp
+                                    <div class="p-3 bg-[var(--bg-secondary)] rounded-lg">
+                                        <div class="flex items-center justify-between mb-1.5">
+                                            <div class="flex items-center gap-2">
+                                                <span class="material-icons text-sm text-[var(--accent-color)]">{{ $item['icon'] }}</span>
+                                                <span class="text-sm">{{ $item['label'] }}</span>
+                                            </div>
+                                            <span class="text-xs font-medium {{ !$isUnlimited && $remaining == 0 ? 'text-red-400' : 'text-[var(--text-secondary)]' }}">
+                                                @if($isUnlimited)
+                                                    {{ $used }} used
+                                                @else
+                                                    {{ $used }}/{{ $limit }}
+                                                @endif
+                                            </span>
+                                        </div>
+                                        @if(!$isUnlimited && $limit > 0)
+                                        <div class="w-full bg-[var(--bg-hover)] rounded-full h-1.5 overflow-hidden">
+                                            <div class="h-full rounded-full transition-all {{ $pct >= 100 ? 'bg-red-400' : ($pct >= 75 ? 'bg-yellow-400' : 'bg-[var(--accent-color)]') }}" style="width: {{ $pct }}%"></div>
+                                        </div>
+                                        @endif
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
 
@@ -1921,85 +1943,7 @@
             <!-- Messages Area -->
             <div id="chatMessages" class="flex-1 overflow-y-auto scrollbar-thin">
                 <div id="messagesContainer" class="max-w-3xl mx-auto px-4 py-6">
-                    <!-- Welcome Section (shown when no messages) -->
-                    <div id="welcomeSection" class="welcome-container">
-                        <div class="welcome-icon">
-                            <span class="text-5xl">🎓</span>
-                        </div>
-                        <h2 class="text-2xl font-semibold mb-3">What will you learn today?</h2>
-                        <div class="welcome-subtitle-dots">
-                            <div class="welcome-dot"></div>
-                            <div class="welcome-dot"></div>
-                            <div class="welcome-dot"></div>
-                            <div class="welcome-dot"></div>
-                        </div>
-                        <p class="text-[var(--text-secondary)] mb-6 text-sm">Choose a topic below to get started with your learning journey</p>
-                        <div class="suggestions-grid">
-                            <!-- Quiz Card -->
-                            <div class="suggestion-card" onclick="openQuizModal()"
-                                 style="--card-color: #0D9488; --card-color-light: rgba(13, 148, 136, 0.15); --icon-bg: rgba(13, 148, 136, 0.1);">
-                                <div class="card-top">
-                                    <div class="icon-wrapper">
-                                        <span class="material-icons">quiz</span>
-                                    </div>
-                                    <div class="number-badge">01</div>
-                                </div>
-                                <div class="title">Quiz</div>
-                                <div class="card-footer">
-                                    <div class="card-line"></div>
-                                    <span class="material-icons">arrow_forward</span>
-                                </div>
-                            </div>
-
-                            <!-- Reasoning Card -->
-                            <div class="suggestion-card" onclick="sendSuggestion('Solve logical puzzles')"
-                                 style="--card-color: #F59E0B; --card-color-light: rgba(245, 158, 11, 0.15); --icon-bg: rgba(245, 158, 11, 0.1);">
-                                <div class="card-top">
-                                    <div class="icon-wrapper">
-                                        <span class="material-icons">psychology</span>
-                                    </div>
-                                    <div class="number-badge">02</div>
-                                </div>
-                                <div class="title">Reasoning</div>
-                                <div class="card-footer">
-                                    <div class="card-line"></div>
-                                    <span class="material-icons">arrow_forward</span>
-                                </div>
-                            </div>
-
-                            <!-- Mathematics Card -->
-                            <div class="suggestion-card" onclick="sendSuggestion('Solve quadratic equations')"
-                                 style="--card-color: #10B981; --card-color-light: rgba(16, 185, 129, 0.15); --icon-bg: rgba(16, 185, 129, 0.1);">
-                                <div class="card-top">
-                                    <div class="icon-wrapper">
-                                        <span class="material-icons">calculate</span>
-                                    </div>
-                                    <div class="number-badge">03</div>
-                                </div>
-                                <div class="title">Mathematics</div>
-                                <div class="card-footer">
-                                    <div class="card-line"></div>
-                                    <span class="material-icons">arrow_forward</span>
-                                </div>
-                            </div>
-
-                            <!-- Whiteboard Video Card -->
-                            <div class="suggestion-card" onclick="openWhiteboardModal()"
-                                 style="--card-color: #3B82F6; --card-color-light: rgba(59, 130, 246, 0.15); --icon-bg: rgba(59, 130, 246, 0.1);">
-                                <div class="card-top">
-                                    <div class="icon-wrapper">
-                                        <span class="material-icons">video_library</span>
-                                    </div>
-                                    <div class="number-badge">04</div>
-                                </div>
-                                <div class="title">Whiteboard Video</div>
-                                <div class="card-footer">
-                                    <div class="card-line"></div>
-                                    <span class="material-icons">arrow_forward</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Welcome Section removed -->
 
                     <!-- Messages will be loaded here -->
                 </div>

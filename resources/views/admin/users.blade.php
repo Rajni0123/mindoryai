@@ -190,15 +190,7 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="text-[10px]">
-                                            @if($user->userCredits)
-                                                @if($user->userCredits->unlimited_mode)
-                                                    <span class="text-yellow-400 font-medium">Unlimited</span>
-                                                @else
-                                                    <span class="text-gray-300">{{ $user->userCredits->available_credits ?? 0 }} credits</span>
-                                                @endif
-                                            @else
-                                                <span class="text-gray-500">No credits</span>
-                                            @endif
+                                            <span class="text-gray-300">{{ $user->plan->name ?? 'Free' }}</span>
                                         </div>
                                     </td>
                                     <td class="px-4 py-3">
@@ -222,7 +214,7 @@
                                                 onchange="changePlan({{ $user->id }}, this.value)"
                                                 data-original="{{ $user->plan_id ?? '' }}">
                                             <option value="" {{ !$user->plan_id ? 'selected' : '' }}>Free</option>
-                                            @foreach($plans as $plan)
+                                            @foreach($plans->where('slug', '!=', 'free') as $plan)
                                             <option value="{{ $plan->id }}" {{ $user->plan_id == $plan->id ? 'selected' : '' }}>
                                                 {{ $plan->name }}
                                             </option>

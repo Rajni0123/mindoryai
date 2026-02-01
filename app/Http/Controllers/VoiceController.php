@@ -93,7 +93,7 @@ class VoiceController extends Controller
             Log::info('File content loaded', ['size' => strlen($fileContent)]);
 
             // Get OpenAI API key
-            $apiKey = env('OPENAI_API_KEY');
+            $apiKey = config('services.openai.api_key');
             if (!$apiKey) {
                 Log::error('OpenAI API key not configured');
                 return response()->json([
@@ -177,7 +177,7 @@ class VoiceController extends Controller
 
         try {
             $text = $validated['text'];
-            $apiKey = env('OPENAI_API_KEY');
+            $apiKey = config('services.openai.api_key');
 
             if (!$apiKey) {
                 return response()->json([

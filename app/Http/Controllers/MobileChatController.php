@@ -5,20 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
-use App\Services\CreditService;
 use App\Services\UnifiedAIService;
 use App\Services\FileStorageService;
 use App\Models\FrontendConfig;
 
 class MobileChatController extends Controller
 {
-    private $creditService;
     private $aiService;
     private $fileStorageService;
 
-    public function __construct(CreditService $creditService, UnifiedAIService $aiService, FileStorageService $fileStorageService)
+    public function __construct(UnifiedAIService $aiService, FileStorageService $fileStorageService)
     {
-        $this->creditService = $creditService;
         $this->aiService = $aiService;
         $this->fileStorageService = $fileStorageService;
     }
@@ -371,54 +368,7 @@ class MobileChatController extends Controller
         }
 
         // =============================================
-        // STEP 2: CREDIT CHECK
-        // =============================================
-        // Wrap in try-catch to handle database errors gracefully
-        try {
-            // Initialize user credits if first time
-            $this->creditService->initializeUserCredits($user);
-
-            // Determine action cost (1 credit normal, 2 with image)
-            $action = $hasImage ? 'chat_message_with_image' : 'chat_message';
-
-            // Check if user can perform this action
-            $creditCheck = $this->creditService->canPerformAction($user, $action);
-
-            if (!$creditCheck['has_credits']) {
-                // Return error in array format for consistency
-                $errorMessage = [
-                    'id' => time(),
-                    'chat_id' => $chatId,
-                    'sender' => 'system',
-                    'content' => "⚠️ {$creditCheck['reason']}. You have {$creditCheck['balance']} credits, but need {$creditCheck['cost']}. Please upgrade your plan to continue.",
-                    'error' => 'insufficient_credits',
-                    'credits' => [
-                        'balance' => $creditCheck['balance'],
-                        'required' => $creditCheck['cost'],
-                    ],
-                    'created_at' => now()->toISOString(),
-                ];
-
-                // Return 200 so mobile app doesn't throw error, but include error in message
-                return response()->json([$errorMessage], 200);
-            }
-
-            $shouldDeductCredits = true;
-        } catch (\Exception $e) {
-            // If credit system fails (database error, etc), log it and continue
-            \Log::error('Credit system error - allowing message without credit check', [
-                'user_id' => $user->id,
-                'error' => $e->getMessage(),
-            ]);
-
-            // Skip credit deduction if system is unavailable
-            $shouldDeductCredits = false;
-            $action = 'chat_message'; // Set default action
-            $creditCheck = ['cost' => 0]; // Set cost to 0
-        }
-
-        // =============================================
-        // STEP 3: INCREMENT RATE LIMITER
+        // STEP 2: INCREMENT RATE LIMITER
         // =============================================
         RateLimiter::hit($rateLimitKey, $decayMinutes * 60);
 
@@ -540,33 +490,7 @@ class MobileChatController extends Controller
         }
 
         // =============================================
-        // STEP 6: DEDUCT CREDITS ON SUCCESS (if credit system is working)
-        // =============================================
-        if ($shouldDeductCredits) {
-            try {
-                $deductionResult = $this->creditService->deductCredits(
-                    $user,
-                    $action,
-                    null, // Use default cost
-                    "Chat message in chat #{$chatId}",
-                    null, // No reference type for now (can add Chat model later)
-                    $chatId
-                );
-            } catch (\Exception $e) {
-                // If deduction fails, log but continue
-                \Log::error('Credit deduction failed', [
-                    'user_id' => $user->id,
-                    'error' => $e->getMessage(),
-                ]);
-                $deductionResult = ['success' => false, 'new_balance' => 0];
-            }
-        } else {
-            // Credit system unavailable - set dummy result
-            $deductionResult = ['success' => false, 'new_balance' => 0];
-        }
-
-        // =============================================
-        // STEP 7: CREATE AI MESSAGE
+        // STEP 6: CREATE AI MESSAGE
         // =============================================
 
         // Save AI message to database
@@ -574,11 +498,6 @@ class MobileChatController extends Controller
             'mobile_chat_id' => $chatId,
             'sender' => 'assistant',
             'content' => $aiResponse,
-            'metadata' => [
-                'credits_deducted' => $deductionResult['success'],
-                'cost' => $creditCheck['cost'],
-                'new_balance' => $deductionResult['new_balance'],
-            ],
         ]);
 
         $aiMessage = [
@@ -587,12 +506,6 @@ class MobileChatController extends Controller
             'sender' => 'assistant',
             'content' => $aiResponse,
             'created_at' => $aiMessageRecord->created_at->toIso8601String(),
-            // Add credit info to AI message (optional, can be used by UI)
-            'credits' => [
-                'deducted' => $deductionResult['success'],
-                'cost' => $creditCheck['cost'],
-                'new_balance' => $deductionResult['new_balance'],
-            ],
         ];
 
         // Update chat's last_message_at

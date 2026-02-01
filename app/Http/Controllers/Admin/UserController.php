@@ -106,7 +106,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $plans = \App\Models\UserPlan::all();
+        $plans = \App\Models\UserPlan::where('is_active', true)->orderBy('order')->get();
         return view('admin.users.create', compact('plans'));
     }
 
@@ -176,7 +176,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $plans = \App\Models\UserPlan::all();
+        $plans = \App\Models\UserPlan::where('is_active', true)->orderBy('order')->get();
         return view('admin.users.edit', compact('user', 'plans'));
     }
 

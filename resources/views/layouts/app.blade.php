@@ -109,7 +109,7 @@
     @stack('scripts')
 
     <!-- Profile Completion Popup (first-time login) -->
-    @if(session('show_profile_popup') && auth()->check())
+    @if(session('show_profile_popup') && auth()->check() && !auth()->user()->profile_completed)
     <div id="profile-popup-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-end justify-center transition-opacity duration-300" style="opacity:0">
         <div id="profile-popup" class="w-full max-w-md bg-white dark:bg-[#1a1f2e] rounded-t-2xl shadow-2xl transform translate-y-full transition-transform duration-500 ease-out">
             <!-- Handle bar -->

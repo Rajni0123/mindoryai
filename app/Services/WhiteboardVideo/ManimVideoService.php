@@ -60,7 +60,7 @@ class ManimVideoService
     /**
      * Start video generation on the Python server
      */
-    public function generateVideo(string $topic, string $title, string $laravelJobId, string $language = 'en', ?string $voice = null): array
+    public function generateVideo(string $topic, string $title, string $laravelJobId, string $language = 'en', ?string $voice = null, int $maxScenes = 5): array
     {
         // Get video mode from settings: "simple" or "professional"
         $mode = \App\Models\Setting::get('whiteboard_video_mode', 'professional');
@@ -102,6 +102,7 @@ class ManimVideoService
                 'image_generation_enabled' => $imageEnabled,
                 'image_provider' => $imageProvider,
                 'image_api_key' => $imageApiKey ?: null,
+                'max_scenes' => $maxScenes,
             ]);
 
         if (!$response->successful()) {

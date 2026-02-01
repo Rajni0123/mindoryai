@@ -185,37 +185,60 @@ class StorageSettingsController extends Controller
     }
 
     /**
-     * Test storage connection
+     * Test storage connection with actual upload test
      */
     public function testConnection(StorageSetting $storageSetting)
     {
         try {
             // Temporarily activate this storage for testing
             $wasActive = $storageSetting->isActive();
+            $currentActive = null;
 
             if (!$wasActive) {
-                // Save current active storage
                 $currentActive = StorageSetting::getActive();
+                $storageSetting->activate();
             }
-
-            // Activate this storage temporarily
-            $storageSetting->activate();
 
             // Create a test file service
             $testService = new FileStorageService();
 
             if (!$testService->isActive()) {
-                throw new \Exception('Storage service failed to initialize');
+                // Restore previous active storage
+                if (!$wasActive && $currentActive) {
+                    $currentActive->activate();
+                }
+                throw new \Exception('Storage service failed to initialize. Check credentials and endpoint.');
             }
 
-            // Clean up
-            if (!$wasActive && isset($currentActive)) {
+            // Actually test upload + delete
+            $testKey = '_connection_test_' . time() . '.txt';
+            $testBody = 'Mindory connection test ' . now()->toIso8601String();
+
+            // Use reflection to access the r2Put method for a real upload test
+            $reflection = new \ReflectionMethod($testService, 'r2Put');
+            $reflection->setAccessible(true);
+            $uploadOk = $reflection->invoke($testService, $testKey, $testBody, 'text/plain');
+
+            if (!$uploadOk) {
+                if (!$wasActive && $currentActive) {
+                    $currentActive->activate();
+                }
+                throw new \Exception('Upload test failed. Check credentials and bucket permissions.');
+            }
+
+            // Clean up test file
+            $deleteReflection = new \ReflectionMethod($testService, 'r2Delete');
+            $deleteReflection->setAccessible(true);
+            $deleteReflection->invoke($testService, $testKey);
+
+            // Restore previous active storage
+            if (!$wasActive && $currentActive) {
                 $currentActive->activate();
             }
 
             return response()->json([
                 'success' => true,
-                'message' => 'Connection successful! Storage is ready to use.'
+                'message' => 'Connection successful! Upload and delete verified.'
             ]);
 
         } catch (\Exception $e) {

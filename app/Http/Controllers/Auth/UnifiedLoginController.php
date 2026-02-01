@@ -297,27 +297,6 @@ class UnifiedLoginController extends Controller
         // Update login information
         $user->updateLastLogin($request);
 
-        // Initialize credits for ALL users (not just admins)
-        $creditService = app(\App\Services\CreditService::class);
-        $creditService->initializeUserCredits($user);
-
-        // Auto-grant unlimited credits to admins
-        if ($user->isAdmin()) {
-            // Enable unlimited mode for admins
-            DB::table('user_credits')
-                ->where('user_id', $user->id)
-                ->update([
-                    'unlimited_mode' => true,
-                    'unlimited_until' => null, // Never expires
-                    'updated_at' => now(),
-                ]);
-
-            Log::info('Admin granted unlimited credits', [
-                'user_id' => $user->id,
-                'email' => $user->email,
-            ]);
-        }
-
         // Check if this is an API request (mobile app)
         // IMPORTANT: Only check route, not expectsJson() because web login also sends JSON
         $isApiRequest = $request->is('api/*');
@@ -335,9 +314,6 @@ class UnifiedLoginController extends Controller
             // Check if user needs to complete profile
             $needsProfileCompletion = !$user->hasCompletedProfile();
 
-            // Get available credits using CreditService
-            $availableCredits = $creditService->getBalance($user);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful!',
@@ -352,7 +328,6 @@ class UnifiedLoginController extends Controller
                     'token_limit' => $user->token_limit,
                     'tokens_used' => $user->tokens_used,
                     'profile_completed' => $user->profile_completed,
-                    'credits' => $availableCredits,
                 ],
                 'needs_profile_completion' => $needsProfileCompletion,
                 'redirect' => $user->role === 'admin' ? 'admin' : 'chat',
@@ -428,7 +403,7 @@ class UnifiedLoginController extends Controller
     {
         if ($user->role === 'admin') {
             // Admin redirect to admin subdomain
-            $adminUrl = env('ADMIN_SUBDOMAIN_URL');
+            $adminUrl = config('services.subdomains.admin_url');
             if ($adminUrl) {
                 return rtrim($adminUrl, '/') . '/admin/dashboard';
             }
@@ -439,7 +414,7 @@ class UnifiedLoginController extends Controller
         // Profile completion is now handled via popup on the chat page
 
         // Redirect to chat subdomain after successful login
-        $chatUrl = env('CHAT_SUBDOMAIN_URL');
+        $chatUrl = config('services.subdomains.chat_url');
         if ($chatUrl) {
             return $chatUrl;
         }
@@ -967,10 +942,6 @@ class UnifiedLoginController extends Controller
                     'email_verified_at' => now(),
                 ]);
 
-                // Initialize credits
-                $creditService = app(\App\Services\CreditService::class);
-                $creditService->initializeUserCredits($user);
-
                 // Handle referral code for new Google users
                 if ($request->has('referral_code')) {
                     $referralCode = $request->input('referral_code');
@@ -1029,7 +1000,6 @@ class UnifiedLoginController extends Controller
                     'plan_id' => $user->plan_id,
                     'is_active' => $user->is_active,
                     'profile_completed' => $user->profile_completed,
-                    'credits' => $user->credits,
                 ],
                 'token' => $token,
                 'needs_profile_completion' => $needsProfileCompletion,

@@ -5,13 +5,15 @@ namespace App\Services;
 use App\Models\StorageSetting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Aws\S3\S3Client;
-use Aws\Exception\AwsException;
+use Illuminate\Support\Facades\Http;
 
 class FileStorageService
 {
-    protected ?S3Client $s3Client = null;
     protected ?StorageSetting $activeStorage = null;
+    protected bool $r2Ready = false;
+
+    // Cloudflare account ID (extracted from R2 endpoint URL)
+    protected ?string $cfAccountId = null;
 
     public function __construct()
     {
@@ -26,92 +28,103 @@ class FileStorageService
         $this->activeStorage = StorageSetting::getActive();
 
         if ($this->activeStorage && $this->activeStorage->isActive()) {
-            $this->initializeS3Client();
+            $this->initializeR2();
         }
     }
 
     /**
-     * Initialize S3 Client for R2/S3 compatible storage
+     * Initialize R2 connection using Cloudflare REST API
      */
-    protected function initializeS3Client(): void
+    protected function initializeR2(): void
     {
         if (!$this->activeStorage) {
-            \Log::warning('initializeS3Client: No active storage configured');
             return;
         }
 
-        // Check if credentials are properly configured
+        // Need key (CF email) and secret (CF Global API Key) for REST API auth
         if (empty($this->activeStorage->key) || empty($this->activeStorage->secret)) {
-            \Log::warning('initializeS3Client: S3 credentials not configured', [
+            \Log::warning('FileStorage: Credentials not configured', [
                 'storage_id' => $this->activeStorage->id,
-                'has_key' => !empty($this->activeStorage->key),
-                'has_secret' => !empty($this->activeStorage->secret),
             ]);
-            $this->s3Client = null;
             return;
         }
 
-        // Check if endpoint and bucket are configured
         if (empty($this->activeStorage->endpoint) || empty($this->activeStorage->bucket)) {
-            \Log::warning('initializeS3Client: S3 endpoint or bucket not configured', [
-                'storage_id' => $this->activeStorage->id,
-                'has_endpoint' => !empty($this->activeStorage->endpoint),
-                'has_bucket' => !empty($this->activeStorage->bucket),
-            ]);
-            $this->s3Client = null;
+            \Log::warning('FileStorage: Endpoint or bucket not configured');
             return;
         }
 
-        try {
-            \Log::info('Initializing S3Client', [
-                'storage_id' => $this->activeStorage->id,
-                'name' => $this->activeStorage->name,
-                'driver' => $this->activeStorage->driver,
-                'endpoint' => $this->activeStorage->endpoint,
-                'bucket' => $this->activeStorage->bucket,
-                'region' => $this->activeStorage->region,
-                'has_key' => !empty($this->activeStorage->key),
-                'has_secret' => !empty($this->activeStorage->secret),
-                'is_active' => $this->activeStorage->isActive(),
-            ]);
-
-            $this->s3Client = new S3Client([
-                'version' => 'latest',
-                'region' => $this->activeStorage->region ?? 'auto',
-                'endpoint' => $this->activeStorage->endpoint,
-                'credentials' => [
-                    'key' => $this->activeStorage->key,
-                    'secret' => $this->activeStorage->secret,
-                ],
-                'use_path_style_endpoint' => true, // Required for R2
-                'http' => [
-                    'verify' => false, // Set to true in production
-                ],
-            ]);
-
-            \Log::info('S3Client initialized successfully', [
-                'storage_id' => $this->activeStorage->id,
-            ]);
-        } catch (\Exception $e) {
-            \Log::error('Failed to initialize S3 client', [
-                'error' => $e->getMessage(),
-                'storage_id' => $this->activeStorage->id,
-                'trace' => $e->getTraceAsString()
-            ]);
-            $this->s3Client = null;
+        // Extract account ID from R2 endpoint URL
+        // Format: https://{account_id}.r2.cloudflarestorage.com
+        if (preg_match('/https?:\/\/([a-f0-9]+)\.r2\.cloudflarestorage\.com/', $this->activeStorage->endpoint, $m)) {
+            $this->cfAccountId = $m[1];
+        } else {
+            // Fallback: use endpoint as-is for S3-compatible storage
+            $this->cfAccountId = null;
         }
+
+        $this->r2Ready = true;
+        \Log::info('FileStorage R2 initialized', [
+            'storage_id' => $this->activeStorage->id,
+            'bucket' => $this->activeStorage->bucket,
+            'account_id' => $this->cfAccountId ? substr($this->cfAccountId, 0, 8) . '...' : 'none',
+        ]);
     }
 
     /**
-     * Upload a file to R2/S3 storage
-     *
-     * @param \Illuminate\Http\UploadedFile $file
-     * @param string $path Optional custom path
-     * @return array|null Returns file info array or null on failure
+     * Upload to R2 via Cloudflare REST API
+     */
+    protected function r2Put(string $key, string $body, string $contentType): bool
+    {
+        if (!$this->cfAccountId) {
+            \Log::error('R2 account ID not available');
+            return false;
+        }
+
+        $url = "https://api.cloudflare.com/client/v4/accounts/{$this->cfAccountId}/r2/buckets/{$this->activeStorage->bucket}/objects/{$key}";
+
+        $response = Http::timeout(120)->withHeaders([
+            'X-Auth-Email' => $this->activeStorage->key,
+            'X-Auth-Key' => $this->activeStorage->secret,
+            'Content-Type' => $contentType,
+        ])->withBody($body, $contentType)->put($url);
+
+        if ($response->successful()) {
+            return true;
+        }
+
+        \Log::error('R2 upload failed', [
+            'key' => $key,
+            'status' => $response->status(),
+            'error' => substr($response->body(), 0, 300),
+        ]);
+        return false;
+    }
+
+    /**
+     * Delete from R2 via Cloudflare REST API
+     */
+    protected function r2Delete(string $key): bool
+    {
+        if (!$this->cfAccountId) {
+            return false;
+        }
+
+        $url = "https://api.cloudflare.com/client/v4/accounts/{$this->cfAccountId}/r2/buckets/{$this->activeStorage->bucket}/objects/{$key}";
+
+        $response = Http::withHeaders([
+            'X-Auth-Email' => $this->activeStorage->key,
+            'X-Auth-Key' => $this->activeStorage->secret,
+        ])->delete($url);
+
+        return $response->successful();
+    }
+
+    /**
+     * Upload a file to R2 storage
      */
     public function upload($file, string $path = ''): ?array
     {
-        // Check if active storage exists
         if (!$this->activeStorage || !$this->activeStorage->isActive()) {
             \Log::error('No active storage configured');
             return null;
@@ -131,20 +144,16 @@ class FileStorageService
         }
 
         try {
-            // Generate unique filename
             $filename = $this->generateFileName($file);
             $fullPath = $path ? trim($path, '/') . '/' . $filename : $filename;
 
-            // Upload file
-            $result = $this->s3Client->putObject([
-                'Bucket' => $this->activeStorage->bucket,
-                'Key' => $fullPath,
-                'SourceFile' => $file->getRealPath(),
-                'ContentType' => $file->getMimeType(),
-                'ACL' => 'public-read', // Make file publicly accessible
-            ]);
+            $body = file_get_contents($file->getRealPath());
+            $ok = $this->r2Put($fullPath, $body, $file->getMimeType());
 
-            // Get the file URL
+            if (!$ok) {
+                throw new \Exception('R2 upload failed');
+            }
+
             $fileUrl = $this->getFileUrl($fullPath);
 
             \Log::info('File uploaded successfully', [
@@ -163,9 +172,6 @@ class FileStorageService
                 'extension' => $extension,
             ];
 
-        } catch (AwsException $e) {
-            \Log::error('AWS S3/R2 upload error: ' . $e->getMessage());
-            throw new \Exception('Failed to upload file: ' . $e->getMessage());
         } catch (\Exception $e) {
             \Log::error('File upload error: ' . $e->getMessage());
             throw new \Exception('Failed to upload file: ' . $e->getMessage());
@@ -174,23 +180,15 @@ class FileStorageService
 
     /**
      * Upload file from base64 data
-     *
-     * @param string $base64Data
-     * @param string $filename
-     * @param string $mimeType
-     * @param string $path
-     * @return array|null
      */
     public function uploadFromBase64(string $base64Data, string $filename, string $mimeType, string $path = ''): ?array
     {
-        // Check if active storage exists
         if (!$this->activeStorage || !$this->activeStorage->isActive()) {
             \Log::error('No active storage configured');
             return null;
         }
 
         try {
-            // Decode base64 data
             $fileData = base64_decode($base64Data);
             if ($fileData === false) {
                 throw new \Exception('Invalid base64 data');
@@ -198,33 +196,26 @@ class FileStorageService
 
             $fileSize = strlen($fileData);
 
-            // Validate file size
             $maxSize = $this->activeStorage->getMaxFileSize();
             if ($fileSize > $maxSize) {
                 throw new \Exception('File size exceeds maximum allowed size of ' . $this->formatBytes($maxSize));
             }
 
-            // Validate file extension
             $allowedExtensions = $this->activeStorage->getAllowedExtensions();
             $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
             if (!empty($allowedExtensions) && !in_array($extension, $allowedExtensions)) {
                 throw new \Exception('File type not allowed. Allowed types: ' . implode(', ', $allowedExtensions));
             }
 
-            // Generate unique filename
             $uniqueFilename = $this->generateUniqueFileName($filename);
             $fullPath = $path ? trim($path, '/') . '/' . $uniqueFilename : $uniqueFilename;
 
-            // Upload file
-            $result = $this->s3Client->putObject([
-                'Bucket' => $this->activeStorage->bucket,
-                'Key' => $fullPath,
-                'Body' => $fileData,
-                'ContentType' => $mimeType,
-                'ACL' => 'public-read',
-            ]);
+            $ok = $this->r2Put($fullPath, $fileData, $mimeType);
 
-            // Get the file URL
+            if (!$ok) {
+                throw new \Exception('R2 upload failed');
+            }
+
             $fileUrl = $this->getFileUrl($fullPath);
 
             \Log::info('Base64 file uploaded successfully', [
@@ -243,9 +234,6 @@ class FileStorageService
                 'extension' => $extension,
             ];
 
-        } catch (AwsException $e) {
-            \Log::error('AWS S3/R2 upload error: ' . $e->getMessage());
-            throw new \Exception('Failed to upload file: ' . $e->getMessage());
         } catch (\Exception $e) {
             \Log::error('Base64 file upload error: ' . $e->getMessage());
             throw new \Exception('Failed to upload file: ' . $e->getMessage());
@@ -253,16 +241,11 @@ class FileStorageService
     }
 
     /**
-     * Upload a file from a local filesystem path to R2/S3 storage
-     *
-     * @param string $localFilePath Absolute path to local file
-     * @param string $remotePath Remote path/key in the bucket
-     * @param string|null $contentType MIME type (auto-detected if null)
-     * @return array|null Returns file info array or null on failure
+     * Upload a file from a local filesystem path to R2 storage
      */
     public function uploadFromPath(string $localFilePath, string $remotePath, ?string $contentType = null): ?array
     {
-        if (!$this->activeStorage || !$this->activeStorage->isActive() || !$this->s3Client) {
+        if (!$this->activeStorage || !$this->activeStorage->isActive() || !$this->r2Ready) {
             \Log::error('uploadFromPath: No active storage configured');
             return null;
         }
@@ -281,13 +264,12 @@ class FileStorageService
                 $contentType = mime_content_type($localFilePath) ?: 'application/octet-stream';
             }
 
-            $this->s3Client->putObject([
-                'Bucket' => $this->activeStorage->bucket,
-                'Key' => $remotePath,
-                'Body' => $fileContent,
-                'ContentType' => $contentType,
-                'ACL' => 'public-read',
-            ]);
+            $ok = $this->r2Put($remotePath, $fileContent, $contentType);
+
+            if (!$ok) {
+                \Log::error('uploadFromPath: R2 PUT failed', ['path' => $remotePath]);
+                return null;
+            }
 
             $fileUrl = $this->getFileUrl($remotePath);
 
@@ -307,9 +289,6 @@ class FileStorageService
                 'extension' => $extension,
             ];
 
-        } catch (AwsException $e) {
-            \Log::error('uploadFromPath AWS error: ' . $e->getMessage());
-            return null;
         } catch (\Exception $e) {
             \Log::error('uploadFromPath error: ' . $e->getMessage());
             return null;
@@ -318,26 +297,20 @@ class FileStorageService
 
     /**
      * Delete a file from storage
-     *
-     * @param string $filePath
-     * @return bool
      */
     public function delete(string $filePath): bool
     {
-        if (!$this->activeStorage || !$this->s3Client) {
+        if (!$this->activeStorage || !$this->r2Ready) {
             return false;
         }
 
         try {
-            $this->s3Client->deleteObject([
-                'Bucket' => $this->activeStorage->bucket,
-                'Key' => $filePath,
-            ]);
-
-            \Log::info('File deleted successfully', ['path' => $filePath]);
-            return true;
-
-        } catch (AwsException $e) {
+            $ok = $this->r2Delete($filePath);
+            if ($ok) {
+                \Log::info('File deleted successfully', ['path' => $filePath]);
+            }
+            return $ok;
+        } catch (\Exception $e) {
             \Log::error('Failed to delete file: ' . $e->getMessage());
             return false;
         }
@@ -345,35 +318,28 @@ class FileStorageService
 
     /**
      * Get the public URL for a file
-     *
-     * @param string $filePath
-     * @return string
      */
     protected function getFileUrl(string $filePath): string
     {
-        // If CDN URL is configured, use it
+        // Use CDN URL if configured (custom domain or r2.dev public URL)
         if ($this->activeStorage->cdn_url) {
             return rtrim($this->activeStorage->cdn_url, '/') . '/' . $filePath;
         }
 
-        // Otherwise, use R2/S3 endpoint with bucket
+        // Fallback: endpoint/bucket/path (won't be publicly accessible for R2)
         if ($this->activeStorage->endpoint) {
             return rtrim($this->activeStorage->endpoint, '/') . '/' . $this->activeStorage->bucket . '/' . $filePath;
         }
 
-        // Fallback to public URL pattern
-        return 'https://' . $this->activeStorage->bucket . '.' . ($this->activeStorage->endpoint ?? 'r2.cloudflarestorage.com') . '/' . $filePath;
+        return 'https://' . $this->activeStorage->bucket . '.s3.amazonaws.com/' . $filePath;
     }
 
     /**
-     * Download file content from R2/S3 using authenticated request
-     *
-     * @param string $fileUrl Full URL to the file
-     * @return string Binary file content
+     * Download file content from R2 using Cloudflare REST API
      */
     public function downloadFile(string $fileUrl): string
     {
-        if (!$this->activeStorage || !$this->s3Client) {
+        if (!$this->activeStorage || !$this->r2Ready) {
             throw new \Exception('No active storage configured');
         }
 
@@ -387,42 +353,31 @@ class FileStorageService
             $path = substr($path, strlen($bucketName) + 1);
         }
 
-        try {
-            \Log::info('Downloading file from R2/S3', [
-                'url' => $fileUrl,
-                'extracted_path' => $path,
-                'bucket' => $bucketName
-            ]);
-
-            $result = $this->s3Client->getObject([
-                'Bucket' => $bucketName,
-                'Key' => $path,
-            ]);
-
-            $content = (string) $result['Body'];
-
-            \Log::info('File downloaded successfully', [
-                'size' => strlen($content),
-                'path' => $path
-            ]);
-
-            return $content;
-
-        } catch (AwsException $e) {
-            \Log::error('Failed to download file from R2/S3', [
-                'error' => $e->getMessage(),
-                'path' => $path,
-                'bucket' => $bucketName
-            ]);
-            throw new \Exception('Failed to download file: ' . $e->getMessage());
+        // If the URL is a CDN/public URL, just fetch it directly
+        if ($this->activeStorage->cdn_url && strpos($fileUrl, $this->activeStorage->cdn_url) === 0) {
+            $response = Http::timeout(30)->get($fileUrl);
+            if ($response->successful()) {
+                return $response->body();
+            }
         }
+
+        // Use Cloudflare API to get the object
+        $url = "https://api.cloudflare.com/client/v4/accounts/{$this->cfAccountId}/r2/buckets/{$bucketName}/objects/{$path}";
+
+        $response = Http::withHeaders([
+            'X-Auth-Email' => $this->activeStorage->key,
+            'X-Auth-Key' => $this->activeStorage->secret,
+        ])->get($url);
+
+        if ($response->successful()) {
+            return $response->body();
+        }
+
+        throw new \Exception('Failed to download file from R2: HTTP ' . $response->status());
     }
 
     /**
      * Generate unique filename
-     *
-     * @param \Illuminate\Http\UploadedFile $file
-     * @return string
      */
     protected function generateFileName($file): string
     {
@@ -436,9 +391,6 @@ class FileStorageService
 
     /**
      * Generate unique filename from original filename
-     *
-     * @param string $filename
-     * @return string
      */
     protected function generateUniqueFileName(string $filename): string
     {
@@ -452,10 +404,6 @@ class FileStorageService
 
     /**
      * Format bytes to human readable
-     *
-     * @param int $bytes
-     * @param int $precision
-     * @return string
      */
     protected function formatBytes(int $bytes, int $precision = 2): string
     {
@@ -470,18 +418,14 @@ class FileStorageService
 
     /**
      * Check if storage is active and configured
-     *
-     * @return bool
      */
     public function isActive(): bool
     {
-        return $this->activeStorage !== null && $this->activeStorage->isActive() && $this->s3Client !== null;
+        return $this->activeStorage !== null && $this->activeStorage->isActive() && $this->r2Ready;
     }
 
     /**
      * Get active storage configuration
-     *
-     * @return StorageSetting|null
      */
     public function getActiveStorage(): ?StorageSetting
     {
@@ -490,14 +434,12 @@ class FileStorageService
 
     /**
      * Get validation rules for file upload
-     *
-     * @return array
      */
     public function getValidationRules(): array
     {
         if (!$this->activeStorage) {
             return [
-                'file' => 'required|file|max:10240', // Default 10MB
+                'file' => 'required|file|max:10240',
                 'allowed' => 'jpg,jpeg,png,gif,webp,pdf'
             ];
         }

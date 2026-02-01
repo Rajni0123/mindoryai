@@ -73,10 +73,17 @@ class StorageSetting extends Model
     }
 
     /**
-     * Get maximum file size in bytes
+     * Get maximum file size in bytes.
+     * Handles both raw MB values (< 1000) and byte values from database.
      */
     public function getMaxFileSize(): int
     {
-        return $this->max_file_size;
+        $val = $this->max_file_size ?: 25;
+        // If value is small (< 1024), it was entered as MB in the admin form
+        if ($val < 1024) {
+            return $val * 1024 * 1024;
+        }
+        // Otherwise it's already in bytes
+        return $val;
     }
 }

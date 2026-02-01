@@ -29,6 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'maintenance' => \App\Http\Middleware\CheckMaintenanceMode::class,
             'admin.ip.restrict' => \App\Http\Middleware\AdminIpRestrict::class, // Admin IP restriction
             'check.feature' => \App\Http\Middleware\CheckFeatureLimit::class, // Feature daily limit check
+            'admin.only' => \App\Http\Middleware\AdminOnly::class, // Admin role enforcement
         ]);
 
         // Apply maintenance mode check globally to web routes

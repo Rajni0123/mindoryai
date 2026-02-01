@@ -16,6 +16,8 @@ class WhiteboardVideo extends Model
         'title',
         'document_path',
         'document_content',
+        'topic_hash',
+        'cached_from_id',
         'status',
         'storyboard',
         'final_video_url',
@@ -186,5 +188,29 @@ class WhiteboardVideo extends Model
     public function scopeRecent($query, int $limit = 10)
     {
         return $query->orderBy('created_at', 'desc')->limit($limit);
+    }
+
+    /**
+     * Generate a topic hash from document content for cache matching.
+     */
+    public static function generateTopicHash(string $content): string
+    {
+        // Normalize: lowercase, trim, collapse whitespace
+        $normalized = preg_replace('/\s+/', ' ', strtolower(trim($content)));
+        return hash('sha256', $normalized);
+    }
+
+    /**
+     * Find a completed cached video with the same topic.
+     */
+    public static function findCachedByTopic(string $content): ?self
+    {
+        $hash = self::generateTopicHash($content);
+
+        return static::where('topic_hash', $hash)
+            ->where('status', 'completed')
+            ->whereNotNull('final_video_url')
+            ->orderBy('created_at', 'desc')
+            ->first();
     }
 }

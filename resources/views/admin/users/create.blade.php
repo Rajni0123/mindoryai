@@ -120,7 +120,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <p class="mt-1 text-xs text-gray-500">Plan controls credits, AI access, and features automatically</p>
+                                <p class="mt-1 text-xs text-gray-500">Plan controls usage limits, AI access, and features automatically</p>
                             </div>
                         </div>
 

@@ -10,7 +10,7 @@ class AiController extends Controller
     public function chat(Request $request)
     {
         try {
-            $client = OpenAI::client(env('OPENAI_API_KEY'));
+            $client = OpenAI::client(config('services.openai.api_key'));
 
             $response = $client->chat()->create([
                 'model' => 'gpt-4o-mini',

@@ -19,3 +19,11 @@ Schedule::command('credits:cleanup-usage --days=90 --force')
     ->onFailure(function () {
         \Log::error('Scheduled usage records cleanup failed');
     });
+
+// Expire subscriptions - runs every hour to catch expired plans promptly
+Schedule::command('subscriptions:expire')
+    ->hourly()
+    ->description('Downgrade expired paid plans to free')
+    ->onSuccess(function () {
+        \Log::info('Subscription expiry check completed');
+    });

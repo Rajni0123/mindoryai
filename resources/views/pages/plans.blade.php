@@ -129,10 +129,11 @@
                                             Current Plan
                                         </div>
                                     @else
-                                        <a href="{{ route('payment.show', $plan->id) }}"
-                                           class="block w-full py-2.5 rounded-xl font-semibold text-center text-sm transition-all {{ $colors['btn'] }}">
+                                        <button id="buy-btn-{{ $plan->id }}"
+                                                onclick="buyPlan({{ $plan->id }}, '{{ addslashes($plan->name) }}', {{ $plan->price }})"
+                                                class="block w-full py-2.5 rounded-xl font-semibold text-center text-sm transition-all cursor-pointer {{ $colors['btn'] }}">
                                             Get {{ $plan->name }}
-                                        </a>
+                                        </button>
                                     @endif
                                 @else
                                     <a href="{{ route('register') }}"
@@ -299,3 +300,106 @@
         </p>
     </section>
 @endsection
+
+@auth
+@push('scripts')
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+function buyPlan(planId, planName, price) {
+    var btn = document.getElementById('buy-btn-' + planId);
+    var originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Processing...';
+    btn.style.opacity = '0.7';
+
+    fetch('/payment/create-razorpay-order', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ plan_id: planId })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (!data.success) {
+            alert(data.message || 'Failed to create payment order.');
+            resetBtn();
+            return;
+        }
+
+        var options = {
+            key: data.razorpay_key,
+            amount: data.amount,
+            currency: data.currency,
+            name: 'Mindory',
+            description: planName + ' Plan',
+            order_id: data.order_id,
+            prefill: {
+                name: data.user_name || '',
+                email: data.user_email || '',
+                contact: data.user_phone || ''
+            },
+            theme: { color: '#0D9488' },
+            handler: function(response) {
+                btn.textContent = 'Verifying...';
+                fetch('/payment/verify-razorpay', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature,
+                        plan_id: planId,
+                        transaction_id: data.transaction_id
+                    })
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(verifyData) {
+                    if (verifyData.success) {
+                        btn.textContent = 'Activated!';
+                        btn.classList.add('bg-green-500');
+                        setTimeout(function() {
+                            window.location.href = verifyData.redirect_url || '/chat';
+                        }, 800);
+                    } else {
+                        alert(verifyData.message || 'Payment verification failed.');
+                        resetBtn();
+                    }
+                })
+                .catch(function() {
+                    alert('Payment verification failed. Please contact support.');
+                    resetBtn();
+                });
+            },
+            modal: {
+                ondismiss: function() { resetBtn(); }
+            }
+        };
+
+        var rzp = new Razorpay(options);
+        rzp.on('payment.failed', function(response) {
+            alert('Payment failed: ' + (response.error.description || 'Unknown error'));
+            resetBtn();
+        });
+        rzp.open();
+    })
+    .catch(function(err) {
+        alert('Something went wrong. Please try again.');
+        resetBtn();
+    });
+
+    function resetBtn() {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        btn.style.opacity = '1';
+    }
+}
+</script>
+@endpush
+@endauth

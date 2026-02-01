@@ -1,27 +1,34 @@
 """
 AI Image Generator - Multi-provider whiteboard illustration generator.
-Supports: Google Imagen, OpenAI DALL-E 3, Stability AI, Pollinations (free).
+Supports: Google Imagen, OpenAI DALL-E 3, OpenAI GPT-Image-1, Stability AI.
 Provider is selected from Laravel admin settings.
+
+FALLBACK CHAIN: If primary provider fails, try configured fallback provider.
+
+IMAGE STYLE: Black outline drawings on white background (like textbook diagrams)
 """
 
 import os
+import time
 import requests
 import traceback
+import concurrent.futures
 from config import Config
 
 
 class AIImageGenerator:
     """Generates whiteboard outline illustrations using configurable AI providers"""
 
-    # Google Imagen models (fallback order)
-    IMAGEN_MODELS = [
-        "imagen-4.0-fast-generate-001",
-        "imagen-3.0-fast-generate-001",
-        "imagen-3.0-generate-001",
-    ]
+    # Google Imagen model
+    IMAGEN_MODEL = "imagen-4.0-fast-generate-001"
 
-    # Track exhausted models to avoid repeated 429 calls
-    _exhausted_models = set()
+    # Provider display names for logging
+    PROVIDER_NAMES = {
+        "gemini_imagen": "Google Imagen",
+        "openai_dalle": "OpenAI DALL-E 3",
+        "openai_gpt_image": "OpenAI GPT-Image-1",
+        "stability_ai": "Stability AI",
+    }
 
     def __init__(self, api_key: str = None, image_settings: dict = None):
         self.settings = image_settings or {}
@@ -29,8 +36,19 @@ class AIImageGenerator:
         self.provider = self.settings.get("provider", "gemini_imagen")
         self.provider_api_key = self.settings.get("api_key") or ""
 
+        # Fallback provider
+        self.fallback_provider = self.settings.get("fallback_provider", "")
+
         # Gemini/Imagen API key (fallback to main gemini key)
         self.gemini_key = api_key or Config.GEMINI_API_KEY
+
+        # Rate limit tracking (per-instance)
+        self._imagen_exhausted = False
+        self._imagen_exhausted_time = 0
+        self._imagen_cooldown = 15  # seconds (reduced from 60)
+        self._request_count = 0
+        import threading
+        self._lock = threading.Lock()
 
         # Initialize provider-specific client
         self._gemini_client = None
@@ -49,19 +67,18 @@ class AIImageGenerator:
             print("[AI-IMG] Image generation disabled in settings")
             return None
 
-        concepts_str = ", ".join(concepts[:5]) if concepts else ""
         prompt = (
             f"Draw ONE single educational diagram about: {title}. "
             f"{description[:200]}. "
-            f"Label these parts: {concepts_str}. "
+            f"Label ONLY '{title}' with an arrow pointing to the main part. "
             "STRICT RULES: "
-            "1. PURE WHITE background - absolutely NO colored backgrounds, NO colored boxes, NO borders, NO containers. "
-            "2. Draw ONLY ONE single focused diagram - NOT multiple separate diagrams or images side by side. "
-            "3. Use directional ARROWS showing force, movement, or flow directions clearly. "
-            "4. Bold black labels with thin arrows pointing to each labeled part. "
-            "5. Colorful hand-drawn illustration style like a teacher drew on a clean whiteboard. "
-            "6. Scientific/anatomical accuracy with colored parts. "
-            "7. Landscape orientation. No photo-realistic, no 3D, no backgrounds, no frames."
+            "1. PURE WHITE background - NO colored backgrounds, NO boxes, NO borders, NO frames, NO containers. "
+            "2. Draw ONLY ONE focused diagram with ONE label and ONE arrow pointing to the key part. "
+            "3. Use a directional ARROW with a highlighted label showing the concept name. "
+            "4. BLACK OUTLINE ONLY - simple clean line drawing like a textbook diagram. "
+            "5. NO colors, NO shading, NO gradients - only black lines and text on white. "
+            "6. NO border, NO frame, NO box around the image. Clean edges that blend into white. "
+            "7. Landscape orientation. No photo-realistic, no 3D."
         )
         return self._generate(prompt, output_path, title)
 
@@ -71,21 +88,22 @@ class AIImageGenerator:
             return None
 
         prompt = (
-            f"Draw ONE single educational diagram of '{concept}' for topic '{scene_title}'. "
-            f"{description[:150]}. "
-            f"Show '{concept}' as a clear, detailed illustration with labeled parts and directional arrows. "
+            f"Draw ONE specific educational diagram of '{concept}'. "
+            f"Show ONLY '{concept}' as a clear illustration. "
+            f"Add ONE label saying '{concept}' with an arrow pointing to the main part and a yellow highlighter effect on the label. "
             "STRICT RULES: "
-            "1. PURE WHITE background - absolutely NO colored backgrounds, NO colored boxes, NO containers, NO borders. "
-            "2. ONLY ONE single focused diagram - NOT multiple images or panels. "
-            "3. Use ARROWS showing direction of force, movement, flow, or connections between parts. "
-            "4. Bold black labels with thin arrows pointing to parts. "
-            "5. Colorful hand-drawn style like a teacher's whiteboard sketch. "
-            "6. Landscape. No photo-realistic, no 3D, no background color."
+            "1. PURE WHITE background - NO colored backgrounds, NO boxes, NO borders, NO frames around the image. "
+            "2. ONLY this ONE specific concept - NOT the full topic, NOT multiple concepts. "
+            "3. ONE arrow pointing from the label to the key part of the diagram. "
+            "4. BLACK OUTLINE drawing style - simple clean lines like a textbook diagram. "
+            "5. NO colors except the yellow highlight on the label. NO shading, NO gradients. "
+            "6. NO border, NO frame, NO box around the image. Clean edges blending into white. "
+            "7. Landscape. No photo-realistic, no 3D."
         )
         return self._generate(prompt, output_path, concept)
 
     def _generate(self, prompt: str, output_path: str, label: str) -> str:
-        """Route to the selected provider."""
+        """Route to the selected provider with automatic fallback."""
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
         provider_map = {
@@ -93,60 +111,114 @@ class AIImageGenerator:
             "openai_dalle": self._generate_openai_dalle,
             "openai_gpt_image": self._generate_openai_gpt_image,
             "stability_ai": self._generate_stability_ai,
-            "pollinations": self._generate_pollinations,
         }
+
+        # Try primary provider
+        primary_name = self.PROVIDER_NAMES.get(self.provider, self.provider)
+        print(f"[AI-IMG] Primary provider: {primary_name}")
 
         generator = provider_map.get(self.provider, self._generate_gemini_imagen)
         result = generator(prompt, output_path, label)
 
-        if not result:
-            print(f"[AI-IMG] FAILED for: {label[:50]} (provider: {self.provider})")
+        # If primary succeeded
+        if result:
+            self._try_remove_background(result)
             return result
 
-        # Post-process: remove background for cleaner whiteboard look
-        self._try_remove_background(result)
-        return result
+        # Primary failed - try fallback if different from primary
+        if self.fallback_provider and self.fallback_provider != self.provider:
+            fallback_name = self.PROVIDER_NAMES.get(self.fallback_provider, self.fallback_provider)
+            print(f"[AI-IMG] Primary failed, trying fallback: {fallback_name}")
+
+            fallback_generator = provider_map.get(self.fallback_provider)
+            if fallback_generator:
+                result = fallback_generator(prompt, output_path, label)
+                if result:
+                    print(f"[AI-IMG] Fallback {fallback_name} succeeded!")
+                    self._try_remove_background(result)
+                    return result
+                else:
+                    print(f"[AI-IMG] Fallback {fallback_name} also failed")
+
+        print(f"[AI-IMG] ALL providers FAILED for: {label[:50]}")
+        return None
 
     # =========================================================================
     # GOOGLE IMAGEN (via Gemini API)
     # =========================================================================
     def _generate_gemini_imagen(self, prompt: str, output_path: str, label: str) -> str:
-        """Try all Imagen models to generate an image."""
+        """Generate image using Google Imagen with rate limit handling."""
         if not self._gemini_client:
             print("[AI-IMG] Gemini client not initialized")
             return None
 
-        for model_name in self.IMAGEN_MODELS:
-            if model_name in self._exhausted_models:
-                continue
-            result = self._try_imagen(model_name, prompt, output_path)
-            if result:
-                return result
-        return None
+        # Check if we're in cooldown from a previous 429
+        if self._imagen_exhausted:
+            elapsed = time.time() - self._imagen_exhausted_time
+            if elapsed < self._imagen_cooldown:
+                remaining = int(self._imagen_cooldown - elapsed)
+                print(f"[AI-IMG] Imagen in cooldown ({remaining}s left), skipping to fallback")
+                return None
+            # Cooldown expired, reset
+            print(f"[AI-IMG] Imagen cooldown expired, retrying")
+            self._imagen_exhausted = False
 
-    def _try_imagen(self, model: str, prompt: str, output_path: str) -> str:
+        # Thread-safe request counting with minimal delay
+        with self._lock:
+            self._request_count += 1
+            count = self._request_count
+        if count > 2:  # Only delay after first 2 concurrent requests
+            delay = 1
+            print(f"[AI-IMG] Rate limit prevention: waiting {delay}s...")
+            time.sleep(delay)
+
+        return self._try_imagen(prompt, output_path, label)
+
+    def _try_imagen(self, prompt: str, output_path: str, label: str) -> str:
+        """Try Imagen - single attempt with 90s timeout, fail fast on 429."""
+        model = self.IMAGEN_MODEL
+
         try:
             from google.genai import types
             print(f"[AI-IMG] Trying {model}...")
-            response = self._gemini_client.models.generate_images(
-                model=model,
-                prompt=prompt,
-                config=types.GenerateImagesConfig(
-                    number_of_images=1,
-                    output_mime_type="image/png",
-                ),
-            )
+
+            # Use thread pool to enforce 90s timeout on API call
+            def _call_imagen():
+                return self._gemini_client.models.generate_images(
+                    model=model,
+                    prompt=prompt,
+                    config=types.GenerateImagesConfig(
+                        number_of_images=1,
+                        output_mime_type="image/png",
+                    ),
+                )
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
+                future = pool.submit(_call_imagen)
+                response = future.result(timeout=90)
+
             if response.generated_images:
                 with open(output_path, "wb") as f:
                     f.write(response.generated_images[0].image.image_bytes)
                 print(f"[AI-IMG] OK ({model}): {output_path}")
                 return output_path
+            else:
+                print(f"[AI-IMG] {model}: No images in response")
+        except concurrent.futures.TimeoutError:
+            print(f"[AI-IMG] {model} TIMED OUT after 90s, marking exhausted")
+            self._imagen_exhausted = True
+            self._imagen_exhausted_time = time.time()
         except Exception as e:
             err_str = str(e)
             print(f"[AI-IMG] {model} error: {err_str[:200]}")
+
             if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                self._exhausted_models.add(model)
-                print(f"[AI-IMG] Marked {model} as quota-exhausted, skipping for this session")
+                self._imagen_exhausted = True
+                self._imagen_exhausted_time = time.time()
+                print(f"[AI-IMG] Imagen quota exhausted, cooldown {self._imagen_cooldown}s, falling back immediately")
+            elif "404" in err_str or "NOT_FOUND" in err_str:
+                print(f"[AI-IMG] Model {model} not available")
+
         return None
 
     # =========================================================================
@@ -181,7 +253,6 @@ class AIImageGenerator:
             if response.status_code == 200:
                 data = response.json()
                 image_url = data["data"][0]["url"]
-                # Download the image
                 img_response = requests.get(image_url, timeout=30)
                 if img_response.status_code == 200:
                     with open(output_path, "wb") as f:
@@ -196,7 +267,7 @@ class AIImageGenerator:
         return None
 
     # =========================================================================
-    # OPENAI GPT-IMAGE-1 (newest model)
+    # OPENAI GPT-IMAGE-1
     # =========================================================================
     def _generate_openai_gpt_image(self, prompt: str, output_path: str, label: str) -> str:
         """Generate image using OpenAI gpt-image-1 model."""
@@ -225,7 +296,6 @@ class AIImageGenerator:
 
             if response.status_code == 200:
                 data = response.json()
-                # gpt-image-1 returns base64 by default
                 image_data = data["data"][0]
                 if "b64_json" in image_data:
                     import base64
@@ -250,7 +320,7 @@ class AIImageGenerator:
         return None
 
     # =========================================================================
-    # STABILITY AI (Stable Diffusion)
+    # STABILITY AI
     # =========================================================================
     def _generate_stability_ai(self, prompt: str, output_path: str, label: str) -> str:
         """Generate image using Stability AI API."""
@@ -292,48 +362,21 @@ class AIImageGenerator:
         return None
 
     # =========================================================================
-    # POLLINATIONS.AI (FREE - no API key needed)
-    # =========================================================================
-    def _generate_pollinations(self, prompt: str, output_path: str, label: str) -> str:
-        """Generate image using Pollinations.ai (free, no API key)."""
-        try:
-            import urllib.parse
-            import time
-            print(f"[AI-IMG] Trying Pollinations (free) for: {label[:40]}...")
-            encoded_prompt = urllib.parse.quote(prompt)
-            seed = int(time.time()) % 100000
-            url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1792&height=1024&nologo=true&seed={seed}"
-
-            response = requests.get(url, timeout=90)
-            if response.status_code == 200 and len(response.content) > 1000:
-                with open(output_path, "wb") as f:
-                    f.write(response.content)
-                print(f"[AI-IMG] OK (pollinations): {output_path}")
-                return output_path
-            else:
-                print(f"[AI-IMG] Pollinations error: status={response.status_code}, size={len(response.content)}")
-        except Exception as e:
-            print(f"[AI-IMG] Pollinations exception: {str(e)[:200]}")
-        return None
-
-    # =========================================================================
     # POST-PROCESSING: Background Removal
     # =========================================================================
     def _try_remove_background(self, image_path: str):
-        """Remove background from generated image for cleaner whiteboard compositing.
-        Uses rembg if available, otherwise silently skips."""
+        """Remove background from generated image for cleaner whiteboard compositing."""
         try:
             from rembg import remove
             from PIL import Image
 
             img = Image.open(image_path)
             result = remove(img)
-            # Paste onto white background (whiteboard)
             white_bg = Image.new("RGBA", result.size, (255, 255, 255, 255))
             white_bg.paste(result, mask=result.split()[3] if result.mode == "RGBA" else None)
             white_bg.convert("RGB").save(image_path, "PNG")
             print(f"[AI-IMG] Background removed: {os.path.basename(image_path)}")
         except ImportError:
-            pass  # rembg not installed, skip silently
+            pass
         except Exception as e:
             print(f"[AI-IMG] Background removal skipped: {str(e)[:100]}")

@@ -18,6 +18,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $guarded = ['role'];
+
     protected $fillable = [
         'name',
         'email',
@@ -25,7 +27,6 @@ class User extends Authenticatable
         'mobile',
         'mobile_verified_at',
         'student_class',
-        'role',
         'token_limit',
         'tokens_used',
         'is_active',
@@ -35,6 +36,7 @@ class User extends Authenticatable
         'can_use_grok',
         'last_token_reset',
         'plan_id',
+        'plan_expires_at',
         'token_activated',
         'token_activated_at',
         // 2FA fields
@@ -68,6 +70,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
     ];
 
     /**
@@ -96,6 +100,7 @@ class User extends Authenticatable
             'can_use_deepseek' => 'boolean',
             'can_use_grok' => 'boolean',
             'last_token_reset' => 'datetime',
+            'plan_expires_at' => 'datetime',
             'token_activated' => 'boolean',
             'token_activated_at' => 'datetime',
             // 2FA casts

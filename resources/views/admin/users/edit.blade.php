@@ -56,7 +56,7 @@
                             </a>
                             <h2 class="text-2xl font-bold font-display text-white">Edit User</h2>
                         </div>
-                        <p class="text-soft-grey/70 text-sm">Manage user permissions and credit limits</p>
+                        <p class="text-soft-grey/70 text-sm">Manage user permissions and plan settings</p>
                     </div>
                 </div>
             </header>
@@ -122,13 +122,13 @@
                                     name="plan_id"
                                     class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-neon-blue transition-colors">
                                 <option value="" {{ !$user->plan_id ? 'selected' : '' }}>Free (No Plan)</option>
-                                @foreach($plans as $plan)
+                                @foreach($plans->where('slug', '!=', 'free') as $plan)
                                 <option value="{{ $plan->id }}" {{ $user->plan_id == $plan->id ? 'selected' : '' }}>
                                     {{ $plan->name }} — ₹{{ number_format($plan->price) }}/{{ $plan->billing_period ?? 'month' }}
                                 </option>
                                 @endforeach
                             </select>
-                            <p class="text-soft-grey/70 text-xs mt-1">Changing the plan will auto-update credits, AI access, and subscription</p>
+                            <p class="text-soft-grey/70 text-xs mt-1">Changing the plan will auto-update usage limits, AI access, and subscription</p>
                         </div>
 
                         <!-- Current Plan Info -->
