@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Enter Access Code - Mindory')
+@section('title', 'Enter Access Code - ' . config('app.name', 'BlinkStudy'))
 
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 flex items-center justify-center px-4 py-12">

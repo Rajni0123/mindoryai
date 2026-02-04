@@ -106,7 +106,7 @@
                                     <div class="space-y-4">
                                         <div>
                                             <label class="block text-xs font-medium text-gray-400 mb-1.5">Bucket Name <span class="text-red-400">*</span></label>
-                                            <input type="text" name="bucket" value="{{ old('bucket') }}" required placeholder="e.g., mindory-uploads"
+                                            <input type="text" name="bucket" value="{{ old('bucket') }}" required placeholder="e.g., blinkstudy-uploads"
                                                    class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500">
                                             @error('bucket') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
                                         </div>
@@ -121,7 +121,7 @@
 
                                         <div>
                                             <label class="block text-xs font-medium text-gray-400 mb-1.5">Custom Domain / CDN URL (Optional)</label>
-                                            <input type="url" name="cdn_url" value="{{ old('cdn_url') }}" placeholder="https://files.mindory.in"
+                                            <input type="url" name="cdn_url" value="{{ old('cdn_url') }}" placeholder="{{ env('FILES_SUBDOMAIN_URL', config('app.url')) }}"
                                                    class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500">
                                             <p class="text-xs text-gray-500 mt-1">Optional: Use a custom domain for your R2 bucket</p>
                                             @error('cdn_url') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
@@ -203,7 +203,7 @@
                                 </h3>
                                 <ol class="text-xs text-gray-400 space-y-1.5 ml-4 list-decimal">
                                     <li>Go to <strong class="text-gray-300">Cloudflare Dashboard</strong> → <strong class="text-gray-300">R2</strong></li>
-                                    <li>Create a new <strong class="text-gray-300">Bucket</strong> (e.g., "mindory-uploads")</li>
+                                    <li>Create a new <strong class="text-gray-300">Bucket</strong> (e.g., "blinkstudy-uploads")</li>
                                     <li>Click on <strong class="text-gray-300">"Manage R2 API Tokens"</strong></li>
                                     <li>Create an API Token with <strong class="text-gray-300">"Read & Write"</strong> permissions</li>
                                     <li>Copy the <strong class="text-gray-300">Token ID</strong> (your Account ID) as "Access Key"</li>

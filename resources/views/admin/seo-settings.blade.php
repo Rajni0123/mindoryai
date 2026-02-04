@@ -89,7 +89,7 @@
                                 <label class="block text-xs font-medium text-gray-400 mb-2">Site Title *</label>
                                 <input type="text" name="site_title" value="{{ old('site_title', $seoSettings['site_title']) }}" required
                                        class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                                       placeholder="Mindory - AI Knowledge Website">
+                                       placeholder="BlinkStudy - AI Knowledge Website">
                                 <p class="mt-1 text-[10px] text-gray-500">Appears in browser tab and Google search results (max 60 chars)</p>
                             </div>
 
@@ -194,7 +194,7 @@
                                 <span class="text-gray-400 text-sm">@</span>
                                 <input type="text" name="twitter_handle" value="{{ old('twitter_handle', $seoSettings['twitter_handle']) }}"
                                        class="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                                       placeholder="mindoryai">
+                                       placeholder="blinkstudyai">
                             </div>
                             <p class="mt-1 text-[10px] text-gray-500">Your Twitter/X username (without @)</p>
                         </div>

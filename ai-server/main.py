@@ -1,5 +1,5 @@
 """
-Mindory AI Microservice - FastAPI
+BlinkStudy AI Microservice - FastAPI
 Fast text-in → text-out AI service using Gemini.
 Loaded once at startup, served async with uvicorn workers.
 """
@@ -19,7 +19,7 @@ load_dotenv()
 # ── Config ────────────────────────────────────────────────────────
 AI_API_KEY = os.getenv("AI_API_KEY", "")  # Gemini key
 AI_MODEL = os.getenv("AI_MODEL", "gemini-2.0-flash")
-SERVICE_API_KEY = os.getenv("SERVICE_API_KEY", "mindory-ai-secret-2026")
+SERVICE_API_KEY = os.getenv("SERVICE_API_KEY", "blinkstudy-ai-secret-2026")
 CACHE_TTL = int(os.getenv("CACHE_TTL", "3600"))  # 1 hour default
 
 # ── In-memory cache (per-worker, fast) ────────────────────────────
@@ -74,7 +74,7 @@ async def lifespan(app: FastAPI):
 
 # ── FastAPI App ──────────────────────────────────────────────────
 app = FastAPI(
-    title="Mindory AI Service",
+    title="BlinkStudy AI Service",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -108,7 +108,7 @@ class AIResponse(BaseModel):
 async def health():
     return {
         "status": "ok",
-        "service": "mindory-ai-server",
+        "service": "blinkstudy-ai-server",
         "model": AI_MODEL,
         "client_loaded": ai_client is not None,
         "cache_size": len(_cache),

@@ -43,7 +43,7 @@ class ExportDatabase extends Command
     protected function generateSQL(): string
     {
         $sql = "-- ================================================================\n";
-        $sql .= "-- MINDORY AI - Database Export\n";
+        $sql .= "-- BLINKSTUDY AI - Database Export\n";
         $sql .= "-- Generated: " . now()->toDateTimeString() . "\n";
         $sql .= "-- For Shared Hosting Deployment\n";
         $sql .= "-- ================================================================\n\n";
@@ -52,7 +52,7 @@ class ExportDatabase extends Command
         $sql .= "START TRANSACTION;\n";
         $sql .= "SET time_zone = \"+00:00\";\n\n";
 
-        $sql .= "-- Database: mindory_ai\n\n";
+        $sql .= "-- Database: blinkstudy_ai\n\n";
 
         // Get all tables
         $tables = DB::select('SHOW TABLES');

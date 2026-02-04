@@ -86,4 +86,12 @@ class PolicyDisplayController extends Controller
     {
         return $this->show('support');
     }
+
+    /**
+     * Display data deletion / account deletion policy
+     */
+    public function dataDeletion()
+    {
+        return $this->show('data_deletion');
+    }
 }

@@ -50,7 +50,7 @@ class AuthSettingsController extends Controller
             'email_placeholder' => FrontendConfig::getValue('auth.login.email_placeholder', 'Enter your email address'),
             'button_text' => FrontendConfig::getValue('auth.login.button_text', 'Send OTP'),
             'terms_text' => FrontendConfig::getValue('auth.login.terms_text', 'By continuing, you agree to our Terms of Service and Privacy Policy'),
-            'footer_text' => FrontendConfig::getValue('auth.login.footer_text', 'Need help? Contact support@mindory.in'),
+            'footer_text' => FrontendConfig::getValue('auth.login.footer_text', 'Need help? Contact ' . config('services.support_email')),
         ];
 
         // Get social login settings

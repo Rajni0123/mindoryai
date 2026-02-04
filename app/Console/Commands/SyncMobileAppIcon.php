@@ -164,7 +164,7 @@ class SyncMobileAppIcon extends Command
      */
     private function extractStoragePath($url)
     {
-        // URL format: https://mindory.in/storage/icons/xxx.png
+        // URL format: https://yourdomain.com/storage/icons/xxx.png
         // or: /storage/icons/xxx.png
         // or relative: icons/xxx.png
 

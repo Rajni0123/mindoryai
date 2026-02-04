@@ -34,6 +34,8 @@ class UsageLimitService
         'scan_solve_per_month'        => 'scan_solve',
         'pdf_uploads_per_day'         => 'pdf_upload',
         'pdf_uploads_per_month'       => 'pdf_upload',
+        'chat_messages_per_day'       => 'chat',
+        'messages_per_day'            => 'chat',
     ];
 
     /**
@@ -46,6 +48,7 @@ class UsageLimitService
         'exam_prep'         => 'exam_prep_used',
         'scan_solve'        => 'scans_used',
         'pdf_upload'        => 'pdf_uploads_used',
+        'chat'              => 'messages_sent',
     ];
 
     /**
@@ -53,11 +56,12 @@ class UsageLimitService
      */
     private const LIMIT_KEY_MAP = [
         'video_quiz'        => 'video_quiz_per_day',
-        'whiteboard_video'  => 'whiteboard_videos_per_day',
+        'whiteboard_video'  => 'whiteboard_videos_per_month',
         'topic_quiz'        => 'topic_quiz_per_day',
         'exam_prep'         => 'exam_prep_per_day',
         'scan_solve'        => 'scan_solve_per_day',
         'pdf_upload'        => 'pdf_uploads_per_month',
+        'chat'              => 'chat_messages_per_day',
     ];
 
     /**
@@ -65,7 +69,7 @@ class UsageLimitService
      */
     private const MONTHLY_FEATURES = [
         'pdf_upload',
-        'whiteboard_video_free', // Free plan has monthly whiteboard limit
+        'whiteboard_video',
     ];
 
     /**
@@ -122,12 +126,6 @@ class UsageLimitService
                     break;
                 }
             }
-        }
-
-        // Special case: Free plan whiteboard uses monthly limit
-        if ($feature === 'whiteboard_video' && $plan->slug === 'free') {
-            $limitKey = 'whiteboard_videos_per_month';
-            $limit = $dailyLimits[$limitKey] ?? 0;
         }
 
         if ($limit === null) {
@@ -257,12 +255,7 @@ class UsageLimitService
             $column = self::COLUMN_MAP[$feature] ?? null;
             if (!$column) continue;
 
-            // Handle free plan monthly whiteboard
             $actualLimitKey = $limitKey;
-            if ($feature === 'whiteboard_video' && $plan && $plan->slug === 'free') {
-                $actualLimitKey = 'whiteboard_videos_per_month';
-            }
-
             $limit = $dailyLimits[$actualLimitKey] ?? null;
 
             // If not found by primary key, search all aliases for this feature
@@ -398,9 +391,7 @@ class UsageLimitService
 
     private function isMonthlyFeature(string $feature, $plan = null): bool
     {
-        if ($feature === 'pdf_upload') return true;
-        if ($feature === 'whiteboard_video' && $plan && $plan->slug === 'free') return true;
-        return false;
+        return in_array($feature, self::MONTHLY_FEATURES);
     }
 
     private function getUsage(User $user, string $feature, bool $monthly = false): int

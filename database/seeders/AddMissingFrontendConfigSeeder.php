@@ -36,7 +36,7 @@ class AddMissingFrontendConfigSeeder extends Seeder
             // Site Settings
             'ip_whitelist_enabled' => '0',
             'ip_whitelist' => '',
-            'site_name' => 'Mindory',
+            'site_name' => 'BlinkStudy',
             'maintenance_mode' => '0',
             'maintenance_message' => 'We are currently performing scheduled maintenance. Please check back soon.',
 

@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 // Utility function for className merging
 const cn = (...classes: (string | undefined | null | false)[]) => classes.filter(Boolean).join(" ");
 
-// Mindory Brand Colors
+// BlinkStudy Brand Colors
 const COLORS = {
   primary: '#0D9488',
   primaryLight: '#99F6E4',

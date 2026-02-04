@@ -21,7 +21,7 @@ class MobileAppConfigController extends Controller
         $splashScreenUrl = \App\Models\FrontendConfig::getValue('mobile.splash_screen');
 
         $configs = [
-            'app_name' => \App\Models\FrontendConfig::getValue('mobile.app_name', 'Mindory AI'),
+            'app_name' => \App\Models\FrontendConfig::getValue('mobile.app_name', 'BlinkStudy AI'),
             'app_logo' => $logoUrl,
             'app_icon' => $iconUrl,
             'login_logo' => $loginLogoUrl,

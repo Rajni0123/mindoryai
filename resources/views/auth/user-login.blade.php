@@ -4,7 +4,12 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login - {{ config('app.name') }}</title>
+    @php
+        $siteLogo = \App\Models\HomepageSetting::getValue('site_logo');
+        $siteName = \App\Models\HomepageSetting::getValue('site_name', config('app.name', 'BlinkStudy'));
+        $logoIcon = \App\Models\HomepageSetting::getValue('logo_icon', 'school');
+    @endphp
+    <title>Login - {{ $siteName }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 
@@ -142,8 +147,19 @@
         <div class="login-container rounded-2xl p-6 sm:p-7">
             <!-- Header -->
             <div id="login-header" class="text-center mb-6">
+                @if($siteLogo)
+                    <div class="flex items-center justify-center mb-3">
+                        <img src="{{ asset($siteLogo) }}" alt="{{ $siteName }}" class="w-12 h-12 rounded-xl object-contain">
+                    </div>
+                @else
+                    <div class="flex items-center justify-center mb-3">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #0df259, #06b6d4);">
+                            <span class="material-icons-round text-2xl text-white" style="font-family: 'Material Icons Round';">{{ $logoIcon }}</span>
+                        </div>
+                    </div>
+                @endif
                 <h1 class="text-xl sm:text-2xl font-semibold text-white mb-1.5">
-                    Login to <span style="background: linear-gradient(90deg, #0df259 0%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Mindory</span>
+                    Login to <span style="background: linear-gradient(90deg, #0df259 0%, #06b6d4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">{{ $siteName }}</span>
                 </h1>
                 <p class="text-gray-400 text-sm">Enter your mobile number to continue</p>
             </div>

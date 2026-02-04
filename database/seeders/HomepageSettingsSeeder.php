@@ -15,7 +15,7 @@ class HomepageSettingsSeeder extends Seeder
         $settings = [
             // ── Logo Settings ──
             ['key' => 'site_logo', 'value' => '', 'type' => 'image', 'group' => 'logo', 'order' => 1],
-            ['key' => 'site_name', 'value' => 'Mindory', 'type' => 'text', 'group' => 'logo', 'order' => 2],
+            ['key' => 'site_name', 'value' => 'BlinkStudy', 'type' => 'text', 'group' => 'logo', 'order' => 2],
             ['key' => 'logo_icon', 'value' => 'school', 'type' => 'text', 'group' => 'logo', 'order' => 3],
 
             // ── Hero Section ──

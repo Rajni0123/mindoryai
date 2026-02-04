@@ -21,16 +21,16 @@ return [
 
     'allowed_origins' => array_filter([
         // Main domain
-        env('MAIN_DOMAIN_URL', 'https://mindory.in'),
+        env('MAIN_DOMAIN_URL', env('APP_URL', 'http://localhost')),
 
         // Chat subdomain
-        env('CHAT_SUBDOMAIN_URL', 'https://chat.mindory.in'),
+        env('CHAT_SUBDOMAIN_URL'),
 
         // Admin subdomain
-        env('ADMIN_SUBDOMAIN_URL', 'https://viru.mindory.in'),
+        env('ADMIN_SUBDOMAIN_URL'),
 
         // Files subdomain
-        env('FILES_SUBDOMAIN_URL', 'https://files.mindory.in'),
+        env('FILES_SUBDOMAIN_URL'),
 
         // Mobile app production URLs
         env('MOBILE_APP_URL', null),

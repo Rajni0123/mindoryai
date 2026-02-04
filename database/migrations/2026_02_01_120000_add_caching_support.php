@@ -17,7 +17,7 @@ return new class extends Migration
         // Create doubt_cache table for image/pdf doubt caching
         Schema::create('doubt_cache', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['image', 'pdf']);
+            $table->string('type', 10); // image, pdf, text
             $table->string('content_hash', 64)->index();
             $table->string('question_hash', 64)->nullable()->index();
             $table->text('question_text')->nullable();

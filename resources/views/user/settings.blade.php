@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Settings - {{ config('app.name', 'Mindory') }}</title>
+    <title>Settings - {{ config('app.name', 'BlinkStudy') }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -314,18 +314,72 @@
                 <div class="space-y-6">
                     <!-- User Profile Info -->
                     <div class="bg-gray-100 dark:bg-gray-800/30 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                        <div class="flex items-center gap-4 mb-4">
+                        <div class="flex items-center gap-4 mb-6">
                             <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-semibold text-2xl">
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </div>
-                            <div>
-                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ auth()->user()->name }}</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ auth()->user()->email }}</p>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white" id="displayName">{{ auth()->user()->name }}</h3>
+                                <p class="text-sm text-gray-500 dark:text-gray-400" id="displayEmail">{{ auth()->user()->email }}</p>
+                                @if(auth()->user()->class_level)
+                                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1" id="displayClass">{{ auth()->user()->class_level }}</p>
+                                @endif
                             </div>
                         </div>
-                        <a href="{{ route('chat') }}" class="inline-block px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg text-gray-900 dark:text-white text-sm transition-colors">
-                            Back to Chat
-                        </a>
+
+                        <!-- Edit Profile Form -->
+                        <form id="profileForm" class="space-y-4 mb-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Full Name</label>
+                                <input type="text" name="name" value="{{ auth()->user()->name }}" required
+                                       class="w-full px-4 py-2.5 bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white text-sm focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email Address</label>
+                                <input type="email" name="email" value="{{ auth()->user()->email }}" required
+                                       class="w-full px-4 py-2.5 bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white text-sm focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Class Level</label>
+                                <select name="class_level"
+                                        class="w-full px-4 py-2.5 bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white text-sm focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors appearance-none cursor-pointer">
+                                    <option value="">Select your class</option>
+                                    @for($i = 1; $i <= 12; $i++)
+                                        <option value="Class {{ $i }}" {{ auth()->user()->class_level == "Class $i" ? 'selected' : '' }}>Class {{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <button type="submit" id="profileSaveBtn"
+                                    class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                                Save Changes
+                            </button>
+                        </form>
+
+                        <!-- Change Password -->
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                            <h4 class="text-base font-semibold text-gray-900 dark:text-white mb-4">Change Password</h4>
+                            <form id="passwordForm" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Current Password</label>
+                                    <input type="password" name="current_password" required placeholder="Enter current password"
+                                           class="w-full px-4 py-2.5 bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white text-sm focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">New Password</label>
+                                    <input type="password" name="password" required minlength="8" placeholder="Minimum 8 characters"
+                                           class="w-full px-4 py-2.5 bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white text-sm focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Confirm New Password</label>
+                                    <input type="password" name="password_confirmation" required minlength="8" placeholder="Re-enter new password"
+                                           class="w-full px-4 py-2.5 bg-white dark:bg-[#1a1a1a] border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white text-sm focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors">
+                                </div>
+                                <button type="submit" id="passwordSaveBtn"
+                                        class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg text-sm font-medium transition-colors">
+                                    Update Password
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
                     <!-- Plan Information -->
@@ -426,6 +480,104 @@
                 htmlElement.classList.remove('dark');
                 htmlElement.classList.add('light');
             }
+        }
+    });
+
+    // ── Profile Update ──
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('profileSaveBtn');
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Saving...';
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+
+        try {
+            const response = await fetch('{{ route("profile.update") }}', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                document.getElementById('displayName').textContent = result.user.name;
+                document.getElementById('displayEmail').textContent = result.user.email;
+                btn.textContent = 'Saved!';
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                }, 2000);
+            } else {
+                alert(result.message || 'Failed to update profile');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while updating profile');
+        } finally {
+            btn.disabled = false;
+            if (btn.textContent === 'Saving...') btn.textContent = originalText;
+        }
+    });
+
+    // ── Password Update ──
+    document.getElementById('passwordForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('passwordSaveBtn');
+        const originalText = btn.textContent;
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+
+        if (data.password !== data.password_confirmation) {
+            alert('New passwords do not match!');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Updating...';
+
+        try {
+            const response = await fetch('{{ route("profile.password") }}', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                this.reset();
+                btn.textContent = 'Updated!';
+                btn.classList.remove('bg-gray-200', 'dark:bg-gray-700');
+                btn.classList.add('bg-green-600', 'text-white');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-600', 'text-white');
+                    btn.classList.add('bg-gray-200', 'dark:bg-gray-700');
+                }, 2000);
+            } else {
+                alert(result.message || 'Failed to update password');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while updating password');
+        } finally {
+            btn.disabled = false;
+            if (btn.textContent === 'Updating...') btn.textContent = originalText;
         }
     });
 

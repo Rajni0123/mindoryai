@@ -22,7 +22,7 @@ class PythonAIService
     public function __construct()
     {
         $this->baseUrl = rtrim(config('services.python_ai.url', 'http://127.0.0.1:8100'), '/');
-        $this->apiKey  = config('services.python_ai.api_key', 'mindory-ai-secret-2026');
+        $this->apiKey  = config('services.python_ai.api_key', 'blinkstudy-ai-secret-2026');
         $this->timeout = config('services.python_ai.timeout', 15);
         $this->cacheTtl = config('services.python_ai.cache_ttl', 3600);
     }

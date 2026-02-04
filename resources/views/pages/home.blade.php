@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home - Mindory')
+@section('title', 'Home - ' . config('app.name', 'BlinkStudy'))
 @section('description', 'Upload an image and get AI-powered educational insights in engaging storytelling style')
 
 @section('content')
@@ -9,7 +9,7 @@
     <!-- Hero Section -->
     <div class="text-center mb-12 fade-in">
         <h1 class="text-4xl md:text-5xl font-bold dark:text-white text-gray-900 mb-4">
-            Welcome to <span class="text-primary">Mindory</span>
+            Welcome to <span class="text-primary">{{ config('app.name', 'BlinkStudy') }}</span>
         </h1>
         <p class="text-lg dark:text-gray-400 text-gray-600 max-w-2xl mx-auto">
             Upload any image and get an educational, engaging explanation powered by AI.

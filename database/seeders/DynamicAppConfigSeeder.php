@@ -95,7 +95,7 @@ class DynamicAppConfigSeeder extends Seeder
             [
                 'key' => 'app.update_url_android',
                 'type' => 'string',
-                'value' => 'https://play.google.com/store/apps/details?id=com.mindory.app',
+                'value' => 'https://play.google.com/store/apps/details?id=com.blinkstudy.app',
                 'label' => 'Android Update URL',
                 'category' => 'updates',
                 'description' => 'Play Store URL for app updates',
@@ -104,7 +104,7 @@ class DynamicAppConfigSeeder extends Seeder
             [
                 'key' => 'app.update_url_ios',
                 'type' => 'string',
-                'value' => 'https://apps.apple.com/app/mindory',
+                'value' => 'https://apps.apple.com/app/blinkstudy',
                 'label' => 'iOS Update URL',
                 'category' => 'updates',
                 'description' => 'App Store URL for app updates',
@@ -242,7 +242,7 @@ class DynamicAppConfigSeeder extends Seeder
             [
                 'key' => 'content.welcome_message',
                 'type' => 'string',
-                'value' => 'Welcome to Mindory AI! Your personal AI tutor for homework, notes, and quiz preparation.',
+                'value' => 'Welcome to BlinkStudy AI! Your personal AI tutor for homework, notes, and quiz preparation.',
                 'label' => 'Welcome Message',
                 'category' => 'content',
                 'description' => 'First-time user welcome message',
@@ -265,7 +265,7 @@ class DynamicAppConfigSeeder extends Seeder
             [
                 'key' => 'content.help_url',
                 'type' => 'string',
-                'value' => 'https://mindory.in/help',
+                'value' => config('app.url') . '/help',
                 'label' => 'Help Center URL',
                 'category' => 'content',
                 'description' => 'Link to help/support page',
@@ -274,7 +274,7 @@ class DynamicAppConfigSeeder extends Seeder
             [
                 'key' => 'content.privacy_policy_url',
                 'type' => 'string',
-                'value' => 'https://mindory.in/privacy',
+                'value' => config('app.url') . '/privacy',
                 'label' => 'Privacy Policy URL',
                 'category' => 'content',
                 'description' => 'Link to privacy policy',
@@ -283,7 +283,7 @@ class DynamicAppConfigSeeder extends Seeder
             [
                 'key' => 'content.terms_url',
                 'type' => 'string',
-                'value' => 'https://mindory.in/terms',
+                'value' => config('app.url') . '/terms',
                 'label' => 'Terms of Service URL',
                 'category' => 'content',
                 'description' => 'Link to terms of service',

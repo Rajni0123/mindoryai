@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="theme-color" content="#05070a">
-    <title>Dashboard - {{ config('app.name', 'Mindory') }}</title>
+    <title>Dashboard - {{ config('app.name', 'BlinkStudy') }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -207,7 +207,7 @@
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-cyan-500 flex items-center justify-center">
                     <span class="material-symbols-rounded text-white text-xl">school</span>
                 </div>
-                <span class="text-xl font-bold gradient-text">{{ config('app.name', 'Mindory') }}</span>
+                <span class="text-xl font-bold gradient-text">{{ config('app.name', 'BlinkStudy') }}</span>
             </a>
         </div>
 

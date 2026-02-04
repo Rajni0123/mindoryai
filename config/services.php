@@ -66,10 +66,16 @@ return [
 
     'python_ai' => [
         'url'       => env('PYTHON_AI_URL', 'http://127.0.0.1:8100'),
-        'api_key'   => env('PYTHON_AI_KEY', 'mindory-ai-secret-2026'),
+        'api_key'   => env('PYTHON_AI_KEY', 'blinkstudy-ai-secret-2026'),
         'timeout'   => (int) env('PYTHON_AI_TIMEOUT', 15),
         'cache_ttl' => (int) env('PYTHON_AI_CACHE_TTL', 3600),
     ],
+
+    'main_domain' => env('MAIN_DOMAIN', 'example.com'),
+
+    'support_email' => env('SUPPORT_EMAIL', 'support@' . env('MAIN_DOMAIN', 'example.com')),
+
+    'admin_email' => env('ADMIN_EMAIL', 'admin@' . env('MAIN_DOMAIN', 'example.com')),
 
     'subdomains' => [
         'admin_url' => env('ADMIN_SUBDOMAIN_URL'),

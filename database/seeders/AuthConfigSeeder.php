@@ -141,7 +141,7 @@ class AuthConfigSeeder extends Seeder
             ],
             [
                 'config_key' => 'auth.login.footer_text',
-                'config_value' => 'Need help? Contact support@mindory.in',
+                'config_value' => 'Need help? Contact support@' . env('MAIN_DOMAIN', 'example.com'),
                 'value_type' => 'string',
                 'description' => 'Login screen footer text',
                 'is_active' => true

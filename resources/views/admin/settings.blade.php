@@ -109,7 +109,7 @@
                                        name="site_name"
                                        value="{{ old('site_name', $settings['site_name']) }}"
                                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors"
-                                       placeholder="Mindory">
+                                       placeholder="BlinkStudy">
                             </div>
 
                             <div class="flex items-center justify-between p-4 bg-gray-800/30 border border-gray-700 rounded-lg">

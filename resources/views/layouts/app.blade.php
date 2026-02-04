@@ -6,8 +6,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @php
-        $siteTitle = \App\Models\FrontendConfig::getValue('seo.site_title', 'Mindory - AI Knowledge Website');
-        $metaDescription = \App\Models\FrontendConfig::getValue('seo.meta_description', 'Mindory - Your AI-powered learning companion for instant doubt solving and personalized education');
+        $siteTitle = \App\Models\FrontendConfig::getValue('seo.site_title', 'BlinkStudy - AI Knowledge Website');
+        $metaDescription = \App\Models\FrontendConfig::getValue('seo.meta_description', 'BlinkStudy - Your AI-powered learning companion for instant doubt solving and personalized education');
         $metaKeywords = \App\Models\FrontendConfig::getValue('seo.meta_keywords', '');
         $faviconUrl = \App\Models\FrontendConfig::getValue('seo.favicon_url', '/favicon.ico');
         $googleVerification = \App\Models\FrontendConfig::getValue('seo.google_site_verification', '');

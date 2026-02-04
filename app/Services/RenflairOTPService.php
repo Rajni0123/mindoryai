@@ -617,7 +617,7 @@ class RenflairOTPService
             $COUNTRY = '91'; // Country Code for India
             $PHONE = $mobile;
             $OTP = $otpCode;
-            $SENDER = 'MINDORY'; // Sender name for WhatsApp
+            $SENDER = 'BLINKSTUDY'; // Sender name for WhatsApp
             $URL = "https://whatsapp.renflair.in/V1.php?API=$API&PHONE=$PHONE&OTP=$OTP&COUNTRY=$COUNTRY&SENDER=$SENDER";
 
             // 🔍 DEBUG MODE: Always log OTP when APP_DEBUG=true

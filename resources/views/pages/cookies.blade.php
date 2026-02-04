@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cookie Preferences - ' . config('app.name', 'Mindory'))
+@section('title', 'Cookie Preferences - ' . config('app.name', 'BlinkStudy'))
 
 @section('content')
 <div class="min-h-[60vh] py-12 px-4">

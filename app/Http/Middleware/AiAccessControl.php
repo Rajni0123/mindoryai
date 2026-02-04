@@ -29,10 +29,22 @@ class AiAccessControl
             return $next($request);
         }
 
-        // Check if user has an active subscription
-        if (!$user->is_active || !$user->plan_id) {
-            return $this->denyAccess($request, 'You need an active subscription to access AI features. Please purchase a plan.');
+        // Check if paid plan has expired - auto-downgrade to free
+        if ($user->plan_id && $user->plan_expires_at && now()->gt($user->plan_expires_at)) {
+            $user->update([
+                'plan_id' => null,
+                'plan_expires_at' => null,
+            ]);
+            $user->refresh();
         }
+
+        // Check if user account is active
+        if (!$user->is_active) {
+            return $this->denyAccess($request, 'Your account has been deactivated. Please contact support.');
+        }
+
+        // Free users (plan_id = null) are allowed - they get free plan limits
+        // via UsageLimitService. Individual controllers enforce daily limits.
 
         // Check IP whitelist (if user has whitelist entries)
         $userIps = $user->ipWhitelist()->where('is_active', true)->count();
@@ -41,11 +53,6 @@ class AiAccessControl
             if (!$user->isIpWhitelisted($clientIp)) {
                 return $this->denyAccess($request, 'Access denied. Your IP address (' . $clientIp . ') is not whitelisted for this account.');
             }
-        }
-
-        // Check if user has usage quota available
-        if (!$user->hasTokensRemaining()) {
-            return $this->denyAccess($request, 'Your usage quota has been exhausted. Please contact the administrator to increase your limits.');
         }
 
         return $next($request);

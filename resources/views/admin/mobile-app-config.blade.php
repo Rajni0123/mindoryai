@@ -143,7 +143,7 @@
                                         <label class="block text-xs font-medium text-gray-400 mb-2">App Name</label>
                                         <input type="text" name="app_name" value="{{ $configs['app_name'] }}" required
                                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                                               placeholder="Mindory AI">
+                                               placeholder="BlinkStudy AI">
                                     </div>
 
                                     <div>
@@ -470,7 +470,7 @@
                                         <label class="block text-xs font-medium text-gray-400 mb-2">Android Update URL</label>
                                         <input type="url" name="update_url_android" value="{{ $configs['update_url_android'] }}"
                                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors font-mono"
-                                               placeholder="https://play.google.com/store/apps/details?id=com.mindory.app">
+                                               placeholder="https://play.google.com/store/apps/details?id=com.blinkstudy.app">
                                         <p class="mt-1 text-[10px] text-gray-500">Play Store link</p>
                                     </div>
 
@@ -478,7 +478,7 @@
                                         <label class="block text-xs font-medium text-gray-400 mb-2">iOS Update URL</label>
                                         <input type="url" name="update_url_ios" value="{{ $configs['update_url_ios'] }}"
                                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors font-mono"
-                                               placeholder="https://apps.apple.com/app/mindory">
+                                               placeholder="https://apps.apple.com/app/blinkstudy">
                                         <p class="mt-1 text-[10px] text-gray-500">App Store link</p>
                                     </div>
                                 </div>
@@ -530,8 +530,8 @@
                                 <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
                                     <div class="flex items-center gap-3">
                                         <div class="w-8 h-8 rounded-full flex items-center justify-center" style="background-color: {{ $model->color }}20;">
-                                            @if($model->icon)
-                                                <span style="font-size: 18px;">{{ $model->icon }}</span>
+                                            @if($model->icon && file_exists(public_path($model->icon)))
+                                                <img src="{{ asset($model->icon) }}" alt="{{ $model->name }}" class="w-5 h-5 object-contain">
                                             @else
                                                 <span class="material-icons-outlined text-white" style="font-size: 16px;">psychology</span>
                                             @endif
@@ -572,7 +572,7 @@
                                     <label class="block text-xs font-medium text-gray-400 mb-2">Welcome Message</label>
                                     <textarea name="welcome_message" rows="3"
                                               class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                                              placeholder="Welcome to Mindory AI!">{{ $configs['welcome_message'] }}</textarea>
+                                              placeholder="Welcome to BlinkStudy AI!">{{ $configs['welcome_message'] }}</textarea>
                                     <p class="mt-1 text-[10px] text-gray-500">First-time user greeting message</p>
                                 </div>
 
@@ -581,7 +581,7 @@
                                         <label class="block text-xs font-medium text-gray-400 mb-2">Help Center URL</label>
                                         <input type="url" name="help_url" value="{{ $configs['help_url'] }}"
                                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                                               placeholder="https://mindory.in/help">
+                                               placeholder="{{ config('app.url') }}/help">
                                         <p class="mt-1 text-[10px] text-gray-500">Link to help page</p>
                                     </div>
 
@@ -589,7 +589,7 @@
                                         <label class="block text-xs font-medium text-gray-400 mb-2">Privacy Policy URL</label>
                                         <input type="url" name="privacy_policy_url" value="{{ $configs['privacy_policy_url'] }}"
                                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                                               placeholder="https://mindory.in/privacy">
+                                               placeholder="{{ config('app.url') }}/privacy">
                                         <p class="mt-1 text-[10px] text-gray-500">Link to privacy policy</p>
                                     </div>
 
@@ -597,7 +597,7 @@
                                         <label class="block text-xs font-medium text-gray-400 mb-2">Terms of Service URL</label>
                                         <input type="url" name="terms_url" value="{{ $configs['terms_url'] }}"
                                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
-                                               placeholder="https://mindory.in/terms">
+                                               placeholder="{{ config('app.url') }}/terms">
                                         <p class="mt-1 text-[10px] text-gray-500">Link to terms of service</p>
                                     </div>
                                 </div>
@@ -794,6 +794,7 @@
             // Hide all content
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.add('hidden');
+                content.style.display = 'none';
             });
 
             // Remove active from all buttons
@@ -803,12 +804,18 @@
             });
 
             // Show selected content
-            document.getElementById('content-' + tab).classList.remove('hidden');
+            var el = document.getElementById('content-' + tab);
+            if (el) {
+                el.classList.remove('hidden');
+                el.style.display = 'block';
+            }
 
             // Set active button
-            const activeBtn = document.getElementById('tab-' + tab);
-            activeBtn.classList.add('active', 'text-white');
-            activeBtn.classList.remove('text-gray-400');
+            var activeBtn = document.getElementById('tab-' + tab);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'text-white');
+                activeBtn.classList.remove('text-gray-400');
+            }
         }
 
         // Color Picker Synchronization

@@ -32,11 +32,13 @@ class CheckSubscriptionActive
         // Refresh user data from database to get latest values
         $user->refresh();
 
-        // Check if user has an active subscription
-        // Allow access to chat page but show warning message instead of redirecting
-        if (!$user->is_active || !$user->plan_id) {
-            // Let them access the chat page, frontend will handle the warning
-            return $next($request);
+        // Check if paid plan has expired - auto-downgrade to free
+        if ($user->plan_id && $user->plan_expires_at && now()->gt($user->plan_expires_at)) {
+            $user->update([
+                'plan_id' => null,
+                'plan_expires_at' => null,
+            ]);
+            $user->refresh();
         }
 
         return $next($request);

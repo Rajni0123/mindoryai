@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Mindory AI - Chat</title>
+    <title>{{ config('app.name', 'BlinkStudy') }} AI - Chat</title>
 
     <!-- Vite React Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.tsx'])
@@ -19,7 +19,7 @@
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        /* Mindory Brand Theme - Matching Mobile App */
+        /* BlinkStudy Brand Theme - Matching Mobile App */
         :root {
             --primary: #0D9488;
             --primary-light: #99F6E4;
@@ -1573,7 +1573,7 @@
                     <svg class="w-6 h-6 text-[var(--accent-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
                     </svg>
-                    Mindory
+                    {{ config('app.name', 'BlinkStudy') }}
                 </h1>
                 <button onclick="toggleSidebar()" class="sidebar-collapse-btn" title="Toggle sidebar">
                     <svg class="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1701,7 +1701,7 @@
                     </a>
                     @endif
 
-                    <!-- Download Mindory - Dynamic link from admin -->
+                    <!-- Download BlinkStudy - Dynamic link from admin -->
                     @php
                         $downloadLink = \App\Models\SystemSetting::where('key', 'app_download_link')->first();
                         $downloadUrl = $downloadLink ? $downloadLink->value : '#';
@@ -1711,7 +1711,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
-                        <span>Download Mindory</span>
+                        <span>Download {{ config('app.name', 'BlinkStudy') }}</span>
                     </a>
                     @endif
 
@@ -1931,7 +1931,7 @@
                     <!-- Footer -->
                     <div class="pt-6 border-t border-[var(--border-color)]">
                         <div class="text-xs text-[var(--text-secondary)] text-center">
-                            Mindory AI v1.0
+                            {{ config('app.name', 'BlinkStudy') }} AI v1.0
                         </div>
                     </div>
                 </div>
@@ -1960,14 +1960,14 @@
                         id="react-prompt-input"
                         data-csrf="{{ csrf_token() }}"
                         data-endpoint="/api/chat/send"
-                        data-placeholder="Message Mindory..."
+                        data-placeholder="Message {{ config('app.name', 'BlinkStudy') }}..."
                         style="min-height: 60px; border-radius: 24px; background: var(--bg-secondary); border: 1px solid var(--border-color);"
                     >
                         <div style="padding: 16px; color: var(--text-secondary); text-align: center;">Loading...</div>
                     </div>
 
                     <p class="text-xs text-center mt-2 text-[var(--text-secondary)]">
-                        Mindory can make mistakes. Consider checking important information.
+                        {{ config('app.name', 'BlinkStudy') }} can make mistakes. Consider checking important information.
                     </p>
                 </div>
             </div>
@@ -2809,7 +2809,7 @@
                                  onclick="window.open('${message.image_url}', '_blank')">
                             <div style="margin-top: 8px; display: flex; gap: 8px;">
                                 <a href="${message.image_url}"
-                                   download="mindory-generated-image.png"
+                                   download="blinkstudy-generated-image.png"
                                    class="action-btn"
                                    style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; background: var(--bg-hover); border-radius: 8px; font-size: 12px; text-decoration: none; color: var(--text-primary);">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -4001,7 +4001,7 @@ Make sure to follow this format precisely for all ${questionCount} questions.`;
                         </div>
                         <div class="flex-1">
                             <div class="message-header">
-                                <span class="name">Mindory</span>
+                                <span class="name">{{ config('app.name', 'BlinkStudy') }}</span>
                                 <span class="badge">AI</span>
                             </div>
                             <div class="message-content">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mindory | AI Study Companion')
+@section('title', config('app.name', 'BlinkStudy') . ' | AI Study Companion')
 
 @push('styles')
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>

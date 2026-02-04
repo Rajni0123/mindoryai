@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Mindory Brand Colors (matching mobile app)
+        // BlinkStudy Brand Colors (matching mobile app)
         primary: {
           DEFAULT: '#0D9488',
           light: '#99F6E4',
@@ -50,8 +50,8 @@ export default {
         'input': '24px',
       },
       boxShadow: {
-        'mindory': '0 4px 14px rgba(13, 148, 136, 0.15)',
-        'mindory-lg': '0 8px 30px rgba(13, 148, 136, 0.2)',
+        'blinkstudy': '0 4px 14px rgba(13, 148, 136, 0.15)',
+        'blinkstudy-lg': '0 8px 30px rgba(13, 148, 136, 0.2)',
       },
     },
   },

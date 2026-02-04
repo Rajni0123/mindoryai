@@ -16,7 +16,7 @@ class MobileAppConfigSeeder extends Seeder
             // App Branding
             [
                 'config_key' => 'mobile.app_name',
-                'config_value' => 'Mindory AI',
+                'config_value' => 'BlinkStudy AI',
                 'value_type' => 'string',
                 'description' => 'Mobile app display name',
                 'is_active' => true

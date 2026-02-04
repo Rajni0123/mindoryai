@@ -43,7 +43,7 @@ class AccessController extends Controller
             Session::put('access_code', $code);
             Session::put('access_plan', $accessCode->plan);
 
-            return redirect()->route('chat')->with('success', 'Access granted! Welcome to Mindory.');
+            return redirect()->route('chat')->with('success', 'Access granted! Welcome to BlinkStudy.');
         }
 
         return back()->withErrors([

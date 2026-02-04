@@ -38,7 +38,7 @@ class PageController extends Controller
             'hero_cta_text' => 'Solve',
             'feature_section_title' => 'Powered by Intelligence',
             'feature_section_description' => 'Experience cutting-edge AI technology designed to understand, analyze, and illuminate your questions with unparalleled clarity and precision.',
-            'site_name' => 'Mindory',
+            'site_name' => 'BlinkStudy',
             'site_logo' => '',
             'logo_width' => '150',
             'logo_height' => '50',
@@ -66,7 +66,7 @@ class PageController extends Controller
         $pricingPlans = PricingPlan::getActivePlans();
 
         $settingKeys = ['site_name'];
-        $defaults = ['site_name' => 'Mindory'];
+        $defaults = ['site_name' => 'BlinkStudy'];
         $settings = Setting::getMany($settingKeys, $defaults);
 
         return view('pages.plans', compact('pricingPlans', 'settings'));
@@ -85,7 +85,7 @@ class PageController extends Controller
             ->firstOrFail();
 
         $settingKeys = ['site_name'];
-        $defaults = ['site_name' => 'Mindory'];
+        $defaults = ['site_name' => 'BlinkStudy'];
         $settings = Setting::getMany($settingKeys, $defaults);
 
         return view('pages.dynamic', compact('page', 'settings'));

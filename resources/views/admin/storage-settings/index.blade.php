@@ -200,7 +200,7 @@
                     </h3>
                     <ol class="text-xs text-gray-400 space-y-1.5 ml-5 list-decimal">
                         <li>Go to <strong class="text-gray-300">Cloudflare Dashboard</strong> → <strong class="text-gray-300">R2</strong></li>
-                        <li>Create a new <strong class="text-gray-300">Bucket</strong> (e.g., "mindory-uploads")</li>
+                        <li>Create a new <strong class="text-gray-300">Bucket</strong> (e.g., "blinkstudy-uploads")</li>
                         <li>Click on <strong class="text-gray-300">"Manage R2 API Tokens"</strong></li>
                         <li>Create an API Token with <strong class="text-gray-300">"Read & Write"</strong> permissions</li>
                         <li>Copy the <strong class="text-gray-300">Token ID</strong> as "Access Key"</li>

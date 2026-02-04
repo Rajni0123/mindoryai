@@ -4,7 +4,12 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login - Mindory AI</title>
+    @php
+        $siteLogo = \App\Models\HomepageSetting::getValue('site_logo');
+        $siteName = \App\Models\HomepageSetting::getValue('site_name', config('app.name', 'BlinkStudy'));
+        $logoIcon = \App\Models\HomepageSetting::getValue('logo_icon', 'school');
+    @endphp
+    <title>Login - {{ $siteName }}</title>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -198,12 +203,16 @@
             <!-- Logo & Header -->
             <div id="login-header" class="text-center mb-8">
                 <div class="flex items-center justify-center gap-2 mb-4">
-                    <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white">
-                        <span class="material-icons-round text-2xl">auto_awesome</span>
-                    </div>
+                    @if($siteLogo)
+                        <img src="{{ asset($siteLogo) }}" alt="{{ $siteName }}" class="w-12 h-12 rounded-xl object-contain">
+                    @else
+                        <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white">
+                            <span class="material-icons-round text-2xl">{{ $logoIcon }}</span>
+                        </div>
+                    @endif
                 </div>
                 <h1 class="text-3xl font-bold text-primary-text dark:text-white mb-2">
-                    Welcome to <span class="text-primary">Mindory</span>
+                    Welcome to <span class="text-primary">{{ $siteName }}</span>
                 </h1>
                 <p class="text-slate-600 dark:text-slate-400 text-base">Enter your mobile number to continue</p>
             </div>

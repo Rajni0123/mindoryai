@@ -440,7 +440,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/chats/{chatId}/messages', [MobileChatController::class, 'getMessages']);
 
     // Send message - NOW WITH REAL AI!
-    Route::post('/chats/{chatId}/messages', [MobileChatController::class, 'sendMessage']);
+    Route::post('/chats/{chatId}/messages', [MobileChatController::class, 'sendMessage'])
+        ->middleware('check.feature:chat');
 
     // Delete chat
     Route::delete('/chats/{chatId}', [MobileChatController::class, 'deleteChat']);
@@ -550,7 +551,7 @@ Route::get('/app-config', function () {
                 'emailPlaceholder' => \App\Models\FrontendConfig::getValue('auth.login.email_placeholder', 'Enter your email address'),
                 'buttonText' => \App\Models\FrontendConfig::getValue('auth.login.button_text', 'Send OTP'),
                 'termsText' => \App\Models\FrontendConfig::getValue('auth.login.terms_text', 'By continuing, you agree to our Terms of Service and Privacy Policy'),
-                'footerText' => \App\Models\FrontendConfig::getValue('auth.login.footer_text', 'Need help? Contact support@mindory.in'),
+                'footerText' => \App\Models\FrontendConfig::getValue('auth.login.footer_text', 'Need help? Contact ' . config('services.support_email')),
             ],
             'social' => [
                 'otpLoginEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.otp_login_enabled', true),
@@ -690,6 +691,8 @@ Route::get('/app-config', function () {
         // Ads settings from DynamicAppConfig (synced with admin panel)
         $adsConfig = [
             'enabled' => filter_var(\App\Models\DynamicAppConfig::getValue('ads.enabled', false), FILTER_VALIDATE_BOOLEAN),
+            'admob_app_id_android' => \App\Models\DynamicAppConfig::getValue('ads.admob_app_id_android', ''),
+            'admob_app_id_ios' => \App\Models\DynamicAppConfig::getValue('ads.admob_app_id_ios', ''),
             'banner' => [
                 'enabled' => filter_var(\App\Models\DynamicAppConfig::getValue('ads.banner_enabled', false), FILTER_VALIDATE_BOOLEAN),
                 'android_unit_id' => \App\Models\DynamicAppConfig::getValue('ads.banner_id_android', ''),
@@ -711,7 +714,7 @@ Route::get('/app-config', function () {
 
         // Return complete configuration
         return response()->json([
-            'appName' => \App\Models\FrontendConfig::getValue('mobile.app_name', 'Mindory AI'),
+            'appName' => \App\Models\FrontendConfig::getValue('mobile.app_name', 'BlinkStudy AI'),
             'appLogo' => $appLogo,
             'appIcon' => $appIcon,
             'splashScreen' => $splashScreen,
@@ -743,7 +746,7 @@ Route::get('/app-config', function () {
     } catch (\Exception $e) {
         // Fallback configuration when database is not available
         return response()->json([
-            'appName' => 'Mindory AI',
+            'appName' => 'BlinkStudy AI',
             'appLogo' => null,
             'appIcon' => null,
             'splashScreen' => null,
@@ -1195,7 +1198,7 @@ Route::get('/plans', function () {
                 }
 
                 $dailyLimits = $features['daily_limits'] ?? [];
-                $featuresList = $features['features_list'] ?? [];
+                $featuresList = $features['features'] ?? [];
 
                 return [
                     'id' => $plan->id,
@@ -1337,8 +1340,11 @@ Route::middleware('auth:sanctum')->post('/subscribe', function (Request $request
             'updated_at' => now(),
         ]);
 
-        // Update user's plan
-        DB::table('users')->where('id', $user->id)->update(['plan_id' => $plan->id]);
+        // Update user's plan and expiry date
+        DB::table('users')->where('id', $user->id)->update([
+            'plan_id' => $plan->id,
+            'plan_expires_at' => $endDate,
+        ]);
 
         // No credits to grant — usage is tracked via daily/monthly counters
 
@@ -1583,8 +1589,11 @@ Route::middleware('auth:sanctum')->post('/subscription/verify-payment', function
         ]
     );
 
-    // Update user's plan
-    DB::table('users')->where('id', $user->id)->update(['plan_id' => $plan->id]);
+    // Update user's plan and expiry date
+    DB::table('users')->where('id', $user->id)->update([
+        'plan_id' => $plan->id,
+        'plan_expires_at' => $endDate,
+    ]);
 
     // No credits to grant — usage is tracked via daily/monthly counters
 
@@ -1640,8 +1649,8 @@ Route::get('/payment/cashfree/callback', [\App\Http\Controllers\PaymentControlle
 Route::get('/payment/callback/{gateway}', [\App\Http\Controllers\PaymentController::class, 'gatewayCallback']);
 Route::post('/payment/callback/{gateway}', [\App\Http\Controllers\PaymentController::class, 'gatewayCallback']);
 
-// Mindory AI Routes (authenticated + rate-limited)
-Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('mindory')->group(function () {
+// BlinkStudy AI Routes (authenticated + rate-limited)
+Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('blinkstudy')->group(function () {
 
     // Main chat endpoint
     Route::post('/chat', [AIChatController::class, 'chat']);

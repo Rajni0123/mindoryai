@@ -45,7 +45,7 @@ class AIChatController extends Controller
         // Get conversation context
         $conversationHistory = $request->conversation_history ?? [];
 
-        // Build the Mindory system prompt
+        // Build the BlinkStudy system prompt
         $systemPrompt = $this->buildSystemPrompt();
 
         // Process the message
@@ -124,11 +124,11 @@ class AIChatController extends Controller
     }
 
     /**
-     * Build the Mindory system prompt
+     * Build the BlinkStudy system prompt
      */
     private function buildSystemPrompt()
     {
-        return "You are Mindory - a friendly educational AI assistant for Indian students. You love helping students learn!
+        return "You are BlinkStudy - a friendly educational AI assistant for Indian students. You love helping students learn!
 
 🎓 YOUR ROLE:
 - Help with education, study, learning, and academic questions
@@ -152,7 +152,7 @@ Instead of refusing, find a creative way to connect it to learning:
 - Casual chat → Respond warmly, then guide: \"Hello! Main aapki studies mein help karne ke liye hu. Aaj aap kya seekhna chahte ho?\"
 
 Your identity:
-- Name: Mindory
+- Name: BlinkStudy
 - Purpose: Help students with studies and learning
 - Audience: Indian students (CBSE / NCERT focus)
 - Language: Simple Hinglish (Hindi + English)
@@ -291,7 +291,7 @@ GIVE THE DETAILED EXPLANATION NOW.";
                 $messages,
                 null, // no streaming
                 $imageData,
-                'mindory_chat', // feature name for tracking
+                'blinkstudy_chat', // feature name for tracking
                 auth()->id() // user ID for tracking
             );
 
@@ -299,11 +299,11 @@ GIVE THE DETAILED EXPLANATION NOW.";
                 return $result['content'];
             }
 
-            Log::error('Mindory AI Error', ['error' => $result['error'] ?? 'Unknown error']);
+            Log::error('BlinkStudy AI Error', ['error' => $result['error'] ?? 'Unknown error']);
             return $result['error'] ?? 'AI service unavailable. Please try again later.';
 
         } catch (\Exception $e) {
-            Log::error('Mindory AI Exception', ['error' => $e->getMessage()]);
+            Log::error('BlinkStudy AI Exception', ['error' => $e->getMessage()]);
             return 'Error: ' . $e->getMessage();
         }
     }
@@ -468,7 +468,7 @@ GIVE THE DETAILED EXPLANATION NOW.";
      */
     private function buildSolveSystemPrompt()
     {
-        return "You are Mindory - an educational AI assistant. Solve questions from uploaded images/PDFs.
+        return "You are BlinkStudy - an educational AI assistant. Solve questions from uploaded images/PDFs.
 
 ⚠️ CRITICAL RULES:
 - SOLVE ALL QUESTIONS visible in the uploaded file - DO NOT skip any question

@@ -30,23 +30,6 @@ class QuizCache extends Model
     ];
 
     /**
-     * Increment usage count and update last_used_at timestamp
-     */
-    public function markAsUsed()
-    {
-        $this->increment('usage_count');
-        $this->update(['last_used_at' => now()]);
-    }
-
-    /**
-     * Find quiz by image hash
-     */
-    public static function findByImageHash(string $hash)
-    {
-        return static::where('image_hash', $hash)->first();
-    }
-
-    /**
      * Scope for filtering by quiz type
      */
     public function scopeOfType($query, string $type)

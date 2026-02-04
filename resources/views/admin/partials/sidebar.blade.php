@@ -2,7 +2,7 @@
     <!-- Site Name -->
     <div class="p-4 border-b border-gray-800/50">
         @php
-            $siteName = \App\Models\Setting::get('site_name', 'Mindory');
+            $siteName = \App\Models\Setting::get('site_name', 'BlinkStudy');
         @endphp
         <div class="text-center">
             <h1 class="text-white font-bold text-lg truncate">{{ $siteName }}</h1>

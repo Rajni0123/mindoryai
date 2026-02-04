@@ -15,7 +15,7 @@ class SeoSettingsController extends Controller
     public function index()
     {
         $seoSettings = [
-            'site_title' => FrontendConfig::getValue('seo.site_title', 'Mindory - AI Knowledge Website'),
+            'site_title' => FrontendConfig::getValue('seo.site_title', 'BlinkStudy - AI Knowledge Website'),
             'meta_description' => FrontendConfig::getValue('seo.meta_description', ''),
             'meta_keywords' => FrontendConfig::getValue('seo.meta_keywords', ''),
             'google_site_verification' => FrontendConfig::getValue('seo.google_site_verification', ''),

@@ -81,7 +81,7 @@ class SocialAuthController extends Controller
 
                 // Redirect to class selection for new users
                 return redirect()->route('class.select')
-                    ->with('success', 'Welcome to Mindory! You have 150 free tokens. Please select your class.');
+                    ->with('success', 'Welcome to BlinkStudy! You have 150 free tokens. Please select your class.');
             }
         } catch (\Exception $e) {
             return redirect()->route('login')

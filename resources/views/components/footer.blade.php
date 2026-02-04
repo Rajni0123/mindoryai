@@ -1,7 +1,7 @@
 {{-- Shared Footer — used by all pages --}}
 @php
     $footerLogo = \App\Models\HomepageSetting::getValue('site_logo');
-    $footerSiteName = \App\Models\HomepageSetting::getValue('site_name', 'Mindory');
+    $footerSiteName = \App\Models\HomepageSetting::getValue('site_name', 'BlinkStudy');
     $footerLogoIcon = \App\Models\HomepageSetting::getValue('logo_icon', 'school');
 @endphp
 <footer class="relative z-10 border-t dark:border-white/5 border-gray-200 dark:bg-[#05080a] bg-white py-12 px-6">
@@ -21,7 +21,7 @@
                 </a>
                 <p class="text-xs dark:text-gray-500 text-gray-400 leading-relaxed">AI-powered learning companion for students. Solve doubts, generate quizzes, and learn smarter.</p>
                 <p class="text-xs dark:text-gray-600 text-gray-400 mt-2">
-                    <a href="mailto:support@mindory.in" class="hover:text-primary transition-colors">support@mindory.in</a>
+                    <a href="mailto:{{ config('services.support_email') }}" class="hover:text-primary transition-colors">{{ config('services.support_email') }}</a>
                 </p>
             </div>
 
@@ -55,7 +55,7 @@
         </div>
 
         <div class="border-t dark:border-white/5 border-gray-200 pt-6 text-center flex flex-col items-center gap-2">
-            <p class="dark:text-gray-600 text-gray-400 text-xs">&copy; 2025 Mindory | Operated by Rajnish Kumar</p>
+            <p class="dark:text-gray-600 text-gray-400 text-xs">&copy; {{ date('Y') }} {{ config('app.name') }} | Operated by Rajnish Kumar</p>
         </div>
     </div>
 </footer>

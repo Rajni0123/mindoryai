@@ -52,10 +52,10 @@ class WhiteboardVideoController extends Controller
             $topicText = trim($request->document_content);
 
             // ── TOPIC CACHE: check if a completed video for same topic+language exists ──
-            $normalizedTopic = mb_strtolower(trim($topicText));
-            $cachedVideo = WhiteboardVideo::where('status', 'completed')
+            $topicHash = WhiteboardVideo::generateTopicHash($topicText);
+            $cachedVideo = WhiteboardVideo::where('topic_hash', $topicHash)
+                ->where('status', 'completed')
                 ->whereNotNull('final_video_path')
-                ->whereRaw("LOWER(TRIM(document_content)) = ?", [$normalizedTopic])
                 ->latest('completed_at')
                 ->first();
 
@@ -66,6 +66,8 @@ class WhiteboardVideoController extends Controller
                     'job_id' => Str::uuid(),
                     'title' => $request->title ?? $cachedVideo->title,
                     'document_content' => $topicText,
+                    'topic_hash' => $topicHash,
+                    'cached_from_id' => $cachedVideo->id,
                     'status' => 'completed',
                     'storyboard' => $cachedVideo->storyboard,
                     'final_video_path' => $cachedVideo->final_video_path,
@@ -76,7 +78,6 @@ class WhiteboardVideoController extends Controller
                     'metadata' => [
                         'language' => $language,
                         'voice' => $request->voice ?? null,
-                        'cached_from' => $cachedVideo->id,
                     ],
                     'started_at' => now(),
                     'completed_at' => now(),
@@ -113,6 +114,7 @@ class WhiteboardVideoController extends Controller
                 'title' => $request->title ?? 'Whiteboard Video',
                 'document_path' => $request->document_path,
                 'document_content' => $topicText,
+                'topic_hash' => $topicHash,
                 'status' => 'pending',
                 'metadata' => [
                     'language' => $language,

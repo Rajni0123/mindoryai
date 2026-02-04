@@ -212,7 +212,7 @@ class StorageSettingsController extends Controller
 
             // Actually test upload + delete
             $testKey = '_connection_test_' . time() . '.txt';
-            $testBody = 'Mindory connection test ' . now()->toIso8601String();
+            $testBody = 'BlinkStudy connection test ' . now()->toIso8601String();
 
             // Use reflection to access the r2Put method for a real upload test
             $reflection = new \ReflectionMethod($testService, 'r2Put');

@@ -81,12 +81,28 @@ EOT;
         $request->validate([
             'question' => 'required|string',
             'subject' => 'nullable|string',
-            'conversation_history' => 'nullable|array'
+            'conversation_history' => 'nullable|array',
         ]);
 
         $question = $request->question;
         $subject = $request->subject;
         $conversationHistory = $request->conversation_history ?? [];
+
+        // Cache only first question (no conversation history)
+        // Follow-up questions always fresh for context
+        if (empty($conversationHistory)) {
+            $textHash = hash('sha256', strtolower(trim($question)));
+            $cached = DoubtCache::findCached('text', $textHash, $subject);
+            if ($cached) {
+                Log::info('Text doubt CACHE HIT', ['question' => substr($question, 0, 50)]);
+                return response()->json([
+                    'success' => true,
+                    'answer' => $cached->solution,
+                    'tokens_used' => $cached->tokens_used,
+                    'cached' => true,
+                ]);
+            }
+        }
 
         // Build messages array
         $messages = [
@@ -136,11 +152,22 @@ EOT;
 
             if ($response->successful()) {
                 $aiResponse = $response->json()['choices'][0]['message']['content'];
+                $tokensUsed = $response->json()['usage']['total_tokens'] ?? 0;
+
+                // Store in cache (first question only)
+                if (empty($conversationHistory)) {
+                    $textHash = hash('sha256', strtolower(trim($question)));
+                    try {
+                        DoubtCache::storeSolution('text', $textHash, $subject, $subject, $aiResponse, $tokensUsed);
+                    } catch (\Exception $e) {
+                        Log::warning('Failed to cache text doubt', ['error' => $e->getMessage()]);
+                    }
+                }
 
                 return response()->json([
                     'success' => true,
                     'answer' => $aiResponse,
-                    'tokens_used' => $response->json()['usage']['total_tokens'] ?? 0
+                    'tokens_used' => $tokensUsed,
                 ]);
             } else {
                 return response()->json([
@@ -165,18 +192,17 @@ EOT;
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:10240',
             'question' => 'nullable|string',
-            'subject' => 'nullable|string'
+            'subject' => 'nullable|string',
         ]);
 
         try {
             // Get uploaded image
             $image = $request->file('image');
 
-            // Calculate image hash for cache lookup
+            // Check cache - same image + same question = same answer
             $imageHash = hash_file('sha256', $image->getRealPath());
             $questionText = $request->question;
 
-            // Check cache
             $cached = DoubtCache::findCached('image', $imageHash, $questionText);
             if ($cached) {
                 Log::info('Image doubt cache HIT', ['hash' => substr($imageHash, 0, 12), 'usage_count' => $cached->usage_count]);
@@ -255,7 +281,6 @@ EOT;
                     'success' => true,
                     'answer' => $aiResponse,
                     'tokens_used' => $tokensUsed,
-                    'cached' => false,
                 ]);
             } else {
                 return response()->json([
@@ -280,7 +305,7 @@ EOT;
         $request->validate([
             'pdf' => 'required|mimes:pdf|max:10240',
             'question' => 'nullable|string',
-            'subject' => 'nullable|string'
+            'subject' => 'nullable|string',
         ]);
 
         try {
@@ -299,11 +324,10 @@ EOT;
             $pdfParsed = $parser->parseFile($pdf->getRealPath());
             $pdfText = substr($pdfParsed->getText(), 0, 12000); // Limit text
 
-            // Calculate content hash for cache lookup
+            // Check cache - same PDF content + same question = same answer
             $contentHash = hash('sha256', $pdfText);
             $questionText = $request->question;
 
-            // Check cache
             $cached = DoubtCache::findCached('pdf', $contentHash, $questionText);
             if ($cached) {
                 Log::info('PDF doubt cache HIT', ['hash' => substr($contentHash, 0, 12), 'usage_count' => $cached->usage_count]);
@@ -365,7 +389,6 @@ EOT;
                 return response()->json([
                     'success' => true,
                     'answer' => $aiResponse,
-                    'cached' => false,
                 ]);
             } else {
                 return response()->json([

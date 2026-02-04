@@ -32,7 +32,7 @@ class SystemSettingsSeeder extends Seeder
         // General Settings
         SystemSetting::set(
             'general.site_name',
-            'Mindory',
+            'BlinkStudy',
             'string',
             'general',
             'Website name'

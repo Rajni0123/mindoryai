@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Support - Mindory')
-@section('description', 'Get help and support from Mindory. Contact us via email or use our contact form.')
+@section('title', 'Support - ' . config('app.name', 'BlinkStudy'))
+@section('description', 'Get help and support from ' . config('app.name', 'BlinkStudy') . '. Contact us via email or use our contact form.')
 
 @section('content')
 <div class="max-w-5xl mx-auto px-4 py-12">
@@ -23,7 +23,7 @@
                 <span class="material-symbols-outlined text-primary text-2xl">mail</span>
             </div>
             <h3 class="font-semibold dark:text-white text-gray-900 mb-1">Email Us</h3>
-            <a href="mailto:support@mindory.in" class="text-primary text-sm hover:underline">support@mindory.in</a>
+            <a href="mailto:{{ config('services.support_email') }}" class="text-primary text-sm hover:underline">{{ config('services.support_email') }}</a>
             <p class="dark:text-gray-500 text-gray-400 text-xs mt-2">We reply within 24 hours</p>
         </div>
 
@@ -127,7 +127,7 @@
         <div class="dark:bg-white/[0.02] bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6">
             <span class="material-symbols-outlined text-primary text-3xl mb-3 block">quiz</span>
             <h3 class="font-semibold dark:text-white text-gray-900 mb-2">Frequently Asked Questions</h3>
-            <p class="dark:text-gray-400 text-gray-600 text-sm mb-4">Find answers to 67+ common questions about Mindory.</p>
+            <p class="dark:text-gray-400 text-gray-600 text-sm mb-4">Find answers to 67+ common questions about BlinkStudy.</p>
             <a href="{{ route('faq') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors">
                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
                 View Full FAQ

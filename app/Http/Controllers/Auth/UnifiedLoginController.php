@@ -197,13 +197,15 @@ class UnifiedLoginController extends Controller
             $isAdmin = in_array($mobile, $adminMobiles);
 
             // Create new user (role based on admin list)
-            $uniqueEmail = $mobile . '_' . time() . ($isAdmin ? '@admin.mindory.in' : '@mobile.user');
+            $uniqueEmail = $mobile . '_' . time() . ($isAdmin ? '@admin.' . config('services.main_domain', 'example.com') : '@mobile.user');
 
             try {
                 // Get default plan (check user_plans table, not pricing_plans)
                 $defaultPlanId = DB::table('user_plans')->where('id', 1)->exists() ? 1 : null;
 
-                $user = User::create([
+                // Use forceFill to set 'role' which is guarded against mass-assignment
+                $user = new User();
+                $user->forceFill([
                     'name' => $isAdmin ? 'Admin' : 'User ' . substr($mobile, -4),
                     'email' => $uniqueEmail,
                     'mobile' => $mobile,
@@ -214,7 +216,7 @@ class UnifiedLoginController extends Controller
                     'token_limit' => $isAdmin ? 999999 : 150,
                     'tokens_used' => 0,
                     'is_active' => true,
-                ]);
+                ])->save();
                 $isNewUser = true;
 
                 Log::info('New user registered via unified login', [
@@ -664,7 +666,7 @@ class UnifiedLoginController extends Controller
 
         if (!$user) {
             // Check if email is admin email
-            $adminEmails = ['admin@mindory.in']; // Add admin emails here
+            $adminEmails = [config('services.admin_email')]; // Add admin emails here
             $isAdmin = in_array($email, $adminEmails);
 
             // Create new user (role based on admin list)
@@ -676,7 +678,9 @@ class UnifiedLoginController extends Controller
                 // Get default plan (check user_plans table, not pricing_plans)
                 $defaultPlanId = DB::table('user_plans')->where('id', 1)->exists() ? 1 : null;
 
-                $user = User::create([
+                // Use forceFill to set 'role' which is guarded against mass-assignment
+                $user = new User();
+                $user->forceFill([
                     'name' => $userName,
                     'email' => $email,
                     'email_verified_at' => now(),
@@ -686,7 +690,7 @@ class UnifiedLoginController extends Controller
                     'token_limit' => $isAdmin ? 999999 : 150,
                     'tokens_used' => 0,
                     'is_active' => true,
-                ]);
+                ])->save();
                 $isNewUser = true;
 
                 Log::info('New user registered via email login', [
@@ -932,15 +936,17 @@ class UnifiedLoginController extends Controller
             $user = User::where('email', $email)->first();
 
             if (!$user) {
-                // Create new user
-                $user = User::create([
+                // Use forceFill to set 'role' which is guarded against mass-assignment
+                $user = new User();
+                $user->forceFill([
                     'name' => $name ?? 'Google User',
                     'email' => $email,
-                    'password' => bcrypt(str_random(32)), // Random password
+                    'password' => bcrypt(str_random(32)),
                     'role' => 'user',
                     'is_active' => true,
                     'email_verified_at' => now(),
                 ]);
+                $user->save();
 
                 // Handle referral code for new Google users
                 if ($request->has('referral_code')) {

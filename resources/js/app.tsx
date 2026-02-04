@@ -23,7 +23,7 @@ interface ChatInputWrapperProps {
 const ChatInputWrapper: React.FC<ChatInputWrapperProps> = ({
   csrfToken,
   apiEndpoint,
-  placeholder = "Message Mindory..."
+  placeholder = "Message BlinkStudy..."
 }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const promptRef = React.useRef<HTMLDivElement>(null);
@@ -99,7 +99,7 @@ function mountPromptInput() {
     (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ||
     '';
   const apiEndpoint = container.dataset.endpoint || '/api/chat/stream';
-  const placeholder = container.dataset.placeholder || 'Message Mindory...';
+  const placeholder = container.dataset.placeholder || 'Message BlinkStudy...';
 
   console.log('Creating React root...');
   try {

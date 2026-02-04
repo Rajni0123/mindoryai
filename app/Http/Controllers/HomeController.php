@@ -15,7 +15,7 @@ class HomeController extends Controller
     public function index()
     {
         $settings = [
-            'site_name' => \App\Models\Setting::get('site_name', 'Mindory'),
+            'site_name' => \App\Models\Setting::get('site_name', 'BlinkStudy'),
             'chat_sidebar_logo' => \App\Models\Setting::get('chat_sidebar_logo', ''),
             'chat_sidebar_logo_height' => \App\Models\Setting::get('chat_sidebar_logo_height', '32'),
             'chat_header_logo' => \App\Models\Setting::get('chat_header_logo', ''),

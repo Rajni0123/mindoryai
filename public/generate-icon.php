@@ -1,6 +1,6 @@
 <?php
 /**
- * Mindory App Icon Generator
+ * BlinkStudy App Icon Generator
  * Run this script to generate new app icon: php public/generate-icon.php
  */
 
@@ -81,6 +81,6 @@ $outputPath = __DIR__ . '/../mobile-app/assets/icon.png';
 imagepng($image, $outputPath);
 imagedestroy($image);
 
-echo "✅ New Mindory icon generated at: {$outputPath}\n";
+echo "✅ New BlinkStudy icon generated at: {$outputPath}\n";
 echo "Size: {$size}x{$size}px\n";
 echo "Format: PNG with transparency support\n";

@@ -218,9 +218,9 @@ class ReferralController extends Controller
         $referralLink = $this->generateReferralLink($referralCode);
 
         $shareMessages = [
-            'whatsapp' => "Hey! I'm using Mindory AI for my studies. It's an amazing AI tutor that helps with homework, notes, and quiz preparation. Sign up using my referral code {$referralCode} and get 3 FREE credits! 🎓\n\nDownload now: {$referralLink}",
-            'telegram' => "🚀 Mindory AI - Your Personal AI Tutor!\n\nGet 3 FREE credits when you sign up using my referral code: {$referralCode}\n\nLink: {$referralLink}",
-            'default' => "Join Mindory AI - Your Personal AI Tutor! Use my referral code {$referralCode} to get 3 FREE credits. Sign up now: {$referralLink}",
+            'whatsapp' => "Hey! I'm using BlinkStudy AI for my studies. It's an amazing AI tutor that helps with homework, notes, and quiz preparation. Sign up using my referral code {$referralCode} and get 3 FREE credits! 🎓\n\nDownload now: {$referralLink}",
+            'telegram' => "🚀 BlinkStudy AI - Your Personal AI Tutor!\n\nGet 3 FREE credits when you sign up using my referral code: {$referralCode}\n\nLink: {$referralLink}",
+            'default' => "Join BlinkStudy AI - Your Personal AI Tutor! Use my referral code {$referralCode} to get 3 FREE credits. Sign up now: {$referralLink}",
         ];
 
         return response()->json([

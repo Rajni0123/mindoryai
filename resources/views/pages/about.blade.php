@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'About Us - Mindory')
-@section('description', 'Learn about Mindory - Your AI-powered educational companion')
+@section('title', 'About Us - ' . config('app.name', 'BlinkStudy'))
+@section('description', 'Learn about ' . config('app.name', 'BlinkStudy') . ' - Your AI-powered educational companion')
 
 @section('content')
 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -9,7 +9,7 @@
     <!-- Header -->
     <div class="text-center mb-12 fade-in">
         <h1 class="text-4xl md:text-5xl font-bold dark:text-white text-gray-900 mb-4">
-            About <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">Mindory</span>
+            About <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">BlinkStudy</span>
         </h1>
         <p class="text-lg dark:text-gray-400 text-gray-600">Your AI-powered knowledge companion</p>
     </div>
@@ -21,7 +21,7 @@
         <section>
             <h2 class="text-2xl font-bold dark:text-white text-gray-900 mb-4">Our Mission</h2>
             <p class="dark:text-gray-400 text-gray-700 leading-relaxed">
-                Mindory is dedicated to making education accessible, engaging, and enjoyable for everyone.
+                BlinkStudy is dedicated to making education accessible, engaging, and enjoyable for everyone.
                 We believe that learning should be as natural as having a conversation with a knowledgeable friend.
                 That's why we've created an AI-powered platform that explains complex topics in simple, story-driven ways.
             </p>

@@ -45,7 +45,7 @@ class DoubtCache extends Model
     }
 
     /**
-     * Store a new cached solution.
+     * Store or update a cached solution.
      */
     public static function storeSolution(
         string $type,
@@ -57,16 +57,20 @@ class DoubtCache extends Model
     ): self {
         $questionHash = $questionText ? hash('sha256', strtolower(trim($questionText))) : 'none';
 
-        return static::create([
-            'type' => $type,
-            'content_hash' => $contentHash,
-            'question_hash' => $questionHash,
-            'question_text' => $questionText,
-            'subject' => $subject,
-            'solution' => $solution,
-            'tokens_used' => $tokensUsed,
-            'usage_count' => 1,
-            'last_used_at' => now(),
-        ]);
+        return static::updateOrCreate(
+            [
+                'type' => $type,
+                'content_hash' => $contentHash,
+                'question_hash' => $questionHash,
+            ],
+            [
+                'question_text' => $questionText,
+                'subject' => $subject,
+                'solution' => $solution,
+                'tokens_used' => $tokensUsed,
+                'usage_count' => 1,
+                'last_used_at' => now(),
+            ]
+        );
     }
 }

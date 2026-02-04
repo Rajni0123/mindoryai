@@ -39,7 +39,7 @@ class FrontendConfigSeeder extends Seeder
             // Text Content
             [
                 'config_key' => 'header_text',
-                'config_value' => 'Welcome to Mindory',
+                'config_value' => 'Welcome to BlinkStudy',
                 'value_type' => 'string',
                 'description' => 'Header text shown on homepage',
                 'is_active' => true

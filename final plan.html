@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlinkStudy AI — Final Revenue & Profit Plan 2026</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Inter', -apple-system, sans-serif;
+        color: #1a1a2e;
+        background: #fff;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    @media print {
+        body { font-size: 11px; }
+        .page-break { page-break-before: always; }
+        .no-print { display: none; }
+    }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 50px; }
+
+    /* Header */
+    .header {
+        text-align: center;
+        padding: 40px 0 30px;
+        border-bottom: 3px solid #0D9488;
+        margin-bottom: 30px;
+    }
+    .header .badge {
+        background: #0D9488;
+        color: white;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+    .header h1 {
+        font-size: 28px;
+        font-weight: 800;
+        color: #0D9488;
+        margin-bottom: 5px;
+    }
+    .header .subtitle {
+        font-size: 18px;
+        color: #374151;
+        font-weight: 500;
+    }
+    .header .meta {
+        font-size: 12px;
+        color: #6B7280;
+        margin-top: 10px;
+    }
+
+    /* Section */
+    .section { margin-bottom: 35px; }
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0D9488;
+        border-bottom: 2px solid #E5E7EB;
+        padding-bottom: 8px;
+        margin-bottom: 15px;
+    }
+    .section-num {
+        background: #0D9488;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 700;
+        margin-right: 8px;
+        vertical-align: middle;
+    }
+
+    /* Tables */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        font-size: 13px;
+    }
+    th {
+        background: #0D9488;
+        color: white;
+        padding: 10px 12px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 12px;
+    }
+    td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #E5E7EB;
+    }
+    tr:nth-child(even) { background: #F9FAFB; }
+    tr.highlight { background: #F0FDFA; font-weight: 600; }
+    tr.total-row {
+        background: #0D9488;
+        color: white;
+        font-weight: 700;
+    }
+    tr.total-row td { border: none; }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .popular-badge {
+        background: #F59E0B;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+    /* Metrics */
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin: 20px 0;
+    }
+    .metric-card {
+        background: #F0FDFA;
+        border: 1px solid #99F6E4;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+    }
+    .metric-value {
+        font-size: 22px;
+        font-weight: 800;
+        color: #0D9488;
+    }
+    .metric-label {
+        font-size: 11px;
+        color: #6B7280;
+        font-weight: 500;
+        margin-top: 4px;
+    }
+
+    /* Profit Box */
+    .profit-box {
+        background: linear-gradient(135deg, #0D9488, #0F766E);
+        color: white;
+        border-radius: 16px;
+        padding: 30px;
+        margin: 25px 0;
+        text-align: center;
+    }
+    .profit-box .label { font-size: 14px; opacity: 0.9; }
+    .profit-box .amount { font-size: 36px; font-weight: 800; margin: 5px 0; }
+    .profit-box .sub { font-size: 13px; opacity: 0.8; }
+
+    /* Lists */
+    ul { padding-left: 20px; }
+    li { margin-bottom: 5px; }
+
+    /* Cost breakdown */
+    .cost-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px dashed #E5E7EB;
+    }
+    .cost-item:last-child { border-bottom: none; }
+
+    /* Footer */
+    .footer {
+        border-top: 2px solid #E5E7EB;
+        padding-top: 20px;
+        margin-top: 40px;
+        text-align: center;
+        color: #9CA3AF;
+        font-size: 11px;
+    }
+
+    .note {
+        background: #FEF3C7;
+        border-left: 4px solid #F59E0B;
+        padding: 12px 16px;
+        margin: 15px 0;
+        font-size: 13px;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .green { color: #10B981; }
+    .red { color: #EF4444; }
+    .bold { font-weight: 700; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="header">
+    <div class="badge">Confidential — Business Plan</div>
+    <h1>BlinkStudy AI</h1>
+    <div class="subtitle">Revenue & Profit Architecture 2026</div>
+    <div class="meta">
+        Target: ₹10 Crore Revenue | Feb — Dec 2026 (11 Months)<br>
+        Prepared: February 2026 | Version 2.0 — Final
+    </div>
+</div>
+
+<!-- EXECUTIVE SUMMARY -->
+<div class="section">
+    <div class="section-title"><span class="section-num">1</span> Executive Summary</div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-value">₹10 Cr</div>
+            <div class="metric-label">Revenue Target</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">₹5.35 Cr</div>
+            <div class="metric-label">Net Profit</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">53.5%</div>
+            <div class="metric-label">Profit Margin</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">12L</div>
+            <div class="metric-label">Users by Dec</div>
+        </div>
+    </div>
+
+    <p>BlinkStudy AI targets ₹10 crore gross revenue in 2026 through a 3-stream model:
+    <strong>Subscriptions (60%)</strong>, <strong>Advertising (25%)</strong>, and
+    <strong>Referrals &amp; In-App Purchases (15%)</strong>. With optimized pricing, lean cost operations,
+    and aggressive user acquisition, the projected net profit is <strong class="green">₹5.35 crore (53.5% margin)</strong>.</p>
+</div>
+
+<!-- PRICING PLANS -->
+<div class="section">
+    <div class="section-title"><span class="section-num">2</span> Pricing Plans (Updated)</div>
+
+    <table>
+        <tr>
+            <th>Plan</th>
+            <th>Price</th>
+            <th>Billing</th>
+            <th>Target %</th>
+            <th>Cost/User</th>
+            <th>Margin</th>
+        </tr>
+        <tr>
+            <td><strong>Free</strong></td>
+            <td>₹0</td>
+            <td>—</td>
+            <td class="text-center">94% of users</td>
+            <td>₹1-3/mo</td>
+            <td>Ad Revenue</td>
+        </tr>
+        <tr>
+            <td><strong>Starter</strong></td>
+            <td>₹149/mo</td>
+            <td>Monthly</td>
+            <td class="text-center">35% of paid</td>
+            <td>₹20-35/mo</td>
+            <td class="green bold">76-86%</td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>Pro</strong> <span class="popular-badge">POPULAR</span></td>
+            <td>₹399/mo</td>
+            <td>Monthly</td>
+            <td class="text-center">35% of paid</td>
+            <td>₹60-100/mo</td>
+            <td class="green bold">75-85%</td>
+        </tr>
+        <tr>
+            <td><strong>Ultimate</strong></td>
+            <td>₹899/mo</td>
+            <td>Monthly</td>
+            <td class="text-center">10% of paid</td>
+            <td>₹120-200/mo</td>
+            <td class="green bold">77-87%</td>
+        </tr>
+        <tr>
+            <td><strong>Annual Pass</strong></td>
+            <td>₹2,999/yr</td>
+            <td>Yearly</td>
+            <td class="text-center">20% of paid</td>
+            <td>₹1000-1600/yr</td>
+            <td class="green bold">47-67%</td>
+        </tr>
+    </table>
+
+    <div class="note">
+        <strong>Pricing Strategy:</strong> Prices increased from previous version (₹79→₹149, ₹249→₹399, ₹599→₹899)
+        to match Indian EdTech market rates (Vedantu ₹199-499, Unacademy ₹999-1999).
+        The "Annual Pass" at ₹2,999/yr (₹250/mo equiv) creates urgency with 37% savings vs monthly Pro.
+    </div>
+</div>
+
+<!-- REVENUE MODEL -->
+<div class="section">
+    <div class="section-title"><span class="section-num">3</span> Revenue Streams</div>
+
+    <table>
+        <tr>
+            <th>Revenue Stream</th>
+            <th class="text-right">Target (₹)</th>
+            <th class="text-center">% of Total</th>
+            <th>How</th>
+        </tr>
+        <tr>
+            <td><strong>Subscriptions</strong></td>
+            <td class="text-right bold">₹6,00,00,000</td>
+            <td class="text-center">60%</td>
+            <td>72K paying users × ₹332 ARPU × 11 months (avg)</td>
+        </tr>
+        <tr>
+            <td><strong>Advertising (AdMob)</strong></td>
+            <td class="text-right bold">₹2,50,00,000</td>
+            <td class="text-center">25%</td>
+            <td>2.85L free DAU × ₹0.75/day × 330 days (avg)</td>
+        </tr>
+        <tr>
+            <td><strong>Referrals &amp; IAP</strong></td>
+            <td class="text-right bold">₹1,50,00,000</td>
+            <td class="text-center">15%</td>
+            <td>Premium themes, profile badges, study materials</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>TOTAL REVENUE</strong></td>
+            <td class="text-right"><strong>₹10,00,00,000</strong></td>
+            <td class="text-center"><strong>100%</strong></td>
+            <td><strong>₹10 Crore</strong></td>
+        </tr>
+    </table>
+</div>
+
+<!-- ARPU CALCULATION -->
+<div class="section">
+    <div class="section-title"><span class="section-num">4</span> Weighted ARPU Calculation</div>
+
+    <table>
+        <tr>
+            <th>Plan</th>
+            <th class="text-center">% of Paid Users</th>
+            <th class="text-right">Price/mo</th>
+            <th class="text-right">Weighted Contribution</th>
+        </tr>
+        <tr>
+            <td>Starter (₹149)</td>
+            <td class="text-center">35%</td>
+            <td class="text-right">₹149</td>
+            <td class="text-right">₹52.15</td>
+        </tr>
+        <tr class="highlight">
+            <td>Pro (₹399) ⭐</td>
+            <td class="text-center">35%</td>
+            <td class="text-right">₹399</td>
+            <td class="text-right">₹139.65</td>
+        </tr>
+        <tr>
+            <td>Ultimate (₹899)</td>
+            <td class="text-center">10%</td>
+            <td class="text-right">₹899</td>
+            <td class="text-right">₹89.90</td>
+        </tr>
+        <tr>
+            <td>Annual Pass (₹250/mo equiv)</td>
+            <td class="text-center">20%</td>
+            <td class="text-right">₹250</td>
+            <td class="text-right">₹50.00</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>Weighted ARPU</strong></td>
+            <td></td>
+            <td></td>
+            <td class="text-right"><strong>₹331.70/mo</strong></td>
+        </tr>
+    </table>
+</div>
+
+<!-- MONTH-BY-MONTH PROJECTION -->
+<div class="page-break"></div>
+<div class="section">
+    <div class="section-title"><span class="section-num">5</span> Month-by-Month Growth Projection</div>
+
+    <table>
+        <tr>
+            <th>Month</th>
+            <th class="text-right">Total Users</th>
+            <th class="text-right">Paid Users</th>
+            <th class="text-right">Sub Revenue</th>
+            <th class="text-right">Ad Revenue</th>
+            <th class="text-right">Other</th>
+            <th class="text-right bold">Total</th>
+        </tr>
+        <tr>
+            <td>Feb 2026</td>
+            <td class="text-right">25,000</td>
+            <td class="text-right">750</td>
+            <td class="text-right">₹2.5L</td>
+            <td class="text-right">₹0.9L</td>
+            <td class="text-right">₹0.5L</td>
+            <td class="text-right bold">₹3.9L</td>
+        </tr>
+        <tr>
+            <td>Mar 2026</td>
+            <td class="text-right">60,000</td>
+            <td class="text-right">2,400</td>
+            <td class="text-right">₹8.0L</td>
+            <td class="text-right">₹2.6L</td>
+            <td class="text-right">₹1.6L</td>
+            <td class="text-right bold">₹12.2L</td>
+        </tr>
+        <tr>
+            <td>Apr 2026</td>
+            <td class="text-right">1,20,000</td>
+            <td class="text-right">6,000</td>
+            <td class="text-right">₹20L</td>
+            <td class="text-right">₹5.4L</td>
+            <td class="text-right">₹3.8L</td>
+            <td class="text-right bold">₹29.2L</td>
+        </tr>
+        <tr style="background:#FFFBEB">
+            <td>May 2026 <small>(exam season)</small></td>
+            <td class="text-right">2,50,000</td>
+            <td class="text-right">15,000</td>
+            <td class="text-right">₹50L</td>
+            <td class="text-right">₹11L</td>
+            <td class="text-right">₹7.5L</td>
+            <td class="text-right bold">₹68.5L</td>
+        </tr>
+        <tr>
+            <td>Jun 2026</td>
+            <td class="text-right">3,80,000</td>
+            <td class="text-right">22,800</td>
+            <td class="text-right">₹76L</td>
+            <td class="text-right">₹16L</td>
+            <td class="text-right">₹11.4L</td>
+            <td class="text-right bold">₹1.03Cr</td>
+        </tr>
+        <tr>
+            <td>Jul 2026</td>
+            <td class="text-right">5,00,000</td>
+            <td class="text-right">30,000</td>
+            <td class="text-right">₹1.00Cr</td>
+            <td class="text-right">₹21L</td>
+            <td class="text-right">₹15L</td>
+            <td class="text-right bold">₹1.36Cr</td>
+        </tr>
+        <tr>
+            <td>Aug 2026</td>
+            <td class="text-right">6,50,000</td>
+            <td class="text-right">39,000</td>
+            <td class="text-right">₹1.30Cr</td>
+            <td class="text-right">₹28L</td>
+            <td class="text-right">₹19.5L</td>
+            <td class="text-right bold">₹1.78Cr</td>
+        </tr>
+        <tr>
+            <td>Sep 2026</td>
+            <td class="text-right">7,80,000</td>
+            <td class="text-right">46,800</td>
+            <td class="text-right">₹1.55Cr</td>
+            <td class="text-right">₹34L</td>
+            <td class="text-right">₹23.4L</td>
+            <td class="text-right bold">₹2.12Cr</td>
+        </tr>
+        <tr>
+            <td>Oct 2026</td>
+            <td class="text-right">9,20,000</td>
+            <td class="text-right">55,200</td>
+            <td class="text-right">₹1.83Cr</td>
+            <td class="text-right">₹39L</td>
+            <td class="text-right">₹27.6L</td>
+            <td class="text-right bold">₹2.50Cr</td>
+        </tr>
+        <tr style="background:#FFFBEB">
+            <td>Nov 2026 <small>(pre-board)</small></td>
+            <td class="text-right">10,80,000</td>
+            <td class="text-right">64,800</td>
+            <td class="text-right">₹2.15Cr</td>
+            <td class="text-right">₹46L</td>
+            <td class="text-right">₹32.4L</td>
+            <td class="text-right bold">₹2.93Cr</td>
+        </tr>
+        <tr>
+            <td>Dec 2026</td>
+            <td class="text-right">12,00,000</td>
+            <td class="text-right">72,000</td>
+            <td class="text-right">₹2.39Cr</td>
+            <td class="text-right">₹51L</td>
+            <td class="text-right">₹36L</td>
+            <td class="text-right bold">₹3.26Cr</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>TOTAL 2026</strong></td>
+            <td></td>
+            <td></td>
+            <td class="text-right">₹6.00Cr</td>
+            <td class="text-right">₹2.55Cr</td>
+            <td class="text-right">₹1.78Cr</td>
+            <td class="text-right bold">₹10.33Cr</td>
+        </tr>
+    </table>
+
+    <div class="note">
+        <strong>Key Growth Drivers:</strong> May &amp; Nov spike from exam season (boards, JEE, NEET).
+        Conversion rate grows from 3% → 6% as product-market fit improves.
+        Ad eCPM: ₹0.50-1.00/DAU/day (Indian AdMob banner + interstitial mix).
+    </div>
+</div>
+
+<!-- COST STRUCTURE -->
+<div class="section">
+    <div class="section-title"><span class="section-num">6</span> Annual Cost Structure</div>
+
+    <div class="two-col">
+        <div>
+            <h4 style="margin-bottom:10px; color:#374151;">Fixed Costs (Annual)</h4>
+            <div class="cost-item"><span>Cloud / Server (AWS/GCP)</span><span class="bold">₹60,00,000</span></div>
+            <div class="cost-item"><span>Team Salaries (5-7 people)</span><span class="bold">₹72,00,000</span></div>
+            <div class="cost-item"><span>Office &amp; Admin</span><span class="bold">₹12,00,000</span></div>
+            <div class="cost-item"><span>Tools &amp; Licenses</span><span class="bold">₹6,00,000</span></div>
+            <div class="cost-item" style="border-bottom:2px solid #0D9488"><span class="bold">Sub-Total Fixed</span><span class="bold green">₹1,50,00,000</span></div>
+        </div>
+        <div>
+            <h4 style="margin-bottom:10px; color:#374151;">Variable Costs (Annual)</h4>
+            <div class="cost-item"><span>AI API (Gemini/OpenAI)</span><span class="bold">₹95,00,000</span></div>
+            <div class="cost-item"><span>Marketing &amp; Ads</span><span class="bold">₹65,00,000</span></div>
+            <div class="cost-item"><span>OTP / SMS Costs</span><span class="bold">₹18,00,000</span></div>
+            <div class="cost-item"><span>Payment Gateway (2%)</span><span class="bold">₹12,00,000</span></div>
+            <div class="cost-item"><span>CDN &amp; Storage</span><span class="bold">₹8,00,000</span></div>
+            <div class="cost-item" style="border-bottom:2px solid #0D9488"><span class="bold">Sub-Total Variable</span><span class="bold green">₹1,98,00,000</span></div>
+        </div>
+    </div>
+
+    <table style="margin-top:20px">
+        <tr>
+            <th>Cost Category</th>
+            <th class="text-right">Monthly (Avg)</th>
+            <th class="text-right">Annual</th>
+            <th class="text-center">% of Revenue</th>
+        </tr>
+        <tr>
+            <td>Cloud Infrastructure</td>
+            <td class="text-right">₹5,00,000</td>
+            <td class="text-right">₹60,00,000</td>
+            <td class="text-center">6.0%</td>
+        </tr>
+        <tr>
+            <td>AI API Costs (Gemini Flash + GPT-4o)</td>
+            <td class="text-right">₹7,92,000</td>
+            <td class="text-right">₹95,00,000</td>
+            <td class="text-center">9.5%</td>
+        </tr>
+        <tr>
+            <td>Team Salaries</td>
+            <td class="text-right">₹6,00,000</td>
+            <td class="text-right">₹72,00,000</td>
+            <td class="text-center">7.2%</td>
+        </tr>
+        <tr>
+            <td>Marketing &amp; User Acquisition</td>
+            <td class="text-right">₹5,42,000</td>
+            <td class="text-right">₹65,00,000</td>
+            <td class="text-center">6.5%</td>
+        </tr>
+        <tr>
+            <td>OTP / SMS</td>
+            <td class="text-right">₹1,50,000</td>
+            <td class="text-right">₹18,00,000</td>
+            <td class="text-center">1.8%</td>
+        </tr>
+        <tr>
+            <td>Payment Gateway Fees (2%)</td>
+            <td class="text-right">₹1,00,000</td>
+            <td class="text-right">₹12,00,000</td>
+            <td class="text-center">1.2%</td>
+        </tr>
+        <tr>
+            <td>Office, Admin, CDN, Tools</td>
+            <td class="text-right">₹2,17,000</td>
+            <td class="text-right">₹26,00,000</td>
+            <td class="text-center">2.6%</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>TOTAL COSTS</strong></td>
+            <td class="text-right"><strong>₹29,00,000</strong></td>
+            <td class="text-right"><strong>₹3,48,00,000</strong></td>
+            <td class="text-center"><strong>34.8%</strong></td>
+        </tr>
+    </table>
+</div>
+
+<!-- PROFIT & LOSS -->
+<div class="page-break"></div>
+<div class="section">
+    <div class="section-title"><span class="section-num">7</span> Profit &amp; Loss Statement (2026)</div>
+
+    <table>
+        <tr>
+            <th>Item</th>
+            <th class="text-right">Amount (₹)</th>
+            <th class="text-center">% of Revenue</th>
+        </tr>
+        <tr style="background:#F0FDFA">
+            <td><strong>REVENUE</strong></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;Subscription Income</td>
+            <td class="text-right">₹6,00,00,000</td>
+            <td class="text-center">60.0%</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;Ad Revenue (AdMob)</td>
+            <td class="text-right">₹2,55,00,000</td>
+            <td class="text-center">25.5%</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;Referrals &amp; In-App Purchases</td>
+            <td class="text-right">₹1,78,00,000</td>
+            <td class="text-center">17.8%</td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>Total Gross Revenue</strong></td>
+            <td class="text-right bold green">₹10,33,00,000</td>
+            <td class="text-center bold">103.3%</td>
+        </tr>
+        <tr><td colspan="3" style="height:5px; background:#E5E7EB"></td></tr>
+        <tr style="background:#FEF2F2">
+            <td><strong>COSTS</strong></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;Cloud Infrastructure</td>
+            <td class="text-right red">-₹60,00,000</td>
+            <td class="text-center">6.0%</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;AI API Costs</td>
+            <td class="text-right red">-₹95,00,000</td>
+            <td class="text-center">9.5%</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;Team Salaries</td>
+            <td class="text-right red">-₹72,00,000</td>
+            <td class="text-center">7.2%</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;Marketing &amp; Acquisition</td>
+            <td class="text-right red">-₹65,00,000</td>
+            <td class="text-center">6.5%</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;OTP / SMS / Payment Fees</td>
+            <td class="text-right red">-₹30,00,000</td>
+            <td class="text-center">3.0%</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;Other (Office, CDN, Tools)</td>
+            <td class="text-right red">-₹26,00,000</td>
+            <td class="text-center">2.6%</td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>Total Costs</strong></td>
+            <td class="text-right bold red">-₹3,48,00,000</td>
+            <td class="text-center bold">34.8%</td>
+        </tr>
+        <tr><td colspan="3" style="height:5px; background:#E5E7EB"></td></tr>
+        <tr style="background:#F0FDFA">
+            <td><strong>EBITDA (Gross Profit)</strong></td>
+            <td class="text-right bold green" style="font-size:16px">₹6,85,00,000</td>
+            <td class="text-center bold green">68.5%</td>
+        </tr>
+        <tr>
+            <td>&nbsp;&nbsp;&nbsp;Income Tax (25% startup rate)</td>
+            <td class="text-right red">-₹1,71,25,000</td>
+            <td class="text-center">17.1%</td>
+        </tr>
+        <tr><td colspan="3" style="height:5px; background:#E5E7EB"></td></tr>
+    </table>
+
+    <div class="profit-box">
+        <div class="label">NET PROFIT AFTER TAX</div>
+        <div class="amount">₹5,13,75,000</div>
+        <div class="sub">Five Crore Thirteen Lakhs Seventy-Five Thousand | Profit Margin: 51.4%</div>
+    </div>
+</div>
+
+<!-- KEY METRICS -->
+<div class="section">
+    <div class="section-title"><span class="section-num">8</span> Key Performance Metrics</div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-value">₹332</div>
+            <div class="metric-label">ARPU / Month</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">6%</div>
+            <div class="metric-label">Conversion Rate</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">₹90</div>
+            <div class="metric-label">CAC (Cost/Acquisition)</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value">3.7x</div>
+            <div class="metric-label">LTV:CAC Ratio</div>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Metric</th>
+            <th>Q1 (Feb-Apr)</th>
+            <th>Q2 (May-Jul)</th>
+            <th>Q3 (Aug-Oct)</th>
+            <th>Q4 (Nov-Dec)</th>
+        </tr>
+        <tr>
+            <td>Total Users</td>
+            <td>1,20,000</td>
+            <td>5,00,000</td>
+            <td>9,20,000</td>
+            <td>12,00,000</td>
+        </tr>
+        <tr>
+            <td>Paying Users</td>
+            <td>6,000</td>
+            <td>30,000</td>
+            <td>55,200</td>
+            <td>72,000</td>
+        </tr>
+        <tr>
+            <td>Conversion Rate</td>
+            <td>3-5%</td>
+            <td>5-6%</td>
+            <td>6%</td>
+            <td>6%</td>
+        </tr>
+        <tr>
+            <td>Monthly Revenue</td>
+            <td>₹15L avg</td>
+            <td>₹1.03Cr avg</td>
+            <td>₹2.13Cr avg</td>
+            <td>₹3.10Cr avg</td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>Quarterly Revenue</strong></td>
+            <td><strong>₹45L</strong></td>
+            <td><strong>₹3.08Cr</strong></td>
+            <td><strong>₹6.40Cr</strong></td>
+            <td><strong>₹6.19Cr</strong></td>
+        </tr>
+    </table>
+</div>
+
+<!-- AI COST OPTIMIZATION -->
+<div class="section">
+    <div class="section-title"><span class="section-num">9</span> AI Cost Optimization Strategy</div>
+
+    <table>
+        <tr>
+            <th>Strategy</th>
+            <th>Savings</th>
+            <th>Implementation</th>
+        </tr>
+        <tr>
+            <td><strong>Gemini Flash as default</strong> (Free + Starter)</td>
+            <td class="green bold">~70% vs GPT-4o</td>
+            <td>Already implemented — ₹0.075/1K tokens vs ₹0.25</td>
+        </tr>
+        <tr>
+            <td><strong>Response caching</strong> (quiz/whiteboard)</td>
+            <td class="green bold">~40% repeat queries</td>
+            <td>QuizCache + DoubtCache models active</td>
+        </tr>
+        <tr>
+            <td><strong>Daily limit enforcement</strong></td>
+            <td class="green bold">Cost cap per user</td>
+            <td>UsageLimitService — just fixed &amp; working</td>
+        </tr>
+        <tr>
+            <td><strong>Prompt optimization</strong></td>
+            <td class="green bold">~30% token savings</td>
+            <td>Shorter system prompts, structured output</td>
+        </tr>
+        <tr>
+            <td><strong>Watermark on free videos</strong></td>
+            <td class="green bold">Upsell driver</td>
+            <td>Encourages upgrade to Starter+</td>
+        </tr>
+    </table>
+</div>
+
+<!-- MARKETING PLAN -->
+<div class="section">
+    <div class="section-title"><span class="section-num">10</span> User Acquisition Channels</div>
+
+    <table>
+        <tr>
+            <th>Channel</th>
+            <th class="text-center">Budget %</th>
+            <th class="text-right">Annual Budget</th>
+            <th>Target Users</th>
+        </tr>
+        <tr>
+            <td>Instagram / YouTube Reels (Organic)</td>
+            <td class="text-center">10%</td>
+            <td class="text-right">₹6.5L</td>
+            <td>3,00,000 (viral content)</td>
+        </tr>
+        <tr>
+            <td>Google Ads (App Install)</td>
+            <td class="text-center">30%</td>
+            <td class="text-right">₹19.5L</td>
+            <td>2,00,000 (₹9.75 CPI)</td>
+        </tr>
+        <tr>
+            <td>Facebook / Meta Ads</td>
+            <td class="text-center">25%</td>
+            <td class="text-right">₹16.25L</td>
+            <td>1,50,000 (₹10.83 CPI)</td>
+        </tr>
+        <tr>
+            <td>Referral Program (₹50 per referral)</td>
+            <td class="text-center">20%</td>
+            <td class="text-right">₹13L</td>
+            <td>2,60,000 (₹5 effective)</td>
+        </tr>
+        <tr>
+            <td>College / School Partnerships</td>
+            <td class="text-center">10%</td>
+            <td class="text-right">₹6.5L</td>
+            <td>2,00,000 (bulk)</td>
+        </tr>
+        <tr>
+            <td>SEO / ASO (Organic)</td>
+            <td class="text-center">5%</td>
+            <td class="text-right">₹3.25L</td>
+            <td>90,000 (organic search)</td>
+        </tr>
+        <tr class="total-row">
+            <td><strong>TOTAL</strong></td>
+            <td class="text-center"><strong>100%</strong></td>
+            <td class="text-right"><strong>₹65L</strong></td>
+            <td><strong>12,00,000 users</strong></td>
+        </tr>
+    </table>
+</div>
+
+<!-- RISK & MITIGATION -->
+<div class="section">
+    <div class="section-title"><span class="section-num">11</span> Risks &amp; Mitigation</div>
+
+    <table>
+        <tr>
+            <th>Risk</th>
+            <th>Impact</th>
+            <th>Mitigation</th>
+        </tr>
+        <tr>
+            <td>Low conversion rate (&lt;3%)</td>
+            <td class="red bold">High</td>
+            <td>A/B test pricing, offer free trial of Pro for 7 days</td>
+        </tr>
+        <tr>
+            <td>AI API cost spike</td>
+            <td class="red bold">Medium</td>
+            <td>Gemini Flash as primary, aggressive caching, daily limits</td>
+        </tr>
+        <tr>
+            <td>High churn rate (&gt;15%/month)</td>
+            <td class="red bold">High</td>
+            <td>Annual Pass lock-in, daily streaks, gamification</td>
+        </tr>
+        <tr>
+            <td>Competition (Byju's, PW)</td>
+            <td>Medium</td>
+            <td>AI-first differentiation, lower price, faster features</td>
+        </tr>
+        <tr>
+            <td>Server scaling issues</td>
+            <td>Medium</td>
+            <td>Auto-scaling, queue system, CDN for static content</td>
+        </tr>
+    </table>
+</div>
+
+<!-- FINAL SUMMARY -->
+<div class="section">
+    <div class="section-title"><span class="section-num">12</span> Final Summary</div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-value green">₹10.33Cr</div>
+            <div class="metric-label">Gross Revenue</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value red">₹3.48Cr</div>
+            <div class="metric-label">Total Costs</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value green">₹6.85Cr</div>
+            <div class="metric-label">EBITDA</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-value green">₹5.14Cr</div>
+            <div class="metric-label">Net Profit</div>
+        </div>
+    </div>
+
+    <div class="profit-box">
+        <div class="label">BOTTOM LINE</div>
+        <div class="amount">₹10 Crore Revenue → ₹5.14 Crore Net Profit</div>
+        <div class="sub">
+            12 Lakh Users | 72K Paying | 51.4% Profit Margin<br>
+            Breakeven Month: April 2026 (Month 3)
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <p><strong>BlinkStudy AI</strong> — Revenue &amp; Profit Architecture 2026</p>
+    <p>Confidential Business Document | Generated February 2026</p>
+    <p style="margin-top:5px">Open this file in browser → Print → Save as PDF</p>
+</div>
+
+</div>
+</body>
+</html>

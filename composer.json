@@ -1,7 +1,7 @@
 {
-    "name": "mindory/ai-learning-platform",
+    "name": "blinkstudy/ai-learning-platform",
     "type": "project",
-    "description": "Mindory - AI-powered learning companion for students with personalized education",
+    "description": "BlinkStudy - AI-powered learning companion for students with personalized education",
     "keywords": ["laravel", "ai", "openai", "education"],
     "license": "MIT",
     "require": {

@@ -12,7 +12,7 @@ use App\Services\StudentDoubtSolverService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 class QuizController extends Controller
 {
@@ -242,52 +242,8 @@ class QuizController extends Controller
 
             // Credits removed — access controlled by plan limits
 
-            // Calculate image hash for caching (SHA-256)
-            $imageHash = hash_file('sha256', $file->getRealPath());
-
-            // Check if quiz exists in cache
-            $cachedQuiz = QuizCache::findByImageHash($imageHash);
-
-            if ($cachedQuiz) {
-                \Log::info('Quiz cache hit', [
-                    'user_id' => $user->id,
-                    'image_hash' => $imageHash,
-                    'cached_quiz_id' => $cachedQuiz->id,
-                ]);
-
-                // Mark as used and return cached quiz
-                $cachedQuiz->markAsUsed();
-
-                return response()->json([
-                    'success' => true,
-                    'cached' => true,
-                    'book_mode' => $bookMode,
-                    'pdf_available' => true,
-                    'quiz' => [
-                        'id' => $cachedQuiz->id,
-                        'title' => $bookMode ? 'Quiz from Book' : 'Quiz from Image',
-                        'description' => $bookMode ? 'Generated from uploaded book/document (cached)' : 'Generated from uploaded image (cached)',
-                        'questions' => $cachedQuiz->quiz_data['questions'] ?? [],
-                        'total_questions' => $cachedQuiz->question_count,
-                        'difficulty' => $cachedQuiz->difficulty,
-                        'quiz_type' => $cachedQuiz->quiz_type,
-                        'subject' => $cachedQuiz->subject,
-                        'topics' => $cachedQuiz->topics,
-                    ],
-                    'pdf_download' => [
-                        'endpoint' => '/api/quiz/download-pdf',
-                        'params' => [
-                            'quiz_cache_id' => $cachedQuiz->id,
-                            'show_answers' => true,
-                            'show_explanations' => true,
-                        ]
-                    ]
-                ]);
-            }
-
-            \Log::info('Quiz cache miss - generating new quiz', [
+            \Log::info('Generating new quiz from image', [
                 'user_id' => $user->id,
-                'image_hash' => $imageHash,
                 'file_type' => $file->getMimeType(),
             ]);
 
@@ -438,9 +394,9 @@ class QuizController extends Controller
                 throw new \Exception('No questions could be generated from this file. Please ensure the file contains clear, readable educational content. Try using a different file or check if the PDF text is readable.');
             }
 
-            // Store in cache for future use
+            // Store quiz result for PDF download
             $cachedQuiz = QuizCache::create([
-                'image_hash' => $imageHash,
+                'image_hash' => Str::uuid()->toString(),
                 'quiz_data' => $quizData,
                 'quiz_type' => $quizType,
                 'difficulty' => $difficulty,
@@ -451,7 +407,7 @@ class QuizController extends Controller
                 'last_used_at' => now(),
             ]);
 
-            \Log::info('Quiz generated and cached', [
+            \Log::info('Quiz generated and stored', [
                 'user_id' => $user->id,
                 'quiz_cache_id' => $cachedQuiz->id,
                 'question_count' => count($quizData['questions']),
@@ -459,7 +415,6 @@ class QuizController extends Controller
 
             return response()->json([
                 'success' => true,
-                'cached' => false,
                 'book_mode' => $bookMode,
                 'pdf_available' => true,
                 'quiz' => [
@@ -1055,10 +1010,8 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             if ($year) {
                 // Strict year filter - ONLY from selected year, not before or after
                 if (strpos($year, '-') !== false) {
-                    // Range like "2019-2023" - questions from this range only
                     $topicWithContext .= " [STRICT YEAR FILTER: Generate questions ONLY from years {$year}. DO NOT include questions from years before or after this range. Questions must be based on exam patterns and syllabus from these specific years only.]";
                 } else {
-                    // Single year like "2023" - questions from this year only
                     $topicWithContext .= " [STRICT YEAR FILTER: Generate questions ONLY from year {$year}. DO NOT include questions from any other year - not before {$year} and not after {$year}. Questions must match the exact exam pattern and syllabus of {$year}.]";
                 }
             }
@@ -1136,20 +1089,22 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             $quizData['language'] = $language;
             $quizData['question_count'] = count($quizData['questions']);
 
+            $quizResult = [
+                'title' => "Quiz: {$topic}",
+                'description' => $subject ? "Subject: {$subject}" : "Topic-based quiz",
+                'questions' => $quizData['questions'],
+                'total_questions' => count($quizData['questions']),
+                'difficulty' => $difficulty,
+                'duration' => $duration,
+                'language' => $language,
+                'topic' => $topic,
+                'subject' => $subject,
+                'exam_type' => $examType,
+            ];
+
             return response()->json([
                 'success' => true,
-                'quiz' => [
-                    'title' => "Quiz: {$topic}",
-                    'description' => $subject ? "Subject: {$subject}" : "Topic-based quiz",
-                    'questions' => $quizData['questions'],
-                    'total_questions' => count($quizData['questions']),
-                    'difficulty' => $difficulty,
-                    'duration' => $duration,
-                    'language' => $language,
-                    'topic' => $topic,
-                    'subject' => $subject,
-                    'exam_type' => $examType,
-                ]
+                'quiz' => $quizResult,
             ]);
 
         } catch (\Exception $e) {
@@ -1273,19 +1228,21 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                 ], 500);
             }
 
+            $reasoningResult = [
+                'title' => "Reasoning Quiz: {$category}",
+                'description' => "Reasoning & Aptitude - {$difficulty} level",
+                'questions' => $quizData['questions'],
+                'total_questions' => count($quizData['questions']),
+                'difficulty' => $difficulty,
+                'duration' => $duration,
+                'language' => $language,
+                'category' => $category,
+                'type' => 'reasoning',
+            ];
+
             return response()->json([
                 'success' => true,
-                'quiz' => [
-                    'title' => "Reasoning Quiz: {$category}",
-                    'description' => "Reasoning & Aptitude - {$difficulty} level",
-                    'questions' => $quizData['questions'],
-                    'total_questions' => count($quizData['questions']),
-                    'difficulty' => $difficulty,
-                    'duration' => $duration,
-                    'language' => $language,
-                    'category' => $category,
-                    'type' => 'reasoning',
-                ]
+                'quiz' => $reasoningResult,
             ]);
 
         } catch (\Exception $e) {

@@ -13,6 +13,8 @@ class PageSeeder extends Seeder
      */
     public function run(): void
     {
+        $supportEmail = config('services.support_email', 'support@' . env('MAIN_DOMAIN', 'example.com'));
+        $siteHost = parse_url(config('app.url'), PHP_URL_HOST) ?: env('MAIN_DOMAIN', 'example.com');
         $pages = [
             [
                 'title' => 'About Us',
@@ -20,9 +22,9 @@ class PageSeeder extends Seeder
                 'content' => $this->getAboutContent(),
                 'is_active' => true,
                 'order' => 1,
-                'meta_title' => 'About Us - Mindory AI',
-                'meta_description' => 'Learn about Mindory AI - Your AI-powered doubt solver for students. Get instant, step-by-step explanations for Math, Science, Literature, and more.',
-                'meta_keywords' => 'Mindory AI, about, AI education, student learning, doubt solver',
+                'meta_title' => 'About Us - BlinkStudy AI',
+                'meta_description' => 'Learn about BlinkStudy AI - Your AI-powered doubt solver for students. Get instant, step-by-step explanations for Math, Science, Literature, and more.',
+                'meta_keywords' => 'BlinkStudy AI, about, AI education, student learning, doubt solver',
             ],
             [
                 'title' => 'Contact Us',
@@ -30,9 +32,9 @@ class PageSeeder extends Seeder
                 'content' => $this->getContactContent(),
                 'is_active' => true,
                 'order' => 2,
-                'meta_title' => 'Contact Us - Mindory AI',
-                'meta_description' => 'Get in touch with the Mindory AI team. We\'re here to help with any questions or support you need.',
-                'meta_keywords' => 'contact, support, help, Mindory AI, customer service',
+                'meta_title' => 'Contact Us - BlinkStudy AI',
+                'meta_description' => 'Get in touch with the BlinkStudy AI team. We\'re here to help with any questions or support you need.',
+                'meta_keywords' => 'contact, support, help, BlinkStudy AI, customer service',
             ],
             [
                 'title' => 'Privacy Policy',
@@ -40,9 +42,9 @@ class PageSeeder extends Seeder
                 'content' => $this->getPrivacyContent(),
                 'is_active' => true,
                 'order' => 3,
-                'meta_title' => 'Privacy Policy - Mindory AI',
-                'meta_description' => 'Read our privacy policy to understand how we protect your data and privacy when using Mindory AI services.',
-                'meta_keywords' => 'privacy policy, data protection, user privacy, Mindory AI',
+                'meta_title' => 'Privacy Policy - BlinkStudy AI',
+                'meta_description' => 'Read our privacy policy to understand how we protect your data and privacy when using BlinkStudy AI services.',
+                'meta_keywords' => 'privacy policy, data protection, user privacy, BlinkStudy AI',
             ],
             [
                 'title' => 'Terms of Service',
@@ -50,9 +52,9 @@ class PageSeeder extends Seeder
                 'content' => $this->getTermsContent(),
                 'is_active' => true,
                 'order' => 4,
-                'meta_title' => 'Terms of Service - Mindory AI',
-                'meta_description' => 'Read our terms of service to understand the rules and guidelines for using Mindory AI platform.',
-                'meta_keywords' => 'terms of service, terms and conditions, user agreement, Mindory AI',
+                'meta_title' => 'Terms of Service - BlinkStudy AI',
+                'meta_description' => 'Read our terms of service to understand the rules and guidelines for using BlinkStudy AI platform.',
+                'meta_keywords' => 'terms of service, terms and conditions, user agreement, BlinkStudy AI',
             ],
             [
                 'title' => 'Cancellation & Refund Policy',
@@ -60,9 +62,9 @@ class PageSeeder extends Seeder
                 'content' => $this->getRefundContent(),
                 'is_active' => true,
                 'order' => 5,
-                'meta_title' => 'Cancellation & Refund Policy - Mindory AI',
-                'meta_description' => 'Learn about our cancellation and refund policy for subscriptions and purchases on Mindory AI.',
-                'meta_keywords' => 'refund policy, cancellation policy, subscription refund, Mindory AI',
+                'meta_title' => 'Cancellation & Refund Policy - BlinkStudy AI',
+                'meta_description' => 'Learn about our cancellation and refund policy for subscriptions and purchases on BlinkStudy AI.',
+                'meta_keywords' => 'refund policy, cancellation policy, subscription refund, BlinkStudy AI',
             ],
         ];
 
@@ -76,8 +78,8 @@ class PageSeeder extends Seeder
 
     private function getAboutContent()
     {
-        return '<h2>Welcome to Mindory AI</h2>
-        <p>At Mindory AI, we believe every student deserves instant access to quality educational support. Our AI-powered platform is designed to be your personal study companion, available 24/7 to help you understand complex concepts, solve problems, and excel in your academic journey.</p>
+        return '<h2>Welcome to BlinkStudy AI</h2>
+        <p>At BlinkStudy AI, we believe every student deserves instant access to quality educational support. Our AI-powered platform is designed to be your personal study companion, available 24/7 to help you understand complex concepts, solve problems, and excel in your academic journey.</p>
 
         <h2>Our Mission</h2>
         <p>We\'re on a mission to make quality education accessible to every student through the power of artificial intelligence. By combining cutting-edge AI technology with educational expertise, we provide step-by-step explanations that help students learn, understand, and retain knowledge more effectively.</p>
@@ -91,11 +93,11 @@ class PageSeeder extends Seeder
             <li><strong>Personalized Learning:</strong> Adapt the explanations to your learning style</li>
         </ul>
 
-        <h2>Why Choose Mindory AI?</h2>
-        <p>Unlike traditional tutoring services, Mindory AI provides instant answers without scheduling conflicts or waiting times. Our AI models are trained on vast educational content, ensuring accurate and comprehensive responses to your questions.</p>
+        <h2>Why Choose BlinkStudy AI?</h2>
+        <p>Unlike traditional tutoring services, BlinkStudy AI provides instant answers without scheduling conflicts or waiting times. Our AI models are trained on vast educational content, ensuring accurate and comprehensive responses to your questions.</p>
 
         <h2>Contact Us</h2>
-        <p>Have questions or feedback? We\'d love to hear from you! Reach out to us at <strong>support@mindory.in</strong></p>';
+        <p>Have questions or feedback? We\'d love to hear from you! Reach out to us at <strong>' . $supportEmail . '</strong></p>';
     }
 
     private function getContactContent()
@@ -105,8 +107,8 @@ class PageSeeder extends Seeder
 
         <h2>Contact Information</h2>
         <ul>
-            <li><strong>Email:</strong> support@mindory.in</li>
-            <li><strong>Website:</strong> www.mindory.in</li>
+            <li><strong>Email:</strong> ' . $supportEmail . '</li>
+            <li><strong>Website:</strong> ' . $siteHost . '</li>
             <li><strong>Response Time:</strong> Within 24 hours</li>
         </ul>
 
@@ -128,16 +130,16 @@ class PageSeeder extends Seeder
         </ul>
 
         <h2>We Value Your Feedback</h2>
-        <p>Your feedback helps us improve Mindory AI. Whether it\'s a feature request, bug report, or suggestion, we appreciate you taking the time to share your thoughts with us.</p>';
+        <p>Your feedback helps us improve BlinkStudy AI. Whether it\'s a feature request, bug report, or suggestion, we appreciate you taking the time to share your thoughts with us.</p>';
     }
 
     private function getPrivacyContent()
     {
-        return '<h2>Privacy Policy for Mindory AI</h2>
+        return '<h2>Privacy Policy for BlinkStudy AI</h2>
         <p><strong>Effective Date:</strong> ' . date('F d, Y') . '</p>
 
         <h2>1. Introduction</h2>
-        <p>Mindory AI ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and related services.</p>
+        <p>BlinkStudy AI ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and related services.</p>
 
         <h2>2. Information We Collect</h2>
         <h3>Account Information</h3>
@@ -207,7 +209,7 @@ class PageSeeder extends Seeder
         </ul>
 
         <h2>8. Contact Us</h2>
-        <p>If you have questions about this Privacy Policy, please contact us at <strong>support@mindory.in</strong></p>';
+        <p>If you have questions about this Privacy Policy, please contact us at <strong>' . $supportEmail . '</strong></p>';
     }
 
     private function getTermsContent()
@@ -216,10 +218,10 @@ class PageSeeder extends Seeder
         <p><strong>Last Updated:</strong> ' . date('F d, Y') . '</p>
 
         <h2>1. Agreement to Terms</h2>
-        <p>By accessing or using Mindory AI ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Service.</p>
+        <p>By accessing or using BlinkStudy AI ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Service.</p>
 
         <h2>2. Description of Service</h2>
-        <p>Mindory AI provides an AI-powered educational platform that includes:</p>
+        <p>BlinkStudy AI provides an AI-powered educational platform that includes:</p>
         <ul>
             <li>AI-powered doubt solving and explanations</li>
             <li>Image and document analysis</li>
@@ -258,7 +260,7 @@ class PageSeeder extends Seeder
         <h2>5. Intellectual Property</h2>
         <h3>Our Rights</h3>
         <ul>
-            <li>The Service and its content are owned by Mindory AI</li>
+            <li>The Service and its content are owned by BlinkStudy AI</li>
             <li>Our AI models and algorithms are proprietary</li>
             <li>You may not copy, modify, or distribute our content</li>
         </ul>
@@ -313,7 +315,7 @@ class PageSeeder extends Seeder
         <p>We may modify these Terms at any time. Continued use of the Service constitutes acceptance of changes.</p>
 
         <h2>12. Contact Us</h2>
-        <p>For questions about these Terms, contact us at <strong>support@mindory.in</strong></p>';
+        <p>For questions about these Terms, contact us at <strong>' . $supportEmail . '</strong></p>';
     }
 
     private function getRefundContent()
@@ -345,7 +347,7 @@ class PageSeeder extends Seeder
         <h3>How to Cancel:</h3>
         <ul>
             <li><strong>In-App:</strong> Go to Settings → Subscription → Cancel Subscription</li>
-            <li><strong>Email:</strong> Send a cancellation request to support@mindory.in</li>
+            <li><strong>Email:</strong> Send a cancellation request to ' . $supportEmail . '</li>
             <li><strong>Timing:</strong> Cancel at least 24 hours before renewal</li>
         </ul>
 
@@ -376,7 +378,7 @@ class PageSeeder extends Seeder
         <h2>6. Refund Request Process</h2>
         <h3>To Request a Refund:</h3>
         <ol>
-            <li>Send an email to <strong>support@mindory.in</strong></li>
+            <li>Send an email to <strong>' . $supportEmail . '</strong></li>
             <li>Include your transaction ID</li>
             <li>Provide purchase date and amount</li>
             <li>Explain the reason for refund</li>
@@ -418,8 +420,8 @@ class PageSeeder extends Seeder
         <h2>10. Contact Information</h2>
         <p>For refund requests or questions about this policy:</p>
         <ul>
-            <li><strong>Email:</strong> support@mindory.in</li>
-            <li><strong>Website:</strong> www.mindory.in</li>
+            <li><strong>Email:</strong> ' . $supportEmail . '</li>
+            <li><strong>Website:</strong> ' . $siteHost . '</li>
             <li><strong>Response Time:</strong> Within 24 hours</li>
         </ul>
 

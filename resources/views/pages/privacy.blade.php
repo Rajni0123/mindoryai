@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Privacy Policy - Mindory')
+@section('title', 'Privacy Policy - ' . config('app.name', 'BlinkStudy'))
 @section('description', 'Read our privacy policy to understand how we protect your data')
 
 @section('content')
@@ -25,7 +25,7 @@
                 <div>
                     <h2 class="text-xl font-semibold dark:text-white text-gray-900 mb-3">Our Commitment</h2>
                     <p class="dark:text-gray-400 text-gray-700 leading-relaxed">
-                        We value your privacy. This policy outlines how Mindory collects, uses, and protects your information when you use our AI-powered image analysis service.
+                        We value your privacy. This policy outlines how BlinkStudy collects, uses, and protects your information when you use our AI-powered image analysis service.
                     </p>
                 </div>
             </div>
@@ -291,7 +291,7 @@
     <!-- Quick Summary -->
     <div class="mt-8 text-center">
         <p class="dark:text-gray-500 text-gray-600 text-sm">
-            By using Mindory, you agree to this Privacy Policy.
+            By using BlinkStudy, you agree to this Privacy Policy.
         </p>
     </div>
 

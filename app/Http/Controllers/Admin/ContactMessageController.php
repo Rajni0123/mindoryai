@@ -63,8 +63,8 @@ class ContactMessageController extends Controller
         try {
             Mail::raw($validated['admin_reply'], function ($mail) use ($message) {
                 $mail->to($message->email, $message->name)
-                     ->subject('Re: ' . $message->subject . ' - Mindory Support')
-                     ->from('support@mindory.in', 'Mindory Support');
+                     ->subject('Re: ' . $message->subject . ' - ' . config('app.name') . ' Support')
+                     ->from(config('services.support_email'), config('app.name') . ' Support');
             });
         } catch (\Exception $e) {
             // Email send failed but reply is saved

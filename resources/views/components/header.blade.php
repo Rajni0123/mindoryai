@@ -1,7 +1,7 @@
 {{-- Shared Header — used by all pages --}}
 @php
     $siteLogo = \App\Models\HomepageSetting::getValue('site_logo');
-    $siteName = \App\Models\HomepageSetting::getValue('site_name', 'Mindory');
+    $siteName = \App\Models\HomepageSetting::getValue('site_name', 'BlinkStudy');
     $logoIcon = \App\Models\HomepageSetting::getValue('logo_icon', 'school');
 @endphp
 <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-4 pt-3">

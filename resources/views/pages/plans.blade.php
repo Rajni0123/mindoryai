@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Plans - ' . ($settings['site_name'] ?? 'Mindory'))
+@section('title', 'Plans - ' . ($settings['site_name'] ?? 'BlinkStudy'))
 
 @push('styles')
 <style>
@@ -62,9 +62,10 @@
                 @foreach($pricingPlans as $index => $plan)
                     @php
                         $features = $plan->features ?? [];
-                        $featuresList = $features['features_list'] ?? [];
+                        $featuresList = $features['features_list'] ?? $features['features'] ?? [];
                         $dailyLimits = $features['daily_limits'] ?? [];
-                        $isPopular = $plan->is_popular || ($plan->slug === 'pro') || ($features['popular'] ?? false);
+                        $isRecommended = ($features['recommended'] ?? false);
+                        $isPopular = !$isRecommended && ($plan->is_popular || ($features['popular'] ?? false));
                         $isFree = $plan->price == 0;
                         $hasWatermark = $features['watermark'] ?? false;
                         $hasAds = $features['ads'] ?? false;
@@ -73,17 +74,20 @@
                         $maxVideoLen = $features['max_video_length_seconds'] ?? 0;
 
                         $planColors = [
-                            'free'  => ['ring' => 'ring-gray-200 dark:ring-white/10', 'badge' => 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400', 'icon' => 'text-gray-400', 'btn' => 'dark:bg-white/5 bg-gray-100 dark:text-white text-gray-800 dark:hover:bg-white/10 hover:bg-gray-200'],
-                            'basic' => ['ring' => 'ring-primary/30', 'badge' => 'bg-primary/10 text-primary', 'icon' => 'text-primary', 'btn' => 'bg-primary text-white hover:bg-primary/90'],
-                            'pro'   => ['ring' => 'ring-secondary/40', 'badge' => 'bg-secondary/10 text-secondary', 'icon' => 'text-secondary', 'btn' => 'bg-gradient-to-r from-secondary to-orange-500 text-white hover:shadow-lg hover:shadow-secondary/25'],
+                            'free'      => ['ring' => 'ring-gray-200 dark:ring-white/10', 'badge' => 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400', 'icon' => 'text-gray-400', 'btn' => 'dark:bg-white/5 bg-gray-100 dark:text-white text-gray-800 dark:hover:bg-white/10 hover:bg-gray-200'],
+                            'basic'     => ['ring' => 'ring-primary/30', 'badge' => 'bg-primary/10 text-primary', 'icon' => 'text-primary', 'btn' => 'bg-primary text-white hover:bg-primary/90'],
+                            'starter'   => ['ring' => 'ring-primary/30', 'badge' => 'bg-primary/10 text-primary', 'icon' => 'text-primary', 'btn' => 'bg-primary text-white hover:bg-primary/90'],
+                            'pro'       => ['ring' => 'ring-secondary/40', 'badge' => 'bg-secondary/10 text-secondary', 'icon' => 'text-secondary', 'btn' => 'bg-gradient-to-r from-secondary to-orange-500 text-white hover:shadow-lg hover:shadow-secondary/25'],
+                            'unlimited' => ['ring' => 'ring-purple-500/40', 'badge' => 'bg-purple-500/10 text-purple-400', 'icon' => 'text-purple-400', 'btn' => 'bg-gradient-to-r from-purple-600 to-indigo-500 text-white hover:shadow-lg hover:shadow-purple-500/25'],
                         ];
                         $slug = $plan->slug ?? 'basic';
                         $colors = $planColors[$slug] ?? $planColors['basic'];
                     @endphp
 
+                    @php $hasBadge = $isPopular || $isRecommended; @endphp
                     <div class="plan-card animate-fade-up delay-{{ $index + 1 }} relative flex flex-col rounded-2xl border
                                 dark:bg-[#0d1117] bg-white
-                                {{ $isPopular ? 'plan-popular border-primary' : 'dark:border-white/8 border-gray-200' }}
+                                {{ $isPopular ? 'plan-popular border-primary' : ($isRecommended ? 'border-secondary shadow-lg shadow-secondary/10' : 'dark:border-white/8 border-gray-200') }}
                                 overflow-hidden">
 
                         @if($isPopular)
@@ -92,14 +96,22 @@
                                     <span class="text-[11px] font-bold text-white uppercase tracking-wider">Most Popular</span>
                                 </div>
                             </div>
+                        @elseif($isRecommended)
+                            <div class="absolute top-0 left-0 right-0">
+                                <div class="bg-gradient-to-r from-secondary to-orange-500 text-center py-1.5">
+                                    <span class="text-[11px] font-bold text-white uppercase tracking-wider">Best Value</span>
+                                </div>
+                            </div>
                         @endif
 
-                        <div class="flex flex-col flex-1 p-5 {{ $isPopular ? 'pt-11' : 'pt-5' }}">
+                        <div class="flex flex-col flex-1 p-5 {{ $hasBadge ? 'pt-11' : 'pt-5' }}">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center gap-2">
                                     <div class="w-8 h-8 rounded-lg {{ $colors['badge'] }} flex items-center justify-center">
                                         @if($isFree)
                                             <span class="material-symbols-outlined text-[16px]">person</span>
+                                        @elseif($slug === 'unlimited')
+                                            <span class="material-symbols-outlined text-[16px]">all_inclusive</span>
                                         @elseif($slug === 'pro')
                                             <span class="material-symbols-outlined text-[16px]">diamond</span>
                                         @else
@@ -333,7 +345,7 @@ function buyPlan(planId, planName, price) {
             key: data.razorpay_key,
             amount: data.amount,
             currency: data.currency,
-            name: 'Mindory',
+            name: 'BlinkStudy',
             description: planName + ' Plan',
             order_id: data.order_id,
             prefill: {

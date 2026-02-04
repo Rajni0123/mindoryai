@@ -42,7 +42,7 @@ class Config:
     FFPROBE_PATH = os.getenv("FFPROBE_PATH", "ffprobe")
 
     # Laravel callback
-    LARAVEL_API_URL = os.getenv("LARAVEL_API_URL", "https://mindory.in/api")
+    LARAVEL_API_URL = os.getenv("LARAVEL_API_URL", "http://localhost:8000/api")
     LARAVEL_CALLBACK_SECRET = os.getenv("LARAVEL_CALLBACK_SECRET", "")
 
     # Celery

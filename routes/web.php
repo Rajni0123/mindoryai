@@ -9,18 +9,18 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes - Main Website (mindory.in)
+| Web Routes - Main Website
 |--------------------------------------------------------------------------
 |
 | Main website routes for landing, login, register
-| Chat interface: chat.mindory.in
-| Admin panel: viru.mindory.in
-| API: api.mindory.in
+| Chat interface: chat.yourdomain.com
+| Admin panel: admin.yourdomain.com
+| API: api.yourdomain.com
 |
 */
 
 // Main routes - Public website
-// Production URL: mindory.in
+// Production URL: yourdomain.com
 
 // Landing page
 Route::get('/', [PageController::class, 'landing'])->name('home');
@@ -128,6 +128,8 @@ Route::get('/terms', [\App\Http\Controllers\PolicyDisplayController::class, 'ter
 Route::get('/refund-policy', [\App\Http\Controllers\PolicyDisplayController::class, 'refund'])->name('refund');
 Route::get('/cancellation-policy', [\App\Http\Controllers\PolicyDisplayController::class, 'cancellation'])->name('cancellation');
 Route::get('/cookie-policy', [\App\Http\Controllers\PolicyDisplayController::class, 'cookie'])->name('cookies');
+Route::get('/data-deletion', [\App\Http\Controllers\PolicyDisplayController::class, 'dataDeletion'])->name('data.deletion');
+Route::get('/account-deletion', function() { return redirect()->route('data.deletion'); });
 Route::get('/support', [\App\Http\Controllers\ContactController::class, 'show'])->name('support');
 Route::post('/support/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 Route::get('/faq', function () { return view('pages.faq'); })->name('faq');

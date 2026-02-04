@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Admin\AdminSettingController;
 
 // Admin subdomain - secure admin panel
-// Route::domain(env('ADMIN_SUBDOMAIN', 'viru.mindory.in'))
+// Route::domain(env('ADMIN_SUBDOMAIN', 'admin.' . env('MAIN_DOMAIN', 'localhost')))
 //     ->name('admin.')
 //     ->group(function () {
 //         // ... (all routes commented out)

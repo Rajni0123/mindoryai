@@ -4,7 +4,12 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin Login - Mindory</title>
+    @php
+        $siteLogo = \App\Models\HomepageSetting::getValue('site_logo');
+        $siteName = \App\Models\HomepageSetting::getValue('site_name', config('app.name', 'BlinkStudy'));
+        $logoIcon = \App\Models\HomepageSetting::getValue('logo_icon', 'school');
+    @endphp
+    <title>Admin Login - {{ $siteName }}</title>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -20,8 +25,13 @@
     <div class="w-full max-w-sm">
         <!-- Logo/Header -->
         <div class="text-center mb-6">
+            @if($siteLogo)
+                <div class="flex items-center justify-center mb-3">
+                    <img src="{{ asset($siteLogo) }}" alt="{{ $siteName }}" class="w-10 h-10 rounded-lg object-contain">
+                </div>
+            @endif
             <h1 class="text-2xl font-semibold mb-1">Admin Access</h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Secure admin authentication</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ $siteName }} - Secure admin authentication</p>
         </div>
 
         <!-- Login Card -->

@@ -1,5 +1,5 @@
 """
-Mindory Manim Whiteboard Video Server
+BlinkStudy Manim Whiteboard Video Server
 Flask API that generates animated whiteboard videos using Manim + Edge TTS + FFmpeg
 """
 
