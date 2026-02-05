@@ -8,14 +8,6 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Display the user dashboard/home page
-     */
-    public function dashboard()
-    {
-        return view('pages.home');
-    }
-
-    /**
      * Display the protected AI chat interface
      *
      * @return \Illuminate\View\View
@@ -25,7 +17,7 @@ class HomeController extends Controller
         // Check if chat feature is enabled by admin
         $chatEnabled = \App\Models\DynamicAppConfig::getValue('features.chat_enabled', true);
         if (!$chatEnabled) {
-            return redirect()->route('dashboard')->with('info', 'Chat feature is currently disabled. Please check back later.');
+            return redirect()->route('home')->with('info', 'Chat feature is currently disabled. Please check back later.');
         }
 
         $settings = [

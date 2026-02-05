@@ -195,6 +195,9 @@ class DashboardController extends Controller
             }
         }
 
+        // Chat page enable/disable from DynamicAppConfig
+        $settings['chat_enabled'] = \App\Models\DynamicAppConfig::getValue('features.chat_enabled', true) ? '1' : '0';
+
         return view('admin.settings', compact('settings'));
     }
 
@@ -204,7 +207,10 @@ class DashboardController extends Controller
     public function updateSettings(Request $request)
     {
         try {
-            $data = $request->except(['_token', '_method']);
+            // Handle chat enable/disable (stored in DynamicAppConfig)
+            \App\Models\DynamicAppConfig::setValue('features.chat_enabled', $request->boolean('chat_enabled'), 'boolean');
+
+            $data = $request->except(['_token', '_method', 'chat_enabled']);
 
             // List of homepage settings keys
             $homepageKeys = [

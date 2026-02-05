@@ -223,7 +223,7 @@
                         overlay.style.opacity = '0';
                         setTimeout(function() {
                             overlay.remove();
-                            window.location.href = '/home';
+                            window.location.href = '/chat';
                         }, 400);
                     }, 500);
                 } else {

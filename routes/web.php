@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
 
         // Redirect if profile already complete
         if ($user->name && $user->name !== 'User' && !str_starts_with($user->name, 'User ')) {
-            return redirect()->route('dashboard');
+            return redirect()->route('chat');
         }
 
         return view('auth.profile-setup', compact('user'));
@@ -93,7 +93,7 @@ Route::middleware('auth')->group(function () {
 
         $user->save();
 
-        return redirect()->route('dashboard')->with('success', 'Profile updated successfully!');
+        return redirect()->route('chat')->with('success', 'Profile updated successfully!');
     })->name('profile.setup.update');
 });
 
@@ -183,9 +183,6 @@ Route::get('/contact', function() {
         // Razorpay direct checkout (AJAX from pricing page)
         Route::post('/payment/create-razorpay-order', [\App\Http\Controllers\PaymentController::class, 'createRazorpayOrder'])->name('payment.razorpay.create');
         Route::post('/payment/verify-razorpay', [\App\Http\Controllers\PaymentController::class, 'verifyRazorpayOrder'])->name('payment.razorpay.verify');
-
-        // User Dashboard (home page after login)
-        Route::get('/home', [HomeController::class, 'dashboard'])->name('dashboard');
 
         // AI Chat interface (for users only) - requires active subscription
         Route::get('/chat', [HomeController::class, 'index'])->middleware('subscription.active')->name('chat');

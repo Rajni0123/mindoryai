@@ -48,7 +48,7 @@ class SocialAuthController extends Controller
                     session()->put('access_granted', true);
 
                     // Redirect to class selection if not selected, otherwise to chat
-                    $redirectRoute = !$user->student_class ? route('class.select') : route('dashboard');
+                    $redirectRoute = !$user->student_class ? route('class.select') : route('chat');
 
                     return redirect($redirectRoute)
                         ->with('success', 'Welcome back, ' . $user->name . '!');

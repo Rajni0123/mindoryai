@@ -332,7 +332,7 @@ class UnifiedLoginController extends Controller
                     'profile_completed' => $user->profile_completed,
                 ],
                 'needs_profile_completion' => $needsProfileCompletion,
-                'redirect' => $user->role === 'admin' ? 'admin' : 'home',
+                'redirect' => $user->role === 'admin' ? 'admin' : 'chat',
             ]);
         }
 
@@ -415,8 +415,8 @@ class UnifiedLoginController extends Controller
 
         // Profile completion is now handled via popup on the chat page
 
-        // Redirect to dashboard after successful login
-        return route('dashboard');
+        // Redirect to chat after successful login
+        return route('chat');
     }
 
     /**
