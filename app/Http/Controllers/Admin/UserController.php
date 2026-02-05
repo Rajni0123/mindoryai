@@ -112,6 +112,8 @@ class UserController extends Controller
 
     /**
      * Store a newly created user
+     * NOTE: Admin registration is PERMANENTLY CLOSED
+     * Only existing admins remain - new users are always 'user' role
      */
     public function store(Request $request)
     {
@@ -119,16 +121,18 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:user,admin',
             'plan_id' => 'nullable|exists:user_plans,id',
             'is_active' => 'nullable|boolean',
         ]);
 
+        // SECURITY: Admin registration permanently closed
+        // All new users are created as 'user' role only
+        // To add new admin, update role directly in database
         $userData = [
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
-            'role' => $validated['role'],
+            'role' => 'user', // ALWAYS user - admin registration closed
             'is_active' => $request->has('is_active') ? 1 : 0,
             'tokens_used' => 0,
         ];

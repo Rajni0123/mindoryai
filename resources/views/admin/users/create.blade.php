@@ -98,14 +98,14 @@
                                 <p class="mt-1 text-xs text-gray-500">Minimum 8 characters</p>
                             </div>
 
-                            <!-- Role -->
+                            <!-- Role (Admin registration closed) -->
                             <div>
-                                <label class="block text-sm font-medium text-soft-grey mb-2">Role *</label>
-                                <select name="role" required
-                                    class="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg focus:ring-2 focus:ring-neon-blue focus:border-transparent text-white">
-                                    <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
-                                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                                </select>
+                                <label class="block text-sm font-medium text-soft-grey mb-2">Role</label>
+                                <div class="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white flex items-center">
+                                    <span class="material-icons-outlined text-neon-blue mr-2" style="font-size: 18px;">person</span>
+                                    User
+                                </div>
+                                <p class="mt-1 text-xs text-yellow-500">⚠️ Admin registration is closed. New users are always regular users.</p>
                             </div>
 
                             <!-- Plan -->
