@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Models\AiModel;
 use App\Models\FrontendConfig;
 use App\Services\UsageTrackingService;
+use App\Services\UsageLimitService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +23,13 @@ use Illuminate\Support\Facades\Log;
  */
 class ConversationController extends Controller
 {
+    protected UsageLimitService $usageLimitService;
+
+    public function __construct(UsageLimitService $usageLimitService)
+    {
+        $this->usageLimitService = $usageLimitService;
+    }
+
     /**
      * Get or create active conversation for current user
      *
@@ -92,12 +100,27 @@ class ConversationController extends Controller
      */
     public function sendMessage(Request $request)
     {
+        $user = Auth::user();
+
+        // Check usage limits BEFORE processing
+        if ($user && $user->role !== 'admin') {
+            $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_exceeded' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
+        }
+
         $request->validate([
             'message' => 'required|string|min:1|max:5000',
             'model_id' => 'nullable|integer|exists:ai_models,id',
         ]);
 
-        $user = Auth::user();
         $userMessage = $request->input('message');
         $modelId = $request->input('model_id');
 
@@ -278,6 +301,8 @@ class ConversationController extends Controller
                 $estimatedTokens = (int) ((strlen($userMessage) + strlen($fullResponse)) / 4);
                 UsageTrackingService::trackMessage($user->id, $aiModel->model_identifier, $estimatedTokens);
                 UsageTrackingService::trackApiCall($user->id, $aiModel->model_identifier, $estimatedTokens, ['type' => 'chat_stream', 'conversation_id' => $conversation->id], null);
+                // Record usage for daily limits
+                $this->usageLimitService->recordUsage($user, 'chat');
 
                 Log::info('Message added to conversation', [
                     'conversation_id' => $conversation->id,

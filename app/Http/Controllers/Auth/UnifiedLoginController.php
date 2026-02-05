@@ -192,12 +192,12 @@ class UnifiedLoginController extends Controller
         $isNewUser = false;
 
         if (!$user) {
-            // Check if mobile is admin mobile
-            $adminMobiles = ['9102453339']; // Add admin mobile numbers here
-            $isAdmin = in_array($mobile, $adminMobiles);
+            // SECURITY: Admin accounts can ONLY be created manually in database
+            // New registrations via OTP are ALWAYS regular users
+            // If you need to add an admin, do it directly in the database or via existing admin panel
 
-            // Create new user (role based on admin list)
-            $uniqueEmail = $mobile . '_' . time() . ($isAdmin ? '@admin.' . config('services.main_domain', 'example.com') : '@mobile.user');
+            // Create new regular user
+            $uniqueEmail = $mobile . '_' . time() . '@mobile.user';
 
             try {
                 // Get default plan (check user_plans table, not pricing_plans)
@@ -206,14 +206,14 @@ class UnifiedLoginController extends Controller
                 // Use forceFill to set 'role' which is guarded against mass-assignment
                 $user = new User();
                 $user->forceFill([
-                    'name' => $isAdmin ? 'Admin' : 'User ' . substr($mobile, -4),
+                    'name' => 'User ' . substr($mobile, -4),
                     'email' => $uniqueEmail,
                     'mobile' => $mobile,
                     'mobile_verified_at' => now(),
                     'password' => bcrypt(uniqid()),
-                    'role' => $isAdmin ? 'admin' : 'user',
+                    'role' => 'user', // ALWAYS user - admins must be created manually
                     'plan_id' => $defaultPlanId,
-                    'token_limit' => $isAdmin ? 999999 : 150,
+                    'token_limit' => 150,
                     'tokens_used' => 0,
                     'is_active' => true,
                 ])->save();
@@ -663,14 +663,13 @@ class UnifiedLoginController extends Controller
         $isNewUser = false;
 
         if (!$user) {
-            // Check if email is admin email
-            $adminEmails = [config('services.admin_email')]; // Add admin emails here
-            $isAdmin = in_array($email, $adminEmails);
+            // SECURITY: Admin accounts can ONLY be created manually in database
+            // New registrations via email OTP are ALWAYS regular users
+            // If you need to add an admin, do it directly in the database or via existing admin panel
 
-            // Create new user (role based on admin list)
             // Extract a name from email (before @)
             $emailName = explode('@', $email)[0];
-            $userName = $isAdmin ? 'Admin' : ucfirst($emailName);
+            $userName = ucfirst($emailName);
 
             try {
                 // Get default plan (check user_plans table, not pricing_plans)
@@ -683,9 +682,9 @@ class UnifiedLoginController extends Controller
                     'email' => $email,
                     'email_verified_at' => now(),
                     'password' => bcrypt(uniqid()),
-                    'role' => $isAdmin ? 'admin' : 'user',
+                    'role' => 'user', // ALWAYS user - admins must be created manually
                     'plan_id' => $defaultPlanId,
-                    'token_limit' => $isAdmin ? 999999 : 150,
+                    'token_limit' => 150,
                     'tokens_used' => 0,
                     'is_active' => true,
                 ])->save();

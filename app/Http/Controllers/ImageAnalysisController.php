@@ -8,6 +8,7 @@ use App\Services\OpenAIService;
 use App\Services\RAGService;
 use App\Services\FileStorageService;
 use App\Services\UsageTrackingService;
+use App\Services\UsageLimitService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,13 +22,15 @@ class ImageAnalysisController extends Controller
     protected ImageService $imageService;
     protected RAGService $ragService;
     protected FileStorageService $fileStorageService;
+    protected UsageLimitService $usageLimitService;
 
-    public function __construct(OpenAIService $openAIService, ImageService $imageService, RAGService $ragService, FileStorageService $fileStorageService)
+    public function __construct(OpenAIService $openAIService, ImageService $imageService, RAGService $ragService, FileStorageService $fileStorageService, UsageLimitService $usageLimitService)
     {
         $this->openAIService = $openAIService;
         $this->imageService = $imageService;
         $this->ragService = $ragService;
         $this->fileStorageService = $fileStorageService;
+        $this->usageLimitService = $usageLimitService;
     }
 
     /**
@@ -39,6 +42,21 @@ class ImageAnalysisController extends Controller
     public function analyze(Request $request): JsonResponse
     {
         try {
+            // Check usage limits BEFORE processing
+            $user = Auth::user();
+            if ($user && $user->role !== 'admin') {
+                $limitCheck = $this->usageLimitService->canUse($user, 'scan_solve');
+                if (!$limitCheck['allowed']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $limitCheck['reason'],
+                        'limit_exceeded' => true,
+                        'used' => $limitCheck['used'],
+                        'limit' => $limitCheck['limit'],
+                    ], 429);
+                }
+            }
+
             // Validate the request
             $request->validate([
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:10240', // Max 10MB
@@ -109,10 +127,11 @@ class ImageAnalysisController extends Controller
             ]);
 
             // Track usage (image upload and API call)
-            $user = Auth::user();
             if ($user) {
                 UsageTrackingService::trackImageUpload($user->id, 1);
                 UsageTrackingService::trackApiCall($user->id, 'gpt-4o-vision', 100, ['type' => 'image_analysis'], null);
+                // Record usage for daily limits
+                $this->usageLimitService->recordUsage($user, 'scan_solve');
             }
 
             // Mark image for deletion (will be cleaned up by cron job)
@@ -157,6 +176,21 @@ class ImageAnalysisController extends Controller
     public function analyzePdf(Request $request): JsonResponse
     {
         try {
+            // Check usage limits BEFORE processing
+            $user = Auth::user();
+            if ($user && $user->role !== 'admin') {
+                $limitCheck = $this->usageLimitService->canUse($user, 'pdf_upload');
+                if (!$limitCheck['allowed']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $limitCheck['reason'],
+                        'limit_exceeded' => true,
+                        'used' => $limitCheck['used'],
+                        'limit' => $limitCheck['limit'],
+                    ], 429);
+                }
+            }
+
             // Validate the request
             $request->validate([
                 'pdf' => 'required|file|mimes:pdf|max:10240', // Max 10MB
@@ -264,6 +298,8 @@ class ImageAnalysisController extends Controller
             if ($user) {
                 UsageTrackingService::trackImageUpload($user->id, 1); // Track as file upload
                 UsageTrackingService::trackApiCall($user->id, 'gpt-4o', 150, ['type' => 'pdf_analysis'], null);
+                // Record usage for daily/monthly limits
+                $this->usageLimitService->recordUsage($user, 'pdf_upload');
             }
 
             // Clean up PDF file immediately after processing
@@ -307,6 +343,21 @@ class ImageAnalysisController extends Controller
     public function askQuestion(Request $request): JsonResponse
     {
         try {
+            // Check usage limits BEFORE processing
+            $user = Auth::user();
+            if ($user && $user->role !== 'admin') {
+                $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+                if (!$limitCheck['allowed']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $limitCheck['reason'],
+                        'limit_exceeded' => true,
+                        'used' => $limitCheck['used'],
+                        'limit' => $limitCheck['limit'],
+                    ], 429);
+                }
+            }
+
             // Validate the request
             $request->validate([
                 'question' => 'required|string|min:3|max:1000',
@@ -368,6 +419,8 @@ class ImageAnalysisController extends Controller
                     'rag_enabled' => true,
                     'chunks_used' => $ragResult['chunks_count']
                 ], null);
+                // Record usage for daily limits
+                $this->usageLimitService->recordUsage($user, 'chat');
             }
 
             return response()->json([
@@ -413,6 +466,21 @@ class ImageAnalysisController extends Controller
     public function stream(Request $request)
     {
         try {
+            // Check usage limits BEFORE processing
+            $user = Auth::user();
+            if ($user && $user->role !== 'admin') {
+                $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+                if (!$limitCheck['allowed']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $limitCheck['reason'],
+                        'limit_exceeded' => true,
+                        'used' => $limitCheck['used'],
+                        'limit' => $limitCheck['limit'],
+                    ], 429);
+                }
+            }
+
             $request->validate([
                 'message' => 'required|string|min:1|max:5000',
                 'model_id' => 'nullable|integer|exists:ai_models,id'
@@ -684,6 +752,8 @@ class ImageAnalysisController extends Controller
                                 $estimatedTokens = (int) ((strlen($userMessage) + strlen($fullResponse)) / 4);
                                 UsageTrackingService::trackMessage($user->id, $aiModel->model_identifier, $estimatedTokens);
                                 UsageTrackingService::trackApiCall($user->id, $aiModel->model_identifier, $estimatedTokens, ['type' => 'chat_stream'], null);
+                                // Record usage for daily limits
+                                $this->usageLimitService->recordUsage($user, 'chat');
                             }
                         } else {
                             echo "data: " . json_encode(['error' => 'Empty response from Gemini']) . "\n\n";
@@ -836,6 +906,8 @@ class ImageAnalysisController extends Controller
                         $estimatedTokens = (int) ((strlen($userMessage) + strlen($fullResponse)) / 4);
                         UsageTrackingService::trackMessage($user->id, $aiModel->model_identifier, $estimatedTokens);
                         UsageTrackingService::trackApiCall($user->id, $aiModel->model_identifier, $estimatedTokens, ['type' => 'chat_stream'], null);
+                        // Record usage for daily limits
+                        $this->usageLimitService->recordUsage($user, 'chat');
                     }
                 }
 
