@@ -1,145 +1,203 @@
 @extends('layouts.app')
 
-@section('title', 'Home - ' . config('app.name', 'BlinkStudy'))
-@section('description', 'Upload an image and get AI-powered educational insights in engaging storytelling style')
+@section('title', 'Dashboard - ' . config('app.name', 'BlinkStudy'))
+@section('description', 'Your AI-powered study dashboard. Ask doubts, take quizzes, and learn with AI.')
+
+@push('styles')
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+    .card-shadow { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+    .dark .card-shadow { box-shadow: none; }
+    h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif; }
+</style>
+@endpush
+
+@php
+    $user = auth()->user();
+    $hour = now()->format('H');
+    $greeting = $hour < 12 ? 'Good Morning' : ($hour < 17 ? 'Good Afternoon' : 'Good Evening');
+    $userName = $user->name ?? 'Student';
+    $firstName = explode(' ', $userName)[0];
+
+    // Plan info
+    $planName = 'Free';
+    if ($user->userPlan) {
+        $planName = $user->userPlan->name;
+    }
+@endphp
 
 @section('content')
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-[1200px] mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
 
-    <!-- Hero Section -->
-    <div class="text-center mb-12 fade-in">
-        <h1 class="text-4xl md:text-5xl font-bold dark:text-white text-gray-900 mb-4">
-            Welcome to <span class="text-primary">{{ config('app.name', 'BlinkStudy') }}</span>
-        </h1>
-        <p class="text-lg dark:text-gray-400 text-gray-600 max-w-2xl mx-auto">
-            Upload any image and get an educational, engaging explanation powered by AI.
-            Learn about anything in a storytelling style!
-        </p>
-    </div>
-
-    <!-- Chat Interface Container -->
-    <div class="dark:bg-white/[0.02] bg-white rounded-2xl shadow-xl dark:shadow-none dark:border dark:border-white/[0.06] overflow-hidden">
-
-        <!-- Chat Messages Area -->
-        <div id="chatContainer" class="min-h-[400px] max-h-[600px] overflow-y-auto p-6 space-y-4 dark:bg-white/[0.02] bg-gray-50">
-
-            <!-- Welcome Message -->
-            <div class="flex items-start space-x-3 fade-in">
-                <div class="flex-shrink-0">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="flex-1">
-                    <div class="dark:bg-white/5 bg-white rounded-lg shadow-sm dark:shadow-none p-4 border dark:border-white/10 border-gray-200">
-                        <p class="dark:text-gray-300 text-gray-800 leading-relaxed">
-                            नमस्ते! मैं आपका AI learning companion हूं। आप मुझसे कोई भी सवाल पूछ सकते हैं या कोई image upload कर सकते हैं।
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dynamic messages will be appended here -->
-
-        </div>
-
-        <!-- Input Area -->
-        <div class="dark:bg-white/[0.02] bg-white border-t dark:border-white/[0.06] border-gray-200 p-4">
-            <form id="imageUploadForm" enctype="multipart/form-data">
-                @csrf
-
-                <!-- Image Preview -->
-                <div id="imagePreviewContainer" class="hidden mb-4">
-                    <div class="relative inline-block">
-                        <img id="imagePreview" src="" alt="Preview" class="max-h-48 rounded-lg shadow-lg">
-                        <button type="button" id="removeImage" class="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-lg transition duration-200">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Text Input for Questions -->
-                <div class="mb-4">
-                    <textarea
-                        id="questionInput"
-                        name="question"
-                        rows="3"
-                        placeholder="Type your question here... या कोई भी सवाल पूछें..."
-                        class="w-full px-4 py-3 border dark:border-white/10 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none dark:bg-white/5 dark:text-white dark:placeholder-gray-500"
-                    ></textarea>
-                </div>
-
-                <!-- Upload Button and Submit -->
-                <div class="flex items-center space-x-3">
-                    <!-- File Input (Hidden) -->
-                    <input type="file" id="imageInput" name="image" accept="image/*" class="hidden">
-
-                    <!-- Upload Button -->
-                    <button type="button" id="uploadButton" class="flex-shrink-0 text-white p-3 rounded-lg transition duration-200 shadow-md hover:shadow-lg bg-primary hover:bg-primary/90" title="Upload Image">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    </button>
-
-                    <!-- Submit Button -->
-                    <button type="submit" id="analyzeButton" class="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
-                        <span id="buttonText">Ask AI / Analyze</span>
-                    </button>
-                </div>
-
-                <!-- Info Text -->
-                <p class="text-xs dark:text-gray-500 text-gray-500 mt-3 text-center">
-                    Type a question upload an image (JPG, PNG - Max: 2MB)
+    {{-- Page Heading --}}
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-10">
+        <div class="flex flex-col gap-2">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-black dark:text-white text-gray-900 leading-tight tracking-tight">
+                {{ $greeting }}, {{ $firstName }}.
+            </h1>
+            <div class="flex flex-wrap items-center gap-3">
+                <p class="dark:text-gray-400 text-gray-600 text-sm sm:text-base font-medium">
+                    Plan: <span class="text-primary font-bold">{{ $planName }}</span>
                 </p>
-            </form>
+                <div class="flex items-center gap-1 bg-amber-500/10 text-amber-500 px-2.5 py-0.5 rounded-full text-xs sm:text-sm font-bold border border-amber-500/20">
+                    <span class="material-symbols-outlined" style="font-size: 16px;">bolt</span>
+                    <span>AI Powered</span>
+                </div>
+            </div>
         </div>
-
+        <a href="{{ route('chat') }}" class="flex w-full sm:w-auto min-w-[160px] cursor-pointer items-center justify-center gap-2 rounded-xl h-11 sm:h-12 px-6 bg-primary text-white text-sm sm:text-base font-bold shadow-lg shadow-primary/25 hover:opacity-90 transition-all active:scale-95">
+            <span class="material-symbols-outlined" style="font-size: 20px;">chat</span>
+            <span>Start Chat</span>
+        </a>
     </div>
 
-    <!-- Features Section -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <div class="text-center p-6 dark:bg-white/[0.02] bg-white rounded-xl shadow-sm dark:shadow-none dark:border dark:border-white/[0.06] hover:shadow-md dark:hover:border-white/10 transition duration-200">
-            <div class="w-12 h-12 dark:bg-primary/10 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-            </div>
-            <h3 class="font-semibold dark:text-white text-gray-900 mb-2">Educational</h3>
-            <p class="text-sm dark:text-gray-400 text-gray-600">Get detailed, informative explanations</p>
-        </div>
-
-        <div class="text-center p-6 dark:bg-white/[0.02] bg-white rounded-xl shadow-sm dark:shadow-none dark:border dark:border-white/[0.06] hover:shadow-md dark:hover:border-white/10 transition duration-200">
-            <div class="w-12 h-12 dark:bg-purple-500/10 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-6 h-6 dark:text-purple-400 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-            </div>
-            <h3 class="font-semibold dark:text-white text-gray-900 mb-2">Secure</h3>
-            <p class="text-sm dark:text-gray-400 text-gray-600">Auto-delete images after 60 seconds</p>
-        </div>
-
-        <div class="text-center p-6 dark:bg-white/[0.02] bg-white rounded-xl shadow-sm dark:shadow-none dark:border dark:border-white/[0.06] hover:shadow-md dark:hover:border-white/10 transition duration-200">
-            <div class="w-12 h-12 dark:bg-green-500/10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-6 h-6 dark:text-green-400 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-            </div>
-            <h3 class="font-semibold dark:text-white text-gray-900 mb-2">Fast</h3>
-            <p class="text-sm dark:text-gray-400 text-gray-600">AI-powered instant analysis</p>
+    {{-- Quick Action Bar --}}
+    <div class="mb-10 sm:mb-12">
+        <h3 class="dark:text-white text-gray-900 text-base sm:text-lg font-bold mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary" style="font-size: 20px;">auto_awesome</span>
+            Quick AI Actions
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+            <a href="{{ route('chat') }}" class="flex flex-1 gap-4 rounded-xl border dark:border-white/10 border-gray-200 dark:bg-white/[0.02] bg-white p-4 sm:p-5 hover:border-primary/50 transition-colors cursor-pointer group">
+                <div class="size-10 sm:size-12 rounded-lg dark:bg-primary/10 bg-teal-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+                    <span class="material-symbols-outlined text-[24px] sm:text-[28px]">psychology_alt</span>
+                </div>
+                <div class="flex flex-col gap-0.5">
+                    <h2 class="dark:text-white text-gray-900 text-sm sm:text-base font-bold">Ask a Doubt</h2>
+                    <p class="dark:text-gray-400 text-gray-500 text-xs sm:text-sm">Get instant AI explanations</p>
+                </div>
+            </a>
+            <a href="{{ route('chat') }}" class="flex flex-1 gap-4 rounded-xl border dark:border-white/10 border-gray-200 dark:bg-white/[0.02] bg-white p-4 sm:p-5 hover:border-primary/50 transition-colors cursor-pointer group">
+                <div class="size-10 sm:size-12 rounded-lg dark:bg-amber-500/10 bg-amber-50 flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors shrink-0">
+                    <span class="material-symbols-outlined text-[24px] sm:text-[28px]">add_a_photo</span>
+                </div>
+                <div class="flex flex-col gap-0.5">
+                    <h2 class="dark:text-white text-gray-900 text-sm sm:text-base font-bold">Upload Image</h2>
+                    <p class="dark:text-gray-400 text-gray-500 text-xs sm:text-sm">Scan questions from textbooks</p>
+                </div>
+            </a>
+            <a href="{{ route('chat') }}" class="flex flex-1 gap-4 rounded-xl border dark:border-white/10 border-gray-200 dark:bg-white/[0.02] bg-white p-4 sm:p-5 hover:border-primary/50 transition-colors cursor-pointer group">
+                <div class="size-10 sm:size-12 rounded-lg dark:bg-purple-500/10 bg-purple-50 flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors shrink-0">
+                    <span class="material-symbols-outlined text-[24px] sm:text-[28px]">quiz</span>
+                </div>
+                <div class="flex flex-col gap-0.5">
+                    <h2 class="dark:text-white text-gray-900 text-sm sm:text-base font-bold">AI Quiz</h2>
+                    <p class="dark:text-gray-400 text-gray-500 text-xs sm:text-sm">Test your knowledge instantly</p>
+                </div>
+            </a>
         </div>
     </div>
 
+    {{-- Study Subjects --}}
+    <div class="mb-10 sm:mb-12">
+        <div class="flex items-center justify-between mb-5 sm:mb-6">
+            <h2 class="dark:text-white text-gray-900 text-lg sm:text-2xl font-bold">Study Subjects</h2>
+            <a href="{{ route('chat') }}" class="text-primary font-bold text-xs sm:text-sm hover:underline">Ask About Any Topic</a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            @php
+                $subjects = [
+                    ['name' => 'Mathematics', 'icon' => 'calculate', 'color' => 'primary', 'desc' => 'Algebra, Geometry, Calculus'],
+                    ['name' => 'Science', 'icon' => 'science', 'color' => 'green-500', 'desc' => 'Physics, Chemistry, Bio'],
+                    ['name' => 'English', 'icon' => 'menu_book', 'color' => 'blue-500', 'desc' => 'Grammar, Literature'],
+                    ['name' => 'Hindi', 'icon' => 'translate', 'color' => 'amber-500', 'desc' => 'Vyakaran, Sahitya'],
+                    ['name' => 'Social Studies', 'icon' => 'public', 'color' => 'purple-500', 'desc' => 'History, Geography, Civics'],
+                    ['name' => 'Computer Science', 'icon' => 'terminal', 'color' => 'cyan-500', 'desc' => 'Programming, IT'],
+                    ['name' => 'GK', 'icon' => 'lightbulb', 'color' => 'pink-500', 'desc' => 'General Knowledge'],
+                    ['name' => 'Competitive', 'icon' => 'emoji_events', 'color' => 'orange-500', 'desc' => 'JEE, NEET, UPSC'],
+                ];
+            @endphp
+
+            @foreach($subjects as $subject)
+            <a href="{{ route('chat') }}" class="dark:bg-white/[0.02] bg-white rounded-xl border dark:border-white/10 border-gray-200 p-4 sm:p-5 flex flex-col items-center gap-3 hover:border-{{ $subject['color'] }}/50 transition-all duration-200 group card-shadow">
+                <div class="size-10 sm:size-12 rounded-lg dark:bg-{{ $subject['color'] }}/10 bg-{{ $subject['color'] }}/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-{{ $subject['color'] }} text-xl sm:text-2xl">{{ $subject['icon'] }}</span>
+                </div>
+                <div class="text-center">
+                    <h4 class="text-xs sm:text-sm font-bold dark:text-white text-gray-900">{{ $subject['name'] }}</h4>
+                    <p class="text-[10px] sm:text-xs dark:text-gray-500 text-gray-400 mt-0.5 hidden sm:block">{{ $subject['desc'] }}</p>
+                </div>
+            </a>
+            @endforeach
+        </div>
+    </div>
+
+    {{-- Features & AI Info --}}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        {{-- Main Feature Card --}}
+        <div class="lg:col-span-2 dark:bg-white/[0.02] bg-white rounded-xl p-5 sm:p-6 card-shadow border dark:border-white/10 border-gray-200">
+            <h3 class="text-base sm:text-lg font-bold dark:text-white text-gray-900 mb-4 sm:mb-6">What BlinkStudy AI Can Do</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div class="flex items-start gap-3 p-3 rounded-lg dark:bg-white/[0.02] bg-gray-50">
+                    <span class="material-symbols-outlined text-primary shrink-0" style="font-size: 20px;">auto_awesome</span>
+                    <div>
+                        <h4 class="text-sm font-bold dark:text-white text-gray-900">Instant Doubt Solving</h4>
+                        <p class="text-xs dark:text-gray-400 text-gray-500 mt-0.5">Type or upload any question, get step-by-step answers</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 p-3 rounded-lg dark:bg-white/[0.02] bg-gray-50">
+                    <span class="material-symbols-outlined text-amber-500 shrink-0" style="font-size: 20px;">image</span>
+                    <div>
+                        <h4 class="text-sm font-bold dark:text-white text-gray-900">Image Analysis</h4>
+                        <p class="text-xs dark:text-gray-400 text-gray-500 mt-0.5">Snap a photo of your textbook and get explanations</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 p-3 rounded-lg dark:bg-white/[0.02] bg-gray-50">
+                    <span class="material-symbols-outlined text-purple-500 shrink-0" style="font-size: 20px;">quiz</span>
+                    <div>
+                        <h4 class="text-sm font-bold dark:text-white text-gray-900">AI Quizzes</h4>
+                        <p class="text-xs dark:text-gray-400 text-gray-500 mt-0.5">Practice with auto-generated MCQ questions</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 p-3 rounded-lg dark:bg-white/[0.02] bg-gray-50">
+                    <span class="material-symbols-outlined text-green-500 shrink-0" style="font-size: 20px;">school</span>
+                    <div>
+                        <h4 class="text-sm font-bold dark:text-white text-gray-900">All Subjects</h4>
+                        <p class="text-xs dark:text-gray-400 text-gray-500 mt-0.5">CBSE, ICSE, State Boards & Competitive exams</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- CTA Card --}}
+        <div class="bg-gradient-to-br from-primary to-teal-600 rounded-xl p-5 sm:p-6 text-white flex flex-col justify-between overflow-hidden relative card-shadow">
+            <div class="relative z-10">
+                <div class="flex items-center gap-1.5 mb-2">
+                    <span class="material-symbols-outlined" style="font-size: 18px;">bolt</span>
+                    <h3 class="font-bold text-sm opacity-80">AI Ready</h3>
+                </div>
+                <p class="text-xl sm:text-2xl font-black">Start Learning Now</p>
+                <p class="text-sm mt-3 opacity-90 leading-relaxed">Ask any doubt in Hindi or English. Our AI gives instant, detailed answers with explanations.</p>
+            </div>
+            <div class="relative z-10 mt-5 sm:mt-6">
+                <a href="{{ route('chat') }}" class="block w-full bg-white text-primary px-4 py-2.5 rounded-lg font-bold text-sm text-center hover:bg-gray-100 transition-colors">
+                    Open AI Chat
+                </a>
+            </div>
+            <div class="absolute -right-4 -bottom-4 opacity-20">
+                <span class="material-symbols-outlined" style="font-size: 100px;">psychology</span>
+            </div>
+        </div>
+    </div>
+
+    {{-- Quick Links --}}
+    <div class="mt-8 sm:mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <a href="{{ route('plans') }}" class="flex items-center gap-2 px-4 py-3 rounded-xl dark:bg-white/[0.02] bg-white border dark:border-white/10 border-gray-200 hover:border-primary/40 transition-colors group">
+            <span class="material-symbols-outlined text-primary" style="font-size: 20px;">diamond</span>
+            <span class="text-xs sm:text-sm font-semibold dark:text-gray-300 text-gray-700 group-hover:text-primary transition-colors">Plans</span>
+        </a>
+        <a href="{{ url('/user/settings') }}" class="flex items-center gap-2 px-4 py-3 rounded-xl dark:bg-white/[0.02] bg-white border dark:border-white/10 border-gray-200 hover:border-primary/40 transition-colors group">
+            <span class="material-symbols-outlined text-gray-400" style="font-size: 20px;">settings</span>
+            <span class="text-xs sm:text-sm font-semibold dark:text-gray-300 text-gray-700 group-hover:text-primary transition-colors">Settings</span>
+        </a>
+        <a href="{{ url('/about') }}" class="flex items-center gap-2 px-4 py-3 rounded-xl dark:bg-white/[0.02] bg-white border dark:border-white/10 border-gray-200 hover:border-primary/40 transition-colors group">
+            <span class="material-symbols-outlined text-gray-400" style="font-size: 20px;">info</span>
+            <span class="text-xs sm:text-sm font-semibold dark:text-gray-300 text-gray-700 group-hover:text-primary transition-colors">About</span>
+        </a>
+        <a href="{{ url('/support') }}" class="flex items-center gap-2 px-4 py-3 rounded-xl dark:bg-white/[0.02] bg-white border dark:border-white/10 border-gray-200 hover:border-primary/40 transition-colors group">
+            <span class="material-symbols-outlined text-gray-400" style="font-size: 20px;">support_agent</span>
+            <span class="text-xs sm:text-sm font-semibold dark:text-gray-300 text-gray-700 group-hover:text-primary transition-colors">Support</span>
+        </a>
+    </div>
 </div>
-
-<!-- Loading Overlay -->
-@include('components.loading')
-
 @endsection
-
-@push('scripts')
-<script src="{{ asset('js/image-upload.js') }}"></script>
-@endpush

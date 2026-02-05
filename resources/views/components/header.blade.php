@@ -21,7 +21,7 @@
 
             {{-- Nav --}}
             <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-                <a class="dark:text-gray-400 text-gray-500 hover:text-primary transition-colors" href="{{ route('home') }}">Home</a>
+                <a class="dark:text-gray-400 text-gray-500 hover:text-primary transition-colors" href="{{ auth()->check() ? route('dashboard') : route('home') }}">Home</a>
                 <a class="dark:text-gray-400 text-gray-500 hover:text-primary transition-colors" href="{{ route('plans') }}">Plans</a>
                 <a class="dark:text-gray-400 text-gray-500 hover:text-primary transition-colors" href="{{ route('support') }}">Support</a>
             </nav>
@@ -35,8 +35,8 @@
                 </button>
                 @endif
                 @if(auth()->check())
-                    <a href="{{ route('chat') }}" class="hidden md:flex items-center justify-center px-5 h-9 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all uppercase tracking-wider">
-                        Open App
+                    <a href="{{ route('dashboard') }}" class="hidden md:flex items-center justify-center px-5 h-9 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all uppercase tracking-wider">
+                        Dashboard
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="hidden md:flex items-center justify-center px-5 h-9 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all uppercase tracking-wider">
@@ -52,11 +52,11 @@
 
         {{-- Mobile Nav --}}
         <div id="mobile-nav" class="hidden md:hidden border-t dark:border-white/5 border-gray-200/60 dark:bg-[#05080a] bg-white px-6 py-4 space-y-2 rounded-b-2xl">
-            <a href="{{ route('home') }}" class="block py-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-primary transition-colors">Home</a>
+            <a href="{{ auth()->check() ? route('dashboard') : route('home') }}" class="block py-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-primary transition-colors">Home</a>
             <a href="{{ route('plans') }}" class="block py-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-primary transition-colors">Plans</a>
             <a href="{{ route('support') }}" class="block py-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-primary transition-colors">Support</a>
             @if(auth()->check())
-                <a href="{{ route('chat') }}" class="block py-2.5 mt-2 text-center text-sm font-bold bg-primary text-white rounded-lg">Open App</a>
+                <a href="{{ route('dashboard') }}" class="block py-2.5 mt-2 text-center text-sm font-bold bg-primary text-white rounded-lg">Dashboard</a>
             @else
                 <a href="{{ route('login') }}" class="block py-2.5 mt-2 text-center text-sm font-bold bg-primary text-white rounded-lg">Start Learning</a>
             @endif
