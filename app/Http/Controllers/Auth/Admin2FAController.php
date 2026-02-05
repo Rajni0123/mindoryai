@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
 use PragmaRX\Google2FA\Google2FA;
 
@@ -37,6 +38,18 @@ class Admin2FAController extends Controller
      */
     public function verify2FA(Request $request)
     {
+        // SECURITY: Rate limiting to prevent brute force attacks on 2FA
+        $rateLimitKey = '2fa_verify:' . $request->ip();
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 5)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+            Log::warning('2FA rate limit exceeded', ['ip' => $request->ip()]);
+            return response()->json([
+                'success' => false,
+                'message' => "Too many attempts. Please try again in {$seconds} seconds."
+            ], 429);
+        }
+        RateLimiter::hit($rateLimitKey, 300); // 5 attempts per 5 minutes
+
         $validator = Validator::make($request->all(), [
             'code' => ['required', 'string', 'size:6', 'regex:/^[0-9]+$/']
         ], [
@@ -87,6 +100,7 @@ class Admin2FAController extends Controller
         }
 
         // 2FA verified, complete login
+        RateLimiter::clear($rateLimitKey); // Clear rate limit on success
         $admin->resetLoginAttempts();
         $admin->updateLastLogin($request);
 

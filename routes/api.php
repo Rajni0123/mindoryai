@@ -1049,6 +1049,34 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
                 $status = 'completed';
             }
 
+            // SECURITY: Server-side validation of quiz answers
+            $totalQuestions = (int)$validated['total_questions'];
+            $correctAnswers = (int)$validated['correct_answers'];
+            $wrongAnswers = (int)$validated['wrong_answers'];
+            $skippedQuestions = (int)$validated['skipped_questions'];
+
+            // Validate that answers add up correctly
+            if ($correctAnswers + $wrongAnswers + $skippedQuestions !== $totalQuestions) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid quiz data: answer counts do not match total questions',
+                ], 422);
+            }
+
+            // Validate no negative values
+            if ($correctAnswers < 0 || $wrongAnswers < 0 || $skippedQuestions < 0 || $totalQuestions < 1) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid quiz data: negative values not allowed',
+                ], 422);
+            }
+
+            // Validate time_taken_seconds is reasonable (max 24 hours)
+            $timeTaken = max(0, min(86400, (int)$validated['time_taken_seconds']));
+
+            // Server-calculated score (overrides client score)
+            $calculatedScore = $totalQuestions > 0 ? round(($correctAnswers / $totalQuestions) * 100, 2) : 0;
+
             $attempt = \App\Models\QuizAttempt::create([
                 'user_id' => $user->id,
                 'mobile_chat_id' => $validated['mobile_chat_id'] ?? null,
@@ -1058,15 +1086,15 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
                 'topic' => $validated['topic'] ?? null,
                 'difficulty_level' => $difficultyLevel,
                 'language' => $validated['language'] ?? 'english',
-                'duration_minutes' => $validated['duration_minutes'] ?? ceil($validated['time_taken_seconds'] / 60),
-                'total_questions' => $validated['total_questions'],
-                'correct_answers' => $validated['correct_answers'],
-                'wrong_answers' => $validated['wrong_answers'],
-                'skipped_questions' => $validated['skipped_questions'],
-                'score' => $validated['score'],
-                'time_taken_seconds' => $validated['time_taken_seconds'],
+                'duration_minutes' => $validated['duration_minutes'] ?? ceil($timeTaken / 60),
+                'total_questions' => $totalQuestions,
+                'correct_answers' => $correctAnswers,
+                'wrong_answers' => $wrongAnswers,
+                'skipped_questions' => $skippedQuestions,
+                'score' => $calculatedScore, // Server-calculated score
+                'time_taken_seconds' => $timeTaken,
                 'status' => $status,
-                'started_at' => \Carbon\Carbon::now()->subSeconds($validated['time_taken_seconds']),
+                'started_at' => \Carbon\Carbon::now()->subSeconds($timeTaken),
                 'completed_at' => \Carbon\Carbon::now(),
             ]);
 
@@ -1521,6 +1549,20 @@ Route::middleware('auth:sanctum')->post('/subscription/verify-payment', function
             'success' => false,
             'message' => 'Order not found',
         ], 404);
+    }
+
+    // SECURITY: Idempotency check - prevent replay attacks
+    if ($order->status === 'completed') {
+        // Already processed - return success without reprocessing
+        $plan = DB::table('user_plans')->find($order->plan_id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment already verified',
+            'subscription' => [
+                'plan_name' => $plan->name ?? 'Unknown',
+                'already_processed' => true,
+            ],
+        ]);
     }
 
     // Verify payment using PaymentService

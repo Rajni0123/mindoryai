@@ -203,12 +203,44 @@ class PaymentController extends Controller
     public function cashfreeCallback(Request $request)
     {
         try {
+            // SECURITY: Verify Cashfree webhook signature
+            $signature = $request->header('x-webhook-signature');
+            $timestamp = $request->header('x-webhook-timestamp');
+
+            if ($signature && $timestamp) {
+                $secretKey = config('services.cashfree.secret_key');
+                if ($secretKey) {
+                    $rawBody = $request->getContent();
+                    $expectedSignature = base64_encode(hash_hmac('sha256', $timestamp . $rawBody, $secretKey, true));
+
+                    if (!hash_equals($expectedSignature, $signature)) {
+                        \Log::warning('Cashfree callback: Invalid signature', [
+                            'ip' => $request->ip(),
+                            'order_id' => $request->input('order_id'),
+                        ]);
+                        return response()->json(['error' => 'Invalid signature'], 403);
+                    }
+                }
+            } else {
+                // Log warning but allow for backward compatibility (legacy callbacks)
+                \Log::warning('Cashfree callback: No signature provided', [
+                    'ip' => $request->ip(),
+                    'order_id' => $request->input('order_id'),
+                ]);
+            }
+
             $orderId = $request->input('order_id');
             $txStatus = $request->input('txStatus');
             $referenceId = $request->input('referenceId');
 
             // Find payment
             $payment = Payment::where('transaction_id', $orderId)->firstOrFail();
+
+            // SECURITY: Idempotency check - prevent replay attacks
+            if ($payment->status === 'completed') {
+                \Log::info('Cashfree callback: Payment already completed', ['order_id' => $orderId]);
+                return redirect()->route('home')->with('success', 'Payment already processed.');
+            }
 
             if ($txStatus === 'SUCCESS') {
                 // Update payment status
