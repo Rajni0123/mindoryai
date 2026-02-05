@@ -8,13 +8,16 @@ use App\Models\Page;
 
 class PageSeeder extends Seeder
 {
+    private string $supportEmail;
+    private string $siteHost;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $supportEmail = config('services.support_email', 'support@' . env('MAIN_DOMAIN', 'example.com'));
-        $siteHost = parse_url(config('app.url'), PHP_URL_HOST) ?: env('MAIN_DOMAIN', 'example.com');
+        $this->supportEmail = config('services.support_email', 'support@' . env('MAIN_DOMAIN', 'example.com'));
+        $this->siteHost = parse_url(config('app.url'), PHP_URL_HOST) ?: env('MAIN_DOMAIN', 'example.com');
         $pages = [
             [
                 'title' => 'About Us',
@@ -97,7 +100,7 @@ class PageSeeder extends Seeder
         <p>Unlike traditional tutoring services, BlinkStudy AI provides instant answers without scheduling conflicts or waiting times. Our AI models are trained on vast educational content, ensuring accurate and comprehensive responses to your questions.</p>
 
         <h2>Contact Us</h2>
-        <p>Have questions or feedback? We\'d love to hear from you! Reach out to us at <strong>' . $supportEmail . '</strong></p>';
+        <p>Have questions or feedback? We\'d love to hear from you! Reach out to us at <strong>' . $this->supportEmail . '</strong></p>';
     }
 
     private function getContactContent()
@@ -107,8 +110,8 @@ class PageSeeder extends Seeder
 
         <h2>Contact Information</h2>
         <ul>
-            <li><strong>Email:</strong> ' . $supportEmail . '</li>
-            <li><strong>Website:</strong> ' . $siteHost . '</li>
+            <li><strong>Email:</strong> ' . $this->supportEmail . '</li>
+            <li><strong>Website:</strong> ' . $this->siteHost . '</li>
             <li><strong>Response Time:</strong> Within 24 hours</li>
         </ul>
 
@@ -209,7 +212,7 @@ class PageSeeder extends Seeder
         </ul>
 
         <h2>8. Contact Us</h2>
-        <p>If you have questions about this Privacy Policy, please contact us at <strong>' . $supportEmail . '</strong></p>';
+        <p>If you have questions about this Privacy Policy, please contact us at <strong>' . $this->supportEmail . '</strong></p>';
     }
 
     private function getTermsContent()
@@ -317,7 +320,7 @@ class PageSeeder extends Seeder
         <p>We may modify these Terms at any time. Continued use of the Service constitutes acceptance of changes.</p>
 
         <h2>12. Contact Us</h2>
-        <p>For questions about these Terms, contact us at <strong>' . $supportEmail . '</strong></p>';
+        <p>For questions about these Terms, contact us at <strong>' . $this->supportEmail . '</strong></p>';
     }
 
     private function getRefundContent()
@@ -358,7 +361,7 @@ class PageSeeder extends Seeder
         <h3>How to Cancel:</h3>
         <ul>
             <li><strong>In-App:</strong> Go to Settings → Subscription → Cancel Subscription</li>
-            <li><strong>Email:</strong> Send a cancellation request to ' . $supportEmail . '</li>
+            <li><strong>Email:</strong> Send a cancellation request to ' . $this->supportEmail . '</li>
             <li><strong>Timing:</strong> Cancel at least 24 hours before renewal</li>
         </ul>
 
@@ -389,7 +392,7 @@ class PageSeeder extends Seeder
         <h2>7. Refund Request Process</h2>
         <h3>To Request a Refund:</h3>
         <ol>
-            <li>Send an email to <strong>' . $supportEmail . '</strong></li>
+            <li>Send an email to <strong>' . $this->supportEmail . '</strong></li>
             <li>Include your transaction ID</li>
             <li>Provide purchase date and amount</li>
             <li>Explain the reason for refund</li>
@@ -431,8 +434,8 @@ class PageSeeder extends Seeder
         <h2>11. Contact Information</h2>
         <p>For refund requests or questions about this policy:</p>
         <ul>
-            <li><strong>Email:</strong> ' . $supportEmail . '</li>
-            <li><strong>Website:</strong> ' . $siteHost . '</li>
+            <li><strong>Email:</strong> ' . $this->supportEmail . '</li>
+            <li><strong>Website:</strong> ' . $this->siteHost . '</li>
             <li><strong>Response Time:</strong> Within 24 hours</li>
         </ul>
 
