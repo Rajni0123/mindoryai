@@ -9,6 +9,7 @@ use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Services\EmailService;
 
 class PaymentController extends Controller
 {
@@ -103,9 +104,11 @@ class PaymentController extends Controller
         $plan = $payment->plan;
         $user = $payment->user;
 
+        $expiryDate = now()->addDays($plan->validity_days ?? 30);
+
         $user->update([
             'plan_id' => $plan->id,
-            'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
+            'plan_expires_at' => $expiryDate,
             'is_active' => true,
             'token_limit' => $plan->message_tokens ?? 10000,
             'tokens_used' => 0,
@@ -114,6 +117,16 @@ class PaymentController extends Controller
             'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
             'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
         ]);
+
+        // Send payment success email to user + admin
+        EmailService::sendPaymentSuccess(
+            $user,
+            $plan->name ?? 'Premium',
+            (string) $payment->amount,
+            $payment->transaction_id,
+            $payment->payment_method ?? 'manual',
+            $expiryDate->format('d M Y')
+        );
 
         return back()->with('success', 'Payment confirmed and user activated successfully!');
     }
@@ -220,12 +233,35 @@ class PaymentController extends Controller
                     'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
                 ]);
 
+                // Send success email
+                EmailService::sendPaymentSuccess(
+                    $user,
+                    $plan->name ?? 'Premium',
+                    (string) $payment->amount,
+                    $referenceId ?? $orderId,
+                    'cashfree',
+                    now()->addDays($plan->validity_days ?? 30)->format('d M Y')
+                );
+
                 return redirect()->route('home')
                     ->with('success', 'Payment successful! Your subscription is now active.');
 
             } else {
                 // Payment failed
                 $payment->update(['status' => 'failed']);
+
+                // Send failure email to user + admin
+                $plan = $payment->plan;
+                $user = $payment->user;
+                if ($user && $plan) {
+                    EmailService::sendPaymentFailed(
+                        $user,
+                        $plan->name ?? 'Premium',
+                        (string) $payment->amount,
+                        $orderId,
+                        'Payment was declined by the payment gateway'
+                    );
+                }
 
                 return redirect()->route('home')
                     ->with('error', 'Payment failed. Please try again.');
@@ -340,6 +376,7 @@ class PaymentController extends Controller
             if ($plan && $user) {
                 $user->update([
                     'plan_id' => $plan->id,
+                    'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
                     'is_active' => true,
                     'token_limit' => $plan->message_tokens ?? 10000,
                     'tokens_used' => 0,
@@ -348,6 +385,16 @@ class PaymentController extends Controller
                     'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
                     'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
                 ]);
+
+                // Send payment success email
+                EmailService::sendPaymentSuccess(
+                    $user,
+                    $plan->name ?? 'Premium',
+                    (string) $transaction->amount,
+                    $request->transaction_id,
+                    $transaction->payment_gateway ?? 'online',
+                    now()->addDays($plan->validity_days ?? 30)->format('d M Y')
+                );
             }
         }
 
@@ -445,6 +492,15 @@ class PaymentController extends Controller
         ]);
 
         if (!$result['success']) {
+            // Send payment failed email
+            EmailService::sendPaymentFailed(
+                $user,
+                $plan->name ?? 'Premium',
+                (string) $plan->price,
+                $request->transaction_id,
+                $result['message'] ?? 'Payment verification failed'
+            );
+
             return response()->json([
                 'success' => false,
                 'message' => $result['message'],
@@ -475,6 +531,16 @@ class PaymentController extends Controller
             'upi_transaction_id' => $request->razorpay_order_id,
             'verified_at' => now(),
         ]);
+
+        // Send success email to user + admin
+        EmailService::sendPaymentSuccess(
+            $user,
+            $plan->name ?? 'Premium',
+            (string) $plan->price,
+            $request->razorpay_payment_id,
+            'razorpay',
+            now()->addDays($plan->validity_days ?? 30)->format('d M Y')
+        );
 
         return response()->json([
             'success' => true,

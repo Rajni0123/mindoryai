@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
+use App\Services\EmailService;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -37,8 +38,11 @@ class PaymentController extends Controller
         $plan = $payment->plan;
         $user = $payment->user;
 
+        $expiryDate = now()->addDays($plan->validity_days ?? 30);
+
         $user->update([
             'plan_id' => $plan->id,
+            'plan_expires_at' => $expiryDate,
             'is_active' => true,
             'token_limit' => $plan->message_tokens ?? 10000,
             'tokens_used' => 0,
@@ -48,6 +52,16 @@ class PaymentController extends Controller
             'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
         ]);
 
+        // Send payment success email to user
+        EmailService::sendPaymentSuccess(
+            $user,
+            $plan->name ?? 'Premium',
+            (string) $payment->amount,
+            $payment->transaction_id,
+            $payment->payment_method ?? 'manual',
+            $expiryDate->format('d M Y')
+        );
+
         return back()->with('success', 'Payment confirmed and user activated successfully!');
     }
 
@@ -56,11 +70,24 @@ class PaymentController extends Controller
      */
     public function reject($paymentId)
     {
-        $payment = Payment::findOrFail($paymentId);
+        $payment = Payment::with('user', 'plan')->findOrFail($paymentId);
 
         $payment->update([
             'status' => 'failed',
         ]);
+
+        // Send payment failed email to user
+        $user = $payment->user;
+        $plan = $payment->plan;
+        if ($user) {
+            EmailService::sendPaymentFailed(
+                $user,
+                $plan->name ?? 'Unknown Plan',
+                (string) $payment->amount,
+                $payment->transaction_id,
+                'Payment was rejected by admin. Contact support for details.'
+            );
+        }
 
         return back()->with('success', 'Payment rejected.');
     }

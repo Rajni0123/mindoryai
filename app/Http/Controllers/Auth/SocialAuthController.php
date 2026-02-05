@@ -74,6 +74,9 @@ class SocialAuthController extends Controller
                     'can_use_grok' => false,
                 ]);
 
+                // Send welcome email + admin notification
+                \App\Services\EmailService::sendWelcome($user);
+
                 // Log the new user in
                 Auth::login($user);
                 session()->regenerate();

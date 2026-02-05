@@ -219,6 +219,9 @@ class UnifiedLoginController extends Controller
                 ])->save();
                 $isNewUser = true;
 
+                // Send welcome email + admin notification
+                \App\Services\EmailService::sendWelcome($user);
+
                 Log::info('New user registered via unified login', [
                     'user_id' => $user->id,
                     'mobile' => $mobile,
@@ -687,6 +690,9 @@ class UnifiedLoginController extends Controller
                     'is_active' => true,
                 ])->save();
                 $isNewUser = true;
+
+                // Send welcome email + admin notification
+                \App\Services\EmailService::sendWelcome($user);
 
                 Log::info('New user registered via email login', [
                     'user_id' => $user->id,
