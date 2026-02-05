@@ -46,10 +46,28 @@
     <meta name="google-site-verification" content="{{ $googleVerification }}">
     @endif
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ $currentUrl }}">
+
     <!-- Favicon -->
-    @php $faviconPath = str_starts_with($faviconUrl, 'http') ? $faviconUrl : asset($faviconUrl); @endphp
-    <link rel="icon" type="image/x-icon" href="{{ $faviconPath }}">
+    @php
+        $faviconPath = str_starts_with($faviconUrl, 'http') ? $faviconUrl : asset($faviconUrl);
+        $faviconExt = pathinfo($faviconUrl, PATHINFO_EXTENSION);
+        $faviconMime = match($faviconExt) {
+            'png' => 'image/png',
+            'jpg', 'jpeg' => 'image/jpeg',
+            'svg' => 'image/svg+xml',
+            default => 'image/x-icon',
+        };
+    @endphp
+    <link rel="icon" type="{{ $faviconMime }}" href="{{ $faviconPath }}">
     <link rel="shortcut icon" href="{{ $faviconPath }}">
+    <link rel="apple-touch-icon" href="{{ $faviconPath }}">
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="BlinkStudy">
+    <meta name="theme-color" content="#0D9488">
 
     <!-- TailwindCSS -->
     @vite(['resources/css/app.css', 'resources/js/app.tsx'])

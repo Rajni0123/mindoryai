@@ -128,7 +128,65 @@ class FrontendConfigSeeder extends Seeder
                 'value_type' => 'string',
                 'description' => 'Message shown when app update is required',
                 'is_active' => true
-            ]
+            ],
+
+            // SEO Settings
+            [
+                'config_key' => 'seo.site_title',
+                'config_value' => 'BlinkStudy - AI Study Companion for CBSE, ICSE & Competitive Exams',
+                'value_type' => 'string',
+                'description' => 'Site title for browser tab and Google search results',
+                'is_active' => true
+            ],
+            [
+                'config_key' => 'seo.meta_description',
+                'config_value' => 'BlinkStudy is India\'s #1 AI-powered study app. Get instant doubt solving, AI quizzes, video explanations & personalized learning for CBSE, ICSE & competitive exams. Free for students!',
+                'value_type' => 'string',
+                'description' => 'Meta description for Google search results (max 160 chars)',
+                'is_active' => true
+            ],
+            [
+                'config_key' => 'seo.meta_keywords',
+                'config_value' => 'BlinkStudy, AI study app, doubt solving app, CBSE study app, ICSE study app, AI tutor India, online learning, free study app, AI quiz, exam preparation, Class 10, Class 12, JEE, NEET, competitive exam app, BlinkStudy AI',
+                'value_type' => 'string',
+                'description' => 'Meta keywords for SEO (comma separated)',
+                'is_active' => true
+            ],
+            [
+                'config_key' => 'seo.favicon_url',
+                'config_value' => 'icons/favicon_1768401530.png',
+                'value_type' => 'string',
+                'description' => 'Favicon URL path',
+                'is_active' => true
+            ],
+            [
+                'config_key' => 'seo.og_image',
+                'config_value' => '',
+                'value_type' => 'string',
+                'description' => 'Open Graph image for social media sharing (1200x630)',
+                'is_active' => true
+            ],
+            [
+                'config_key' => 'seo.google_site_verification',
+                'config_value' => '',
+                'value_type' => 'string',
+                'description' => 'Google Search Console verification code',
+                'is_active' => true
+            ],
+            [
+                'config_key' => 'seo.google_analytics_id',
+                'config_value' => '',
+                'value_type' => 'string',
+                'description' => 'Google Analytics tracking ID (G-XXXXXXX)',
+                'is_active' => true
+            ],
+            [
+                'config_key' => 'seo.twitter_handle',
+                'config_value' => '',
+                'value_type' => 'string',
+                'description' => 'Twitter/X handle (without @)',
+                'is_active' => true
+            ],
         ];
 
         foreach ($configs as $config) {
