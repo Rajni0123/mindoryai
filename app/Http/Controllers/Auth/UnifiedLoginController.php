@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UnifiedLoginController extends Controller
 {
@@ -210,7 +211,7 @@ class UnifiedLoginController extends Controller
                     'email' => $uniqueEmail,
                     'mobile' => $mobile,
                     'mobile_verified_at' => now(),
-                    'password' => bcrypt(uniqid()),
+                    'password' => bcrypt(Str::random(32)),
                     'role' => 'user', // ALWAYS user - admins must be created manually
                     'plan_id' => $defaultPlanId,
                     'token_limit' => 150,
@@ -681,7 +682,7 @@ class UnifiedLoginController extends Controller
                     'name' => $userName,
                     'email' => $email,
                     'email_verified_at' => now(),
-                    'password' => bcrypt(uniqid()),
+                    'password' => bcrypt(Str::random(32)),
                     'role' => 'user', // ALWAYS user - admins must be created manually
                     'plan_id' => $defaultPlanId,
                     'token_limit' => 150,
@@ -941,7 +942,7 @@ class UnifiedLoginController extends Controller
                 $user->forceFill([
                     'name' => $name ?? 'Google User',
                     'email' => $email,
-                    'password' => bcrypt(str_random(32)),
+                    'password' => bcrypt(Str::random(32)),
                     'role' => 'user',
                     'is_active' => true,
                     'email_verified_at' => now(),

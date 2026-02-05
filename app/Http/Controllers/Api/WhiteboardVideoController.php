@@ -391,9 +391,16 @@ class WhiteboardVideoController extends Controller
      */
     public function manimCallback(Request $request): JsonResponse
     {
-        // Verify callback secret
+        // Verify callback secret - REQUIRED and uses constant-time comparison
         $expectedSecret = Setting::get('manim_callback_secret', '');
-        if ($expectedSecret && $request->input('secret') !== $expectedSecret) {
+        $providedSecret = $request->input('secret', '');
+
+        // Security: Require secret to be configured and use hash_equals to prevent timing attacks
+        if (empty($expectedSecret) || empty($providedSecret) || !hash_equals($expectedSecret, $providedSecret)) {
+            Log::warning('Manim callback unauthorized attempt', [
+                'ip' => $request->ip(),
+                'job_id' => $request->input('job_id'),
+            ]);
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 

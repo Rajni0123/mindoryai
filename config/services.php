@@ -66,7 +66,7 @@ return [
 
     'python_ai' => [
         'url'       => env('PYTHON_AI_URL', 'http://127.0.0.1:8100'),
-        'api_key'   => env('PYTHON_AI_KEY', 'blinkstudy-ai-secret-2026'),
+        'api_key'   => env('PYTHON_AI_KEY'), // Must be set in .env - no hardcoded fallback
         'timeout'   => (int) env('PYTHON_AI_TIMEOUT', 15),
         'cache_ttl' => (int) env('PYTHON_AI_CACHE_TTL', 3600),
     ],

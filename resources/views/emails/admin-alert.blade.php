@@ -46,9 +46,7 @@
                                                 default => '#f59e0b',
                                             };
                                         @endphp
-                                        <div style="width:40px; height:40px; background:{{ $badgeColor }}; border-radius:10px; display:inline-block; line-height:40px; font-size:20px; margin-bottom:10px;">
-                                            {!! $icon !!}
-                                        </div>
+                                        <img src="{{ config('app.url') }}/images/blinkstudy-logo.png" alt="BlinkStudy" width="48" height="48" style="display:block; margin:0 auto 10px; border-radius:10px;">
                                     </td>
                                 </tr>
                                 <tr>

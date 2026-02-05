@@ -43,9 +43,7 @@
                             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td align="center">
-                                        <div style="width:48px; height:48px; background:rgba(255,255,255,0.2); border-radius:12px; display:inline-block; line-height:48px; font-size:24px; margin-bottom:12px;">
-                                            &#9200;
-                                        </div>
+                                        <img src="{{ config('app.url') }}/images/blinkstudy-logo.png" alt="BlinkStudy" width="64" height="64" style="display:block; margin:0 auto 12px; border-radius:12px;">
                                     </td>
                                 </tr>
                                 <tr>
