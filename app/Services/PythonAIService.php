@@ -30,7 +30,7 @@ class PythonAIService
     /**
      * Send text to AI, get answer back. Cached.
      */
-    public function ask(string $text, ?string $systemPrompt = null, float $temperature = 0.7, int $maxTokens = 2048): array
+    public function ask(string $text, ?string $systemPrompt = null, float $temperature = 0.7, int $maxTokens = 2048, ?int $timeout = null): array
     {
         $cacheKey = 'ai:' . sha1($text . '||' . ($systemPrompt ?? ''));
 
@@ -56,7 +56,7 @@ class PythonAIService
                 $payload['system_prompt'] = $systemPrompt;
             }
 
-            $response = Http::timeout($this->timeout)
+            $response = Http::timeout($timeout ?? $this->timeout)
                 ->withHeaders(['X-API-Key' => $this->apiKey])
                 ->post("{$this->baseUrl}/ai", $payload);
 

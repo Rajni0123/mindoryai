@@ -211,7 +211,8 @@ PROMPT;
                 text: $prompt,
                 systemPrompt: 'You are an expert quiz question generator for Indian school students. Always respond with ONLY valid JSON arrays. No markdown, no code blocks, no explanations outside JSON.',
                 temperature: 0.8,
-                maxTokens: 4096
+                maxTokens: 4096,
+                timeout: 45
             );
 
             if (!$result['success']) {
