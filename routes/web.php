@@ -492,6 +492,18 @@ Route::put('/update', 'update')->name('update');                // Update brandi
                 Route::post('/import', 'import')->name('import');
             });
 
+            // Daily Challenges Management (Admin Only)
+            Route::prefix('daily-challenges')->name('daily-challenges.')->controller(\App\Http\Controllers\Admin\DailyChallengeController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::put('/settings', 'updateSettings')->name('update-settings');
+                Route::get('/{dailyChallenge}/edit', 'edit')->name('edit');
+                Route::put('/{dailyChallenge}', 'update')->name('update');
+                Route::delete('/{dailyChallenge}', 'destroy')->name('destroy');
+                Route::post('/{dailyChallenge}/toggle', 'toggleActive')->name('toggle');
+            });
+
             // Homepage Settings Management (Admin Only)
             Route::prefix('homepage-settings')->name('homepage-settings.')->controller(\App\Http\Controllers\Admin\HomepageSettingsController::class)->group(function () {
                 Route::get('/', 'index')->name('index');                                    // List all homepage settings

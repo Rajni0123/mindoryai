@@ -14,6 +14,12 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Check if chat feature is enabled by admin
+        $chatEnabled = \App\Models\DynamicAppConfig::getValue('features.chat_enabled', true);
+        if (!$chatEnabled) {
+            return redirect()->route('home')->with('info', 'Chat feature is currently disabled. Please check back later.');
+        }
+
         $settings = [
             'site_name' => \App\Models\Setting::get('site_name', 'BlinkStudy'),
             'chat_sidebar_logo' => \App\Models\Setting::get('chat_sidebar_logo', ''),

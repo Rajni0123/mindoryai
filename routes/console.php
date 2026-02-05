@@ -27,3 +27,14 @@ Schedule::command('subscriptions:expire')
     ->onSuccess(function () {
         \Log::info('Subscription expiry check completed');
     });
+
+// Send plan expiry reminder emails - runs daily at 9 AM IST (3:30 AM UTC)
+Schedule::command('plans:send-expiry-reminders')
+    ->dailyAt('03:30')
+    ->description('Send reminder emails for plans expiring in 7, 3, 1, 0 days')
+    ->onSuccess(function () {
+        \Log::info('Plan expiry reminders sent successfully');
+    })
+    ->onFailure(function () {
+        \Log::error('Plan expiry reminders failed');
+    });

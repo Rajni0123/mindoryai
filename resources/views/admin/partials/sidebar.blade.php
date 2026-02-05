@@ -81,6 +81,11 @@
             <span>Quiz Generator</span>
         </a>
 
+        <a href="{{ route('admin.daily-challenges.index') }}" class="flex items-center gap-2 px-3 py-2 rounded {{ request()->routeIs('admin.daily-challenges.*') ? 'bg-yellow-500/10 text-yellow-400' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50' }} transition-all text-xs font-medium">
+            <span class="material-icons-outlined text-sm">emoji_events</span>
+            <span>Daily Challenges</span>
+        </a>
+
         <!-- Exam Management Section -->
         <div class="text-[9px] uppercase text-gray-600 px-3 py-2 mt-3 font-semibold">Exam Management</div>
 
