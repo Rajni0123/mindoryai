@@ -74,7 +74,7 @@ return new class extends Migration
                 'analytics_tier' => 'basic',
                 'features_list' => [
                     '10 AI Chat Messages / Day',
-                    '2 Video Quizzes / Day',
+                    '2 Quizzes / Day',
                     '2 Whiteboard Videos / Month',
                     '3 Topic Quizzes / Day',
                     '1 Exam Prep Session / Day',
@@ -141,7 +141,7 @@ return new class extends Migration
                 'features_list' => [
                     'Unlimited AI Chat',
                     'Gemini Flash + GPT-4o Mini',
-                    '5 Video Quizzes / Day',
+                    '5 Quizzes / Day',
                     '5 Whiteboard Videos / Month',
                     '10 Topic Quizzes / Day',
                     '3 Exam Prep Sessions / Day',
@@ -207,7 +207,7 @@ return new class extends Migration
                 'features_list' => [
                     'Unlimited AI Chat',
                     'Gemini Flash + GPT-4o Mini',
-                    '20 Video Quizzes / Day',
+                    '20 Quizzes / Day',
                     '20 Whiteboard Videos / Month',
                     'Unlimited Topic Quizzes',
                     'Unlimited Exam Prep',
@@ -275,7 +275,7 @@ return new class extends Migration
                 'features_list' => [
                     'Unlimited AI Chat',
                     'Gemini Flash + GPT-4o Mini',
-                    'Unlimited Video Quizzes',
+                    'Unlimited Quizzes',
                     '50 Whiteboard Videos / Month',
                     'Unlimited Topic Quizzes',
                     'Unlimited Exam Prep',
@@ -294,82 +294,12 @@ return new class extends Migration
             'updated_at' => $now,
         ]);
 
-        // ──────────────────────────────────────────────
-        // PLAN 5: ANNUAL PASS – ₹2,999/year
-        // Equivalent to ₹250/month (37% savings vs Pro ₹399)
-        // Pro-level features + Ultimate perks for committed users
-        // Cost/user: ~₹1000-1600/year | Margin: ~47-67%
-        // Revenue target: 20% of paying users (upfront cash)
-        // ──────────────────────────────────────────────
-        DB::table('user_plans')->insert([
-            'name' => 'Annual Pass',
-            'slug' => 'annual',
-            'description' => 'Best Value — Pro Features for 12 Months at 37% Off',
-            'price' => 2999,
-            'billing_period' => 'year',
-            'billing_description' => '₹2,999 / year (Save 37%)',
-            'validity_days' => 365,
-            'message_tokens' => 0,
-            'image_credits' => 0,
-            'api_calls' => 0,
-            'image_uploads' => 0,
-            'can_use_gpt4' => true,
-            'can_use_claude' => false,
-            'can_use_deepseek' => false,
-            'can_use_grok' => false,
-            'unlimited_credits' => false,
-            'is_active' => true,
-            'order' => 5,
-            'features' => json_encode([
-                'popular' => false,
-                'recommended' => false,
-                'savings' => '37%',
-                'daily_limits' => [
-                    'chat_messages_per_day' => -1,
-                    'video_quiz_per_day' => -1,
-                    'whiteboard_videos_per_month' => 30,
-                    'topic_quiz_per_day' => -1,
-                    'exam_prep_per_day' => -1,
-                    'scan_solve_per_day' => 50,
-                    'pdf_uploads_per_month' => 30,
-                ],
-                'max_video_length_seconds' => 300,
-                'frames_per_video' => 20,
-                'pages_per_pdf' => 40,
-                'history_days' => -1,
-                'watermark' => false,
-                'ads' => false,
-                'priority_queue' => true,
-                'video_quality' => 'hd',
-                'device_limit' => 3,
-                'analytics_tier' => 'standard',
-                'features_list' => [
-                    'Everything in Pro Plan',
-                    'Unlimited AI Chat',
-                    'Gemini Flash + GPT-4o Mini',
-                    'Unlimited Video Quizzes',
-                    '30 Whiteboard Videos / Month',
-                    'Unlimited Topic Quizzes',
-                    'Unlimited Exam Prep',
-                    '50 Scan & Solve / Day',
-                    '30 PDF Uploads / Month (40 pages)',
-                    'Unlimited History',
-                    'Priority Processing',
-                    'HD Video Quality',
-                    'No Watermark',
-                    'Ad-Free Experience',
-                    '37% Savings vs Monthly Pro',
-                ],
-            ]),
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
     }
 
     public function down(): void
     {
         DB::table('user_plans')
-            ->whereIn('slug', ['free', 'starter', 'pro', 'ultimate', 'annual'])
+            ->whereIn('slug', ['free', 'starter', 'pro', 'ultimate'])
             ->delete();
     }
 };

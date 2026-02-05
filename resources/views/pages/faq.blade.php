@@ -44,10 +44,10 @@
             'title' => 'Subscription & Pricing',
             'color' => 'secondary',
             'faqs' => [
-                ['q' => 'What subscription plans does BlinkStudy offer?', 'a' => 'We offer three plans: FREE Plan (₹0 - Limited features, ad-supported), BASIC Plan (₹149/month - Enhanced features, no ads), and PRO Plan (₹999/month - Unlimited features, priority support).'],
+                ['q' => 'What subscription plans does BlinkStudy offer?', 'a' => 'We offer four plans: FREE (₹0 - 10 chats/day, 2 quizzes/day, ad-supported), STARTER (₹149/month - Unlimited chat, 5 quizzes/day, ad-free), PRO (₹399/month - 20 quizzes/day, unlimited topic quizzes & exam prep, HD videos, priority processing), and ULTIMATE (₹899/month - Unlimited everything, 50 whiteboard videos/month, advanced analytics, up to 5 devices).'],
                 ['q' => 'Is there a free trial?', 'a' => 'Yes! All new users start with a FREE plan to explore BlinkStudy. You can upgrade anytime to unlock premium features.'],
                 ['q' => 'How do I upgrade my plan?', 'a' => 'Go to Settings → Subscription → Choose Plan → Make Payment. Your upgrade takes effect immediately!'],
-                ['q' => 'Can I downgrade from Pro to Basic or Free?', 'a' => 'Yes, you can downgrade anytime. The change will take effect at the end of your current billing cycle. No refund for the difference.'],
+                ['q' => 'Can I downgrade my plan?', 'a' => 'Yes, you can downgrade from Ultimate → Pro → Starter → Free anytime. The change will take effect at the end of your current billing cycle. No refund for the difference.'],
                 ['q' => 'What payment methods are accepted?', 'a' => 'We accept UPI (Google Pay, PhonePe, Paytm, etc.), Credit/Debit Cards (Visa, Mastercard, RuPay), Net Banking, and Mobile Wallets (Paytm, Mobikwik, etc.).'],
                 ['q' => 'Are prices inclusive of GST/taxes?', 'a' => 'Yes, all prices displayed are inclusive of applicable taxes.'],
                 ['q' => 'Do subscriptions auto-renew?', 'a' => 'Yes, subscriptions automatically renew every month unless you cancel. You\'ll receive a reminder 3 days before renewal.'],

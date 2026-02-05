@@ -238,7 +238,7 @@
                         </tr>
                         @php
                             $compareKeys = [
-                                'video_quiz_per_day' => 'Video Quizzes / Day',
+                                'video_quiz_per_day' => 'Quizzes / Day',
                                 'topic_quiz_per_day' => 'Topic Quizzes / Day',
                                 'scan_solve_per_day' => 'Scan & Solve / Day',
                                 'whiteboard_videos_per_day' => 'Whiteboard Videos / Day',

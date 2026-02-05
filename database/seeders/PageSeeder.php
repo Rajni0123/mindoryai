@@ -273,18 +273,20 @@ class PageSeeder extends Seeder
         </ul>
 
         <h2>6. Payment Terms</h2>
-        <h3>Subscriptions</h3>
+        <h3>Subscription Plans</h3>
         <ul>
+            <li>BlinkStudy offers Free (₹0), Starter (₹149/month), Pro (₹399/month), and Ultimate (₹899/month) plans</li>
             <li>Subscriptions auto-renew unless cancelled</li>
-            <li>Prices are subject to change with notice</li>
+            <li>Prices are subject to change with prior notice</li>
             <li>No refunds for partial subscription periods</li>
+            <li>Upgrades take effect immediately; downgrades at end of billing cycle</li>
         </ul>
 
-        <h3>Credit Packages</h3>
+        <h3>Usage Limits</h3>
         <ul>
-            <li>Credits are non-refundable once purchased</li>
-            <li>Credits expire as specified at purchase</li>
-            <li>We reserve the right to modify credit pricing</li>
+            <li>Each plan has daily and monthly usage limits</li>
+            <li>Daily limits reset at 12:00 AM IST</li>
+            <li>Unused limits do not carry over</li>
         </ul>
 
         <h2>7. Service Availability</h2>
@@ -324,9 +326,18 @@ class PageSeeder extends Seeder
         <p><strong>Effective Date:</strong> ' . date('F d, Y') . '</p>
 
         <h2>1. Overview</h2>
-        <p>Please read this policy carefully before making a purchase. All sales of credit packages and subscription plans are final and non-refundable except as specifically stated in this policy.</p>
+        <p>Please read this policy carefully before making a purchase. All sales of subscription plans are final and non-refundable except as specifically stated in this policy.</p>
 
-        <h2>2. Refund Policy</h2>
+        <h2>2. Available Plans</h2>
+        <p>BlinkStudy offers the following subscription plans:</p>
+        <ul>
+            <li><strong>Free (₹0/month):</strong> 10 AI chats/day, 2 quizzes/day, 3 topic quizzes/day, 1 exam prep/day, 3 scan & solve/day, ad-supported with watermark</li>
+            <li><strong>Starter (₹149/month):</strong> Unlimited AI chat, 5 quizzes/day, 10 topic quizzes/day, 3 exam prep/day, 10 scan & solve/day, ad-free, no watermark</li>
+            <li><strong>Pro (₹399/month):</strong> Unlimited AI chat, 20 quizzes/day, unlimited topic quizzes & exam prep, 30 scan & solve/day, HD video quality, priority processing</li>
+            <li><strong>Ultimate (₹899/month):</strong> Unlimited everything, 50 whiteboard videos/month, 100 PDF uploads/month, advanced analytics, up to 5 devices</li>
+        </ul>
+
+        <h2>3. Refund Policy</h2>
         <h3>No Refunds For:</h3>
         <ul>
             <li>Used credits or partially consumed credit packages</li>
@@ -343,7 +354,7 @@ class PageSeeder extends Seeder
             <li><strong>Service Not Delivered:</strong> If credits were not added to your account</li>
         </ul>
 
-        <h2>3. Cancellation Policy</h2>
+        <h2>4. Cancellation Policy</h2>
         <h3>How to Cancel:</h3>
         <ul>
             <li><strong>In-App:</strong> Go to Settings → Subscription → Cancel Subscription</li>
@@ -359,7 +370,7 @@ class PageSeeder extends Seeder
             <li>You can reactivate anytime</li>
         </ul>
 
-        <h2>4. Subscription Renewals</h2>
+        <h2>5. Subscription Renewals</h2>
         <ul>
             <li>Subscriptions auto-renew unless cancelled</li>
             <li>You will be charged on the renewal date</li>
@@ -367,15 +378,15 @@ class PageSeeder extends Seeder
             <li>We send renewal reminders 3 days before billing</li>
         </ul>
 
-        <h2>5. Credit Expiration</h2>
+        <h2>6. Daily Limits & Usage</h2>
         <ul>
-            <li><strong>Daily Credits:</strong> Reset daily, don\'t accumulate</li>
-            <li><strong>Purchased Credits:</strong> Valid for 30 days from purchase</li>
-            <li><strong>Premium Credits:</strong> Valid for the subscription period</li>
-            <li>Expired credits cannot be refunded or extended</li>
+            <li><strong>Daily Limits:</strong> Chat messages, quizzes, scan & solve limits reset at 12:00 AM IST daily</li>
+            <li><strong>Monthly Limits:</strong> Whiteboard videos and PDF uploads reset monthly</li>
+            <li><strong>Unused Limits:</strong> Daily/monthly limits do not accumulate or carry over</li>
+            <li>Upgrading your plan takes effect immediately with new limits</li>
         </ul>
 
-        <h2>6. Refund Request Process</h2>
+        <h2>7. Refund Request Process</h2>
         <h3>To Request a Refund:</h3>
         <ol>
             <li>Send an email to <strong>' . $supportEmail . '</strong></li>
@@ -392,7 +403,7 @@ class PageSeeder extends Seeder
             <li>Refunds are credited to the original payment method</li>
         </ul>
 
-        <h2>7. Special Cases</h2>
+        <h2>8. Special Cases</h2>
         <h3>Technical Problems</h3>
         <ul>
             <li>We\'ll try to resolve technical issues first</li>
@@ -407,17 +418,17 @@ class PageSeeder extends Seeder
             <li>Full refunds for confirmed billing mistakes</li>
         </ul>
 
-        <h2>8. Dispute Resolution</h2>
+        <h2>9. Dispute Resolution</h2>
         <ul>
             <li>Contact us first for any refund-related issues</li>
             <li>We aim for amicable resolution</li>
             <li>Legal recourse available as a last resort</li>
         </ul>
 
-        <h2>9. Policy Changes</h2>
+        <h2>10. Policy Changes</h2>
         <p>We reserve the right to modify this policy. Changes will be posted on this page with the updated effective date.</p>
 
-        <h2>10. Contact Information</h2>
+        <h2>11. Contact Information</h2>
         <p>For refund requests or questions about this policy:</p>
         <ul>
             <li><strong>Email:</strong> ' . $supportEmail . '</li>
@@ -425,7 +436,7 @@ class PageSeeder extends Seeder
             <li><strong>Response Time:</strong> Within 24 hours</li>
         </ul>
 
-        <h2>11. Consumer Protection</h2>
+        <h2>12. Consumer Protection</h2>
         <p>If you\'re a consumer in India, you have additional rights under the Consumer Protection Act 2019. This policy doesn\'t limit your statutory rights.</p>';
     }
 }
