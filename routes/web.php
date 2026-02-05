@@ -502,6 +502,7 @@ Route::put('/update', 'update')->name('update');                // Update brandi
                 Route::put('/{dailyChallenge}', 'update')->name('update');
                 Route::delete('/{dailyChallenge}', 'destroy')->name('destroy');
                 Route::post('/{dailyChallenge}/toggle', 'toggleActive')->name('toggle');
+                Route::post('/generate-ai', 'generateWithAI')->name('generate-ai');
             });
 
             // Homepage Settings Management (Admin Only)
