@@ -162,14 +162,14 @@
                             <span class="material-symbols-outlined text-2xl">rocket_launch</span>
                             Start Learning Free
                         </a>
-                        <div class="flex items-center justify-center gap-3 text-sm dark:text-gray-400 text-gray-500">
+                        <div class="flex items-center justify-center gap-4 text-sm dark:text-gray-400 text-gray-500">
                             <span class="flex items-center gap-1.5">
                                 <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                No Sign-up Required
+                                Free Plan Available
                             </span>
                             <span class="flex items-center gap-1.5">
                                 <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                100% Free
+                                Instant Access
                             </span>
                         </div>
                     </div>
