@@ -85,6 +85,26 @@ class EmailService
     }
 
     /**
+     * Send plan expired notification to user + notify admin
+     */
+    public static function sendPlanExpired($user, string $planName): void
+    {
+        // Send to user
+        if ($user->email) {
+            self::safeSend($user->email, new \App\Mail\PlanExpiredMail($user, $planName));
+        }
+
+        // Notify admin
+        self::sendAdminAlert('plan_expired', 'Plan Expired - ' . $planName, [
+            'User' => $user->name ?? 'N/A',
+            'Email' => $user->email ?? 'N/A',
+            'Plan' => $planName,
+            'Status' => 'Downgraded to Free',
+            'Expired At' => now()->format('d M Y, h:i A'),
+        ]);
+    }
+
+    /**
      * Send admin alert email
      */
     public static function sendAdminAlert(string $type, string $title, array $details): void

@@ -253,9 +253,11 @@ class PaymentController extends Controller
                 // Activate user subscription
                 $plan = $payment->plan;
                 $user = $payment->user;
+                $expiryDate = now()->addDays($plan->validity_days ?? 30);
 
                 $user->update([
                     'plan_id' => $plan->id,
+                    'plan_expires_at' => $expiryDate,
                     'is_active' => true,
                     'token_limit' => $plan->message_tokens ?? 10000,
                     'tokens_used' => 0,
@@ -272,7 +274,7 @@ class PaymentController extends Controller
                     (string) $payment->amount,
                     $referenceId ?? $orderId,
                     'cashfree',
-                    now()->addDays($plan->validity_days ?? 30)->format('d M Y')
+                    $expiryDate->format('d M Y')
                 );
 
                 return redirect()->route('home')
@@ -610,6 +612,7 @@ class PaymentController extends Controller
                     if ($plan && $user) {
                         $user->update([
                             'plan_id' => $plan->id,
+                            'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
                             'is_active' => true,
                             'token_limit' => $plan->message_tokens ?? 10000,
                             'tokens_used' => 0,

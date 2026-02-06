@@ -1855,3 +1855,11 @@ Route::middleware(['auth:sanctum', 'admin.only'])->get('/usage/stats', function 
         ], 500);
     }
 });
+
+// ============================================================
+// PAYMENT WEBHOOKS (No auth - server-to-server callbacks)
+// ============================================================
+Route::prefix('webhooks')->group(function () {
+    Route::post('/razorpay', [\App\Http\Controllers\WebhookController::class, 'razorpay']);
+    // Future: Add Cashfree, PhonePe webhooks here
+});
