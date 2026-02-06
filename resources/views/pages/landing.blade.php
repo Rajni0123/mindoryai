@@ -85,65 +85,66 @@
 {{-- Background effects --}}
 <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
 <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="bg-gradient-blur w-[600px] h-[600px] rounded-full bg-primary/5 -top-20 -left-20 animate-pulse"></div>
-    <div class="bg-gradient-blur w-[700px] h-[700px] rounded-full bg-cyan-500/10 bottom-0 right-0"></div>
-    <div class="bg-gradient-blur w-[400px] h-[400px] rounded-full bg-primary/10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="bg-gradient-blur w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full bg-primary/5 -top-20 -left-20 animate-pulse"></div>
+    <div class="bg-gradient-blur w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] rounded-full bg-cyan-500/10 bottom-0 right-0"></div>
+    <div class="bg-gradient-blur w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] rounded-full bg-primary/10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
 </div>
 
 <div class="relative z-10">
     {{-- ═══════════════════════ HERO ═══════════════════════ --}}
-    <section class="relative py-12 sm:py-16 lg:py-32 px-4 sm:px-6 overflow-hidden">
+    <section class="relative py-12 sm:py-16 lg:py-32 px-4 sm:px-6 overflow-hidden min-h-[85vh] sm:min-h-0 flex items-center">
         <div class="absolute top-1/4 left-10 w-32 h-[1px] bg-gradient-to-r from-transparent to-primary/30 hidden lg:block"></div>
         <div class="absolute top-1/4 right-10 w-32 h-[1px] bg-gradient-to-l from-transparent to-primary/30 hidden lg:block"></div>
         <div class="absolute bottom-20 left-20 w-[1px] h-32 bg-gradient-to-b from-transparent to-primary/30 hidden lg:block"></div>
 
-        <div class="max-w-7xl mx-auto relative z-20">
+        <div class="max-w-7xl mx-auto relative z-20 w-full">
             <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
 
                 {{-- ══ LEFT SIDE: Text Content ══ --}}
-                <div class="text-left reveal reveal-left">
+                <div class="text-center sm:text-left reveal reveal-left">
                     {{-- Badge --}}
-                    <div class="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 rounded-lg dark:bg-[#1a1f2e] bg-white border border-primary/20 mb-6 sm:mb-8 backdrop-blur-sm shadow-sm">
-                        <div class="flex items-center gap-1.5">
-                            <span class="relative flex h-2 w-2">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full dark:bg-[#1a1f2e] bg-white border border-primary/20 mb-6 backdrop-blur-sm shadow-lg">
+                        <div class="flex items-center gap-2">
+                            <span class="relative flex h-2.5 w-2.5">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
                             </span>
-                            <span class="text-[9px] sm:text-[10px] font-mono font-bold text-primary uppercase tracking-widest">{{ $hs('hero_badge_left', 'Made in India') }}</span>
+                            <span class="text-xs sm:text-sm font-semibold text-primary">{{ $hs('hero_badge_left', 'Made in India') }}</span>
                         </div>
-                        <span class="w-[1px] h-3 dark:bg-white/10 bg-gray-200 hidden sm:block"></span>
-                        <span class="text-[10px] sm:text-xs dark:text-gray-400 text-gray-500 font-mono hidden sm:block">{{ $hs('hero_badge_right', 'Proudly Built for Indian Students') }}</span>
+                        <span class="w-[1px] h-4 dark:bg-white/20 bg-gray-300 hidden sm:block"></span>
+                        <span class="text-xs dark:text-gray-400 text-gray-500 hidden sm:block">{{ $hs('hero_badge_right', 'Proudly Built for Indian Students') }}</span>
                     </div>
 
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black dark:text-white text-slate-800 leading-tight tracking-tight mb-4 sm:mb-6">
-                        {{ $hs('hero_title_line1', 'Your AI Study') }} <br/>
+                    <h1 class="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-black dark:text-white text-slate-800 leading-[1.1] tracking-tight mb-4 sm:mb-6">
+                        {{ $hs('hero_title_line1', 'Your AI Study') }} <br class="hidden sm:block"/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary glow-text sm:hidden"> </span>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary glow-text">{{ $hs('hero_title_highlight', 'Companion') }}</span>
                     </h1>
 
-                    <p class="text-base sm:text-lg md:text-xl dark:text-gray-400 text-gray-500 mb-6 sm:mb-8 max-w-lg leading-relaxed">
+                    <p class="text-base sm:text-lg md:text-xl dark:text-gray-400 text-gray-500 mb-6 sm:mb-8 max-w-lg leading-relaxed mx-auto sm:mx-0">
                         {{ $hs('hero_description', 'Stuck on a problem? Get instant, step-by-step explanations for Math, Science, and more. Scan, ask, learn — anytime.') }}
                     </p>
 
-                    {{-- Search Bar --}}
-                    <div class="relative max-w-lg group">
-                        <div class="flex justify-between px-2 sm:px-4 mb-2 opacity-60 text-[9px] sm:text-[10px] font-mono text-primary">
+                    {{-- Search Bar - Hidden on very small screens, show CTA instead --}}
+                    <div class="relative max-w-lg group hidden sm:block mx-auto sm:mx-0">
+                        <div class="flex justify-between px-4 mb-2 opacity-60 text-[10px] font-mono text-primary">
                             <span>{{ $hs('hero_search_label', 'DOUBT_SOLVER') }}</span>
-                            <span class="hidden sm:inline">{{ $hs('hero_search_model', 'MODEL: GEMINI-2.0') }}</span>
+                            <span>{{ $hs('hero_search_model', 'MODEL: GEMINI-2.0') }}</span>
                         </div>
-                        <div class="absolute -inset-[1px] bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 rounded-lg opacity-30 blur-sm group-hover:opacity-60 transition duration-500"></div>
-                        <div class="relative flex items-center dark:bg-[#0d1117]/90 bg-white border dark:border-white/10 border-gray-200 rounded-lg p-1.5 sm:p-2 pl-3 sm:pl-4 shadow-2xl focus-within:border-primary/60 transition-colors backdrop-blur-md">
-                            <span class="material-symbols-outlined text-primary mr-2 sm:mr-3 text-xl sm:text-2xl">psychology_alt</span>
-                            <input class="flex-1 bg-transparent border-none dark:text-white text-slate-800 dark:placeholder-gray-500 placeholder-gray-400 focus:ring-0 text-sm sm:text-base h-10 sm:h-12 font-mono min-w-0" placeholder="{{ $hs('hero_search_placeholder', 'Type your doubt here...') }}" type="text"/>
-                            <div class="flex items-center gap-1 sm:gap-2 pr-1">
-                                <button class="p-1.5 sm:p-2 rounded hover:bg-white/5 transition-colors text-primary/70 hidden sm:block" title="Upload Image">
-                                    <span class="material-symbols-outlined text-lg sm:text-xl">add_a_photo</span>
+                        <div class="absolute -inset-[1px] bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 rounded-xl opacity-30 blur-sm group-hover:opacity-60 transition duration-500"></div>
+                        <div class="relative flex items-center dark:bg-[#0d1117]/90 bg-white border dark:border-white/10 border-gray-200 rounded-xl p-2 pl-4 shadow-2xl focus-within:border-primary/60 transition-colors backdrop-blur-md">
+                            <span class="material-symbols-outlined text-primary mr-3 text-2xl">psychology_alt</span>
+                            <input class="flex-1 bg-transparent border-none dark:text-white text-slate-800 dark:placeholder-gray-500 placeholder-gray-400 focus:ring-0 text-base h-12 font-mono min-w-0" placeholder="Ask any doubt..." type="text"/>
+                            <div class="flex items-center gap-2 pr-1">
+                                <button class="p-2 rounded-lg hover:bg-white/5 transition-colors text-primary/70" title="Upload Image">
+                                    <span class="material-symbols-outlined text-xl">add_a_photo</span>
                                 </button>
-                                <button class="p-1.5 sm:p-2 rounded hover:bg-white/5 transition-colors text-primary/70 hidden sm:block" title="Voice Input">
-                                    <span class="material-symbols-outlined text-lg sm:text-xl">mic</span>
+                                <button class="p-2 rounded-lg hover:bg-white/5 transition-colors text-primary/70" title="Voice Input">
+                                    <span class="material-symbols-outlined text-xl">mic</span>
                                 </button>
-                                <a href="{{ route('login') }}" class="flex items-center justify-center gap-1 sm:gap-1.5 h-9 sm:h-10 px-3 sm:px-5 rounded-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold hover:shadow-[0_0_20px_rgba(13,148,136,0.5)] hover:scale-105 transition-all duration-300 text-xs sm:text-sm tracking-wide">
-                                    <span class="hidden sm:inline">{{ $hs('hero_cta_text', 'Solve') }}</span>
-                                    <span class="material-symbols-outlined text-base sm:text-lg">arrow_forward</span>
+                                <a href="{{ route('login') }}" class="flex items-center justify-center gap-1.5 h-10 px-5 rounded-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold hover:shadow-[0_0_20px_rgba(13,148,136,0.5)] hover:scale-105 transition-all duration-300 text-sm tracking-wide">
+                                    {{ $hs('hero_cta_text', 'Solve') }}
+                                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
                                 </a>
                             </div>
                         </div>
@@ -151,23 +152,43 @@
                             <div class="h-1 w-full dark:bg-[#1a1f2e] bg-gray-100 border dark:border-white/5 border-gray-200 rounded-full overflow-hidden">
                                 <div class="h-full bg-primary/50 w-1/3 animate-pulse"></div>
                             </div>
-                            <span class="text-[9px] sm:text-[10px] font-mono dark:text-gray-500 text-gray-400">READY</span>
+                            <span class="text-[10px] font-mono dark:text-gray-500 text-gray-400">READY</span>
+                        </div>
+                    </div>
+
+                    {{-- Mobile CTA Buttons --}}
+                    <div class="sm:hidden space-y-3">
+                        <a href="{{ route('login') }}" class="flex items-center justify-center gap-2 w-full h-14 rounded-2xl bg-gradient-to-r from-primary to-teal-500 text-white font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-all">
+                            <span class="material-symbols-outlined text-2xl">rocket_launch</span>
+                            Start Learning Free
+                        </a>
+                        <div class="flex items-center justify-center gap-3 text-sm dark:text-gray-400 text-gray-500">
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                No Sign-up Required
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+                                100% Free
+                            </span>
                         </div>
                     </div>
 
                     {{-- Stats Row --}}
-                    <div class="flex gap-5 sm:gap-8 mt-6 sm:mt-8">
-                        <div>
-                            <div class="text-xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat1_value', '10K+') }}</div>
-                            <div class="text-[10px] sm:text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat1_label', 'Students') }}</div>
+                    <div class="flex justify-center sm:justify-start gap-6 sm:gap-8 mt-8">
+                        <div class="text-center sm:text-left">
+                            <div class="text-2xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat1_value', '10K+') }}</div>
+                            <div class="text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat1_label', 'Students') }}</div>
                         </div>
-                        <div>
-                            <div class="text-xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat2_value', '50K+') }}</div>
-                            <div class="text-[10px] sm:text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat2_label', 'Solved') }}</div>
+                        <div class="w-[1px] dark:bg-white/10 bg-gray-200"></div>
+                        <div class="text-center sm:text-left">
+                            <div class="text-2xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat2_value', '50K+') }}</div>
+                            <div class="text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat2_label', 'Solved') }}</div>
                         </div>
-                        <div>
-                            <div class="text-xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat3_value', '4.9') }}</div>
-                            <div class="text-[10px] sm:text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat3_label', 'Rating') }}</div>
+                        <div class="w-[1px] dark:bg-white/10 bg-gray-200"></div>
+                        <div class="text-center sm:text-left">
+                            <div class="text-2xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat3_value', '4.9') }}</div>
+                            <div class="text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat3_label', 'Rating') }}</div>
                         </div>
                     </div>
                 </div>
@@ -324,42 +345,42 @@
     </section>
 
     {{-- ═══════════════════════ CTA ═══════════════════════ --}}
-    <section class="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 relative overflow-hidden">
+    <section class="py-10 sm:py-16 lg:py-24 px-4 sm:px-6 relative overflow-hidden">
         <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div class="w-full max-w-3xl h-[400px] bg-gradient-radial from-primary/10 to-transparent opacity-50 blur-3xl"></div>
             <div class="absolute inset-0 grid-bg opacity-30"></div>
         </div>
 
-        <div class="max-w-4xl mx-auto relative z-10 text-center bg-white dark:bg-[#111827] p-6 sm:p-10 lg:p-20 rounded-2xl sm:rounded-[2rem] border dark:border-white/10 border-gray-100 shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] reveal reveal-up">
-            <div class="absolute top-4 left-4 sm:top-6 sm:left-6 w-6 h-6 sm:w-8 sm:h-8 border-t-2 border-l-2 border-primary/30"></div>
-            <div class="absolute top-4 right-4 sm:top-6 sm:right-6 w-6 h-6 sm:w-8 sm:h-8 border-t-2 border-r-2 border-primary/30"></div>
-            <div class="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 w-6 h-6 sm:w-8 sm:h-8 border-b-2 border-l-2 border-primary/30"></div>
-            <div class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 w-6 h-6 sm:w-8 sm:h-8 border-b-2 border-r-2 border-primary/30"></div>
+        <div class="max-w-4xl mx-auto relative z-10 text-center bg-white dark:bg-[#111827] p-5 sm:p-10 lg:p-20 rounded-2xl sm:rounded-[2rem] border dark:border-white/10 border-gray-100 shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] reveal reveal-up">
+            <div class="absolute top-3 left-3 sm:top-6 sm:left-6 w-5 h-5 sm:w-8 sm:h-8 border-t-2 border-l-2 border-primary/30"></div>
+            <div class="absolute top-3 right-3 sm:top-6 sm:right-6 w-5 h-5 sm:w-8 sm:h-8 border-t-2 border-r-2 border-primary/30"></div>
+            <div class="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 w-5 h-5 sm:w-8 sm:h-8 border-b-2 border-l-2 border-primary/30"></div>
+            <div class="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 w-5 h-5 sm:w-8 sm:h-8 border-b-2 border-r-2 border-primary/30"></div>
 
-            <div class="inline-block px-2 sm:px-3 py-1 bg-primary/10 rounded-full border border-primary/20 text-primary text-[9px] sm:text-[10px] font-mono tracking-widest mb-4 sm:mb-6">{{ $hs('cta_badge', 'STATUS: EXAM_READY') }}</div>
-            <h2 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black dark:text-white text-slate-800 mb-4 sm:mb-6 tracking-tight">{{ $hs('cta_title', 'Ace Your Exams Today') }}</h2>
-            <p class="text-sm sm:text-base lg:text-lg dark:text-gray-400 text-gray-500 mb-6 sm:mb-10 max-w-2xl mx-auto">
+            <div class="inline-block px-2 sm:px-3 py-1 bg-primary/10 rounded-full border border-primary/20 text-primary text-[8px] sm:text-[10px] font-mono tracking-widest mb-3 sm:mb-6">{{ $hs('cta_badge', 'STATUS: EXAM_READY') }}</div>
+            <h2 class="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-black dark:text-white text-slate-800 mb-3 sm:mb-6 tracking-tight leading-tight">{{ $hs('cta_title', 'Ace Your Exams Today') }}</h2>
+            <p class="text-xs sm:text-base lg:text-lg dark:text-gray-400 text-gray-500 mb-5 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
                 {{ $hs('cta_description', 'Join thousands of students boosting their grades with AI-powered doubt solving, quizzes, and whiteboard videos.') }}
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                <a href="{{ route('login') }}" class="w-full sm:w-auto px-6 sm:px-8 h-12 sm:h-14 rounded-lg bg-primary text-white font-bold text-sm sm:text-base lg:text-lg hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(13,148,136,0.3)] uppercase tracking-wide flex items-center justify-center">
+                <a href="{{ route('login') }}" class="w-full sm:w-auto px-6 sm:px-8 h-11 sm:h-14 rounded-xl bg-primary text-white font-bold text-sm sm:text-base lg:text-lg hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(13,148,136,0.3)] uppercase tracking-wide flex items-center justify-center">
                     {{ $hs('cta_button_primary', 'Start Free Trial') }}
                 </a>
-                <a href="#subjects" class="w-full sm:w-auto px-6 sm:px-8 h-12 sm:h-14 rounded-lg dark:bg-[#1a1f2e] bg-white border dark:border-white/10 border-gray-200 dark:text-white text-slate-700 font-medium text-sm sm:text-base lg:text-lg dark:hover:bg-white/5 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center">
+                <a href="#subjects" class="w-full sm:w-auto px-6 sm:px-8 h-11 sm:h-14 rounded-xl dark:bg-[#1a1f2e] bg-white border dark:border-white/10 border-gray-200 dark:text-white text-slate-700 font-medium text-sm sm:text-base lg:text-lg dark:hover:bg-white/5 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center">
                     {{ $hs('cta_button_secondary', 'Browse Subjects') }}
                 </a>
             </div>
 
-            <div class="mt-6 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 dark:text-gray-500 text-gray-400 text-xs sm:text-sm font-mono">
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-base sm:text-lg text-primary">verified</span> {{ $hs('cta_badge1', '95% Better Grades') }}
+            <div class="mt-5 sm:mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:gap-6 dark:text-gray-500 text-gray-400 text-[10px] sm:text-sm font-mono">
+                <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm sm:text-lg text-primary">verified</span> {{ $hs('cta_badge1', '95% Better Grades') }}
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-base sm:text-lg text-primary">verified</span> {{ $hs('cta_badge2', 'Millions of Solutions') }}
+                <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm sm:text-lg text-primary">verified</span> {{ $hs('cta_badge2', 'Millions of Solutions') }}
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-base sm:text-lg text-primary">verified</span> {{ $hs('cta_badge3', 'Interactive Learning') }}
+                <div class="flex items-center gap-1.5 hidden sm:flex">
+                    <span class="material-symbols-outlined text-sm sm:text-lg text-primary">verified</span> {{ $hs('cta_badge3', 'Interactive Learning') }}
                 </div>
             </div>
         </div>
