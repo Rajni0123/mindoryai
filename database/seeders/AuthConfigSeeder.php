@@ -72,6 +72,13 @@ class AuthConfigSeeder extends Seeder
                 'description' => 'Test mode - always accept 123456 as valid OTP',
                 'is_active' => true
             ],
+            [
+                'config_key' => 'auth.otp.method',
+                'config_value' => 'sms',
+                'value_type' => 'string',
+                'description' => 'OTP delivery method: sms or whatsapp',
+                'is_active' => true
+            ],
 
             // =============================================
             // LOGIN SCREEN CUSTOMIZATION

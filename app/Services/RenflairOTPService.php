@@ -591,21 +591,11 @@ class RenflairOTPService
     private function callRenflairWhatsAppAPI(string $mobile, string $otpCode): array
     {
         try {
-            // Check if WhatsApp OTP is enabled
-            $whatsappEnabled = \App\Models\FrontendConfig::getValue('auth.social.whatsapp_otp_enabled', false);
-
-            if (!$whatsappEnabled) {
-                return [
-                    'success' => false,
-                    'message' => 'WhatsApp OTP is not enabled. Please contact administrator.'
-                ];
-            }
-
-            // Get API key from config
-            $apiKey = \App\Models\FrontendConfig::getValue('auth.social.renflair_api_key', '');
+            // Get WhatsApp API key from environment
+            $apiKey = env('RENFLAIR_WHATSAPP_API_KEY', '');
 
             if (empty($apiKey)) {
-                Log::error('Renflair API key not configured for WhatsApp OTP');
+                Log::error('Renflair WhatsApp API key not configured');
                 return [
                     'success' => false,
                     'message' => 'WhatsApp service not configured properly'
@@ -617,7 +607,7 @@ class RenflairOTPService
             $COUNTRY = '91'; // Country Code for India
             $PHONE = $mobile;
             $OTP = $otpCode;
-            $SENDER = 'BLINKSTUDY'; // Sender name for WhatsApp
+            $SENDER = urlencode('BlinkStudy'); // Business name
             $URL = "https://whatsapp.renflair.in/V1.php?API=$API&PHONE=$PHONE&OTP=$OTP&COUNTRY=$COUNTRY&SENDER=$SENDER";
 
             // 🔍 DEBUG MODE: Always log OTP when APP_DEBUG=true

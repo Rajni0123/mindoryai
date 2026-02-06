@@ -148,6 +148,17 @@
                                     </div>
 
                                     <div>
+                                        <label class="block text-xs font-medium text-gray-400 mb-2">OTP Delivery Method *</label>
+                                        <select name="method" required
+                                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors"
+                                                style="color-scheme: dark;">
+                                            <option value="sms" {{ ($otpSettings['method'] ?? 'sms') === 'sms' ? 'selected' : '' }} style="background-color: #1a1a1a; color: #ffffff;">📱 SMS</option>
+                                            <option value="whatsapp" {{ ($otpSettings['method'] ?? 'sms') === 'whatsapp' ? 'selected' : '' }} style="background-color: #1a1a1a; color: #ffffff;">💬 WhatsApp</option>
+                                        </select>
+                                        <p class="mt-1 text-[10px] text-gray-500">Choose how OTP will be delivered to users</p>
+                                    </div>
+
+                                    <div>
                                         <label class="block text-xs font-medium text-gray-400 mb-2">OTP Code Length *</label>
                                         <input type="number" name="length" value="{{ $otpSettings['length'] }}" min="4" max="8" required
                                                class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-white text-sm focus:outline-none focus:border-blue-500 transition-colors">

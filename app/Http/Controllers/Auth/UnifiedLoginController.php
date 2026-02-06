@@ -98,8 +98,15 @@ class UnifiedLoginController extends Controller
             session(['pending_login_mobile' => $mobile]);
         }
 
-        // Send OTP
-        $result = $this->otpService->sendOTP($mobile, $request->ip(), $request->userAgent());
+        // Check OTP method preference - first from request, then from config
+        $otpMethod = $request->input('otp_method', \App\Models\FrontendConfig::getValue('auth.otp.method', 'sms'));
+
+        // Send OTP via selected method
+        if ($otpMethod === 'whatsapp') {
+            $result = $this->otpService->sendWhatsAppOTP($mobile, $request->ip(), $request->userAgent());
+        } else {
+            $result = $this->otpService->sendOTP($mobile, $request->ip(), $request->userAgent());
+        }
 
         if ($result['success']) {
             RateLimiter::hit($key, 600); // 10 minutes

@@ -893,6 +893,12 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
             $bestScore = $totalQuizzes > 0 ? round($attempts->max('score'), 0) : 0;
             $worstScore = $totalQuizzes > 0 ? round($attempts->min('score'), 0) : 0;
 
+            // Calculate total questions, correct, and wrong answers
+            $totalQuestions = $attempts->sum('total_questions');
+            $totalCorrect = $attempts->sum('correct_answers');
+            $totalWrong = $attempts->sum('wrong_answers');
+            $totalSkipped = $attempts->sum('skipped_questions');
+
             // Calculate total time
             $totalSeconds = $attempts->sum('time_taken_seconds');
             $totalHours = floor($totalSeconds / 3600);
@@ -989,9 +995,14 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
                     'bestScore' => $bestScore,
                     'worstScore' => $worstScore,
                     'totalTime' => $totalTime,
+                    'totalTimeSeconds' => $totalSeconds,
                     'avgTimePerQuiz' => $avgTimePerQuiz,
                     'improvement' => $improvementText,
                     'dayStreak' => $dayStreak,
+                    'totalQuestions' => $totalQuestions,
+                    'correctAnswers' => $totalCorrect,
+                    'wrongAnswers' => $totalWrong,
+                    'skippedQuestions' => $totalSkipped,
                 ],
                 'attempts' => $attemptsData,
             ]);
@@ -1004,9 +1015,14 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
                     'bestScore' => 0,
                     'worstScore' => 0,
                     'totalTime' => '0m',
+                    'totalTimeSeconds' => 0,
                     'avgTimePerQuiz' => '0m 0s',
                     'improvement' => '+0%',
                     'dayStreak' => 0,
+                    'totalQuestions' => 0,
+                    'correctAnswers' => 0,
+                    'wrongAnswers' => 0,
+                    'skippedQuestions' => 0,
                 ],
                 'attempts' => [],
                 'error' => $e->getMessage()

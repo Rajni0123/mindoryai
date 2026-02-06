@@ -18,6 +18,7 @@ class AuthSettingsController extends Controller
         // Get OTP settings
         $otpSettings = [
             'provider' => FrontendConfig::getValue('auth.otp.provider', 'renflair'),
+            'method' => FrontendConfig::getValue('auth.otp.method', 'sms'),
             'enabled' => FrontendConfig::getValue('auth.otp.enabled', true),
             'length' => FrontendConfig::getValue('auth.otp.length', 4),
             'expiry_minutes' => FrontendConfig::getValue('auth.otp.expiry_minutes', 5),
@@ -86,6 +87,7 @@ class AuthSettingsController extends Controller
     {
         $validated = $request->validate([
             'provider' => 'required|in:renflair,twilio,msg91',
+            'method' => 'required|in:sms,whatsapp',
             'enabled' => 'nullable',
             'length' => 'required|integer|min:4|max:8',
             'expiry_minutes' => 'required|integer|min:1|max:30',
@@ -97,6 +99,7 @@ class AuthSettingsController extends Controller
 
         try {
             FrontendConfig::setValue('auth.otp.provider', $request->provider, 'string');
+            FrontendConfig::setValue('auth.otp.method', $request->method, 'string');
             FrontendConfig::setValue('auth.otp.enabled', $request->input('enabled') == '1' ? 'true' : 'false', 'boolean');
             FrontendConfig::setValue('auth.otp.length', $request->length, 'number');
             FrontendConfig::setValue('auth.otp.expiry_minutes', $request->expiry_minutes, 'number');
