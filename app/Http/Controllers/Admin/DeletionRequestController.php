@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class DeletionRequestController extends Controller
 {
@@ -41,12 +42,14 @@ class DeletionRequestController extends Controller
         if ($deletionRequest->user) {
             $user = $deletionRequest->user;
             $userStats = [
-                'chats' => DB::table('mobile_chats')->where('user_id', $user->id)->count(),
-                'messages' => DB::table('mobile_chat_messages')
-                    ->whereIn('mobile_chat_id', DB::table('mobile_chats')->where('user_id', $user->id)->pluck('id'))
-                    ->count(),
-                'quizzes' => DB::table('quiz_caches')->where('user_id', $user->id)->count(),
-                'videos' => DB::table('whiteboard_videos')->where('user_id', $user->id)->count(),
+                'chats' => Schema::hasTable('mobile_chats') ? DB::table('mobile_chats')->where('user_id', $user->id)->count() : 0,
+                'messages' => Schema::hasTable('mobile_chat_messages') && Schema::hasTable('mobile_chats')
+                    ? DB::table('mobile_chat_messages')
+                        ->whereIn('mobile_chat_id', DB::table('mobile_chats')->where('user_id', $user->id)->pluck('id'))
+                        ->count()
+                    : 0,
+                'quizzes' => Schema::hasTable('quiz_caches') ? DB::table('quiz_caches')->where('user_id', $user->id)->count() : 0,
+                'videos' => Schema::hasTable('whiteboard_videos') ? DB::table('whiteboard_videos')->where('user_id', $user->id)->count() : 0,
             ];
         }
 
@@ -90,14 +93,24 @@ class DeletionRequestController extends Controller
         try {
             DB::beginTransaction();
 
-            // Delete user's data
-            DB::table('mobile_chat_messages')
-                ->whereIn('mobile_chat_id', DB::table('mobile_chats')->where('user_id', $user->id)->pluck('id'))
-                ->delete();
-            DB::table('mobile_chats')->where('user_id', $user->id)->delete();
-            DB::table('quiz_caches')->where('user_id', $user->id)->delete();
-            DB::table('whiteboard_videos')->where('user_id', $user->id)->delete();
-            DB::table('daily_usage_limits')->where('user_id', $user->id)->delete();
+            // Delete user's data (check if tables exist first)
+            if (Schema::hasTable('mobile_chat_messages') && Schema::hasTable('mobile_chats')) {
+                DB::table('mobile_chat_messages')
+                    ->whereIn('mobile_chat_id', DB::table('mobile_chats')->where('user_id', $user->id)->pluck('id'))
+                    ->delete();
+            }
+            if (Schema::hasTable('mobile_chats')) {
+                DB::table('mobile_chats')->where('user_id', $user->id)->delete();
+            }
+            if (Schema::hasTable('quiz_caches')) {
+                DB::table('quiz_caches')->where('user_id', $user->id)->delete();
+            }
+            if (Schema::hasTable('whiteboard_videos')) {
+                DB::table('whiteboard_videos')->where('user_id', $user->id)->delete();
+            }
+            if (Schema::hasTable('daily_usage_limits')) {
+                DB::table('daily_usage_limits')->where('user_id', $user->id)->delete();
+            }
 
             // Log before deletion
             Log::info('User account deleted via deletion request', [
