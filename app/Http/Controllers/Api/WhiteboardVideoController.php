@@ -6,14 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\WhiteboardVideo;
 use App\Models\Setting;
 use App\Jobs\ProcessWhiteboardVideo;
+use App\Services\UsageLimitService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class WhiteboardVideoController extends Controller
 {
+    private UsageLimitService $usageLimitService;
+
+    public function __construct(UsageLimitService $usageLimitService)
+    {
+        $this->usageLimitService = $usageLimitService;
+    }
     /**
      * Create a new whiteboard video from document
      *
@@ -29,6 +37,21 @@ class WhiteboardVideoController extends Controller
                 'success' => false,
                 'message' => 'Whiteboard video feature is currently disabled',
             ], 403);
+        }
+
+        // Check usage limits
+        $user = auth()->user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'whiteboard_video');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
         }
 
         $validator = Validator::make($request->all(), [
@@ -83,6 +106,11 @@ class WhiteboardVideoController extends Controller
                     'completed_at' => now(),
                 ]);
 
+                // Record usage for cached video too
+                if ($user) {
+                    $this->usageLimitService->recordUsage($user, 'whiteboard_video');
+                }
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Video ready (cached)',
@@ -125,6 +153,11 @@ class WhiteboardVideoController extends Controller
             // Dispatch job to process video with model ID
             ProcessWhiteboardVideo::dispatch($video, $modelId);
 
+            // Record usage when video generation is started
+            if ($user) {
+                $this->usageLimitService->recordUsage($user, 'whiteboard_video');
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Video generation started successfully',
@@ -165,6 +198,33 @@ class WhiteboardVideoController extends Controller
             ], 404);
         }
 
+        // Build summary from storyboard if available
+        $summary = null;
+        $scenes = [];
+        if ($video->storyboard && is_array($video->storyboard)) {
+            $storyboard = $video->storyboard;
+            $summary = $storyboard['summary'] ?? $storyboard['topic_summary'] ?? null;
+
+            // Extract scene narrations for detailed summary
+            if (isset($storyboard['scenes']) && is_array($storyboard['scenes'])) {
+                foreach ($storyboard['scenes'] as $scene) {
+                    $scenes[] = [
+                        'scene_number' => $scene['scene_number'] ?? null,
+                        'title' => $scene['elements']['title_text'] ?? $scene['title'] ?? null,
+                        'narration' => $scene['narration'] ?? null,
+                        'key_concepts' => $scene['key_concepts'] ?? [],
+                    ];
+                }
+            }
+        }
+
+        // Build thumbnail URL
+        $thumbnailUrl = null;
+        if ($video->status === 'completed') {
+            // Check if thumbnail exists in metadata or generate URL
+            $thumbnailUrl = $video->metadata['thumbnail_url'] ?? url("/api/whiteboard-video/thumbnail/{$video->job_id}");
+        }
+
         return response()->json([
             'success' => true,
             'data' => [
@@ -179,7 +239,10 @@ class WhiteboardVideoController extends Controller
                 'final_video_url' => $video->status === 'completed'
                     ? url("/api/whiteboard-video/stream/{$video->job_id}")
                     : null,
-                'thumbnail_url' => $video->metadata['thumbnail_path'] ?? null,
+                'thumbnail_url' => $thumbnailUrl,
+                'summary' => $summary,
+                'scenes' => $scenes,
+                'pdf_url' => $video->status === 'completed' ? url("/api/whiteboard-video/pdf/{$video->job_id}") : null,
                 'error_message' => $video->error_message,
                 'started_at' => $video->started_at,
                 'completed_at' => $video->completed_at,
@@ -384,6 +447,182 @@ class WhiteboardVideoController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Stream thumbnail image
+     */
+    public function thumbnail(Request $request, string $jobId)
+    {
+        $user = auth()->user();
+        if (!$user && $request->query('token')) {
+            $token = \Laravel\Sanctum\PersonalAccessToken::findToken($request->query('token'));
+            $user = $token?->tokenable;
+        }
+
+        if (!$user) {
+            abort(401, 'Unauthorized');
+        }
+
+        $video = WhiteboardVideo::where('job_id', $jobId)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$video) {
+            abort(404, 'Video not found');
+        }
+
+        // Try to get thumbnail from metadata
+        $thumbnailPath = $video->metadata['thumbnail_path'] ?? null;
+        if ($thumbnailPath && Storage::exists($thumbnailPath)) {
+            return response()->file(storage_path("app/{$thumbnailPath}"), [
+                'Content-Type' => 'image/jpeg',
+                'Cache-Control' => 'public, max-age=86400',
+            ]);
+        }
+
+        // Generate thumbnail from video if not exists
+        if ($video->final_video_path && Storage::exists($video->final_video_path)) {
+            $videoPath = storage_path("app/{$video->final_video_path}");
+            $thumbPath = storage_path("app/videos/{$jobId}/thumbnail.jpg");
+
+            // Ensure directory exists
+            @mkdir(dirname($thumbPath), 0755, true);
+
+            // Use FFmpeg to extract first frame
+            $cmd = "ffmpeg -i " . escapeshellarg($videoPath) . " -ss 00:00:01 -vframes 1 -q:v 2 " . escapeshellarg($thumbPath) . " -y 2>/dev/null";
+            exec($cmd);
+
+            if (file_exists($thumbPath)) {
+                // Save to metadata for future requests
+                $metadata = $video->metadata ?? [];
+                $metadata['thumbnail_path'] = "videos/{$jobId}/thumbnail.jpg";
+                $video->update(['metadata' => $metadata]);
+
+                return response()->file($thumbPath, [
+                    'Content-Type' => 'image/jpeg',
+                    'Cache-Control' => 'public, max-age=86400',
+                ]);
+            }
+        }
+
+        // Return placeholder
+        abort(404, 'Thumbnail not available');
+    }
+
+    /**
+     * Generate and download PDF summary of the video content
+     */
+    public function downloadPdf(Request $request, string $jobId)
+    {
+        $user = auth()->user();
+        if (!$user && $request->query('token')) {
+            $token = \Laravel\Sanctum\PersonalAccessToken::findToken($request->query('token'));
+            $user = $token?->tokenable;
+        }
+
+        if (!$user) {
+            abort(401, 'Unauthorized');
+        }
+
+        $video = WhiteboardVideo::where('job_id', $jobId)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$video || $video->status !== 'completed') {
+            abort(404, 'Video not found or not completed');
+        }
+
+        // Check if PDF already generated
+        $pdfPath = "videos/{$jobId}/summary.pdf";
+        if (!Storage::exists($pdfPath)) {
+            // Generate PDF from storyboard
+            $storyboard = $video->storyboard;
+            if (!$storyboard || !isset($storyboard['scenes'])) {
+                abort(404, 'No summary available for this video');
+            }
+
+            // Build HTML content
+            $html = $this->buildPdfHtml($video, $storyboard);
+
+            // Use dompdf if available, otherwise return HTML
+            if (class_exists('\\Dompdf\\Dompdf')) {
+                $dompdf = new \Dompdf\Dompdf();
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+                $pdfContent = $dompdf->output();
+            } else {
+                // Fallback: return HTML as downloadable file
+                return response($html)
+                    ->header('Content-Type', 'text/html')
+                    ->header('Content-Disposition', 'attachment; filename="' . Str::slug($video->title) . '-summary.html"');
+            }
+
+            // Save PDF
+            Storage::put($pdfPath, $pdfContent);
+        }
+
+        return response()->download(
+            storage_path("app/{$pdfPath}"),
+            Str::slug($video->title) . '-summary.pdf',
+            ['Content-Type' => 'application/pdf']
+        );
+    }
+
+    /**
+     * Build HTML for PDF generation
+     */
+    private function buildPdfHtml(WhiteboardVideo $video, array $storyboard): string
+    {
+        $title = htmlspecialchars($video->title);
+        $summary = htmlspecialchars($storyboard['summary'] ?? $storyboard['topic_summary'] ?? '');
+
+        $scenesHtml = '';
+        foreach ($storyboard['scenes'] ?? [] as $scene) {
+            $sceneTitle = htmlspecialchars($scene['elements']['title_text'] ?? $scene['title'] ?? "Scene {$scene['scene_number']}");
+            $narration = htmlspecialchars($scene['narration'] ?? '');
+            $concepts = $scene['key_concepts'] ?? [];
+            $conceptsHtml = count($concepts) > 0
+                ? '<p style="color:#666;font-size:12px;"><strong>Key Concepts:</strong> ' . htmlspecialchars(implode(', ', $concepts)) . '</p>'
+                : '';
+
+            $scenesHtml .= "
+            <div style='margin-bottom:20px;padding:15px;background:#f9f9f9;border-radius:8px;'>
+                <h3 style='margin:0 0 10px;color:#333;font-size:16px;'>{$sceneTitle}</h3>
+                <p style='margin:0;color:#555;font-size:14px;line-height:1.6;'>{$narration}</p>
+                {$conceptsHtml}
+            </div>";
+        }
+
+        return "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <title>{$title} - Summary</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 40px; color: #333; }
+                h1 { color: #1a1a1a; border-bottom: 2px solid #6366f1; padding-bottom: 10px; }
+                h2 { color: #4f46e5; margin-top: 30px; }
+                .summary { background: #eef2ff; padding: 20px; border-radius: 8px; margin: 20px 0; }
+                .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #888; }
+            </style>
+        </head>
+        <body>
+            <h1>{$title}</h1>
+
+            " . ($summary ? "<div class='summary'><p style='margin:0;font-size:14px;line-height:1.6;'>{$summary}</p></div>" : "") . "
+
+            <h2>Detailed Content</h2>
+            {$scenesHtml}
+
+            <div class='footer'>
+                <p>Generated by BlinkStudy AI Whiteboard</p>
+                <p>Date: " . now()->format('F j, Y') . "</p>
+            </div>
+        </body>
+        </html>";
     }
 
     /**

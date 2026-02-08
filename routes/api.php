@@ -87,6 +87,20 @@ Route::middleware('auth:sanctum')->get('/user/profile', function (Request $reque
         $user = $request->user();
         $usageService = app(\App\Services\UsageLimitService::class);
 
+        // Get plan information
+        $planData = ['id' => null, 'name' => 'Free Plan', 'slug' => 'free', 'validity_days' => 30];
+        if ($user->plan_id) {
+            $plan = \App\Models\UserPlan::find($user->plan_id);
+            if ($plan) {
+                $planData = [
+                    'id' => $plan->id,
+                    'name' => $plan->name,
+                    'slug' => $plan->slug,
+                    'validity_days' => $plan->validity_days,
+                ];
+            }
+        }
+
         return response()->json([
             'success' => true,
             'user' => [
@@ -96,6 +110,8 @@ Route::middleware('auth:sanctum')->get('/user/profile', function (Request $reque
                 'mobile' => $user->mobile,
                 'role' => $user->role,
                 'plan_id' => $user->plan_id,
+                'plan' => $planData,
+                'plan_expires_at' => $user->plan_expires_at,
                 'is_active' => $user->is_active,
                 'created_at' => $user->created_at,
             ],
@@ -104,6 +120,21 @@ Route::middleware('auth:sanctum')->get('/user/profile', function (Request $reque
         ]);
     } catch (\Exception $e) {
         $user = $request->user();
+
+        // Get plan information even in error case
+        $planData = ['id' => null, 'name' => 'Free Plan', 'slug' => 'free', 'validity_days' => 30];
+        if ($user->plan_id) {
+            $plan = \App\Models\UserPlan::find($user->plan_id);
+            if ($plan) {
+                $planData = [
+                    'id' => $plan->id,
+                    'name' => $plan->name,
+                    'slug' => $plan->slug,
+                    'validity_days' => $plan->validity_days,
+                ];
+            }
+        }
+
         return response()->json([
             'success' => true,
             'user' => [
@@ -113,6 +144,8 @@ Route::middleware('auth:sanctum')->get('/user/profile', function (Request $reque
                 'mobile' => $user->mobile,
                 'role' => $user->role,
                 'plan_id' => $user->plan_id,
+                'plan' => $planData,
+                'plan_expires_at' => $user->plan_expires_at,
                 'is_active' => $user->is_active,
                 'created_at' => $user->created_at,
             ],
@@ -1242,7 +1275,7 @@ Route::get('/plans', function () {
                 }
 
                 $dailyLimits = $features['daily_limits'] ?? [];
-                $featuresList = $features['features'] ?? [];
+                $featuresList = $features['features_list'] ?? $features['features'] ?? [];
 
                 return [
                     'id' => $plan->id,
@@ -1771,6 +1804,17 @@ Route::middleware('auth:sanctum')->prefix('exams')->group(function () {
 });
 
 // ============================================================
+// DAILY CHALLENGE
+// ============================================================
+Route::middleware('auth:sanctum')->prefix('daily-challenge')->group(function () {
+    Route::get('/today', [\App\Http\Controllers\Api\DailyChallengeController::class, 'getToday']);
+    Route::post('/start', [\App\Http\Controllers\Api\DailyChallengeController::class, 'start']);
+    Route::post('/submit', [\App\Http\Controllers\Api\DailyChallengeController::class, 'submit']);
+    Route::get('/leaderboard', [\App\Http\Controllers\Api\DailyChallengeController::class, 'leaderboard']);
+    Route::get('/history', [\App\Http\Controllers\Api\DailyChallengeController::class, 'history']);
+});
+
+// ============================================================
 // WHITEBOARD VIDEO GENERATION
 // ============================================================
 Route::middleware('auth:sanctum')->prefix('whiteboard-video')->group(function () {
@@ -1784,6 +1828,8 @@ Route::middleware('auth:sanctum')->prefix('whiteboard-video')->group(function ()
 
 // Video streaming (auth via query token - video players can't send headers)
 Route::get('/whiteboard-video/stream/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'stream']);
+Route::get('/whiteboard-video/thumbnail/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'thumbnail']);
+Route::get('/whiteboard-video/pdf/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'downloadPdf']);
 
 // Manim Python server callback (no auth - uses secret token)
 Route::post('/whiteboard-video/callback', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'manimCallback']);
@@ -1854,6 +1900,16 @@ Route::middleware(['auth:sanctum', 'admin.only'])->get('/usage/stats', function 
             'error' => 'Failed to fetch usage stats',
         ], 500);
     }
+});
+
+// ============================================================
+// DEDICATED SUPPORT CHAT (Ultimate Plan Only)
+// ============================================================
+Route::middleware('auth:sanctum')->prefix('support-chat')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\SupportChatController::class, 'getChat']);
+    Route::post('/send', [\App\Http\Controllers\Api\SupportChatController::class, 'sendMessage']);
+    Route::get('/unread-count', [\App\Http\Controllers\Api\SupportChatController::class, 'getUnreadCount']);
+    Route::get('/access', [\App\Http\Controllers\Api\SupportChatController::class, 'checkSupportAccess']);
 });
 
 // ============================================================

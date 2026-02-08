@@ -437,4 +437,51 @@ class UsageLimitService
             'remaining' => 0,
         ];
     }
+
+    /**
+     * Check if chat should be throttled (slower response) for Lite plan users
+     * Returns delay in seconds if throttling needed, 0 otherwise
+     */
+    public function shouldThrottleChat(User $user): int
+    {
+        // Admins never throttled
+        if ($user->role === 'admin') {
+            return 0;
+        }
+
+        $plan = $this->getUserPlan($user);
+        if (!$plan) {
+            return 0;
+        }
+
+        $features = $this->getPlanFeatures($plan);
+
+        // Check if this plan has throttling enabled
+        if (!($features['throttle_after_fast_limit'] ?? false)) {
+            return 0;
+        }
+
+        // Get fast chat limit
+        $fastChatLimit = $features['daily_limits']['fast_chat_per_day'] ?? null;
+        if ($fastChatLimit === null || $fastChatLimit === -1) {
+            return 0; // No throttling for unlimited fast chats
+        }
+
+        // Get today's chat usage
+        $chatUsage = $this->getUsage($user, 'chat', false);
+
+        // If usage exceeds fast limit, apply throttle delay
+        if ($chatUsage >= (int) $fastChatLimit) {
+            $delay = (int) ($features['throttle_delay_seconds'] ?? 3);
+            Log::info('Chat throttled for Lite user', [
+                'user_id' => $user->id,
+                'chat_usage' => $chatUsage,
+                'fast_limit' => $fastChatLimit,
+                'delay_seconds' => $delay,
+            ]);
+            return $delay;
+        }
+
+        return 0;
+    }
 }

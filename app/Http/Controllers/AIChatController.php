@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\UnifiedAIService;
+use App\Services\UsageLimitService;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -10,14 +11,17 @@ use Illuminate\Support\Facades\Log;
 class AIChatController extends Controller
 {
     private UnifiedAIService $aiService;
+    private UsageLimitService $usageLimitService;
 
-    public function __construct(UnifiedAIService $aiService)
+    public function __construct(UnifiedAIService $aiService, UsageLimitService $usageLimitService)
     {
         $this->aiService = $aiService;
+        $this->usageLimitService = $usageLimitService;
     }
 
     /**
      * Main chat handler - handles all student queries
+     * Premium users get full detailed answers without asking
      */
     public function chat(Request $request)
     {
@@ -31,6 +35,25 @@ class AIChatController extends Controller
             'class' => 'nullable|string',
         ]);
 
+        $user = auth()->user();
+
+        // Check usage limits before proceeding
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
+        }
+
+        $isPremium = $this->isPremiumUser($user);
+        $userPriority = $this->getUserPriority($user);
+
         // Get file from either 'file' or 'image' parameter
         $uploadedFile = $request->file('file') ?? $request->file('image');
 
@@ -39,14 +62,29 @@ class AIChatController extends Controller
             return $this->handleFileUpload($request, $uploadedFile);
         }
 
-        // Check if user wants detail explanation
-        $mode = $this->detectMode($request->message, $request->mode);
+        // Premium users ALWAYS get detail mode
+        // Free users: Check if they want detail explanation
+        $mode = $isPremium ? 'detail' : $this->detectMode($request->message, $request->mode);
 
         // Get conversation context
         $conversationHistory = $request->conversation_history ?? [];
 
-        // Build the BlinkStudy system prompt
-        $systemPrompt = $this->buildSystemPrompt();
+        // Build the BlinkStudy system prompt (different for premium vs free)
+        $systemPrompt = $this->buildSystemPrompt($isPremium);
+
+        // Check if chat should be throttled (only for free/lite users)
+        $throttleDelay = 0;
+        if ($user && !$isPremium) {
+            $throttleDelay = $this->usageLimitService->shouldThrottleChat($user);
+        }
+
+        // Log priority for debugging
+        Log::info('Chat request priority', [
+            'user_id' => $user?->id,
+            'plan' => $user?->userPlan?->slug ?? 'free',
+            'priority' => $userPriority,
+            'is_premium' => $isPremium,
+        ]);
 
         // Process the message
         $response = $this->getAIResponse(
@@ -57,10 +95,18 @@ class AIChatController extends Controller
             $uploadedFile
         );
 
+        // Record usage after successful response
+        if ($user) {
+            $this->usageLimitService->recordUsage($user, 'chat');
+        }
+
         return response()->json([
             'success' => true,
             'response' => $response,
             'mode' => $mode,
+            'throttled' => $throttleDelay > 0,
+            'priority' => $userPriority,
+            'is_premium' => $isPremium,
         ]);
     }
 
@@ -125,10 +171,11 @@ class AIChatController extends Controller
 
     /**
      * Build the BlinkStudy system prompt
+     * Premium users get direct detailed answers without asking for confirmation
      */
-    private function buildSystemPrompt()
+    private function buildSystemPrompt($isPremium = false)
     {
-        return "You are BlinkStudy - a friendly educational AI assistant for Indian students. You love helping students learn!
+        $basePrompt = "You are BlinkStudy - a friendly educational AI assistant for Indian students. You love helping students learn!
 
 🎓 YOUR ROLE:
 - Help with education, study, learning, and academic questions
@@ -147,7 +194,7 @@ class AIChatController extends Controller
 
 💡 YOUR APPROACH FOR NON-EDUCATIONAL QUESTIONS:
 Instead of refusing, find a creative way to connect it to learning:
-- Movies/Entertainment → \"Bahut accha sawaal! Main study topics mein help karta hu. Kya aap [related educational concept] ke baare mein jaanna chahte ho? Main aapki studies mein madad kar sakta hu!\"
+- Movies/Entertainment → \"Bahut accha sawaal! Main study topics mein help karta hu. Kya aap [related educational concept] ke baare mein jaanna chahte ho?\"
 - Games/Sports → \"Interesting! Main educational topics mein specialisation rakhta hu. Kya aap apne studies ya exams ke liye kuch seekhna chahte ho?\"
 - Casual chat → Respond warmly, then guide: \"Hello! Main aapki studies mein help karne ke liye hu. Aaj aap kya seekhna chahte ho?\"
 
@@ -157,20 +204,64 @@ Your identity:
 - Audience: Indian students (CBSE / NCERT focus)
 - Language: Simple Hinglish (Hindi + English)
 
-RESPONSE RULE:
-
-1. FIRST give a SHORT, DIRECT ANSWER (2-5 lines max)
-2. AFTER short answer, ALWAYS ask:
-   \"Kya main isko detail me samjhau? (Yes / Ha / Batav likho)\"
-3. ONLY IF user replies yes/ha/haan/batav/explain/detail, give FULL explanation
-4. If user doesn't ask for detail, STOP after short answer
-
 RESPONSE FORMATTING:
 - Use plain text
 - No markdown headers
 - Use • for bullet points
 - Keep mobile-friendly spacing
 - Use Unicode for math: ², ³, ₂, →, ≈, √, ∑
+
+TEACHING STYLE:
+- Patient and motivating
+- Simple Hinglish explanations
+- NCERT terminology
+- Exam-focused
+- Never hallucinate
+- Always helpful, guide gently to study topics";
+
+        // PREMIUM USERS: Direct detailed answers without asking
+        if ($isPremium) {
+            $basePrompt .= "
+
+⭐ PREMIUM USER - RESPONSE RULE:
+This is a PREMIUM user. Give FULL, DETAILED, COMPREHENSIVE answers directly.
+- DO NOT give short answers
+- DO NOT ask \"Kya main detail me samjhau?\"
+- Provide complete step-by-step solutions
+- Include formulas, examples, and explanations
+- Give exam-focused detailed content immediately
+
+SUBJECT HANDLING (PREMIUM - ALWAYS DETAILED):
+
+• Mathematics:
+  - Full step-by-step solution
+  - Formula with derivation
+  - Similar example problems
+
+• Science:
+  - Complete concept explanation
+  - Real-world examples
+  - Important keywords for exams
+
+• Social Science:
+  - Detailed cause-effect analysis
+  - Historical context
+  - Important dates and facts
+
+• English:
+  - Full grammar rules with examples
+  - Multiple usage examples
+  - Common mistakes to avoid";
+        } else {
+            // FREE USERS: Short answer first, then ask for detail
+            $basePrompt .= "
+
+RESPONSE RULE (FREE USER):
+1. FIRST give a SHORT, DIRECT ANSWER (2-5 lines max)
+2. AFTER short answer, ALWAYS ask:
+   \"Kya main isko detail me samjhau? (Yes / Ha / Batav likho)\"
+3. ONLY IF user replies yes/ha/haan/batav/explain/detail, give FULL explanation
+4. If user doesn't ask for detail, STOP after short answer
 
 SUBJECT HANDLING:
 
@@ -188,17 +279,41 @@ SUBJECT HANDLING:
 
 • English:
   - Short: rule or meaning
-  - Detail: explanation + examples
+  - Detail: explanation + examples";
+        }
 
-TEACHING STYLE:
-- Patient and motivating
-- Simple Hinglish explanations
-- NCERT terminology
-- Exam-focused
-- Never hallucinate
-- Always helpful, guide gently to study topics
+        $basePrompt .= "
 
 Remember: You are a HELPFUL EDUCATIONAL ASSISTANT. Always be helpful, guide gently to study topics, but never refuse to answer.";
+
+        return $basePrompt;
+    }
+
+    /**
+     * Check if user has a premium (paid) plan
+     */
+    private function isPremiumUser($user): bool
+    {
+        if (!$user) return false;
+
+        $planSlug = strtolower($user->userPlan?->slug ?? '');
+        return in_array($planSlug, ['ultimate', 'pro', 'starter', 'lite']);
+    }
+
+    /**
+     * Get user's plan priority (higher = more priority)
+     */
+    private function getUserPriority($user): int
+    {
+        if (!$user) return 0;
+
+        $planSlug = strtolower($user->userPlan?->slug ?? '');
+        return match($planSlug) {
+            'ultimate' => 100,
+            'pro' => 75,
+            'starter', 'lite' => 50,
+            default => 10, // Free users
+        };
     }
 
     /**
@@ -409,7 +524,8 @@ GIVE THE DETAILED EXPLANATION NOW.";
     }
 
     /**
-     * Solve questions from image
+     * Solve questions from image - OPTIMIZED FOR SPEED
+     * Ultimate plan users get fastest processing with gemini-2.0-flash
      */
     public function solveFromImage(Request $request)
     {
@@ -432,35 +548,100 @@ GIVE THE DETAILED EXPLANATION NOW.";
         $fileExtension = $uploadedFile->getClientOriginalExtension();
         $action = $request->action;
 
-        // Use special system prompt for solving - NO asking for confirmation
-        $systemPrompt = $this->buildSolveSystemPrompt();
+        // Get plan-based speed optimization
+        $planSlug = $user?->userPlan?->slug ?? 'free';
+        $isPremium = in_array($planSlug, ['ultimate', 'pro', 'starter']);
 
-        $strictRule = "⚠️ STRICT RULE: You MUST ONLY use the content visible in this uploaded file. DO NOT use any external knowledge.";
+        // Use FAST direct Gemini processing for scan/solve
+        // Skip the heavy UnifiedAIService routing for speed
+        try {
+            // Prepare image data
+            $imageData = [
+                'uri' => 'data:' . $uploadedFile->getMimeType() . ';base64,' . base64_encode(file_get_contents($uploadedFile->getRealPath())),
+                'type' => $uploadedFile->getMimeType(),
+                'fileName' => $uploadedFile->getClientOriginalName(),
+            ];
 
+            // Build optimized prompt based on action
+            $prompt = $this->buildFastSolvePrompt($action, $fileExtension);
+
+            // Use GeminiService directly for SPEED (bypass UnifiedAIService routing)
+            $geminiService = new \App\Services\GeminiService(
+                feature: 'scan_solve',
+                modelName: 'gemini-2.0-flash', // Always use fastest model
+                userId: $user?->id
+            );
+
+            // Extract base64 from data URI
+            $imageBase64 = explode(',', $imageData['uri'])[1];
+
+            // Speed-optimized options based on plan
+            $maxTokens = match($planSlug) {
+                'ultimate' => 4096,  // Full detailed solutions
+                'pro' => 3072,
+                'starter' => 2048,
+                default => 1536,
+            };
+
+            $response = $geminiService->generateContentWithVision(
+                userPrompt: $prompt,
+                imageData: $imageBase64,
+                mimeType: $imageData['type'],
+                options: [
+                    'temperature' => 0.3,  // Lower = faster, more deterministic
+                    'maxOutputTokens' => $maxTokens,
+                    'timeout' => $isPremium ? 45 : 30,
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'response' => $response['content'],
+                'action' => $action,
+                'file_type' => $fileExtension,
+                'fast_mode' => true,
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Fast Scan/Solve Error', ['error' => $e->getMessage()]);
+
+            // Fallback to regular method if fast mode fails
+            $systemPrompt = $this->buildSolveSystemPrompt();
+            $prompt = $this->buildFastSolvePrompt($action, $fileExtension);
+            $response = $this->getAIResponse($prompt, $systemPrompt, [], 'detail', $uploadedFile);
+
+            return response()->json([
+                'success' => true,
+                'response' => $response,
+                'action' => $action,
+                'file_type' => $fileExtension,
+            ]);
+        }
+    }
+
+    /**
+     * Build optimized prompt for fast solving - shorter = faster
+     */
+    private function buildFastSolvePrompt(string $action, string $fileExtension): string
+    {
         $prompts = [
-            'explain' => "Explain the content visible in this file in detail. {$strictRule}",
-            'solve' => "SOLVE EVERY SINGLE QUESTION visible in this file. Count all questions first, then solve each one completely. Do NOT skip any question. If there are 10 questions, solve all 10. {$strictRule}",
-            'summary' => "Provide a summary of the content in this file. {$strictRule}",
-            'notes' => "Create revision notes from the content in this file. {$strictRule}",
-            'mcqs' => "Generate MCQs based ONLY on the content in this file. {$strictRule}",
+            'solve' => "Solve ALL questions in this image. For each question:
+• Write the question
+• Show solution steps
+• Give final answer
+
+Be thorough but concise. Solve EVERY question visible.",
+
+            'explain' => "Explain the educational content in this image clearly and concisely.",
+
+            'summary' => "Summarize the key points from this image in bullet points.",
+
+            'notes' => "Create concise revision notes from this image content.",
+
+            'mcqs' => "Generate 5 MCQs based on this image content with answers.",
         ];
 
-        if ($fileExtension === 'pdf') {
-            $prompts[$action] = "PDF Document Analysis:\n" . $prompts[$action];
-        } elseif (in_array($fileExtension, ['jpg', 'png', 'jpeg'])) {
-            $prompts[$action] = "Image Analysis:\n" . $prompts[$action];
-        }
-
-        $prompt = $prompts[$action];
-
-        $response = $this->getAIResponse($prompt, $systemPrompt, [], 'detail', $uploadedFile);
-
-        return response()->json([
-            'success' => true,
-            'response' => $response,
-            'action' => $action,
-            'file_type' => $fileExtension,
-        ]);
+        return $prompts[$action] ?? $prompts['solve'];
     }
 
     /**

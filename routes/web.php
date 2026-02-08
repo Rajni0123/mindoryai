@@ -513,6 +513,17 @@ Route::put('/update', 'update')->name('update');                // Update brandi
                 Route::post('/upload-image', 'uploadImage')->name('upload-image');          // Upload image
                 Route::post('/clear-cache', 'clearCache')->name('clear-cache');             // Clear settings cache
             });
+
+            // Dedicated Support (Ultimate Plan Users)
+            Route::prefix('dedicated-support')->name('dedicated-support.')->controller(\App\Http\Controllers\Admin\DedicatedSupportController::class)->group(function () {
+                Route::get('/', 'index')->name('index');                                    // List all support chats
+                Route::get('/{id}', 'show')->name('show');                                  // View single chat
+                Route::post('/{id}/reply', 'reply')->name('reply');                         // Send reply
+                Route::post('/{id}/close', 'close')->name('close');                         // Close chat
+                Route::post('/{id}/reopen', 'reopen')->name('reopen');                      // Reopen chat
+                Route::get('/{id}/messages', 'getNewMessages')->name('messages');           // AJAX: Get new messages
+                Route::get('/api/unread-count', 'getUnreadCount')->name('unread-count');    // AJAX: Get unread count
+            });
         });
     });
 });

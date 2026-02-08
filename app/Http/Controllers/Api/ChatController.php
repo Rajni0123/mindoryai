@@ -10,6 +10,7 @@ use App\Models\Message;
 use App\Models\AiModel;
 use App\Services\UnifiedAIService;
 use App\Services\FileStorageService;
+use App\Services\UsageLimitService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,11 +18,13 @@ class ChatController extends Controller
 {
     protected $aiService;
     protected $fileStorageService;
+    protected $usageLimitService;
 
-    public function __construct(UnifiedAIService $aiService, FileStorageService $fileStorageService)
+    public function __construct(UnifiedAIService $aiService, FileStorageService $fileStorageService, UsageLimitService $usageLimitService)
     {
         $this->aiService = $aiService;
         $this->fileStorageService = $fileStorageService;
+        $this->usageLimitService = $usageLimitService;
     }
 
     /**
@@ -105,8 +108,22 @@ class ChatController extends Controller
             'file' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:25600' // Max 25MB (matching php.ini)
         ]);
 
+        // Check usage limits
+        $user = Auth::user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
+        }
+
         try {
-            $user = Auth::user();
             $message = $validated['message'] ?? '';
             $chatId = $validated['chat_id'] ?? null;
             $modelId = $validated['model_id'] ?? null;
@@ -217,6 +234,11 @@ class ChatController extends Controller
 
             // Update chat timestamp
             $chat->touch();
+
+            // Record usage after successful response
+            if ($user) {
+                $this->usageLimitService->recordUsage($user, 'chat');
+            }
 
             return response()->json([
                 'success' => true,

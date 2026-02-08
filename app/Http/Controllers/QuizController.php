@@ -8,6 +8,7 @@ use App\Models\QuizCache;
 use App\Services\UnifiedAIService;
 use App\Services\QuizPdfGenerator;
 use App\Services\StudentDoubtSolverService;
+use App\Services\UsageLimitService;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,14 +19,17 @@ class QuizController extends Controller
 {
     private UnifiedAIService $unifiedAIService;
     private QuizPdfGenerator $pdfGenerator;
+    private UsageLimitService $usageLimitService;
 
     public function __construct(
         UnifiedAIService $unifiedAIService,
-        QuizPdfGenerator $pdfGenerator
+        QuizPdfGenerator $pdfGenerator,
+        UsageLimitService $usageLimitService
     )
     {
         $this->unifiedAIService = $unifiedAIService;
         $this->pdfGenerator = $pdfGenerator;
+        $this->usageLimitService = $usageLimitService;
     }
 
     /**
@@ -233,6 +237,20 @@ class QuizController extends Controller
 
         try {
             $user = Auth::user();
+
+            // Check usage limits
+            if ($user) {
+                $limitCheck = $this->usageLimitService->canUse($user, 'video_quiz');
+                if (!$limitCheck['allowed']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $limitCheck['reason'],
+                        'limit_reached' => true,
+                        'used' => $limitCheck['used'],
+                        'limit' => $limitCheck['limit'],
+                    ], 429);
+                }
+            }
             $file = $request->file('image');
             $quizType = $request->input('quiz_type', 'mcq');
             $questionCount = $request->input('question_count', 5);
@@ -412,6 +430,11 @@ class QuizController extends Controller
                 'quiz_cache_id' => $cachedQuiz->id,
                 'question_count' => count($quizData['questions']),
             ]);
+
+            // Record usage after successful generation
+            if ($user) {
+                $this->usageLimitService->recordUsage($user, 'video_quiz');
+            }
 
             return response()->json([
                 'success' => true,
@@ -603,7 +626,7 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
 
     /**
      * Parse AI response and extract quiz data
-     * Robust parsing with multiple fallback strategies
+     * ULTRA-ROBUST parsing with multiple fallback strategies
      */
     private function parseQuizResponse(string $response, string $quizType): array
     {
@@ -616,6 +639,74 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             throw new \Exception('AI returned empty response. Please try again.');
         }
 
+        // QUICK CHECK: If response is already valid JSON, use it directly
+        $directParse = @json_decode($response, true);
+        if ($directParse !== null && isset($directParse['questions']) && !empty($directParse['questions'])) {
+            \Log::info('Direct JSON parse successful', ['questions_count' => count($directParse['questions'])]);
+            return $this->normalizeQuizData($directParse, $quizType);
+        }
+
+        // Step 1.4: Check for truncated JSON response
+        // Truncated responses typically end mid-word or mid-sentence
+        $trimmed = trim($response);
+        $lastChar = substr($trimmed, -1);
+        $endsWithValidJson = in_array($lastChar, ['}', ']', '"']);
+
+        if (!$endsWithValidJson) {
+            \Log::warning('Possible truncated response detected', [
+                'last_50_chars' => substr($trimmed, -50),
+                'last_char' => $lastChar,
+            ]);
+
+            // Try to repair truncated JSON by finding last complete question
+            if (preg_match('/^(.*?"explanation"\s*:\s*"[^"]*")\s*\}[,\s]*\]/s', $trimmed, $repairMatch)) {
+                $response = $repairMatch[1] . '}]}';
+                \Log::info('Repaired truncated JSON by finding last complete question');
+            } elseif (preg_match('/^(.*?\})\s*,?\s*$/s', $trimmed, $partialMatch)) {
+                // Find last complete object and close the array
+                if (preg_match_all('/\{[^{}]*"question"[^{}]*\}/s', $trimmed, $allQuestions)) {
+                    $questions = $allQuestions[0];
+                    if (!empty($questions)) {
+                        $response = '{"questions":[' . implode(',', $questions) . ']}';
+                        \Log::info('Reconstructed JSON from ' . count($questions) . ' complete questions');
+                    }
+                }
+            }
+        }
+
+        // Step 1.5: Strip markdown code blocks if present
+        // Handle ```json ... ``` or ``` ... ``` patterns
+        if (preg_match('/```(?:json)?\s*([\s\S]*?)\s*```/', $response, $codeBlockMatch)) {
+            $response = trim($codeBlockMatch[1]);
+            \Log::info('Extracted content from markdown code block');
+        }
+
+        // Step 1.6: Strip common AI preamble text before JSON
+        // AI sometimes says "Here are your questions:" or "Sure! Here's the quiz:" before JSON
+        $preamblePatterns = [
+            '/^.*?(?=\{|\[)/s',  // Everything before first { or [
+            '/^(?:Here(?:\'s| is| are).*?[:]\s*)/is',
+            '/^(?:Sure[!,.]?\s*)/is',
+            '/^(?:Of course[!,.]?\s*)/is',
+            '/^(?:I\'ll generate.*?[:]\s*)/is',
+            '/^(?:Below (?:are|is).*?[:]\s*)/is',
+        ];
+
+        $originalResponse = $response;
+        $trimmedResponse = trim($response);
+
+        // Only strip preamble if response doesn't start with { or [
+        if (!preg_match('/^\s*[\{\[]/', $trimmedResponse)) {
+            foreach ($preamblePatterns as $pattern) {
+                $stripped = preg_replace($pattern, '', $trimmedResponse, 1);
+                if ($stripped !== $trimmedResponse && preg_match('/^\s*[\{\[]/', $stripped)) {
+                    $response = trim($stripped);
+                    \Log::info('Stripped AI preamble text');
+                    break;
+                }
+            }
+        }
+
         \Log::info('Parsing quiz response', [
             'response_length' => strlen($response),
             'quiz_type' => $quizType,
@@ -624,7 +715,16 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
 
         // Step 2: Try multiple JSON extraction strategies
         $jsonParseAttempts = [
-            // Attempt 1: Standard regex
+            // Attempt 0: Direct array - AI returned [...] instead of {"questions": [...]}
+            function($resp) {
+                $trimmed = trim($resp);
+                if (str_starts_with($trimmed, '[') && str_ends_with($trimmed, ']')) {
+                    // Wrap array in questions object
+                    return '{"questions":' . $trimmed . '}';
+                }
+                return null;
+            },
+            // Attempt 1: Standard regex for object
             function($resp) {
                 if (preg_match('/\{[\s\S]*\}/s', $resp, $matches)) {
                     return $matches[0];
@@ -655,6 +755,77 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                     return $matches[0];
                 }
                 return null;
+            },
+            // Attempt 4: Extract array and wrap it
+            function($resp) {
+                if (preg_match('/\[[\s\S]*\]/s', $resp, $matches)) {
+                    return '{"questions":' . $matches[0] . '}';
+                }
+                return null;
+            },
+            // Attempt 5: Find balanced brackets for array
+            function($resp) {
+                $start = strpos($resp, '[');
+                if ($start === false) return null;
+
+                $depth = 0;
+                $length = strlen($resp);
+                for ($i = $start; $i < $length; $i++) {
+                    if ($resp[$i] === '[') $depth++;
+                    elseif ($resp[$i] === ']') {
+                        $depth--;
+                        if ($depth === 0) {
+                            $arr = substr($resp, $start, $i - $start + 1);
+                            return '{"questions":' . $arr . '}';
+                        }
+                    }
+                }
+                return null;
+            },
+            // Attempt 6: Handle line-by-line JSON objects (sometimes AI returns each question on a line)
+            function($resp) {
+                $questions = [];
+                $lines = explode("\n", $resp);
+                foreach ($lines as $line) {
+                    $line = trim($line);
+                    if (preg_match('/^\{.*"question".*\}[,]?$/', $line)) {
+                        $cleanLine = rtrim($line, ',');
+                        $parsed = @json_decode($cleanLine, true);
+                        if ($parsed && isset($parsed['question'])) {
+                            $questions[] = $parsed;
+                        }
+                    }
+                }
+                if (!empty($questions)) {
+                    return json_encode(['questions' => $questions]);
+                }
+                return null;
+            },
+            // Attempt 7: Try to fix common JSON syntax errors
+            function($resp) {
+                // Find JSON object or array
+                if (!preg_match('/[\{\[]/', $resp)) return null;
+
+                $start = strpos($resp, '{');
+                $arrStart = strpos($resp, '[');
+                if ($start === false || ($arrStart !== false && $arrStart < $start)) {
+                    $start = $arrStart;
+                }
+                if ($start === false) return null;
+
+                $json = substr($resp, $start);
+
+                // Fix common issues
+                $json = preg_replace('/,\s*([}\]])/', '$1', $json); // Remove trailing commas
+                $json = preg_replace('/([}\]])\s*([{\[])/s', '$1,$2', $json); // Add missing commas between objects
+                $json = preg_replace('/\'([^\']*)\'/s', '"$1"', $json); // Replace single quotes with double quotes
+
+                // If it's an array, wrap it
+                if (str_starts_with(trim($json), '[')) {
+                    $json = '{"questions":' . $json . '}';
+                }
+
+                return $json;
             },
         ];
 
@@ -760,15 +931,72 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             \Log::error('All parsing methods failed', [
                 'response_length' => strlen($response),
                 'json_error' => $lastError,
+                'response_start' => mb_substr($response, 0, 200, 'UTF-8'),
+                'response_end' => mb_substr($response, -200, 200, 'UTF-8'),
             ]);
-            throw new \Exception('AI returned invalid quiz format. Please try again.');
+
+            // Check if response appears to be truncated
+            $trimmed = trim($response);
+            if (!empty($trimmed) && !preg_match('/[}\]]$/s', $trimmed)) {
+                throw new \Exception('Quiz generation incomplete - response was truncated. Please try again.');
+            }
+
+            // Check if response contains error message from AI
+            if (preg_match('/(error|unable|cannot|sorry|apologize)/i', $response)) {
+                throw new \Exception('AI was unable to generate quiz. Please try a different topic.');
+            }
+
+            // Generic error with context
+            throw new \Exception('Could not parse quiz response. Please try again.');
         }
 
         return $textParsed;
     }
 
     /**
+     * Normalize quiz data structure
+     * Ensures consistent format for all quiz responses
+     */
+    private function normalizeQuizData(array $quizData, string $quizType): array
+    {
+        $validatedQuestions = [];
+
+        foreach ($quizData['questions'] as $index => $question) {
+            if (!isset($question['question']) || empty(trim($question['question']))) {
+                continue;
+            }
+
+            $normalizedQuestion = [
+                'question' => $this->sanitizeUtf8((string)($question['question'] ?? '')),
+                'options' => null,
+                'correct_answer' => $this->sanitizeUtf8((string)($question['correct_answer'] ?? '')),
+                'explanation' => $this->sanitizeUtf8((string)($question['explanation'] ?? '')),
+            ];
+
+            if (isset($question['options']) && is_array($question['options'])) {
+                $normalizedQuestion['options'] = [];
+                foreach ($question['options'] as $key => $value) {
+                    $normalizedQuestion['options'][strtoupper($key)] = $this->sanitizeUtf8((string)$value);
+                }
+            }
+
+            if ($quizType === 'mcq' && (!is_array($normalizedQuestion['options']) || empty($normalizedQuestion['options']))) {
+                continue;
+            }
+
+            $validatedQuestions[] = $normalizedQuestion;
+        }
+
+        return [
+            'subject' => $this->sanitizeUtf8((string)($quizData['subject'] ?? 'General')),
+            'topics' => $quizData['topics'] ?? [],
+            'questions' => $validatedQuestions,
+        ];
+    }
+
+    /**
      * Fallback parser for text-based quiz responses
+     * Enhanced to handle various question formats
      */
     private function parseTextQuizResponse(string $response, string $quizType): array
     {
@@ -777,48 +1005,100 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
         $currentQuestion = null;
         $questionNum = 0;
 
+        // Additional patterns for question detection
+        $questionPatterns = [
+            '/^(question|q)\s*[\d]*[\.\:\)]/i',  // Question 1. or Q1:
+            '/^\d+[\.\:\)]\s+/i',                 // 1. or 1: or 1)
+            '/^[\*\-]\s*\**(question|q)/i',      // * Question or - **Question
+            '/^##?\s*(question|q)/i',             // # Question or ## Q
+        ];
+
+        // Additional patterns for options
+        $optionPatterns = [
+            '/^([A-Da-d])[\)\.\:\s]+(.+)$/i',    // A) or a. or A:
+            '/^[\*\-]\s*([A-Da-d])[\)\.\:\s]+(.+)$/i', // * A) or - A.
+            '/^\(([A-Da-d])\)\s*(.+)$/i',        // (A) text
+        ];
+
         foreach ($lines as $line) {
             $line = trim($line);
+            if (empty($line)) continue;
 
-            // Detect question start
-            if (preg_match('/^(question|q)[\s\d]*\./i', $line)) {
-                if ($currentQuestion) {
+            // Detect question start with multiple patterns
+            $isQuestion = false;
+            $questionText = $line;
+
+            foreach ($questionPatterns as $pattern) {
+                if (preg_match($pattern, $line)) {
+                    $isQuestion = true;
+                    // Clean the question text
+                    $questionText = preg_replace('/^(question|q)\s*[\d]*[\.\:\)]\s*/i', '', $line);
+                    $questionText = preg_replace('/^\d+[\.\:\)]\s*/', '', $questionText);
+                    $questionText = preg_replace('/^[\*\-\#]+\s*/', '', $questionText);
+                    $questionText = preg_replace('/^\*+|\*+$/', '', $questionText);
+                    break;
+                }
+            }
+
+            if ($isQuestion && !empty(trim($questionText))) {
+                if ($currentQuestion && !empty($currentQuestion['question'])) {
                     $questions[] = $currentQuestion;
                 }
                 $questionNum++;
                 $currentQuestion = [
                     'id' => $questionNum,
-                    'question' => preg_replace('/^(question|q)[\s\d]*\.\s*/i', '', $line),
+                    'question' => trim($questionText),
                     'options' => $quizType === 'mcq' ? ['A' => '', 'B' => '', 'C' => '', 'D' => ''] : null,
                     'correct_answer' => '',
                     'explanation' => '',
                 ];
+                continue;
             }
-            // Detect options for MCQ
-            elseif ($currentQuestion && $quizType === 'mcq' && preg_match('/^([A-D])[\)\.\s]+(.+)$/', $line, $matches)) {
-                $option = $matches[1];
-                $text = $matches[2];
-                if ($currentQuestion['options'] !== null) {
-                    $currentQuestion['options'][$option] = $text;
+
+            // Detect options for MCQ using multiple patterns
+            if ($currentQuestion && $quizType === 'mcq') {
+                foreach ($optionPatterns as $pattern) {
+                    if (preg_match($pattern, $line, $matches)) {
+                        $option = strtoupper($matches[1]);
+                        $text = trim($matches[2]);
+                        if ($currentQuestion['options'] !== null && in_array($option, ['A', 'B', 'C', 'D'])) {
+                            $currentQuestion['options'][$option] = $text;
+                        }
+                        break;
+                    }
                 }
             }
-            // Detect correct answer
-            elseif ($currentQuestion && preg_match('/^(correct\s*answer|answer)[\:\s]+(.+)$/i', $line, $matches)) {
-                $currentQuestion['correct_answer'] = trim($matches[2]);
+
+            // Detect correct answer with multiple patterns
+            if ($currentQuestion && preg_match('/^(correct\s*answer|answer|ans|correct)[\:\s]+(.+)$/i', $line, $matches)) {
+                $answer = trim($matches[2]);
+                // Normalize to just A, B, C, D if it's a letter
+                if (preg_match('/^([A-Da-d])[\)\.\s]?/i', $answer, $letterMatch)) {
+                    $currentQuestion['correct_answer'] = strtoupper($letterMatch[1]);
+                } else {
+                    $currentQuestion['correct_answer'] = $answer;
+                }
             }
+
             // Detect explanation
-            elseif ($currentQuestion && preg_match('/^(explanation|solution)[\:\s]+(.+)$/i', $line, $matches)) {
+            if ($currentQuestion && preg_match('/^(explanation|solution|reason|why)[\:\s]+(.+)$/i', $line, $matches)) {
                 $currentQuestion['explanation'] = trim($matches[2]);
             }
         }
 
-        if ($currentQuestion) {
+        // Don't forget the last question
+        if ($currentQuestion && !empty($currentQuestion['question'])) {
             $questions[] = $currentQuestion;
         }
 
+        // Log result
+        \Log::info('Text fallback parser result', [
+            'questions_found' => count($questions),
+        ]);
+
         return [
             'subject' => 'General',
-            'topics' => ['Image Analysis'],
+            'topics' => ['Quiz'],
             'questions' => $questions,
         ];
     }
@@ -906,12 +1186,28 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
         $json = preg_replace('/^```(?:json)?\s*/i', '', $json);
         $json = preg_replace('/\s*```$/i', '', $json);
 
-        // Step 2: Remove any text before first { and after last }
+        // Step 2: Remove any text before first { or [ and after last } or ]
         $firstBrace = strpos($json, '{');
+        $firstBracket = strpos($json, '[');
         $lastBrace = strrpos($json, '}');
+        $lastBracket = strrpos($json, ']');
 
-        if ($firstBrace !== false && $lastBrace !== false && $lastBrace > $firstBrace) {
-            $json = substr($json, $firstBrace, $lastBrace - $firstBrace + 1);
+        // Determine the correct start and end
+        $start = false;
+        $end = false;
+        $isArray = false;
+
+        if ($firstBrace !== false && ($firstBracket === false || $firstBrace < $firstBracket)) {
+            $start = $firstBrace;
+            $end = $lastBrace;
+        } elseif ($firstBracket !== false) {
+            $start = $firstBracket;
+            $end = $lastBracket;
+            $isArray = true;
+        }
+
+        if ($start !== false && $end !== false && $end > $start) {
+            $json = substr($json, $start, $end - $start + 1);
         }
 
         // Step 3: Fix common JSON issues
@@ -973,6 +1269,21 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
 
         try {
             $user = Auth::user();
+
+            // Check usage limits
+            if ($user) {
+                $limitCheck = $this->usageLimitService->canUse($user, 'topic_quiz');
+                if (!$limitCheck['allowed']) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => $limitCheck['reason'],
+                        'limit_reached' => true,
+                        'used' => $limitCheck['used'],
+                        'limit' => $limitCheck['limit'],
+                    ], 429);
+                }
+            }
+
             $topic = $request->input('topic');
             $subject = $request->input('subject');
             $examType = $request->input('exam_type');
@@ -1089,6 +1400,11 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             $quizData['language'] = $language;
             $quizData['question_count'] = count($quizData['questions']);
 
+            // Record usage after successful generation
+            if ($user) {
+                $this->usageLimitService->recordUsage($user, 'topic_quiz');
+            }
+
             $quizResult = [
                 'title' => "Quiz: {$topic}",
                 'description' => $subject ? "Subject: {$subject}" : "Topic-based quiz",
@@ -1149,6 +1465,9 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                 $questionCount = $this->calculateQuestionCount($duration, $difficulty);
             }
 
+            // Optimize question count for faster generation (max 15 for speed)
+            $questionCount = min($questionCount, 15);
+
             \Log::info('Generating reasoning quiz', [
                 'user_id' => $user->id,
                 'category' => $category,
@@ -1161,19 +1480,19 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             // Use StudentDoubtSolverService to generate quiz
             $doubtSolverService = new \App\Services\StudentDoubtSolverService();
 
-            // Build topic with reasoning context
-            $topicWithContext = "Reasoning and Aptitude - {$category}";
+            // Build topic with reasoning context - simplified for better JSON output
+            $topicWithContext = "Reasoning - {$category}";
             if ($language !== 'english') {
                 $topicWithContext .= " [Language: {$language}]";
             }
 
-            // Add reasoning-specific instructions
-            $topicWithContext .= " [TYPE: Logical Reasoning, Aptitude, Problem Solving. Include pattern recognition, series completion, analogy, coding-decoding, blood relations, direction sense, seating arrangement, syllogism, and other reasoning types as applicable to the category.]";
+            // Simplified reasoning instruction for cleaner JSON
+            $topicWithContext .= " [TYPE: Logical Reasoning, Aptitude]";
 
             // Try quiz generation with retry logic
             $quizData = null;
             $lastError = null;
-            $maxRetries = 2;
+            $maxRetries = 3; // Increased retries for better success rate
 
             for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
                 try {
@@ -1189,6 +1508,12 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                         $difficulty
                     );
 
+                    // Log raw response for debugging
+                    \Log::debug('Raw quiz response', [
+                        'response_length' => strlen($quizResponse),
+                        'response_preview' => substr($quizResponse, 0, 500),
+                    ]);
+
                     // Parse the response to extract JSON
                     $quizData = $this->parseQuizResponse($quizResponse, 'mcq');
 
@@ -1199,20 +1524,24 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                         break;
                     }
 
-                    $lastError = 'Empty questions array';
-                    \Log::warning("Reasoning quiz attempt {$attempt} returned empty data, retrying...");
+                    $lastError = 'Empty questions array - AI did not return valid questions';
+                    \Log::warning("Reasoning quiz attempt {$attempt} returned empty data, retrying...", [
+                        'response_preview' => substr($quizResponse, 0, 300),
+                    ]);
 
                 } catch (\Exception $e) {
                     $lastError = $e->getMessage();
                     \Log::warning("Reasoning quiz attempt {$attempt} failed: {$lastError}");
 
+                    // Don't throw on last attempt - return friendly error instead
                     if ($attempt === $maxRetries) {
-                        throw $e;
+                        break;
                     }
                 }
 
+                // Delay before retry (increasing delay)
                 if ($attempt < $maxRetries) {
-                    usleep(500000);
+                    usleep(500000 * $attempt); // 0.5s, 1s, 1.5s
                 }
             }
 
@@ -1221,10 +1550,17 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                     'last_error' => $lastError,
                     'category' => $category,
                 ]);
+
+                // User-friendly error message
+                $userMessage = 'Unable to generate quiz. Please try again.';
+                if (str_contains($lastError ?? '', 'quota') || str_contains($lastError ?? '', 'rate')) {
+                    $userMessage = 'Service is busy. Please try again in a moment.';
+                }
+
                 return response()->json([
                     'success' => false,
-                    'message' => 'Failed to generate reasoning quiz. Please try again.',
-                    'error_details' => $lastError,
+                    'message' => $userMessage,
+                    'error_details' => config('app.debug') ? $lastError : null,
                 ], 500);
             }
 
@@ -1254,8 +1590,8 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
 
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
-                'error_type' => get_class($e),
+                'message' => 'Unable to generate quiz. Please try again.',
+                'error_type' => config('app.debug') ? get_class($e) : null,
             ], 500);
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DoubtCache;
+use App\Services\UsageLimitService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -12,10 +13,12 @@ class AIDoubtSolverController extends Controller
 {
     private $apiKey;
     private $apiUrl = 'https://api.openai.com/v1/chat/completions';
+    private UsageLimitService $usageLimitService;
 
-    public function __construct()
+    public function __construct(UsageLimitService $usageLimitService)
     {
         $this->apiKey = config('services.openai.api_key');
+        $this->usageLimitService = $usageLimitService;
     }
 
     /**
@@ -195,6 +198,21 @@ EOT;
             'subject' => 'nullable|string',
         ]);
 
+        // Check usage limits
+        $user = auth()->user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'scan_solve');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'error' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
+        }
+
         try {
             // Get uploaded image
             $image = $request->file('image');
@@ -277,6 +295,11 @@ EOT;
                 DoubtCache::storeSolution('image', $imageHash, $questionText, $request->subject, $aiResponse, $tokensUsed);
                 Log::info('Image doubt cached', ['hash' => substr($imageHash, 0, 12)]);
 
+                // Record usage after successful solve
+                if ($user) {
+                    $this->usageLimitService->recordUsage($user, 'scan_solve');
+                }
+
                 return response()->json([
                     'success' => true,
                     'answer' => $aiResponse,
@@ -307,6 +330,21 @@ EOT;
             'question' => 'nullable|string',
             'subject' => 'nullable|string',
         ]);
+
+        // Check usage limits for PDF upload
+        $user = auth()->user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'pdf_upload');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'error' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
+        }
 
         try {
             $pdf = $request->file('pdf');
@@ -385,6 +423,11 @@ EOT;
                 // Store in cache
                 DoubtCache::storeSolution('pdf', $contentHash, $questionText, $request->subject, $aiResponse, $tokensUsed);
                 Log::info('PDF doubt cached', ['hash' => substr($contentHash, 0, 12)]);
+
+                // Record usage after successful solve
+                if ($user) {
+                    $this->usageLimitService->recordUsage($user, 'pdf_upload');
+                }
 
                 return response()->json([
                     'success' => true,

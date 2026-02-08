@@ -154,17 +154,12 @@
 
                         @php
                             $knownLimits = [
-                                'quiz_per_day' => 'Quiz / Day',
-                                'quiz_per_month' => 'Quiz / Month',
+                                'chat_messages_per_day' => 'Chat Messages / Day',
+                                'video_quiz_per_day' => 'Video Quiz / Day',
                                 'topic_quiz_per_day' => 'Topic Quiz / Day',
-                                'topic_quiz_per_month' => 'Topic Quiz / Month',
-                                'whiteboard_videos_per_day' => 'Whiteboard Videos / Day',
-                                'whiteboard_videos_per_month' => 'Whiteboard Videos / Month',
                                 'exam_prep_per_day' => 'Exam Prep / Day',
-                                'exam_prep_per_month' => 'Exam Prep / Month',
                                 'scan_solve_per_day' => 'Scan & Solve / Day',
-                                'scan_solve_per_month' => 'Scan & Solve / Month',
-                                'pdf_uploads_per_day' => 'PDF Uploads / Day',
+                                'whiteboard_videos_per_month' => 'Whiteboard Videos / Month',
                                 'pdf_uploads_per_month' => 'PDF Uploads / Month',
                             ];
                             // Merge existing limits (including any custom ones) with known defaults
@@ -327,17 +322,12 @@
 
     <script>
         const knownLimits = [
-            { key: 'quiz_per_day', label: 'Quiz / Day' },
-            { key: 'quiz_per_month', label: 'Quiz / Month' },
+            { key: 'chat_messages_per_day', label: 'Chat Messages / Day' },
+            { key: 'video_quiz_per_day', label: 'Video Quiz / Day' },
             { key: 'topic_quiz_per_day', label: 'Topic Quiz / Day' },
-            { key: 'topic_quiz_per_month', label: 'Topic Quiz / Month' },
-            { key: 'whiteboard_videos_per_day', label: 'Whiteboard Videos / Day' },
-            { key: 'whiteboard_videos_per_month', label: 'Whiteboard Videos / Month' },
             { key: 'exam_prep_per_day', label: 'Exam Prep / Day' },
-            { key: 'exam_prep_per_month', label: 'Exam Prep / Month' },
             { key: 'scan_solve_per_day', label: 'Scan & Solve / Day' },
-            { key: 'scan_solve_per_month', label: 'Scan & Solve / Month' },
-            { key: 'pdf_uploads_per_day', label: 'PDF Uploads / Day' },
+            { key: 'whiteboard_videos_per_month', label: 'Whiteboard Videos / Month' },
             { key: 'pdf_uploads_per_month', label: 'PDF Uploads / Month' },
         ];
 
