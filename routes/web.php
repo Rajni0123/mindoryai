@@ -129,7 +129,8 @@ Route::get('/refund-policy', [\App\Http\Controllers\PolicyDisplayController::cla
 Route::get('/cancellation-policy', [\App\Http\Controllers\PolicyDisplayController::class, 'cancellation'])->name('cancellation');
 Route::get('/cookie-policy', [\App\Http\Controllers\PolicyDisplayController::class, 'cookie'])->name('cookies');
 Route::get('/data-deletion', [\App\Http\Controllers\PolicyDisplayController::class, 'dataDeletion'])->name('data.deletion');
-Route::get('/account-deletion', function() { return redirect()->route('data.deletion'); });
+Route::get('/account-deletion', function() { return view('pages.account-deletion'); })->name('account.deletion');
+Route::post('/account-deletion', [\App\Http\Controllers\AccountDeletionController::class, 'request'])->name('account.deletion.request');
 Route::get('/support', [\App\Http\Controllers\ContactController::class, 'show'])->name('support');
 Route::post('/support/contact', [\App\Http\Controllers\ContactController::class, 'store'])->name('contact.store');
 Route::get('/faq', function () { return view('pages.faq'); })->name('faq');
