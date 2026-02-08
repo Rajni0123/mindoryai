@@ -68,14 +68,47 @@
             <div class="border-t pt-8">
                 <h2 class="text-xl font-semibold text-gray-900 mb-6">Request Account Deletion</h2>
 
-                <form action="{{ route('account.deletion.request') }}" method="POST" class="space-y-6">
+                @if(session('success'))
+                <div class="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-green-800 font-medium">{{ session('success') }}</p>
+                    </div>
+                </div>
+                @endif
+
+                @if(session('error'))
+                <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <p class="text-red-800 font-medium">{{ session('error') }}</p>
+                    </div>
+                </div>
+                @endif
+
+                @if($errors->any())
+                <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
+                    <ul class="text-red-800 text-sm list-disc list-inside">
+                        @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                @if(!session('success'))
+                <form action="{{ route('account.deletion.request') }}" method="POST" class="space-y-6" id="deletionForm">
                     @csrf
 
                     <div>
                         <label for="mobile" class="block text-sm font-medium text-gray-700 mb-2">
                             Registered Mobile Number
                         </label>
-                        <input type="tel" name="mobile" id="mobile" required
+                        <input type="tel" name="mobile" id="mobile" required value="{{ old('mobile') }}"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                             placeholder="Enter your registered mobile number">
                     </div>
@@ -87,12 +120,12 @@
                         <select name="reason" id="reason"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
                             <option value="">Select a reason</option>
-                            <option value="not_using">I'm not using the app anymore</option>
-                            <option value="privacy">Privacy concerns</option>
-                            <option value="found_alternative">Found a better alternative</option>
-                            <option value="too_expensive">Subscription is too expensive</option>
-                            <option value="technical_issues">Technical issues</option>
-                            <option value="other">Other</option>
+                            <option value="not_using" {{ old('reason') == 'not_using' ? 'selected' : '' }}>I'm not using the app anymore</option>
+                            <option value="privacy" {{ old('reason') == 'privacy' ? 'selected' : '' }}>Privacy concerns</option>
+                            <option value="found_alternative" {{ old('reason') == 'found_alternative' ? 'selected' : '' }}>Found a better alternative</option>
+                            <option value="too_expensive" {{ old('reason') == 'too_expensive' ? 'selected' : '' }}>Subscription is too expensive</option>
+                            <option value="technical_issues" {{ old('reason') == 'technical_issues' ? 'selected' : '' }}>Technical issues</option>
+                            <option value="other" {{ old('reason') == 'other' ? 'selected' : '' }}>Other</option>
                         </select>
                     </div>
 
@@ -102,7 +135,7 @@
                         </label>
                         <textarea name="feedback" id="feedback" rows="3"
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                            placeholder="Tell us how we can improve..."></textarea>
+                            placeholder="Tell us how we can improve...">{{ old('feedback') }}</textarea>
                     </div>
 
                     <div class="flex items-start">
@@ -114,22 +147,23 @@
                         </label>
                     </div>
 
-                    <button type="submit"
-                        class="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors">
-                        Request Account Deletion
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+                        <span id="btnText">Request Account Deletion</span>
+                        <svg id="btnSpinner" class="hidden animate-spin ml-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
                     </button>
                 </form>
 
-                @if(session('success'))
-                <div class="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-                    <p class="text-green-800">{{ session('success') }}</p>
-                </div>
-                @endif
-
-                @if(session('error'))
-                <div class="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
-                    <p class="text-red-800">{{ session('error') }}</p>
-                </div>
+                <script>
+                    document.getElementById('deletionForm').addEventListener('submit', function() {
+                        document.getElementById('submitBtn').disabled = true;
+                        document.getElementById('btnText').textContent = 'Submitting...';
+                        document.getElementById('btnSpinner').classList.remove('hidden');
+                    });
+                </script>
                 @endif
             </div>
 
