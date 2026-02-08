@@ -481,6 +481,15 @@ Route::put('/update', 'update')->name('update');                // Update brandi
                 Route::delete('/{id}', 'destroy')->name('destroy');
             });
 
+            // Account Deletion Requests Management (Admin Only)
+            Route::prefix('deletion-requests')->name('deletion-requests.')->controller(\App\Http\Controllers\Admin\DeletionRequestController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/{deletionRequest}', 'show')->name('show');
+                Route::patch('/{deletionRequest}/status', 'updateStatus')->name('update-status');
+                Route::post('/{deletionRequest}/process', 'process')->name('process');
+                Route::post('/{deletionRequest}/reject', 'reject')->name('reject');
+            });
+
             // Exam Management (Admin Only)
             Route::resource('exams', \App\Http\Controllers\Admin\ExamController::class);
             Route::prefix('exams/{exam}/questions')->name('exam-questions.')->controller(\App\Http\Controllers\Admin\ExamQuestionController::class)->group(function () {
