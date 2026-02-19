@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\UnifiedAIService;
 use App\Services\UsageLimitService;
+use App\Services\LearningAnalyticsService;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -69,8 +70,16 @@ class AIChatController extends Controller
         // Get conversation context
         $conversationHistory = $request->conversation_history ?? [];
 
-        // Build the BlinkStudy system prompt (different for premium vs free)
-        $systemPrompt = $this->buildSystemPrompt($isPremium);
+        // Detect language from user's message
+        $detectedLanguage = $this->detectLanguage($request->message ?? '');
+
+        // Track language preference if user is logged in
+        if ($user) {
+            LearningAnalyticsService::detectAndTrackLanguage($user->id, $request->message ?? '');
+        }
+
+        // Build the BlinkStudy system prompt (different for premium vs free, and language-aware)
+        $systemPrompt = $this->buildSystemPrompt($isPremium, $detectedLanguage);
 
         // Check if chat should be throttled (only for free/lite users)
         $throttleDelay = 0;
@@ -126,7 +135,8 @@ class AIChatController extends Controller
             $analysisPrompt = "An image has been uploaded. Analyze the content and identify what is shown (math problems, science diagrams, text notes, questions, etc.).";
         }
 
-        $systemPrompt = $this->buildSystemPrompt();
+        // Use hinglish as default for file uploads (since no text message to detect from)
+        $systemPrompt = $this->buildSystemPrompt(false, 'hinglish');
 
         $response = $this->getAIResponse(
             $analysisPrompt,
@@ -170,11 +180,62 @@ class AIChatController extends Controller
     }
 
     /**
+     * Detect language from user's message
+     * Returns: 'hindi' (Devanagari), 'hinglish' (Roman Hindi), or 'english'
+     */
+    private function detectLanguage(string $message): string
+    {
+        // Check for Devanagari script (Hindi)
+        if (preg_match('/[\x{0900}-\x{097F}]/u', $message)) {
+            return 'hindi';
+        }
+
+        // Check for Hinglish (Hindi words in Roman script)
+        $hinglishWords = [
+            'kya', 'hai', 'kaise', 'karo', 'samjhao', 'bata', 'batao', 'nahi', 'haan',
+            'accha', 'theek', 'kar', 'mein', 'yeh', 'woh', 'aur', 'bhi', 'toh', 'na',
+            'padhao', 'sikho', 'dekho', 'sunao', 'likho', 'padho', 'jaao', 'aao',
+            'kyu', 'kaun', 'kab', 'kaha', 'kitna', 'konsa', 'hota', 'hoti', 'hote',
+        ];
+
+        $messageLower = strtolower($message);
+        $hinglishCount = 0;
+
+        foreach ($hinglishWords as $word) {
+            if (preg_match('/\b' . preg_quote($word, '/') . '\b/', $messageLower)) {
+                $hinglishCount++;
+            }
+        }
+
+        // If 2+ Hinglish words found, it's Hinglish
+        if ($hinglishCount >= 2) {
+            return 'hinglish';
+        }
+
+        return 'english';
+    }
+
+    /**
      * Build the BlinkStudy system prompt
      * Premium users get direct detailed answers without asking for confirmation
+     * Language-aware: responds in same language as user's message
      */
-    private function buildSystemPrompt($isPremium = false)
+    private function buildSystemPrompt($isPremium = false, $language = 'hinglish')
     {
+        // Language-specific instructions
+        $languageInstruction = match ($language) {
+            'hindi' => "- Language: PURE HINDI (हिन्दी) - Use Devanagari script ONLY
+- तुम्हें हिंदी में ही जवाब देना है (देवनागरी लिपि में)
+- English शब्दों का उपयोग केवल technical terms के लिए करो जिनका Hindi में कोई equivalent नहीं है
+- Example response: \"यह एक बहुत अच्छा सवाल है! आइए इसे समझते हैं...\"",
+            'hinglish' => "- Language: HINGLISH (Hindi + English mix in Roman script)
+- Mix Hindi and English naturally like Indian students speak
+- Example: \"Yeh bahut accha question hai! Let me explain...\"",
+            default => "- Language: ENGLISH with occasional Hindi words
+- Respond primarily in English
+- You can use common Hindi words like 'samjho', 'dekho' for connection",
+        };
+
         $basePrompt = "You are BlinkStudy - a friendly educational AI assistant for Indian students. You love helping students learn!
 
 🎓 YOUR ROLE:
@@ -193,16 +254,17 @@ class AIChatController extends Controller
 - Technical/programming education for students
 
 💡 YOUR APPROACH FOR NON-EDUCATIONAL QUESTIONS:
-Instead of refusing, find a creative way to connect it to learning:
-- Movies/Entertainment → \"Bahut accha sawaal! Main study topics mein help karta hu. Kya aap [related educational concept] ke baare mein jaanna chahte ho?\"
-- Games/Sports → \"Interesting! Main educational topics mein specialisation rakhta hu. Kya aap apne studies ya exams ke liye kuch seekhna chahte ho?\"
-- Casual chat → Respond warmly, then guide: \"Hello! Main aapki studies mein help karne ke liye hu. Aaj aap kya seekhna chahte ho?\"
+Instead of refusing, find a creative way to connect it to learning.
 
 Your identity:
 - Name: BlinkStudy
 - Purpose: Help students with studies and learning
 - Audience: Indian students (CBSE / NCERT focus)
-- Language: Simple Hinglish (Hindi + English)
+{$languageInstruction}
+
+⚠️ CRITICAL LANGUAGE RULE:
+Match the user's language! If user writes in Hindi (देवनागरी), respond in Hindi (देवनागरी).
+If user writes in Hinglish (Roman), respond in Hinglish. If English, respond in English.
 
 RESPONSE FORMATTING:
 - Use plain text
@@ -213,7 +275,6 @@ RESPONSE FORMATTING:
 
 TEACHING STYLE:
 - Patient and motivating
-- Simple Hinglish explanations
 - NCERT terminology
 - Exam-focused
 - Never hallucinate
@@ -434,12 +495,30 @@ GIVE THE DETAILED EXPLANATION NOW.";
             'mode' => 'nullable|in:short,detail',
         ]);
 
+        // Check usage limits
+        $user = auth()->user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                ], 429);
+            }
+        }
+
         $mode = $request->mode ?? 'short';
         $prompt = "Class {$request->class} Math Question: {$request->question}";
 
         $systemPrompt = $this->buildSystemPrompt() . "\n\nThis is a MATHEMATICS question. Follow math-specific rules.";
 
         $response = $this->getAIResponse($prompt, $systemPrompt, [], $mode);
+
+        // Record usage
+        if ($user) {
+            $this->usageLimitService->recordUsage($user, 'chat');
+        }
 
         return response()->json([
             'success' => true,
@@ -459,12 +538,30 @@ GIVE THE DETAILED EXPLANATION NOW.";
             'mode' => 'nullable|in:short,detail',
         ]);
 
+        // Check usage limits
+        $user = auth()->user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                ], 429);
+            }
+        }
+
         $mode = $request->mode ?? 'short';
         $prompt = "Class {$request->class} Science Question: {$request->question}";
 
         $systemPrompt = $this->buildSystemPrompt() . "\n\nThis is a SCIENCE question. Follow science-specific rules.";
 
         $response = $this->getAIResponse($prompt, $systemPrompt, [], $mode);
+
+        // Record usage
+        if ($user) {
+            $this->usageLimitService->recordUsage($user, 'chat');
+        }
 
         return response()->json([
             'success' => true,
@@ -485,12 +582,30 @@ GIVE THE DETAILED EXPLANATION NOW.";
             'count' => 'nullable|integer|min:1|max:20',
         ]);
 
+        // Check usage limits
+        $user = auth()->user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                ], 429);
+            }
+        }
+
         $count = $request->count ?? 5;
         $prompt = "Generate {$count} MCQs on topic: {$request->topic} for Class {$request->class} {$request->subject}. Include correct answer with explanation.";
 
         $systemPrompt = $this->buildSystemPrompt() . "\n\nGenerate exam-oriented MCQs with detailed explanations.";
 
         $response = $this->getAIResponse($prompt, $systemPrompt, [], 'detail');
+
+        // Record usage
+        if ($user) {
+            $this->usageLimitService->recordUsage($user, 'chat');
+        }
 
         return response()->json([
             'success' => true,
@@ -510,11 +625,29 @@ GIVE THE DETAILED EXPLANATION NOW.";
             'subject' => 'required|string',
         ]);
 
+        // Check usage limits
+        $user = auth()->user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'chat');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                ], 429);
+            }
+        }
+
         $prompt = "Create detailed revision notes on: {$request->topic} for Class {$request->class} {$request->subject}. Make it exam-focused.";
 
         $systemPrompt = $this->buildSystemPrompt() . "\n\nCreate comprehensive, exam-oriented notes.";
 
         $response = $this->getAIResponse($prompt, $systemPrompt, [], 'detail');
+
+        // Record usage
+        if ($user) {
+            $this->usageLimitService->recordUsage($user, 'chat');
+        }
 
         return response()->json([
             'success' => true,
@@ -547,6 +680,21 @@ GIVE THE DETAILED EXPLANATION NOW.";
         $user = auth()->user();
         $fileExtension = $uploadedFile->getClientOriginalExtension();
         $action = $request->action;
+
+        // Check usage limits BEFORE processing
+        if ($user) {
+            $usageLimitService = app(\App\Services\UsageLimitService::class);
+            $limitCheck = $usageLimitService->canUse($user, 'scan_solve');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_exceeded' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
+        }
 
         // Get plan-based speed optimization
         $planSlug = $user?->userPlan?->slug ?? 'free';
@@ -594,6 +742,12 @@ GIVE THE DETAILED EXPLANATION NOW.";
                 ]
             );
 
+            // Record usage after successful processing
+            if ($user) {
+                $usageLimitService = app(\App\Services\UsageLimitService::class);
+                $usageLimitService->recordUsage($user, 'scan_solve');
+            }
+
             return response()->json([
                 'success' => true,
                 'response' => $response['content'],
@@ -609,6 +763,12 @@ GIVE THE DETAILED EXPLANATION NOW.";
             $systemPrompt = $this->buildSolveSystemPrompt();
             $prompt = $this->buildFastSolvePrompt($action, $fileExtension);
             $response = $this->getAIResponse($prompt, $systemPrompt, [], 'detail', $uploadedFile);
+
+            // Record usage after successful fallback processing
+            if ($user) {
+                $usageLimitService = app(\App\Services\UsageLimitService::class);
+                $usageLimitService->recordUsage($user, 'scan_solve');
+            }
 
             return response()->json([
                 'success' => true,

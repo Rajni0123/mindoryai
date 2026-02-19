@@ -37,17 +37,19 @@ class FollowUpDetector
     ];
 
     // Continue requests - EXPANDED
+    // NOTE: 'samjhao' and 'batao' are NOT here because they can be valid question starters
+    // when followed by a topic (e.g., "samjhao barish", "batao suraj")
     private array $continueRequests = [
         // English
         'continue', 'go on', 'go ahead', 'proceed', 'next',
         'more', 'tell me more', 'explain more', 'detail', 'details',
         'detailed', 'elaborate', 'expand', 'keep going', 'what next',
         'then what', 'and then', 'then',
-        // Hindi/Hinglish
+        // Hindi/Hinglish - these are pure follow-ups (no topic expected after)
         'aage', 'aage batao', 'aur batao', 'aur sunao', 'phir', 'fir',
-        'toh', 'aur', 'karo', 'bolo', 'batao', 'phir kya',
+        'toh', 'aur', 'karo', 'bolo', 'phir kya',
         'detail me', 'detail me batao', 'vistar se',
-        'samjhao', 'aur samjhao', 'phir se', 'dobara',
+        'aur samjhao', 'phir se', 'dobara',
     ];
 
     // Short reactions - EXPANDED
@@ -168,19 +170,25 @@ class FollowUpDetector
         }
 
         // Rule C: Starts with follow-up word AND total words ≤ 5 → SKIP
-        // FIXED: Include continueRequests and corrections
+        // EXCEPTION: Hindi verbs like "samjhao", "batao" followed by topic are valid questions
         if ($wordCount <= 5) {
-            $followUpStarters = array_merge(
-                $this->confirmations,
-                $this->denials,
-                $this->reactions,
-                $this->continueRequests
-            );
-            foreach ($followUpStarters as $word) {
-                $wordLower = mb_strtolower($word);
-                if (str_starts_with($cleanedNoPunct, $wordLower . ' ') ||
-                    str_starts_with($cleanedNoPunct, $wordLower)) {
-                    return true;
+            // First check if it's a valid Hindi question pattern (samjhao X, batao X)
+            if ($this->isValidHindiQuestionPattern($cleanedNoPunct)) {
+                // This is a valid question like "samjhao barish", not a follow-up
+                // Skip this rule
+            } else {
+                $followUpStarters = array_merge(
+                    $this->confirmations,
+                    $this->denials,
+                    $this->reactions,
+                    $this->continueRequests
+                );
+                foreach ($followUpStarters as $word) {
+                    $wordLower = mb_strtolower($word);
+                    if (str_starts_with($cleanedNoPunct, $wordLower . ' ') ||
+                        str_starts_with($cleanedNoPunct, $wordLower)) {
+                        return true;
+                    }
                 }
             }
 
@@ -247,6 +255,87 @@ class FollowUpDetector
                 return true;
             }
         }
+        return false;
+    }
+
+    /**
+     * Check if message is a valid Hindi question pattern (not a follow-up)
+     *
+     * Examples:
+     * - "samjhao barish" (explain rain) → valid question
+     * - "batao suraj" (tell about sun) → valid question
+     * - "samjhao" (just "explain") → follow-up (needs context)
+     * - "batao isko" (tell about this) → follow-up (pronoun = needs context)
+     */
+    private function isValidHindiQuestionPattern(string $text): bool
+    {
+        // Hindi question starters that require a topic to be valid questions
+        $hindiQuestionVerbs = [
+            'samjhao', 'samjhaye', 'samjhaiye', 'samjha do',
+            'batao', 'bataye', 'bataiye', 'bata do',
+            'sikho', 'sikhao', 'sikhaiye',
+            'padho', 'padhao', 'padhaiye',
+        ];
+
+        $textLower = mb_strtolower(trim($text));
+
+        foreach ($hindiQuestionVerbs as $verb) {
+            // Check if starts with this verb
+            if (str_starts_with($textLower, $verb . ' ')) {
+                // Get the part after the verb
+                $afterVerb = trim(substr($textLower, strlen($verb)));
+
+                // If nothing after verb, it's a follow-up ("samjhao" by itself)
+                if (empty($afterVerb)) {
+                    return false;
+                }
+
+                // If what follows is a pronoun, it's a follow-up ("samjhao isko")
+                $pronounsAfterVerb = [
+                    'isko', 'usko', 'isse', 'usse', 'ye', 'yeh', 'wo', 'woh',
+                    'ispe', 'uspe', 'isme', 'usme', 'inka', 'unka',
+                    'this', 'that', 'it', 'them',
+                ];
+
+                $firstWordAfterVerb = explode(' ', $afterVerb)[0];
+                if (in_array($firstWordAfterVerb, $pronounsAfterVerb)) {
+                    return false;
+                }
+
+                // Has a topic word after verb - valid question!
+                return true;
+            }
+
+            // Also check exact match (verb alone = follow-up)
+            if ($textLower === $verb) {
+                return false;
+            }
+        }
+
+        // Also handle "kya hai X" patterns - these are questions
+        $kyaPatterns = [
+            'kya hai ', 'kya hota hai ', 'kya hoti hai ', 'kya hote hai ',
+            'kaun hai ', 'kaun tha ', 'kaun the ',
+            'kyu hai ', 'kyu hota hai ', 'kaise hai ', 'kaise hota hai ',
+        ];
+
+        foreach ($kyaPatterns as $pattern) {
+            if (str_starts_with($textLower, $pattern)) {
+                $afterPattern = trim(substr($textLower, strlen($pattern)));
+                if (!empty($afterPattern)) {
+                    return true;
+                }
+            }
+        }
+
+        // Also handle "X kya hai" (topic followed by question)
+        if (str_ends_with($textLower, ' kya hai') ||
+            str_ends_with($textLower, ' kya hota hai') ||
+            str_ends_with($textLower, ' kya hoti hai')) {
+            // Has topic before "kya hai" - valid question
+            return true;
+        }
+
         return false;
     }
 
