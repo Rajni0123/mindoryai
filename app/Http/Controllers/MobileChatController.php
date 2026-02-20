@@ -182,21 +182,17 @@ class MobileChatController extends Controller
                         'memory_limit' => ini_get('memory_limit'),
                     ]);
 
-                    // Set high memory limit and timeout for PDF processing
-                    // Don't store original - we'll keep the high limit permanently
                     ini_set('memory_limit', '512M');
                     ini_set('max_execution_time', '60');
 
                     $parser = new \Smalot\PdfParser\Parser();
 
-                    // Parse with config to reduce memory usage
                     $config = new \Smalot\PdfParser\Config();
-                    $config->setRetainImageContent(false); // Don't extract images
+                    $config->setRetainImageContent(false);
                     $parser = new \Smalot\PdfParser\Parser([], $config);
 
                     $pdf = $parser->parseFile($file->getRealPath());
 
-                    // Get only first 20 pages to limit memory usage
                     $pages = $pdf->getPages();
                     $maxPages = min(20, count($pages));
                     $extractedText = '';
@@ -210,27 +206,20 @@ class MobileChatController extends Controller
                         }
                     }
 
-                    // Don't restore limits - keep high limits for remainder of request
-                    // (Restoring fails if memory usage is already higher than original limit)
-
-                    // Clean up extracted text
                     $extractedText = preg_replace('/\s+/', ' ', $extractedText);
                     $extractedText = trim($extractedText);
 
                     if (!empty($extractedText)) {
-                        // Limit text length
                         $maxChars = 8000;
                         if (strlen($extractedText) > $maxChars) {
                             $extractedText = substr($extractedText, 0, $maxChars) . '...';
                         }
 
-                        // Append extracted text to content
                         $pdfPrefix = "📄 PDF Content:\n\n";
                         $content = empty($content)
                             ? $pdfPrefix . $extractedText
                             : $content . "\n\n" . $pdfPrefix . $extractedText;
 
-                        // Clear image data since we're using text instead
                         $imageData = null;
                         $hasImage = false;
 
@@ -240,8 +229,6 @@ class MobileChatController extends Controller
                         ]);
                     } else {
                         \Log::warning('PDF text extraction returned empty - will use Gemini for PDF processing');
-                        // PDF text extraction failed/empty - We MUST use Gemini for PDF URLs
-                        // OpenAI cannot process PDF URLs, only Gemini supports PDFs
                     }
 
                 } catch (\Exception $e) {
@@ -251,7 +238,6 @@ class MobileChatController extends Controller
                         'error_class' => get_class($e),
                     ]);
 
-                    // Restore limits if error occurred
                     if (isset($originalMemoryLimit)) {
                         ini_set('memory_limit', $originalMemoryLimit);
                     }
@@ -259,13 +245,11 @@ class MobileChatController extends Controller
                         ini_set('max_execution_time', $originalTimeLimit);
                     }
 
-                    // Check if it's a memory error
                     $errorMsg = strtolower($e->getMessage());
                     if (strpos($errorMsg, 'memory') !== false ||
                         strpos($errorMsg, 'exhausted') !== false ||
                         strpos($errorMsg, 'allocation') !== false) {
 
-                        // Return user-friendly error for memory issues
                         return response()->json([
                             [
                                 'id' => time(),
@@ -278,7 +262,6 @@ class MobileChatController extends Controller
                         ], 200);
                     }
 
-                    // For other errors, return error message
                     return response()->json([
                         [
                             'id' => time(),
@@ -296,12 +279,9 @@ class MobileChatController extends Controller
         // =============================================
         // AUTOMATIC MODEL SELECTION FOR PDF FILES
         // =============================================
-        // If we have a PDF file with URL (not text-extracted), we MUST use Gemini
-        // OpenAI Vision API does NOT support PDF files - only images
         if ($imageData && isset($imageData['type']) && $imageData['type'] === 'application/pdf') {
             \Log::info('PDF detected with URL - automatically switching to Gemini');
 
-            // Find active Gemini model
             $geminiModel = \App\Models\AiModel::where('provider', 'google')
                 ->where('is_active', true)
                 ->orderBy('id', 'desc')
@@ -315,7 +295,6 @@ class MobileChatController extends Controller
                     'reason' => 'PDF file requires Gemini (OpenAI does not support PDF URLs)'
                 ]);
             } else {
-                // No Gemini model available - return error
                 \Log::error('PDF requires Gemini but no active Gemini model found');
 
                 return response()->json([
@@ -348,15 +327,13 @@ class MobileChatController extends Controller
         // =============================================
         // STEP 1: RATE LIMITING
         // =============================================
-        // Protect against abuse - 10 messages per minute
         $rateLimitKey = 'chat_message:' . $user->id;
-        $maxAttempts = 10; // 10 messages per minute
+        $maxAttempts = 10;
         $decayMinutes = 1;
 
         if (RateLimiter::tooManyAttempts($rateLimitKey, $maxAttempts)) {
             $seconds = RateLimiter::availableIn($rateLimitKey);
 
-            // Return error in array format for consistency
             $errorMessage = [
                 'id' => time(),
                 'chat_id' => $chatId,
@@ -367,7 +344,6 @@ class MobileChatController extends Controller
                 'created_at' => now()->toISOString(),
             ];
 
-            // Return 200 so mobile app doesn't throw error, but include error in message
             return response()->json([$errorMessage], 200);
         }
 
@@ -380,7 +356,6 @@ class MobileChatController extends Controller
         // STEP 4: CREATE USER MESSAGE
         // =============================================
 
-        // If user uploaded image without text, set placeholder content
         $userContent = $content;
         if (empty($content) && $hasImage) {
             $userContent = '[Image uploaded - analyzing...]';
@@ -392,7 +367,6 @@ class MobileChatController extends Controller
             'sender' => 'user',
             'content' => $userContent,
             'image' => $imageData,
-            // Store file metadata (URL, not Base64)
             'file_url' => $fileUrl ?? null,
             'file_name' => $hasImage ? $request->file('file')->getClientOriginalName() : null,
             'file_type' => $fileMimeType ?? null,
@@ -412,36 +386,33 @@ class MobileChatController extends Controller
         // STEP 5: GET AI RESPONSE
         // =============================================
         try {
-            // Get conversation history for context - need enough for proper continuity
+            // Get conversation history for context
+            // INCREASED: limit 6 -> 10 to prevent topic mixing when user sends quick messages
             $conversationHistory = \App\Models\MobileChatMessage::where('mobile_chat_id', $chatId)
                 ->where('id', '!=', $userMessageRecord->id)
-                ->select(['sender', 'content'])  // Only fetch needed columns
-                ->orderBy('id', 'desc')  // Use id for faster query
-                ->limit(6)  // Need 6 for proper context (3 exchanges)
+                ->select(['sender', 'content'])
+                ->orderBy('id', 'desc')
+                ->limit(10)  // 10 messages = 5 exchanges for better context
                 ->get()
                 ->reverse()
+                ->values()  // CRITICAL: Reset array keys after reverse! Without this, keys are preserved and loop accesses wrong messages!
                 ->map(fn($msg) => [
                     'role' => $msg->sender === 'user' ? 'user' : 'assistant',
-                    // Keep more context for assistant responses to maintain topic continuity
                     'content' => $msg->sender === 'user'
-                        ? substr($msg->content, 0, 300)  // User messages can be shorter
-                        : substr($msg->content, 0, 800)  // AI responses need more context for topic
+                        ? substr($msg->content, 0, 300)
+                        : substr($msg->content, 0, 800)
                 ])
                 ->toArray();
 
             // =============================================
             // NEW TOPIC / GREETING DETECTION
             // =============================================
-            // Detect if user is starting a new topic/greeting - clear history for fresh start
-            // Use unified config instead of hardcoded arrays (Issue #2 fix - duplicate logic)
             $greetingKeywords = config('smartcache.greeting_keywords', ['hello', 'hi', 'hey', 'namaste', 'namaskar', 'good morning', 'good afternoon', 'good evening', 'good night', 'hii', 'hiii', 'hiiii', 'helloo', 'hellooo']);
             $newTopicKeywords = ['new question', 'nayi question', 'naya sawal', 'different topic', 'change topic', 'kuch aur', 'something else', 'new topic'];
 
-            // Use original user content for greeting detection (not modified content)
             $originalContent = $request->input('content', '');
             $contentLower = strtolower(trim($originalContent));
 
-            // DEBUG LOG - ALWAYS LOG
             \Log::info('GREETING CHECK DEBUG', [
                 'original_content' => $originalContent,
                 'content_lower' => $contentLower,
@@ -449,7 +420,6 @@ class MobileChatController extends Controller
                 'history_count_before' => count($conversationHistory),
             ]);
 
-            // Check if it's a greeting or new topic request
             $isGreeting = in_array($contentLower, $greetingKeywords) || preg_match('/^(hi+|hey+|hello+|namaste|namaskar)\b/i', $originalContent);
             $isNewTopic = false;
             foreach ($newTopicKeywords as $keyword) {
@@ -459,7 +429,6 @@ class MobileChatController extends Controller
                 }
             }
 
-            // Clear conversation history for greetings/new topics to start fresh
             if ($isGreeting || $isNewTopic) {
                 $conversationHistory = [];
                 \Log::info('Greeting/New topic detected - CLEARING HISTORY', [
@@ -475,81 +444,18 @@ class MobileChatController extends Controller
             }
 
             // =============================================
-            // CONTINUATION CONTEXT FIX
+            // CONTINUATION CONTEXT FIX (SHARED HELPER)
             // =============================================
-            // Detect if user wants continuation (Yes, Continue, etc.)
-            // Use unified config instead of hardcoded arrays (Issue #2 fix - duplicate logic)
             $continuationKeywords = config('smartcache.continuation_keywords', ['yes', 'continue', 'haan', 'ha', 'ok', 'sure', 'go ahead', 'explain', 'tell me more', 'details', 'aur batao', 'aage']);
             $isContinuationRequest = !$isGreeting && !$isNewTopic && (in_array($contentLower, $continuationKeywords) || strlen($content) <= 15 && preg_match('/^(yes|ok|ha+n?|sure|continue|details|explain|more)\b/i', $content));
 
-            // If it's a continuation request, find the last REAL question and AI response
             if ($isContinuationRequest && count($conversationHistory) > 0) {
-                // Find the last REAL user question (not a continuation keyword)
-                $lastUserQuestion = null;
-                $lastAssistantMessage = null;
-
-                // First, find the last assistant message
-                for ($i = count($conversationHistory) - 1; $i >= 0; $i--) {
-                    if ($conversationHistory[$i]['role'] === 'assistant') {
-                        $lastAssistantMessage = $conversationHistory[$i]['content'];
-                        break;
-                    }
-                }
-
-                // Then, find the last REAL user question (skip continuation keywords)
-                for ($i = count($conversationHistory) - 1; $i >= 0; $i--) {
-                    if ($conversationHistory[$i]['role'] === 'user') {
-                        $userMsg = strtolower(trim($conversationHistory[$i]['content']));
-                        // Skip if it's a continuation keyword itself (ONLY if entire message is the keyword)
-                        // These are affirmative/continuation responses, not actual questions
-                        $isBareKeyword = in_array($userMsg, $continuationKeywords) ||
-                            preg_match('/^(yes|ok|ha+n?|sure|continue|details|more|hmm+|acch+a|theek|thik|thanks?|thanku?|thnx|wow|nice|great|good|cool|awesome)[\s\.\!\?]*$/i', $userMsg);
-
-                        // Also skip greetings
-                        $isGreeting = preg_match('/^(hi+|hey+|hello+|namaste|namaskar)[\s\.\!\?]*$/i', $userMsg);
-
-                        // Real question: not a bare keyword, not a greeting, and has at least 3 chars
-                        if (!$isBareKeyword && !$isGreeting && strlen($userMsg) >= 3) {
-                            $lastUserQuestion = $conversationHistory[$i]['content'];
-                            break;
-                        }
-                    }
-                }
-
-                if ($lastAssistantMessage && $lastUserQuestion) {
-                    // Extract the topic from the last AI response (first 100 chars or first line)
-                    $topicPreview = strtok($lastAssistantMessage, "\n");
-                    $topicPreview = substr($topicPreview, 0, 150);
-
-                    // Use BOTH last question AND last response for context
-                    $content = "[CONTINUATION REQUEST] User wants more details.\n" .
-                               "LAST USER QUESTION WAS: \"{$lastUserQuestion}\"\n" .
-                               "YOUR LAST RESPONSE STARTED WITH: \"{$topicPreview}\"\n" .
-                               "IMPORTANT: Provide a detailed explanation about \"{$lastUserQuestion}\". " .
-                               "Expand on your previous short answer. DO NOT switch to any other topic.";
-
-                    \Log::info('Continuation detected - FIXED', [
-                        'original_message' => $contentLower,
-                        'last_user_question' => substr($lastUserQuestion, 0, 50),
-                        'last_topic_preview' => substr($topicPreview, 0, 50),
-                    ]);
-                } elseif ($lastAssistantMessage) {
-                    // Fallback to old behavior if no real question found
-                    $topicPreview = strtok($lastAssistantMessage, "\n");
-                    $topicPreview = substr($topicPreview, 0, 100);
-
-                    $content = "[CONTINUATION REQUEST] User said: \"{$content}\"\n" .
-                               "IMPORTANT: Continue explaining YOUR LAST RESPONSE which was about: \"{$topicPreview}\"\n" .
-                               "DO NOT explain any other topic. ONLY expand on your immediately previous response.";
-
-                    \Log::info('Continuation detected - fallback', [
-                        'original_message' => $contentLower,
-                        'last_topic_preview' => $topicPreview,
-                    ]);
+                $result = $this->buildContinuationContext($conversationHistory, $continuationKeywords, $content, $contentLower);
+                if ($result) {
+                    $content = $result;
                 }
             }
 
-            // Log the request for debugging
             \Log::info('AI Service Request', [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -562,16 +468,11 @@ class MobileChatController extends Controller
             // =============================================
             // SMART CACHE LOOKUP (Before AI Call)
             // =============================================
-            // Only check cache for text-only messages (no images/PDFs)
-            // Greetings and follow-ups are automatically filtered by SmartCacheService
             $cacheHit = null;
 
-            // AGGRESSIVE SAFETY CHECK: Block short messages and continuation keywords from cache
-            // This prevents the "Yes -> Photosynthesis" bug completely
             $shortMessageBlocked = mb_strlen(trim($originalContent)) <= 20;
 
-            // Use config-based continuation keywords for consistency
-            $continuationKeywords = config('smartcache.continuation_keywords', [
+            $cacheBlockKeywords = config('smartcache.continuation_keywords', [
                 'yes', 'yeah', 'yep', 'yup', 'ya', 'y', 'ok', 'okay', 'okk',
                 'sure', 'right', 'correct', 'continue', 'next', 'more',
                 'details', 'explain', 'hmm', 'hmmm', 'accha', 'acha', 'achha',
@@ -580,7 +481,7 @@ class MobileChatController extends Controller
             ]);
             $continuationPattern = '/^(' . implode('|', array_map(function($kw) {
                 return preg_quote($kw, '/');
-            }, $continuationKeywords)) . ')\b/i';
+            }, $cacheBlockKeywords)) . ')\b/i';
             $continuationBlocked = preg_match($continuationPattern, trim($originalContent));
 
             if ($shortMessageBlocked || $continuationBlocked) {
@@ -594,10 +495,10 @@ class MobileChatController extends Controller
             if (!$hasImage && !$isContinuationRequest && !$shortMessageBlocked && !$continuationBlocked && config('smartcache.enabled', true)) {
                 $isFirstMessage = empty($conversationHistory);
                 $cacheResult = $this->cacheService->lookup(
-                    $originalContent,  // Use original, unmodified content
-                    'ai_doubt',        // Source type for chat
-                    null,              // Subject (could be detected from content)
-                    null,              // Exam type
+                    $originalContent,
+                    'ai_doubt',
+                    null,
+                    null,
                     $isFirstMessage
                 );
 
@@ -620,22 +521,11 @@ class MobileChatController extends Controller
             if ($cacheHit) {
                 $aiResponse = $cacheHit['answer'];
 
-                // Save user message first
-                $userMessageRecord = \App\Models\MobileChatMessage::create([
-                    'mobile_chat_id' => $chatId,
-                    'sender' => 'user',
-                    'content' => $request->input('content'),
-                    'file_url' => $fileUrl,
-                    'file_type' => $hasImage ? 'image' : null,
-                ]);
-
-                $userMessage = [
-                    'id' => $userMessageRecord->id,
-                    'chat_id' => $chatId,
-                    'sender' => 'user',
-                    'content' => $request->input('content'),
-                    'created_at' => $userMessageRecord->created_at->toIso8601String(),
-                ];
+                // =============================================
+                // BUG FIX #2: DO NOT create duplicate user message!
+                // User message was already saved in STEP 4 above.
+                // Just save the AI response.
+                // =============================================
 
                 // Save AI response
                 $aiMessageRecord = \App\Models\MobileChatMessage::create([
@@ -649,7 +539,7 @@ class MobileChatController extends Controller
                     'chat_id' => $chatId,
                     'sender' => 'assistant',
                     'content' => $aiResponse,
-                    'cached' => true,  // Mark as cached response
+                    'cached' => true,
                     'created_at' => $aiMessageRecord->created_at->toIso8601String(),
                 ];
 
@@ -659,46 +549,44 @@ class MobileChatController extends Controller
                     $chat->update(['title' => \App\Models\MobileChat::generateTitleFromMessage($content)]);
                 }
 
-                // Return cached response (no credit deduction for cached responses)
+                // Return cached response (no credit deduction)
                 return response()->json([$userMessage, $aiMessage]);
             }
 
             // Determine feature based on content/image type
-            $feature = 'chat'; // Default
+            $feature = 'chat';
             if ($imageData) {
-                // Check if it's a PDF or quiz generation
                 if (isset($imageData['type']) && $imageData['type'] === 'application/pdf') {
                     $feature = 'pdf_solve';
                 } elseif (stripos($content, 'generate') !== false && stripos($content, 'question') !== false) {
                     $feature = 'mcq_generation';
                 } else {
-                    $feature = 'pdf_solve'; // Image analysis
+                    $feature = 'pdf_solve';
                 }
             }
 
-            // DEBUG: Log before AI call
             \Log::info('AI CALL DEBUG', [
                 'user_message' => $content,
                 'original_content' => $originalContent ?? $content,
                 'chat_id' => $chatId,
                 'user_id' => $user->id,
                 'history_count' => count($conversationHistory),
-                'history' => array_slice($conversationHistory, -5), // Last 5 messages
+                'history' => array_slice($conversationHistory, -5),
                 'language' => $language,
                 'feature' => $feature,
                 'cache_hit' => isset($cacheHit) && $cacheHit ? 'YES' : 'NO',
             ]);
 
-            // Use UnifiedAIService to get response with optimized settings
+            // Use UnifiedAIService to get response
             $aiResult = $this->aiService->chat(
                 $content,
-                $modelId,  // Use the selected model ID from request
+                $modelId,
                 $conversationHistory,
-                null,  // No streaming for now
-                $imageData,  // Pass image data for vision analysis
-                $feature,    // Feature for optimization
-                $user->id,   // User ID for tracking
-                $language    // User's preferred language
+                null,
+                $imageData,
+                $feature,
+                $user->id,
+                $language
             );
 
             \Log::info('AI Service Response', [
@@ -718,19 +606,17 @@ class MobileChatController extends Controller
             // =============================================
             // SMART CACHE STORE (After Successful AI Response)
             // =============================================
-            // Store response in cache for future lookups
-            // Only store if: no image, not continuation, cache is enabled
             if (!$hasImage && !$isContinuationRequest && config('smartcache.enabled', true)) {
                 try {
                     $stored = $this->cacheService->store(
-                        $originalContent,      // Original question
-                        $aiResponse,           // AI's answer
-                        'ai_doubt',            // Source type
-                        null,                  // Subject (could be detected)
-                        null,                  // Topic
-                        null,                  // Class level
-                        null,                  // Exam type
-                        $aiResult['tokens_used'] ?? 0  // Token count
+                        $originalContent,
+                        $aiResponse,
+                        'ai_doubt',
+                        null,
+                        null,
+                        null,
+                        null,
+                        $aiResult['tokens_used'] ?? 0
                     );
 
                     if ($stored) {
@@ -739,7 +625,6 @@ class MobileChatController extends Controller
                         ]);
                     }
                 } catch (\Exception $cacheError) {
-                    // Don't fail the request if caching fails
                     \Log::warning('[SmartCache] Store failed', [
                         'error' => $cacheError->getMessage(),
                     ]);
@@ -747,7 +632,6 @@ class MobileChatController extends Controller
             }
 
         } catch (\Exception $e) {
-            // If AI fails, return error but don't deduct credits
             \Log::error('AI response failed', [
                 'user_id' => $user->id,
                 'chat_id' => $chatId,
@@ -771,14 +655,12 @@ class MobileChatController extends Controller
         // STEP 6: CREATE AI MESSAGE
         // =============================================
 
-        // Save AI message to database
         $aiMessageRecord = \App\Models\MobileChatMessage::create([
             'mobile_chat_id' => $chatId,
             'sender' => 'assistant',
             'content' => $aiResponse,
         ]);
 
-        // Record usage for successful message (fixes sidebar counter not updating)
         $this->usageLimitService->recordUsage($user, 'ai_doubt');
 
         $aiMessage = [
@@ -789,22 +671,19 @@ class MobileChatController extends Controller
             'created_at' => $aiMessageRecord->created_at->toIso8601String(),
         ];
 
-        // Update chat's last_message_at
         $chat->update([
             'last_message_at' => now(),
             'ai_model_id' => $modelId,
         ]);
 
-        // Generate and update chat title from first message (if still "New Chat")
         if ($chat->title === 'New Chat' && !empty($content)) {
             $generatedTitle = \App\Models\MobileChat::generateTitleFromMessage($content);
             $chat->update(['title' => $generatedTitle]);
         }
 
         // =============================================
-        // STEP 8: RETURN RESPONSE (BACKWARD COMPATIBLE)
+        // STEP 8: RETURN RESPONSE
         // =============================================
-        // Log what we're about to return for debugging
         \Log::info('Returning messages to client', [
             'user_id' => $user->id,
             'chat_id' => $chatId,
@@ -814,7 +693,6 @@ class MobileChatController extends Controller
             'ai_content_length' => strlen($aiMessage['content']),
         ]);
 
-        // Return array of messages directly (maintains compatibility)
         return response()->json([$userMessage, $aiMessage]);
     }
 
@@ -825,7 +703,6 @@ class MobileChatController extends Controller
     {
         $user = auth()->user();
 
-        // Verify chat belongs to user - use exists() for faster check
         $chatExists = \App\Models\MobileChat::where('id', $chatId)
             ->where('user_id', $user->id)
             ->exists();
@@ -834,10 +711,9 @@ class MobileChatController extends Controller
             return response()->json(['error' => 'Chat not found'], 404);
         }
 
-        // Get messages directly with optimized query - select only needed columns
         $messages = \App\Models\MobileChatMessage::where('mobile_chat_id', $chatId)
             ->select(['id', 'mobile_chat_id', 'sender', 'content', 'image', 'created_at'])
-            ->orderBy('id', 'asc')  // Use id for faster ordering
+            ->orderBy('id', 'asc')
             ->get()
             ->map(function ($message) {
                 return [
@@ -860,12 +736,11 @@ class MobileChatController extends Controller
     {
         $user = auth()->user();
 
-        // Get user's chats with optimized query - select only needed columns
         $chats = \App\Models\MobileChat::where('user_id', $user->id)
             ->select(['id', 'title', 'created_at', 'updated_at', 'last_message_at'])
             ->orderByDesc('last_message_at')
-            ->orderByDesc('id')  // Use id instead of created_at for faster fallback
-            ->limit(50)  // Limit to recent chats for faster response
+            ->orderByDesc('id')
+            ->limit(50)
             ->get()
             ->map(function ($chat) {
                 return [
@@ -887,11 +762,10 @@ class MobileChatController extends Controller
     {
         $user = auth()->user();
 
-        // Create new chat in database
         $chat = \App\Models\MobileChat::create([
             'user_id' => $user->id,
             'title' => $request->input('title', 'New Chat'),
-            'ai_model_id' => null, // Will be set when first message is sent
+            'ai_model_id' => null,
             'last_message_at' => null,
         ]);
 
@@ -909,7 +783,6 @@ class MobileChatController extends Controller
     {
         $user = auth()->user();
 
-        // Verify chat belongs to user
         $chat = \App\Models\MobileChat::where('id', $chatId)
             ->where('user_id', $user->id)
             ->first();
@@ -918,7 +791,6 @@ class MobileChatController extends Controller
             return response()->json(['error' => 'Chat not found'], 404);
         }
 
-        // Delete chat (messages will be cascaded)
         $chat->delete();
 
         return response()->json(['success' => true]);
@@ -935,7 +807,6 @@ class MobileChatController extends Controller
 
         $user = auth()->user();
 
-        // Verify chat belongs to user
         $chat = \App\Models\MobileChat::where('id', $chatId)
             ->where('user_id', $user->id)
             ->first();
@@ -944,7 +815,6 @@ class MobileChatController extends Controller
             return response()->json(['error' => 'Chat not found'], 404);
         }
 
-        // Update title
         $chat->update(['title' => $request->input('title')]);
 
         return response()->json([
@@ -954,23 +824,140 @@ class MobileChatController extends Controller
         ]);
     }
 
+    // =============================================
+    // SHARED HELPER: Build Continuation Context
+    // =============================================
+    // BUG FIX #1: This was duplicated in sendMessage() and sendMessageStream()
+    // with DIFFERENT thresholds (strlen >= 3 vs strlen > 15).
+    // Now unified in one place with correct threshold.
+    // =============================================
+    private function buildContinuationContext(array $conversationHistory, array $continuationKeywords, string $content, string $contentLower): ?string
+    {
+        // =============================================
+        // RACE CONDITION SAFETY CHECK
+        // =============================================
+        // If the LAST message in history is from USER, the AI hasn't responded yet.
+        // This means user sent "Yes" too quickly before previous response was saved.
+        // In this case, DON'T treat as continuation - let it be a normal message.
+        if (!empty($conversationHistory)) {
+            $lastMsg = end($conversationHistory);
+            if ($lastMsg['role'] === 'user') {
+                \Log::warning('Continuation BLOCKED - race condition detected', [
+                    'reason' => 'Last message is from user, AI response not saved yet',
+                    'last_msg' => substr($lastMsg['content'], 0, 30),
+                ]);
+                return null;  // Don't build continuation context
+            }
+        }
+
+        $lastUserQuestion = null;
+        $lastAssistantMessage = null;
+
+        // DEBUG: Log the entire history array to see order
+        \Log::info('CONTINUATION DEBUG - History array', [
+            'history_count' => count($conversationHistory),
+            'messages' => array_map(function($m, $i) {
+                return "[$i] {$m['role']}: " . substr($m['content'], 0, 30);
+            }, $conversationHistory, array_keys($conversationHistory)),
+        ]);
+
+        // Find the last assistant message
+        for ($i = count($conversationHistory) - 1; $i >= 0; $i--) {
+            if ($conversationHistory[$i]['role'] === 'assistant') {
+                $lastAssistantMessage = $conversationHistory[$i]['content'];
+                \Log::info('CONTINUATION DEBUG - Found last assistant', [
+                    'index' => $i,
+                    'preview' => substr($lastAssistantMessage, 0, 50),
+                ]);
+                break;
+            }
+        }
+
+        // Find the last REAL user question (skip continuation keywords)
+        for ($i = count($conversationHistory) - 1; $i >= 0; $i--) {
+            if ($conversationHistory[$i]['role'] === 'user') {
+                $userMsg = strtolower(trim($conversationHistory[$i]['content']));
+
+                // Skip bare keywords (affirmative/continuation responses)
+                $isBareKeyword = in_array($userMsg, $continuationKeywords) ||
+                    preg_match('/^(yes|ok|ha+n?|sure|continue|details|more|hmm+|acch+a|theek|thik|thanks?|thanku?|thnx|wow|nice|great|good|cool|awesome)[\s\.\!\?]*$/i', $userMsg);
+
+                // Skip greetings
+                $isGreetingMsg = preg_match('/^(hi+|hey+|hello+|namaste|namaskar)[\s\.\!\?]*$/i', $userMsg);
+
+                \Log::info('CONTINUATION DEBUG - Checking user msg', [
+                    'index' => $i,
+                    'msg' => $userMsg,
+                    'is_keyword' => $isBareKeyword,
+                    'is_greeting' => $isGreetingMsg,
+                    'strlen' => strlen($userMsg),
+                ]);
+
+                // =============================================
+                // FIX: Use strlen >= 3 (NOT strlen > 15!)
+                // "Human eye" = 9 chars, "Body Chest" = 10 chars
+                // These ARE real questions and must NOT be skipped!
+                // =============================================
+                if (!$isBareKeyword && !$isGreetingMsg && strlen($userMsg) >= 3) {
+                    $lastUserQuestion = $conversationHistory[$i]['content'];
+                    \Log::info('CONTINUATION DEBUG - FOUND QUESTION', [
+                        'index' => $i,
+                        'question' => $lastUserQuestion,
+                    ]);
+                    break;
+                }
+            }
+        }
+
+        if ($lastAssistantMessage && $lastUserQuestion) {
+            $topicPreview = strtok($lastAssistantMessage, "\n");
+            $topicPreview = substr($topicPreview, 0, 150);
+
+            $result = "[CONTINUATION REQUEST] User wants more details.\n" .
+                       "LAST USER QUESTION WAS: \"{$lastUserQuestion}\"\n" .
+                       "YOUR LAST RESPONSE STARTED WITH: \"{$topicPreview}\"\n" .
+                       "IMPORTANT: Provide a detailed explanation about \"{$lastUserQuestion}\". " .
+                       "Expand on your previous short answer. DO NOT switch to any other topic.";
+
+            \Log::info('Continuation detected - UNIFIED FIX', [
+                'original_message' => $contentLower,
+                'last_user_question' => substr($lastUserQuestion, 0, 50),
+                'last_topic_preview' => substr($topicPreview, 0, 50),
+            ]);
+
+            return $result;
+
+        } elseif ($lastAssistantMessage) {
+            $topicPreview = strtok($lastAssistantMessage, "\n");
+            $topicPreview = substr($topicPreview, 0, 100);
+
+            $result = "[CONTINUATION REQUEST] User said: \"{$content}\"\n" .
+                       "IMPORTANT: Continue explaining YOUR LAST RESPONSE which was about: \"{$topicPreview}\"\n" .
+                       "DO NOT explain any other topic. ONLY expand on your immediately previous response.";
+
+            \Log::info('Continuation detected - fallback (unified)', [
+                'original_message' => $contentLower,
+                'last_topic_preview' => $topicPreview,
+            ]);
+
+            return $result;
+        }
+
+        return null;
+    }
+
     /**
      * Send message with STREAMING response (Server-Sent Events)
      *
-     * This endpoint streams the AI response in real-time for better UX.
-     * - Time to first word: 0.3-0.5s instead of 3-5s
-     * - Perceived speed: 10x faster!
-     *
-     * @param Request $request
-     * @param int $chatId
-     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     * BUG FIX #1 & #3: Now uses shared buildContinuationContext() helper
+     * and same history limit (6) as sendMessage()
      */
     public function sendMessageStream(Request $request, $chatId)
     {
         $request->validate([
             'content' => 'nullable|string',
             'ai_model_id' => 'nullable|integer',
-            'image' => 'nullable|string', // Base64 image
+            'image' => 'nullable|string',
         ]);
 
         $user = auth()->user();
@@ -1018,109 +1005,71 @@ class MobileChatController extends Controller
             'image' => $imageData,
         ]);
 
-        // Get conversation history (optimized)
+        // =============================================
+        // BUG FIX #3: Increased limit for better context
+        // INCREASED: 6 -> 10 to prevent topic mixing
+        // =============================================
         $conversationHistory = \App\Models\MobileChatMessage::where('mobile_chat_id', $chatId)
             ->where('id', '!=', $userMessageRecord->id)
             ->select(['sender', 'content'])
             ->orderBy('id', 'desc')
-            ->limit(4)
+            ->limit(10)  // 10 messages = 5 exchanges for better context
             ->get()
             ->reverse()
+            ->values()  // CRITICAL: Reset array keys after reverse!
             ->map(fn($msg) => [
                 'role' => $msg->sender === 'user' ? 'user' : 'assistant',
-                'content' => substr($msg->content, 0, 500)
+                'content' => $msg->sender === 'user'
+                    ? substr($msg->content, 0, 300)
+                    : substr($msg->content, 0, 800)
             ])
             ->toArray();
 
-        // Continuation context fix for streaming
-        // Use unified config instead of hardcoded arrays (Issue #2 fix - duplicate logic)
+        // =============================================
+        // BUG FIX #1: Use SHARED continuation helper
+        // Was using strlen > 15 which skipped short questions
+        // like "Human eye" (9 chars) causing wrong topic!
+        // =============================================
         $continuationKeywords = config('smartcache.continuation_keywords', ['yes', 'continue', 'haan', 'ha', 'ok', 'sure', 'go ahead', 'explain', 'tell me more', 'details', 'aur batao', 'aage']);
         $contentLower = strtolower(trim($content));
         $isContinuationRequest = in_array($contentLower, $continuationKeywords) || strlen($content) <= 15 && preg_match('/^(yes|ok|ha+n?|sure|continue|details|explain|more)\b/i', $content);
 
         if ($isContinuationRequest && count($conversationHistory) > 0) {
-            // Find the last REAL user question (not a continuation keyword)
-            $lastUserQuestion = null;
-            $lastAssistantMessage = null;
-
-            // First, find the last assistant message
-            for ($i = count($conversationHistory) - 1; $i >= 0; $i--) {
-                if ($conversationHistory[$i]['role'] === 'assistant') {
-                    $lastAssistantMessage = $conversationHistory[$i]['content'];
-                    break;
-                }
-            }
-
-            // Then, find the last REAL user question (skip continuation keywords)
-            for ($i = count($conversationHistory) - 1; $i >= 0; $i--) {
-                if ($conversationHistory[$i]['role'] === 'user') {
-                    $userMsg = strtolower(trim($conversationHistory[$i]['content']));
-                    // Skip if it's a continuation keyword itself
-                    if (!in_array($userMsg, $continuationKeywords) &&
-                        strlen($userMsg) > 15 &&
-                        !preg_match('/^(yes|ok|ha+n?|sure|continue|details|explain|more|hmm+|acch+a|theek|thik)\b/i', $userMsg)) {
-                        $lastUserQuestion = $conversationHistory[$i]['content'];
-                        break;
-                    }
-                }
-            }
-
-            if ($lastAssistantMessage && $lastUserQuestion) {
-                $topicPreview = strtok($lastAssistantMessage, "\n");
-                $topicPreview = substr($topicPreview, 0, 150);
-
-                // Use BOTH last question AND last response for context
-                $content = "[CONTINUATION REQUEST] User wants more details.\n" .
-                           "LAST USER QUESTION WAS: \"{$lastUserQuestion}\"\n" .
-                           "YOUR LAST RESPONSE STARTED WITH: \"{$topicPreview}\"\n" .
-                           "IMPORTANT: Provide a detailed explanation about \"{$lastUserQuestion}\". " .
-                           "Expand on your previous short answer. DO NOT switch to any other topic.";
-            } elseif ($lastAssistantMessage) {
-                // Fallback to old behavior if no real question found
-                $topicPreview = strtok($lastAssistantMessage, "\n");
-                $topicPreview = substr($topicPreview, 0, 100);
-                $content = "[CONTINUATION REQUEST] User said: \"{$content}\"\n" .
-                           "IMPORTANT: Continue explaining YOUR LAST RESPONSE which was about: \"{$topicPreview}\"\n" .
-                           "DO NOT explain any other topic. ONLY expand on your immediately previous response.";
+            $result = $this->buildContinuationContext($conversationHistory, $continuationKeywords, $content, $contentLower);
+            if ($result) {
+                $content = $result;
             }
         }
 
         // Return streaming response
         return response()->stream(function () use ($content, $modelId, $conversationHistory, $imageData, $chatId, $user) {
-            // Disable output buffering for real-time streaming
             if (ob_get_level()) ob_end_clean();
 
-            // Send headers for SSE
             header('Content-Type: text/event-stream');
             header('Cache-Control: no-cache');
             header('Connection: keep-alive');
-            header('X-Accel-Buffering: no'); // Disable nginx buffering
+            header('X-Accel-Buffering: no');
 
             $fullResponse = '';
 
             try {
-                // Use UnifiedAIService with streaming callback
                 $streamCallback = function ($chunk) use (&$fullResponse) {
                     $fullResponse .= $chunk;
-
-                    // Send chunk to client
                     echo "data: " . json_encode(['content' => $chunk]) . "\n\n";
                     flush();
                 };
 
-                // Call AI service with streaming
                 $aiResult = $this->aiService->chat(
                     $content,
                     $modelId,
                     $conversationHistory,
-                    $streamCallback,  // Enable streaming
+                    $streamCallback,
                     $imageData,
                     'chat',
                     $user->id
                 );
 
                 if (!$aiResult['success']) {
-                    // Send error
                     echo "data: " . json_encode(['error' => $aiResult['error'] ?? 'AI service error']) . "\n\n";
                     flush();
                     echo "data: [DONE]\n\n";
@@ -1128,27 +1077,22 @@ class MobileChatController extends Controller
                     return;
                 }
 
-                // Use the full response from streaming or fallback to content
                 $finalResponse = !empty($fullResponse) ? $fullResponse : ($aiResult['content'] ?? '');
 
-                // Save AI message to database
                 $aiMessageRecord = \App\Models\MobileChatMessage::create([
                     'mobile_chat_id' => $chatId,
                     'sender' => 'assistant',
                     'content' => $finalResponse,
                 ]);
 
-                // Record usage for successful streaming message
                 $usageLimitService = app(\App\Services\UsageLimitService::class);
                 $usageLimitService->recordUsage($user, 'ai_doubt');
 
-                // Update chat
                 \App\Models\MobileChat::where('id', $chatId)->update([
                     'last_message_at' => now(),
                     'ai_model_id' => $modelId,
                 ]);
 
-                // Send completion signal
                 echo "data: [DONE]\n\n";
                 flush();
 
@@ -1186,7 +1130,6 @@ class MobileChatController extends Controller
         $user = $request->user();
 
         try {
-            // Store feedback in database for AI optimization
             \DB::table('ai_feedback')->insert([
                 'user_id' => $user->id,
                 'chat_id' => $request->input('chat_id'),
@@ -1212,7 +1155,7 @@ class MobileChatController extends Controller
             ]);
 
             return response()->json([
-                'success' => true, // Return success anyway to not affect UX
+                'success' => true,
                 'message' => 'Feedback noted',
             ]);
         }
@@ -1220,20 +1163,17 @@ class MobileChatController extends Controller
 
     /**
      * Auto-detect language from message content
-     * Returns: 'hindi' (Devanagari), 'hinglish' (Roman Hindi), or 'english'
      */
     private function detectLanguageFromMessage(string $message): string
     {
         if (empty($message)) {
-            return 'hinglish'; // Default for empty messages
+            return 'hinglish';
         }
 
-        // Check for Devanagari script (Hindi)
         if (preg_match('/[\x{0900}-\x{097F}]/u', $message)) {
             return 'hindi';
         }
 
-        // Check for Hinglish (Hindi words in Roman script)
         $hinglishWords = [
             'kya', 'hai', 'kaise', 'karo', 'samjhao', 'bata', 'batao', 'nahi', 'haan',
             'accha', 'theek', 'kar', 'mein', 'yeh', 'woh', 'aur', 'bhi', 'toh', 'na',
@@ -1250,7 +1190,6 @@ class MobileChatController extends Controller
             }
         }
 
-        // If 2+ Hinglish words found, it's Hinglish
         if ($hinglishCount >= 2) {
             return 'hinglish';
         }

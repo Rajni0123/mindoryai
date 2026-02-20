@@ -39,6 +39,28 @@ class SmartCacheMiddleware
             return $next($request);
         }
 
+        // =============================================
+        // CRITICAL FIX: Block short messages and continuation keywords
+        // These should NEVER be cached - they need conversation context!
+        // =============================================
+        $questionLower = strtolower(trim($question));
+        $shortBlocked = mb_strlen($question) <= 20;
+        $continuationWords = ['yes', 'no', 'ok', 'haan', 'ha', 'hmm', 'sure', 'continue',
+            'explain', 'details', 'more', 'aur batao', 'aage', 'yeah', 'yep', 'okay',
+            'accha', 'acha', 'theek', 'thik', 'sahi', 'ji', 'haanji', 'thanks', 'thanku',
+            'wow', 'nice', 'great', 'good', 'cool', 'awesome'];
+        $isContinuation = in_array($questionLower, $continuationWords) ||
+            preg_match('/^(yes|ok|ha+n?|sure|continue|details|more|hmm+)[\s\.\!\?]*$/i', $questionLower);
+
+        if ($shortBlocked || $isContinuation) {
+            Log::info("[SmartCacheMiddleware] SKIPPED - short/continuation message", [
+                'question' => $question,
+                'short_blocked' => $shortBlocked,
+                'is_continuation' => $isContinuation,
+            ]);
+            return $next($request);  // Skip cache, go to controller
+        }
+
         // Check if this is a first message (no conversation history)
         $isFirstMessage = $this->isFirstMessage($request);
 
