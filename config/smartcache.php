@@ -8,6 +8,19 @@ return [
     | Feature-wise cache settings for Mindory/BlinkStudy AI
     */
 
+    // =========================================
+    // NEW: Bug-Proof Caching Settings
+    // =========================================
+    'conversation_active_window' => env('CACHE_ACTIVE_WINDOW', 600), // 10 minutes
+    'min_response_length_to_store' => 100,
+    'enabled' => env('SMART_CACHE_ENABLED', true),
+
+    'blocked_message_types' => [
+        'continuation',
+        'greeting',
+        'context_dependent',
+    ],
+
     // Features with caching ENABLED (with TTL in days)
     'cacheable_features' => [
         'ai_doubt' => ['enabled' => true, 'ttl_days' => 90],

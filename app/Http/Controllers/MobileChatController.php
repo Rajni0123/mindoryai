@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use App\Services\UnifiedAIService;
 use App\Services\FileStorageService;
 use App\Services\Cache\SmartCacheService;
+use App\Services\Cache\ConversationGuard;
 use App\Services\UsageLimitService;
 use App\Services\LearningAnalyticsService;
 use App\Models\FrontendConfig;
@@ -382,6 +383,13 @@ class MobileChatController extends Controller
             'created_at' => $userMessageRecord->created_at->toIso8601String(),
         ];
 
+        // Record user activity for smart cache conversation tracking
+        try {
+            app(ConversationGuard::class)->recordActivity($chatId, 'user', $userContent);
+        } catch (\Exception $e) {
+            // Silent fail - cache tracking is non-critical
+        }
+
         // =============================================
         // STEP 5: GET AI RESPONSE
         // =============================================
@@ -534,6 +542,13 @@ class MobileChatController extends Controller
                     'content' => $aiResponse,
                 ]);
 
+                // Record AI activity for smart cache conversation tracking (even for cache hits)
+                try {
+                    app(ConversationGuard::class)->recordActivity($chatId, 'assistant', $aiResponse);
+                } catch (\Exception $e) {
+                    // Silent fail - cache tracking is non-critical
+                }
+
                 $aiMessage = [
                     'id' => $aiMessageRecord->id,
                     'chat_id' => $chatId,
@@ -660,6 +675,13 @@ class MobileChatController extends Controller
             'sender' => 'assistant',
             'content' => $aiResponse,
         ]);
+
+        // Record AI activity for smart cache conversation tracking
+        try {
+            app(ConversationGuard::class)->recordActivity($chatId, 'assistant', $aiResponse);
+        } catch (\Exception $e) {
+            // Silent fail - cache tracking is non-critical
+        }
 
         $this->usageLimitService->recordUsage($user, 'ai_doubt');
 
@@ -1005,6 +1027,13 @@ class MobileChatController extends Controller
             'image' => $imageData,
         ]);
 
+        // Record user activity for smart cache conversation tracking
+        try {
+            app(ConversationGuard::class)->recordActivity($chatId, 'user', $userContent);
+        } catch (\Exception $e) {
+            // Silent fail - cache tracking is non-critical
+        }
+
         // =============================================
         // BUG FIX #3: Increased limit for better context
         // INCREASED: 6 -> 10 to prevent topic mixing
@@ -1084,6 +1113,13 @@ class MobileChatController extends Controller
                     'sender' => 'assistant',
                     'content' => $finalResponse,
                 ]);
+
+                // Record AI activity for smart cache conversation tracking
+                try {
+                    app(ConversationGuard::class)->recordActivity($chatId, 'assistant', $finalResponse);
+                } catch (\Exception $e) {
+                    // Silent fail - cache tracking is non-critical
+                }
 
                 $usageLimitService = app(\App\Services\UsageLimitService::class);
                 $usageLimitService->recordUsage($user, 'ai_doubt');
