@@ -501,12 +501,15 @@ class MobileChatController extends Controller
                     if ($conversationHistory[$i]['role'] === 'user') {
                         $userMsg = strtolower(trim($conversationHistory[$i]['content']));
                         // Skip if it's a continuation keyword itself (ONLY if entire message is the keyword)
-                        // Fix: "explain photosynthesis" should NOT be skipped, only bare "explain" should
+                        // These are affirmative/continuation responses, not actual questions
                         $isBareKeyword = in_array($userMsg, $continuationKeywords) ||
-                            preg_match('/^(yes|ok|ha+n?|sure|continue|details|more|hmm+|acch+a|theek|thik)[\s\.\!\?]*$/i', $userMsg);
+                            preg_match('/^(yes|ok|ha+n?|sure|continue|details|more|hmm+|acch+a|theek|thik|thanks?|thanku?|thnx|wow|nice|great|good|cool|awesome)[\s\.\!\?]*$/i', $userMsg);
 
-                        // Real question: not a bare keyword AND has meaningful content (>15 chars)
-                        if (!$isBareKeyword && strlen($userMsg) > 15) {
+                        // Also skip greetings
+                        $isGreeting = preg_match('/^(hi+|hey+|hello+|namaste|namaskar)[\s\.\!\?]*$/i', $userMsg);
+
+                        // Real question: not a bare keyword, not a greeting, and has at least 3 chars
+                        if (!$isBareKeyword && !$isGreeting && strlen($userMsg) >= 3) {
                             $lastUserQuestion = $conversationHistory[$i]['content'];
                             break;
                         }
