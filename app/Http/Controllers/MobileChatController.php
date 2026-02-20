@@ -500,10 +500,13 @@ class MobileChatController extends Controller
                 for ($i = count($conversationHistory) - 1; $i >= 0; $i--) {
                     if ($conversationHistory[$i]['role'] === 'user') {
                         $userMsg = strtolower(trim($conversationHistory[$i]['content']));
-                        // Skip if it's a continuation keyword itself
-                        if (!in_array($userMsg, $continuationKeywords) &&
-                            strlen($userMsg) > 15 &&
-                            !preg_match('/^(yes|ok|ha+n?|sure|continue|details|explain|more|hmm+|acch+a|theek|thik)\b/i', $userMsg)) {
+                        // Skip if it's a continuation keyword itself (ONLY if entire message is the keyword)
+                        // Fix: "explain photosynthesis" should NOT be skipped, only bare "explain" should
+                        $isBareKeyword = in_array($userMsg, $continuationKeywords) ||
+                            preg_match('/^(yes|ok|ha+n?|sure|continue|details|more|hmm+|acch+a|theek|thik)[\s\.\!\?]*$/i', $userMsg);
+
+                        // Real question: not a bare keyword AND has meaningful content (>15 chars)
+                        if (!$isBareKeyword && strlen($userMsg) > 15) {
                             $lastUserQuestion = $conversationHistory[$i]['content'];
                             break;
                         }
@@ -669,6 +672,19 @@ class MobileChatController extends Controller
                     $feature = 'pdf_solve'; // Image analysis
                 }
             }
+
+            // DEBUG: Log before AI call
+            \Log::info('AI CALL DEBUG', [
+                'user_message' => $content,
+                'original_content' => $originalContent ?? $content,
+                'chat_id' => $chatId,
+                'user_id' => $user->id,
+                'history_count' => count($conversationHistory),
+                'history' => array_slice($conversationHistory, -5), // Last 5 messages
+                'language' => $language,
+                'feature' => $feature,
+                'cache_hit' => isset($cacheHit) && $cacheHit ? 'YES' : 'NO',
+            ]);
 
             // Use UnifiedAIService to get response with optimized settings
             $aiResult = $this->aiService->chat(
