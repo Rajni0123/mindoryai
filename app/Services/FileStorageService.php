@@ -11,12 +11,27 @@ class FileStorageService
 {
     protected ?StorageSetting $activeStorage = null;
     protected bool $r2Ready = false;
+    protected bool $initialized = false;
 
     // Cloudflare account ID (extracted from R2 endpoint URL)
     protected ?string $cfAccountId = null;
 
     public function __construct()
     {
+        // Don't initialize in constructor - use lazy loading
+        // This prevents DB queries before Laravel is fully bootstrapped
+    }
+
+    /**
+     * Ensure storage is initialized (lazy loading)
+     */
+    protected function ensureInitialized(): void
+    {
+        if ($this->initialized) {
+            return;
+        }
+
+        $this->initialized = true;
         $this->initializeActiveStorage();
     }
 
@@ -25,10 +40,17 @@ class FileStorageService
      */
     protected function initializeActiveStorage(): void
     {
-        $this->activeStorage = StorageSetting::getActive();
+        try {
+            $this->activeStorage = StorageSetting::getActive();
 
-        if ($this->activeStorage && $this->activeStorage->isActive()) {
-            $this->initializeR2();
+            if ($this->activeStorage && $this->activeStorage->isActive()) {
+                $this->initializeR2();
+            }
+        } catch (\Exception $e) {
+            \Log::warning('FileStorageService: Failed to initialize storage', [
+                'error' => $e->getMessage()
+            ]);
+            $this->activeStorage = null;
         }
     }
 
@@ -125,6 +147,8 @@ class FileStorageService
      */
     public function upload($file, string $path = ''): ?array
     {
+        $this->ensureInitialized();
+
         if (!$this->activeStorage || !$this->activeStorage->isActive()) {
             \Log::error('No active storage configured');
             return null;
@@ -183,6 +207,8 @@ class FileStorageService
      */
     public function uploadFromBase64(string $base64Data, string $filename, string $mimeType, string $path = ''): ?array
     {
+        $this->ensureInitialized();
+
         if (!$this->activeStorage || !$this->activeStorage->isActive()) {
             \Log::error('No active storage configured');
             return null;
@@ -245,6 +271,8 @@ class FileStorageService
      */
     public function uploadFromPath(string $localFilePath, string $remotePath, ?string $contentType = null): ?array
     {
+        $this->ensureInitialized();
+
         if (!$this->activeStorage || !$this->activeStorage->isActive() || !$this->r2Ready) {
             \Log::error('uploadFromPath: No active storage configured');
             return null;
@@ -300,6 +328,8 @@ class FileStorageService
      */
     public function delete(string $filePath): bool
     {
+        $this->ensureInitialized();
+
         if (!$this->activeStorage || !$this->r2Ready) {
             return false;
         }
@@ -339,6 +369,8 @@ class FileStorageService
      */
     public function downloadFile(string $fileUrl): string
     {
+        $this->ensureInitialized();
+
         if (!$this->activeStorage || !$this->r2Ready) {
             throw new \Exception('No active storage configured');
         }
@@ -421,6 +453,7 @@ class FileStorageService
      */
     public function isActive(): bool
     {
+        $this->ensureInitialized();
         return $this->activeStorage !== null && $this->activeStorage->isActive() && $this->r2Ready;
     }
 
@@ -429,6 +462,7 @@ class FileStorageService
      */
     public function getActiveStorage(): ?StorageSetting
     {
+        $this->ensureInitialized();
         return $this->activeStorage;
     }
 
@@ -437,6 +471,8 @@ class FileStorageService
      */
     public function getValidationRules(): array
     {
+        $this->ensureInitialized();
+
         if (!$this->activeStorage) {
             return [
                 'file' => 'required|file|max:10240',
