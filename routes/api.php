@@ -1913,6 +1913,63 @@ Route::middleware('auth:sanctum')->prefix('support-chat')->group(function () {
 });
 
 // ============================================================
+// TOPPER CONNECT SYSTEM
+// ============================================================
+Route::middleware('auth:sanctum')->prefix('topper-connect')->group(function () {
+    // Get available toppers
+    Route::get('/toppers', [\App\Http\Controllers\Api\TopperConnectController::class, 'getToppers']);
+    Route::get('/toppers/featured', [\App\Http\Controllers\Api\TopperConnectController::class, 'getFeaturedToppers']);
+    Route::get('/toppers/{topperId}', [\App\Http\Controllers\Api\TopperConnectController::class, 'getTopperProfile']);
+
+    // Chat requests (student)
+    Route::post('/requests', [\App\Http\Controllers\Api\TopperConnectController::class, 'createRequest']);
+    Route::get('/requests', [\App\Http\Controllers\Api\TopperConnectController::class, 'getMyRequests']);
+    Route::delete('/requests/{requestId}', [\App\Http\Controllers\Api\TopperConnectController::class, 'cancelRequest']);
+
+    // Conversations (student)
+    Route::get('/conversations', [\App\Http\Controllers\Api\TopperConnectController::class, 'getMyConversations']);
+
+    // Home data
+    Route::get('/home', [\App\Http\Controllers\Api\TopperConnectController::class, 'getHomeData']);
+
+    // Public doubts
+    Route::get('/doubts', [\App\Http\Controllers\Api\TopperConnectController::class, 'getPublicDoubts']);
+    Route::get('/doubts/search', [\App\Http\Controllers\Api\TopperConnectController::class, 'searchDoubts']);
+    Route::get('/doubts/{doubtId}', [\App\Http\Controllers\Api\TopperConnectController::class, 'getPublicDoubt']);
+    Route::post('/doubts/{doubtId}/upvote', [\App\Http\Controllers\Api\TopperConnectController::class, 'upvoteDoubt']);
+});
+
+// ============================================================
+// TOKEN WALLET SYSTEM
+// ============================================================
+Route::middleware('auth:sanctum')->prefix('token-wallet')->group(function () {
+    Route::get('/summary', [\App\Http\Controllers\Api\TokenWalletController::class, 'getSummary']);
+    Route::get('/balance', [\App\Http\Controllers\Api\TokenWalletController::class, 'getBalance']);
+    Route::get('/packages', [\App\Http\Controllers\Api\TokenWalletController::class, 'getPackages']);
+    Route::get('/transactions', [\App\Http\Controllers\Api\TokenWalletController::class, 'getTransactions']);
+    Route::post('/create-order', [\App\Http\Controllers\Api\TokenWalletController::class, 'createOrder']);
+    Route::post('/verify-payment', [\App\Http\Controllers\Api\TokenWalletController::class, 'verifyPayment']);
+});
+
+// ============================================================
+// TOPPER DASHBOARD (For Toppers)
+// ============================================================
+Route::middleware('auth:sanctum')->prefix('topper-dashboard')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Api\TopperDashboardController::class, 'index']);
+    Route::get('/requests', [\App\Http\Controllers\Api\TopperDashboardController::class, 'getPendingRequests']);
+    Route::post('/requests/{requestId}/accept', [\App\Http\Controllers\Api\TopperDashboardController::class, 'acceptRequest']);
+    Route::post('/requests/{requestId}/reject', [\App\Http\Controllers\Api\TopperDashboardController::class, 'rejectRequest']);
+    Route::post('/availability', [\App\Http\Controllers\Api\TopperDashboardController::class, 'updateAvailability']);
+    Route::get('/conversations', [\App\Http\Controllers\Api\TopperDashboardController::class, 'getConversations']);
+    Route::get('/earnings', [\App\Http\Controllers\Api\TopperDashboardController::class, 'getEarnings']);
+    Route::get('/wallet', [\App\Http\Controllers\Api\TopperDashboardController::class, 'getWallet']);
+    Route::put('/wallet/payout-details', [\App\Http\Controllers\Api\TopperDashboardController::class, 'updatePayoutDetails']);
+    Route::post('/withdrawals', [\App\Http\Controllers\Api\TopperDashboardController::class, 'requestWithdrawal']);
+    Route::get('/withdrawals', [\App\Http\Controllers\Api\TopperDashboardController::class, 'getWithdrawals']);
+    Route::put('/profile', [\App\Http\Controllers\Api\TopperDashboardController::class, 'updateProfile']);
+});
+
+// ============================================================
 // PAYMENT WEBHOOKS (No auth - server-to-server callbacks)
 // ============================================================
 Route::prefix('webhooks')->group(function () {
