@@ -1,0 +1,704 @@
+[
+  {
+    "question_text": "Define electric flux. Write its S.I. units.",
+    "topic": "Electric Charges and Fields",
+    "options": [
+      {
+        "label": "A",
+        "text": "The electric field intensity; N/C"
+      },
+      {
+        "label": "B",
+        "text": "The number of electric field lines passing through a surface normally; Vm"
+      },
+      {
+        "label": "C",
+        "text": "The electric potential; Volts"
+      },
+      {
+        "label": "D",
+        "text": "The electric charge density; C/m^3"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Electric flux is defined as the number of electric field lines passing through a surface normally. Its S.I. unit is Volt-meter (Vm) or N m²/C.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A point charge +Q is placed at point O as shown in the figure. Is the potential difference V_A - V_B positive, negative or zero if Q is positive?",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Positive"
+      },
+      {
+        "label": "B",
+        "text": "Negative"
+      },
+      {
+        "label": "C",
+        "text": "Zero"
+      },
+      {
+        "label": "D",
+        "text": "Cannot be determined"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Since Q is positive, the electric potential decreases as we move away from the charge. Therefore, V_A > V_B, and V_A - V_B is positive.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Sketch equipotential surfaces for a single point charge.",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Concentric circles centered at the charge"
+      },
+      {
+        "label": "B",
+        "text": "Concentric spheres centered at the charge"
+      },
+      {
+        "label": "C",
+        "text": "Parallel lines"
+      },
+      {
+        "label": "D",
+        "text": "Radial lines emanating from the charge"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Equipotential surfaces for a single point charge are concentric spheres centered at the charge. The potential is constant on each sphere.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "How does the mobility of electrons in a conductor change with increase in temperature?",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increases"
+      },
+      {
+        "label": "B",
+        "text": "Decreases"
+      },
+      {
+        "label": "C",
+        "text": "Remains the same"
+      },
+      {
+        "label": "D",
+        "text": "First increases then decreases"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "As temperature increases, the random motion of electrons increases, leading to more collisions with the lattice ions. This reduces the drift velocity and hence the mobility.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "State the principle of potentiometer.",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "The potential drop across a wire of uniform cross-section is directly proportional to the length of the wire when a constant current flows through it."
+      },
+      {
+        "label": "B",
+        "text": "The potential is inversely proportional to the length."
+      },
+      {
+        "label": "C",
+        "text": "The current is directly proportional to the voltage."
+      },
+      {
+        "label": "D",
+        "text": "The resistance is constant."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The principle of a potentiometer is that the potential drop across a wire of uniform cross-section is directly proportional to the length of the wire when a constant current flows through it.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What are eddy currents? How are these minimised?",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Circulating currents induced in a conductor when it is placed in a changing magnetic field; minimized by using laminated cores."
+      },
+      {
+        "label": "B",
+        "text": "Currents flowing in straight wires; minimized by increasing the resistance."
+      },
+      {
+        "label": "C",
+        "text": "Currents due to static charges; minimized by grounding."
+      },
+      {
+        "label": "D",
+        "text": "Currents in semiconductors; minimized by cooling."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Eddy currents are circulating currents induced in a conductor when it is placed in a changing magnetic field. They are minimized by using laminated cores, which increase the resistance to the flow of these currents.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write two differences between interference and diffraction of light.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Interference: due to superposition of waves from two coherent sources, Diffraction: bending of light around obstacles; Interference: fringes are of equal width, Diffraction: fringes are of unequal width."
+      },
+      {
+        "label": "B",
+        "text": "Interference: bending of light, Diffraction: superposition of waves; Interference: fringes are unequal, Diffraction: fringes are equal."
+      },
+      {
+        "label": "C",
+        "text": "Interference: requires incoherent sources, Diffraction: requires coherent sources; Interference: fringes are always dark, Diffraction: fringes are always bright."
+      },
+      {
+        "label": "D",
+        "text": "Interference and diffraction are the same phenomenon."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Interference is due to the superposition of waves from two coherent sources, while diffraction is the bending of light around obstacles. Interference fringes are generally of equal width, while diffraction fringes are of unequal width.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Plot a graph showing the variation of photoelectric current with collector plate potential for two different frequencies of incident radiation having the same intensity.",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Two curves with different saturation currents and stopping potentials, both increasing with potential."
+      },
+      {
+        "label": "B",
+        "text": "Two curves with the same saturation current but different stopping potentials, both reaching saturation."
+      },
+      {
+        "label": "C",
+        "text": "Two curves with different saturation currents and the same stopping potential."
+      },
+      {
+        "label": "D",
+        "text": "A single curve showing linear increase."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The graph should show two curves that reach the same saturation current (since the intensity is the same) but have different stopping potentials (since the frequencies are different). The higher frequency will have a more negative stopping potential.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write Einstein’s photoelectric equation. State clearly the three salient features observed in photoelectric effect, which can be explained on the basis of this equation.",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "KE_max = hν - φ; Instantaneous emission, threshold frequency, KE depends on frequency."
+      },
+      {
+        "label": "B",
+        "text": "KE_max = hν + φ; Delayed emission, no threshold frequency, KE depends on intensity."
+      },
+      {
+        "label": "C",
+        "text": "KE_max = mc^2; Instantaneous emission, threshold frequency, KE depends on intensity."
+      },
+      {
+        "label": "D",
+        "text": "KE_max = h/λ; Delayed emission, no threshold frequency, KE depends on frequency."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Einstein's photoelectric equation is KE_max = hν - φ, where KE_max is the maximum kinetic energy of the emitted electrons, h is Planck's constant, ν is the frequency of the incident light, and φ is the work function of the metal. The three salient features are: (i) Instantaneous emission of photoelectrons, (ii) Existence of a threshold frequency, and (iii) Kinetic energy of emitted electrons depends on the frequency of incident light, not on its intensity.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Draw a labelled diagram of a full wave rectifier circuit. State its working principle. Show the input and output waveforms.",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Diagram with two diodes, center-tapped transformer; converts AC to pulsating DC; input is sinusoidal, output is rectified."
+      },
+      {
+        "label": "B",
+        "text": "Diagram with one diode, transformer; converts AC to DC; input is sinusoidal, output is half-wave rectified."
+      },
+      {
+        "label": "C",
+        "text": "Diagram with transistor, resistors; amplifies signal; input is sinusoidal, output is amplified sinusoidal."
+      },
+      {
+        "label": "D",
+        "text": "Diagram with capacitor, inductor; filters signal; input is noisy, output is filtered."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A full-wave rectifier circuit uses two diodes and a center-tapped transformer to convert AC voltage to pulsating DC voltage. During each half cycle of the input AC, one of the diodes conducts, allowing current to flow through the load resistor. The input waveform is sinusoidal, and the output waveform is rectified, with both positive and negative halves of the input being converted to positive output.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Derive the expression for the torque acting on a rectangular current carrying loop suspended in a uniform magnetic field.",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "τ = MBsinθ, where M is the magnetic dipole moment, B is the magnetic field, and θ is the angle between them."
+      },
+      {
+        "label": "B",
+        "text": "τ = BIL, where B is the magnetic field, I is the current, and L is the length of the loop."
+      },
+      {
+        "label": "C",
+        "text": "τ = qvBsinθ, where q is the charge, v is the velocity, and B is the magnetic field."
+      },
+      {
+        "label": "D",
+        "text": "τ = I/R, where I is current and R is resistance."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The torque acting on a rectangular current-carrying loop in a uniform magnetic field is given by τ = MBsinθ, where M is the magnetic dipole moment of the loop, B is the magnetic field strength, and θ is the angle between the magnetic dipole moment vector and the magnetic field vector. The derivation involves calculating the forces on the sides of the loop and summing their torques.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "State Huygens’ principle. Using this principle explain how a plane wave front is reflected from a surface. Hence verify the laws of reflection.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Each point on a wavefront is a source of secondary wavelets; reflection occurs when wavelets from different points combine, angle of incidence equals angle of reflection."
+      },
+      {
+        "label": "B",
+        "text": "Light travels in straight lines; reflection occurs when light bounces off a surface, angle of incidence is not equal to angle of reflection."
+      },
+      {
+        "label": "C",
+        "text": "Light is a particle; reflection occurs due to particle collisions, angle of incidence equals angle of refraction."
+      },
+      {
+        "label": "D",
+        "text": "Light is a wave; reflection occurs due to wave interference, angle of incidence is always zero."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Huygens' principle states that each point on a wavefront is a source of secondary wavelets that spread out in all directions with the speed of light. When a plane wavefront is incident on a surface, each point on the surface acts as a source of secondary wavelets. The envelope of these wavelets forms the reflected wavefront. By considering the geometry of the wavelets, it can be shown that the angle of incidence is equal to the angle of reflection.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain, with the help of a labelled diagram, the principle and working of a moving coil galvanometer. What is the function of a radial magnetic field?",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "A coil suspended in a magnetic field experiences a torque proportional to the current; radial field makes the torque independent of the coil's orientation."
+      },
+      {
+        "label": "B",
+        "text": "A coil acts as a capacitor; radial field stores energy."
+      },
+      {
+        "label": "C",
+        "text": "A coil acts as an inductor; radial field increases inductance."
+      },
+      {
+        "label": "D",
+        "text": "A coil acts as a resistor; radial field decreases resistance."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A moving coil galvanometer works on the principle that a current-carrying coil placed in a magnetic field experiences a torque. The torque is proportional to the current flowing through the coil. A radial magnetic field ensures that the plane of the coil is always parallel to the magnetic field, making the torque independent of the coil's orientation and ensuring a linear relationship between current and deflection.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "State the laws of electromagnetic induction.",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Faraday's law: The induced emf is equal to the rate of change of magnetic flux; Lenz's law: The direction of the induced emf opposes the change in magnetic flux."
+      },
+      {
+        "label": "B",
+        "text": "Ohm's law: V=IR; Kirchhoff's law: Sum of currents at a junction is zero."
+      },
+      {
+        "label": "C",
+        "text": "Coulomb's law: F=kQq/r^2; Gauss's law: Flux through a closed surface is proportional to the enclosed charge."
+      },
+      {
+        "label": "D",
+        "text": "Ampere's law: Integral of B.dl = μ0I; Biot-Savart law: dB = (μ0/4π)Idl x r/r^3."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The laws of electromagnetic induction are Faraday's law and Lenz's law. Faraday's law states that the magnitude of the induced electromotive force (emf) in any closed circuit is equal to the time rate of change of the magnetic flux through the circuit. Lenz's law states that the direction of the induced emf is such that it opposes the change in magnetic flux that produced it.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is displacement current? Write its expression.",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "Current due to changing electric field; Id = ε₀(dΦE/dt)"
+      },
+      {
+        "label": "B",
+        "text": "Current due to moving charges; I = qv"
+      },
+      {
+        "label": "C",
+        "text": "Current due to voltage; I = V/R"
+      },
+      {
+        "label": "D",
+        "text": "Current due to magnetic field; I = B/μ₀"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Displacement current is the current that arises due to a changing electric field. It is given by the expression Id = ε₀(dΦE/dt), where ε₀ is the permittivity of free space and dΦE/dt is the rate of change of electric flux.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the term ‘critical angle’ with the help of a diagram.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "The angle of incidence for which the angle of refraction is 90 degrees."
+      },
+      {
+        "label": "B",
+        "text": "The angle of incidence for which the angle of refraction is 0 degrees."
+      },
+      {
+        "label": "C",
+        "text": "The angle of incidence for which total internal reflection occurs."
+      },
+      {
+        "label": "D",
+        "text": "The angle of refraction for which the angle of incidence is 90 degrees."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The critical angle is the angle of incidence in a denser medium for which the angle of refraction in the rarer medium is 90 degrees. Beyond this angle, total internal reflection occurs.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Define the term ‘resolving power of a telescope’. How will the resolving power be affected on (i) increasing the wavelength of light and (ii) increasing the diameter of the objective lens?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ability to distinguish between two closely spaced objects; (i) decreases, (ii) increases."
+      },
+      {
+        "label": "B",
+        "text": "Magnification of the telescope; (i) increases, (ii) decreases."
+      },
+      {
+        "label": "C",
+        "text": "Ability to focus light; (i) remains the same, (ii) increases."
+      },
+      {
+        "label": "D",
+        "text": "Ability to gather light; (i) decreases, (ii) remains the same."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The resolving power of a telescope is its ability to distinguish between two closely spaced objects. (i) Increasing the wavelength of light decreases the resolving power. (ii) Increasing the diameter of the objective lens increases the resolving power.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the effect on the interference fringes in Young’s double slit experiment due to each of the following: (i) The screen is moved closer to the plane of slits. (ii) The separation between the two slits is increased. (iii) The source slit is wider.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) No change, (ii) Fringe width decreases, (iii) Fringes become less distinct."
+      },
+      {
+        "label": "B",
+        "text": "(i) Fringe width increases, (ii) Fringe width increases, (iii) Fringes become more distinct."
+      },
+      {
+        "label": "C",
+        "text": "(i) Fringe width decreases, (ii) Fringe width decreases, (iii) Fringes disappear."
+      },
+      {
+        "label": "D",
+        "text": "(i) No change, (ii) Fringe width increases, (iii) Fringes disappear."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Moving the screen closer to the plane of slits has no effect on the fringe width. (ii) Increasing the separation between the two slits decreases the fringe width. (iii) A wider source slit makes the fringes less distinct.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Draw a labelled ray diagram of an astronomical telescope in the normal adjustment position. Write the expression for its magnifying power.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Diagram with objective and eyepiece lenses, rays converging at infinity; M = -fo/fe"
+      },
+      {
+        "label": "B",
+        "text": "Diagram with single lens; M = f/u"
+      },
+      {
+        "label": "C",
+        "text": "Diagram with mirror and lens; M = -fe/fo"
+      },
+      {
+        "label": "D",
+        "text": "Diagram with two mirrors; M = fo x fe"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The ray diagram should show an astronomical telescope with an objective lens and an eyepiece lens, with rays converging at infinity for normal adjustment. The magnifying power is given by M = -fo/fe, where fo is the focal length of the objective lens and fe is the focal length of the eyepiece lens.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the de Broglie wavelength of an electron accelerated through a potential difference of V volts?",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "λ = h/√(2meV)"
+      },
+      {
+        "label": "B",
+        "text": "λ = h/√(meV)"
+      },
+      {
+        "label": "C",
+        "text": "λ = √(2meV)/h"
+      },
+      {
+        "label": "D",
+        "text": "λ = √(meV)/h"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The de Broglie wavelength of an electron accelerated through a potential difference of V volts is given by λ = h/√(2meV), where h is Planck's constant, m is the mass of the electron, and e is the charge of the electron.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "State Bohr’s postulates of the atomic model.",
+    "topic": "Atoms",
+    "options": [
+      {
+        "label": "A",
+        "text": "Electrons revolve in specific orbits without radiating energy; angular momentum is quantized; energy is emitted/absorbed when electrons transition between orbits."
+      },
+      {
+        "label": "B",
+        "text": "Electrons revolve in any orbit; angular momentum is continuous; energy is always emitted."
+      },
+      {
+        "label": "C",
+        "text": "Electrons are stationary; angular momentum is zero; energy is never emitted."
+      },
+      {
+        "label": "D",
+        "text": "Electrons revolve randomly; angular momentum is not quantized; energy is absorbed continuously."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Bohr's postulates are: (i) Electrons revolve around the nucleus in specific orbits without radiating energy. (ii) The angular momentum of an electron in these orbits is quantized (L = nħ). (iii) Energy is emitted or absorbed only when electrons transition between these orbits, with the energy difference equal to the energy of the emitted or absorbed photon (E = hν).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is nuclear fission? Give one example.",
+    "topic": "Nuclei",
+    "options": [
+      {
+        "label": "A",
+        "text": "Splitting of a heavy nucleus into lighter nuclei; e.g., Uranium-235 fission."
+      },
+      {
+        "label": "B",
+        "text": "Combining of light nuclei into a heavier nucleus; e.g., Hydrogen fusion."
+      },
+      {
+        "label": "C",
+        "text": "Emission of alpha particles; e.g., Radioactive decay."
+      },
+      {
+        "label": "D",
+        "text": "Absorption of neutrons by a nucleus; e.g., Neutron capture."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Nuclear fission is the process in which a heavy nucleus splits into two or more lighter nuclei, releasing a large amount of energy. An example is the fission of Uranium-235 when bombarded with a neutron.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the function of base region of a transistor.",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Controls the flow of current between the emitter and collector."
+      },
+      {
+        "label": "B",
+        "text": "Supplies the majority carriers to the collector."
+      },
+      {
+        "label": "C",
+        "text": "Collects the majority carriers from the emitter."
+      },
+      {
+        "label": "D",
+        "text": "Provides the necessary voltage for the transistor to operate."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The base region of a transistor is a very thin, lightly doped region that controls the flow of current between the emitter and the collector. A small change in the base current can cause a large change in the collector current, allowing the transistor to act as an amplifier or a switch.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the function of a repeater in a communication system?",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "To amplify and retransmit the signal."
+      },
+      {
+        "label": "B",
+        "text": "To filter out noise from the signal."
+      },
+      {
+        "label": "C",
+        "text": "To modulate the signal."
+      },
+      {
+        "label": "D",
+        "text": "To demodulate the signal."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A repeater in a communication system is used to amplify and retransmit the signal. This helps to overcome signal attenuation and extend the range of the communication system.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the working of a Zener diode as a voltage regulator.",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Maintains a constant voltage across the load by conducting excess current through itself when the input voltage increases."
+      },
+      {
+        "label": "B",
+        "text": "Increases the voltage when the input voltage decreases."
+      },
+      {
+        "label": "C",
+        "text": "Acts as a switch, turning on when the voltage exceeds a certain threshold."
+      },
+      {
+        "label": "D",
+        "text": "Acts as a rectifier, converting AC to DC."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A Zener diode, when connected in reverse bias, maintains a constant voltage across the load. When the input voltage increases, the Zener diode conducts excess current through itself, keeping the voltage across the load constant.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the terms ‘depletion layer’ and ‘potential barrier’ in a p-n junction diode.",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Depletion layer: region with no mobile charge carriers; Potential barrier: electric potential difference across the depletion layer."
+      },
+      {
+        "label": "B",
+        "text": "Depletion layer: region with high concentration of mobile charge carriers; Potential barrier: absence of electric potential difference."
+      },
+      {
+        "label": "C",
+        "text": "Depletion layer: region with uniform charge distribution; Potential barrier: constant electric potential."
+      },
+      {
+        "label": "D",
+        "text": "Depletion layer: region with alternating positive and negative charges; Potential barrier: fluctuating electric potential."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The depletion layer in a p-n junction diode is a region near the junction that is depleted of mobile charge carriers (electrons and holes). The potential barrier is the electric potential difference that exists across the depletion layer, which opposes the flow of majority carriers across the junction.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

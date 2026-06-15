@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PricingPlan;
+use App\Models\Plan;
 use App\Models\Payment;
 use App\Models\PaymentGateway;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Services\EmailService;
 
@@ -21,7 +22,7 @@ class PaymentController extends Controller
         $user = Auth::user();
 
         // Get the pricing plan
-        $plan = PricingPlan::findOrFail($planId);
+        $plan = Plan::findOrFail($planId);
 
         // Get enabled payment gateways
         $paymentGateways = \App\Models\PaymentGateway::where('is_enabled', true)
@@ -37,7 +38,7 @@ class PaymentController extends Controller
         $payment = Payment::create([
             'user_id' => $user->id,
             'plan_id' => $plan->id,
-            'amount' => $plan->price,
+            'amount' => $plan->price_monthly,
             'transaction_id' => 'TXN' . strtoupper(Str::random(16)),
             'payment_method' => 'pending',
             'status' => 'pending',
@@ -94,41 +95,63 @@ class PaymentController extends Controller
     {
         $payment = Payment::with('user', 'plan')->findOrFail($paymentId);
 
-        // Update payment status
-        $payment->update([
-            'status' => 'completed',
-            'verified_at' => now(),
-        ]);
+        try {
+            // Wrap payment and user updates in transaction for atomicity
+            DB::beginTransaction();
 
-        // Activate user with plan details
-        $plan = $payment->plan;
-        $user = $payment->user;
+            // Update payment status
+            $payment->update([
+                'status' => 'completed',
+                'verified_at' => now(),
+            ]);
 
-        $expiryDate = now()->addDays($plan->validity_days ?? 30);
+            // Activate user with plan details
+            $plan = $payment->plan;
+            $user = $payment->user;
 
-        $user->update([
-            'plan_id' => $plan->id,
-            'plan_expires_at' => $expiryDate,
-            'is_active' => true,
-            'token_limit' => $plan->message_tokens ?? 10000,
-            'tokens_used' => 0,
-            'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
-            'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
-            'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
-            'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
-        ]);
+            $expiryDate = now()->addDays($plan->validity_days ?? 30);
 
-        // Send payment success email to user + admin
-        EmailService::sendPaymentSuccess(
-            $user,
-            $plan->name ?? 'Premium',
-            (string) $payment->amount,
-            $payment->transaction_id,
-            $payment->payment_method ?? 'manual',
-            $expiryDate->format('d M Y')
-        );
+            $user->update([
+                'plan_id' => $plan->id,
+                'plan_expires_at' => $expiryDate,
+                'is_active' => true,
+                'token_limit' => $plan->message_tokens ?? 10000,
+                'tokens_used' => 0,
+                'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
+                'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
+                'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
+                'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
+            ]);
 
-        return back()->with('success', 'Payment confirmed and user activated successfully!');
+            DB::commit();
+
+            // Send email AFTER commit (email failures shouldn't rollback payment)
+            try {
+                EmailService::sendPaymentSuccess(
+                    $user,
+                    $plan->name ?? 'Premium',
+                    (string) $payment->amount,
+                    $payment->transaction_id,
+                    $payment->payment_method ?? 'manual',
+                    $expiryDate->format('d M Y')
+                );
+            } catch (\Exception $emailError) {
+                \Log::warning('Payment confirmation email failed', [
+                    'payment_id' => $paymentId,
+                    'error' => $emailError->getMessage(),
+                ]);
+            }
+
+            return back()->with('success', 'Payment confirmed and user activated successfully!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Payment confirmation failed', [
+                'payment_id' => $paymentId,
+                'error' => $e->getMessage(),
+            ]);
+            return back()->with('error', 'Failed to confirm payment: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -137,11 +160,11 @@ class PaymentController extends Controller
     public function createCashfreeOrder(Request $request)
     {
         $request->validate([
-            'plan_id' => 'required|exists:user_plans,id',
+            'plan_id' => 'required|exists:plans,id',
         ]);
 
         $user = Auth::user();
-        $plan = PricingPlan::findOrFail($request->plan_id);
+        $plan = Plan::findOrFail($request->plan_id);
 
         try {
             // Generate unique order ID
@@ -162,7 +185,7 @@ class PaymentController extends Controller
             $payment = Payment::create([
                 'user_id' => $user->id,
                 'plan_id' => $plan->id,
-                'amount' => $plan->price,
+                'amount' => $plan->price_monthly,
                 'transaction_id' => $orderId,
                 'payment_method' => 'cashfree',
                 'status' => 'pending',
@@ -179,7 +202,7 @@ class PaymentController extends Controller
                 'success' => true,
                 'payment_url' => $paymentUrl,
                 'order_id' => $orderId,
-                'amount' => $plan->price,
+                'amount' => $plan->price_monthly,
                 'callback_url' => $callbackUrl,
             ]);
 
@@ -332,12 +355,12 @@ class PaymentController extends Controller
     public function createPaymentOrder(Request $request)
     {
         $request->validate([
-            'plan_id' => 'required|exists:user_plans,id',
+            'plan_id' => 'required|exists:plans,id',
             'gateway' => 'required|in:razorpay,cashfree,phonepe',
         ]);
 
         $user = Auth::user();
-        $plan = PricingPlan::findOrFail($request->plan_id);
+        $plan = Plan::findOrFail($request->plan_id);
 
         // Check if gateway is enabled
         $gateway = PaymentGateway::where('name', $request->gateway)
@@ -355,7 +378,7 @@ class PaymentController extends Controller
         $paymentService = new PaymentService();
         $result = $paymentService->createOrder(
             $request->gateway,
-            $plan->price,
+            $plan->price_monthly,
             'plan_purchase_' . $plan->id,
             $user->id,
             ['plan_id' => $plan->id]
@@ -373,7 +396,7 @@ class PaymentController extends Controller
             'transaction_id' => $result['transaction_id'],
             'gateway_order_id' => $result['gateway_order_id'],
             'gateway_data' => $result['gateway_data'],
-            'amount' => $plan->price,
+            'amount' => $plan->price_monthly,
         ]);
     }
 
@@ -404,7 +427,7 @@ class PaymentController extends Controller
         $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)->first();
 
         if ($transaction && isset($transaction->metadata['plan_id'])) {
-            $plan = PricingPlan::find($transaction->metadata['plan_id']);
+            $plan = Plan::find($transaction->metadata['plan_id']);
             $user = Auth::user();
 
             if ($plan && $user) {
@@ -444,11 +467,11 @@ class PaymentController extends Controller
     public function createRazorpayOrder(Request $request)
     {
         $request->validate([
-            'plan_id' => 'required|exists:user_plans,id',
+            'plan_id' => 'required|exists:plans,id',
         ]);
 
         $user = Auth::user();
-        $plan = PricingPlan::findOrFail($request->plan_id);
+        $plan = Plan::findOrFail($request->plan_id);
 
         // Check Razorpay gateway is enabled
         $gateway = PaymentGateway::where('name', 'razorpay')
@@ -465,7 +488,7 @@ class PaymentController extends Controller
         $paymentService = new PaymentService();
         $result = $paymentService->createOrder(
             'razorpay',
-            $plan->price,
+            $plan->price_monthly,
             'plan_purchase_' . $plan->id,
             $user->id,
             ['plan_id' => $plan->id]
@@ -482,7 +505,7 @@ class PaymentController extends Controller
             'success' => true,
             'order_id' => $result['gateway_order_id'],
             'razorpay_key' => $result['gateway_data']['key'],
-            'amount' => $plan->price * 100,
+            'amount' => $plan->price_monthly * 100,
             'currency' => 'INR',
             'transaction_id' => $result['transaction_id'],
             'user_name' => $user->name,
@@ -500,12 +523,12 @@ class PaymentController extends Controller
             'razorpay_payment_id' => 'required|string',
             'razorpay_order_id' => 'required|string',
             'razorpay_signature' => 'required|string',
-            'plan_id' => 'required|exists:user_plans,id',
+            'plan_id' => 'required|exists:plans,id',
             'transaction_id' => 'required|string',
         ]);
 
         $user = Auth::user();
-        $plan = PricingPlan::findOrFail($request->plan_id);
+        $plan = Plan::findOrFail($request->plan_id);
 
         // Find the transaction
         $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)->first();
@@ -530,7 +553,7 @@ class PaymentController extends Controller
             EmailService::sendPaymentFailed(
                 $user,
                 $plan->name ?? 'Premium',
-                (string) $plan->price,
+                (string) $plan->price_monthly,
                 $request->transaction_id,
                 $result['message'] ?? 'Payment verification failed'
             );
@@ -558,7 +581,7 @@ class PaymentController extends Controller
         Payment::create([
             'user_id' => $user->id,
             'plan_id' => $plan->id,
-            'amount' => $plan->price,
+            'amount' => $plan->price_monthly,
             'transaction_id' => $request->razorpay_payment_id,
             'payment_method' => 'razorpay',
             'status' => 'completed',
@@ -570,7 +593,7 @@ class PaymentController extends Controller
         EmailService::sendPaymentSuccess(
             $user,
             $plan->name ?? 'Premium',
-            (string) $plan->price,
+            (string) $plan->price_monthly,
             $request->razorpay_payment_id,
             'razorpay',
             now()->addDays($plan->validity_days ?? 30)->format('d M Y')
@@ -606,7 +629,7 @@ class PaymentController extends Controller
                 $transaction = \App\Models\Transaction::where('transaction_id', $transactionId)->first();
 
                 if ($transaction && isset($transaction->metadata['plan_id'])) {
-                    $plan = PricingPlan::find($transaction->metadata['plan_id']);
+                    $plan = Plan::find($transaction->metadata['plan_id']);
                     $user = $transaction->user;
 
                     if ($plan && $user) {

@@ -64,6 +64,12 @@ return [
         'environment' => env('CASHFREE_ENVIRONMENT', 'test'), // 'test' or 'production'
     ],
 
+    'razorpay' => [
+        'key' => env('RAZORPAY_KEY_ID'),
+        'secret' => env('RAZORPAY_KEY_SECRET'),
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+    ],
+
     'python_ai' => [
         'url'       => env('PYTHON_AI_URL', 'http://127.0.0.1:8100'),
         'api_key'   => env('PYTHON_AI_KEY'), // Must be set in .env - no hardcoded fallback

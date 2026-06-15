@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "The ratio of the height of a tower and the length of its shadow on the ground is √3 : 1. What is the angle of elevation of the sun?",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "30°"
+      },
+      {
+        "label": "B",
+        "text": "60°"
+      },
+      {
+        "label": "C",
+        "text": "45°"
+      },
+      {
+        "label": "D",
+        "text": "90°"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let the height of the tower be √3h and the length of the shadow be h. Then, tan θ = (√3h)/h = √3. Therefore, θ = 60°.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Volume and surface area of a solid hemisphere are numerically equal. What is the diameter of the hemisphere?",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "3 units"
+      },
+      {
+        "label": "B",
+        "text": "4.5 units"
+      },
+      {
+        "label": "C",
+        "text": "6 units"
+      },
+      {
+        "label": "D",
+        "text": "9 units"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Volume of hemisphere = (2/3)πr^3. Surface area of hemisphere = 3πr^2. Given (2/3)πr^3 = 3πr^2. Solving for r, we get r = 9/2. Diameter = 2r = 9 units.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A number is chosen at random from the numbers -3, -2, -1, 0, 1, 2, 3. What will be the probability that the square of this number is less than or equal to 1?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/7"
+      },
+      {
+        "label": "B",
+        "text": "2/7"
+      },
+      {
+        "label": "C",
+        "text": "3/7"
+      },
+      {
+        "label": "D",
+        "text": "4/7"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The numbers are -3, -2, -1, 0, 1, 2, 3. The squares are 9, 4, 1, 0, 1, 4, 9. The numbers whose squares are less than or equal to 1 are -1, 0, 1. So, the probability is 3/7.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If the distance between the points (4, k) and (1, 0) is 5, then what can be the possible values of k?",
+    "topic": "Coordinate Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "±3"
+      },
+      {
+        "label": "B",
+        "text": "±4"
+      },
+      {
+        "label": "C",
+        "text": "±5"
+      },
+      {
+        "label": "D",
+        "text": "±2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Distance = √((4-1)^2 + (k-0)^2) = 5. So, √(9 + k^2) = 5. Squaring both sides, 9 + k^2 = 25. k^2 = 16. k = ±4.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Find the roots of the quadratic equation √2 x^2 + 7x + 5√2 = 0.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "-√2, -5√2"
+      },
+      {
+        "label": "B",
+        "text": "-√2, -5/√2"
+      },
+      {
+        "label": "C",
+        "text": "√2, 5/√2"
+      },
+      {
+        "label": "D",
+        "text": "√2, 5√2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "√2 x^2 + 7x + 5√2 = 0. √2 x^2 + 2x + 5x + 5√2 = 0. √2x(x + √2) + 5(x + √2) = 0. (√2x + 5)(x + √2) = 0. x = -5/√2, -√2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find how many integers between 200 and 500 are divisible by 8.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "36"
+      },
+      {
+        "label": "B",
+        "text": "37"
+      },
+      {
+        "label": "C",
+        "text": "38"
+      },
+      {
+        "label": "D",
+        "text": "39"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The first number divisible by 8 in the range is 208, and the last is 496. So, a = 208, d = 8, an = 496. an = a + (n-1)d. 496 = 208 + (n-1)8. 288 = (n-1)8. 36 = n-1. n = 37.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Tangents drawn at the ends of a diameter of a circle are:",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "Perpendicular"
+      },
+      {
+        "label": "B",
+        "text": "Parallel"
+      },
+      {
+        "label": "C",
+        "text": "Intersecting"
+      },
+      {
+        "label": "D",
+        "text": "None of the above"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Tangents at the end of the diameter are perpendicular to the radius at the point of contact. Since the radii are collinear (diameter), the tangents are parallel.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find the value of k for which the equation x^2 + k(2x + k – 1) + 2 = 0 has real and equal roots.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "k = 1"
+      },
+      {
+        "label": "B",
+        "text": "k = 2"
+      },
+      {
+        "label": "C",
+        "text": "k = 3"
+      },
+      {
+        "label": "D",
+        "text": "k = 4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "x^2 + 2kx + k^2 - k + 2 = 0. For real and equal roots, b^2 - 4ac = 0. (2k)^2 - 4(1)(k^2 - k + 2) = 0. 4k^2 - 4k^2 + 4k - 8 = 0. 4k = 8. k = 2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "A line segment of length 8 cm is divided internally in the ratio 4:5. What is the length of the smaller segment?",
+    "topic": "Triangles",
+    "options": [
+      {
+        "label": "A",
+        "text": "3.5 cm"
+      },
+      {
+        "label": "B",
+        "text": "3.6 cm"
+      },
+      {
+        "label": "C",
+        "text": "3.7 cm"
+      },
+      {
+        "label": "D",
+        "text": "3.8 cm"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The line segment is divided in the ratio 4:5. The total ratio is 4+5=9. The length of the smaller segment is (4/9) * 8 = 32/9 = 3.55 cm which is approximately 3.6 cm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "PA and PB are tangents to the circle from an external point P. CD is another tangent touching the circle at Q. If PA = 12 cm, QC = 3 cm, then find PC.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "6 cm"
+      },
+      {
+        "label": "B",
+        "text": "9 cm"
+      },
+      {
+        "label": "C",
+        "text": "12 cm"
+      },
+      {
+        "label": "D",
+        "text": "15 cm"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "PA = 12 cm. QC = 3 cm. Since tangents from an external point are equal, AC = QC = 3 cm. PC = PA - AC = 12 - 3 = 9 cm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "If the mth term of an A.P. is 1/n and nth term is 1/m, then what is the (mn)th term?",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "1"
+      },
+      {
+        "label": "C",
+        "text": "2"
+      },
+      {
+        "label": "D",
+        "text": "3"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "am = a + (m-1)d = 1/n and an = a + (n-1)d = 1/m. Subtracting, (m-n)d = (1/n) - (1/m) = (m-n)/mn. d = 1/mn. a + (m-1)(1/mn) = 1/n. a = 1/n - (m-1)/mn = (m - m + 1)/mn = 1/mn. a(mn) = a + (mn-1)d = 1/mn + (mn-1)(1/mn) = mn/mn = 1.",
+    "difficulty": "hard",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "If the equation (1 + m^2)x^2 + 2mcx + c^2 – a^2 = 0 has equal roots then which of the following is true?",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "c^2 = a^2(1 - m^2)"
+      },
+      {
+        "label": "B",
+        "text": "c^2 = a^2(1 + m^2)"
+      },
+      {
+        "label": "C",
+        "text": "a^2 = c^2(1 + m^2)"
+      },
+      {
+        "label": "D",
+        "text": "a^2 = c^2(1 - m^2)"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For equal roots, D = 0. (2mc)^2 - 4(1 + m^2)(c^2 - a^2) = 0. 4m^2c^2 - 4(c^2 - a^2 + m^2c^2 - m^2a^2) = 0. m^2c^2 - c^2 + a^2 - m^2c^2 + m^2a^2 = 0. -c^2 + a^2(1 + m^2) = 0. c^2 = a^2(1 + m^2).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A conical vessel of internal radius 5 cm and height 24 cm is full of water. The water is emptied into a cylindrical vessel with internal radius 10 cm. Find the height to which the water rises in the cylindrical vessel.",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "1 cm"
+      },
+      {
+        "label": "B",
+        "text": "2 cm"
+      },
+      {
+        "label": "C",
+        "text": "3 cm"
+      },
+      {
+        "label": "D",
+        "text": "4 cm"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Volume of cone = (1/3)πr^2h = (1/3)π(5^2)(24) = 200π cm^3. Volume of cylinder = πR^2H = π(10^2)H = 100πH cm^3. Equating the volumes, 200π = 100πH. H = 2 cm.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "From a point on a bridge across a river, the angles of depression of the banks on opposite sides of the river are 30° and 45°, respectively. If the bridge is at a height of 3 m from the banks, find the width of the river.",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "3(√3 + 1) m"
+      },
+      {
+        "label": "B",
+        "text": "3(√3 - 1) m"
+      },
+      {
+        "label": "C",
+        "text": "√3 + 1 m"
+      },
+      {
+        "label": "D",
+        "text": "√3 - 1 m"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Let the width of the river be x + y. tan 30° = 3/x => x = 3√3. tan 45° = 3/y => y = 3. Width of river = x + y = 3√3 + 3 = 3(√3 + 1) m.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Two dice are thrown simultaneously. What is the probability that the sum of the numbers appearing on the dice is a prime number?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "5/12"
+      },
+      {
+        "label": "B",
+        "text": "7/12"
+      },
+      {
+        "label": "C",
+        "text": "1/2"
+      },
+      {
+        "label": "D",
+        "text": "1/3"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Total outcomes = 36. Prime sums: 2, 3, 5, 7, 11. Outcomes: (1,1), (1,2), (2,1), (1,4), (4,1), (2,3), (3,2), (1,6), (6,1), (2,5), (5,2), (3,4), (4,3), (5,6), (6,5). Total = 15. Probability = 15/36 = 5/12.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "The angle of elevation of a cloud from a point 60 m above a lake is 30° and the angle of depression of its reflection in the lake is 60°. Find the height of the cloud.",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "60 m"
+      },
+      {
+        "label": "B",
+        "text": "120 m"
+      },
+      {
+        "label": "C",
+        "text": "180 m"
+      },
+      {
+        "label": "D",
+        "text": "240 m"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let h be the height of the cloud above the lake. tan 30° = (h - 60)/x and tan 60° = (h + 60)/x. x = (h - 60)√3 and x = (h + 60)/√3. (h - 60)√3 = (h + 60)/√3. 3(h - 60) = h + 60. 3h - 180 = h + 60. 2h = 240. h = 120. Height of the cloud from the ground = 60 + h = 180m. The height of the cloud above the lake is 120m.",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "Prove that the ratio of the areas of two similar triangles is equal to the square of the ratio of their corresponding sides.",
+    "topic": "Triangles",
+    "options": [
+      {
+        "label": "A",
+        "text": "This is a theorem, no options needed"
+      },
+      {
+        "label": "B",
+        "text": "This is a theorem, no options needed"
+      },
+      {
+        "label": "C",
+        "text": "This is a theorem, no options needed"
+      },
+      {
+        "label": "D",
+        "text": "This is a theorem, no options needed"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "This is a theorem. The proof involves drawing altitudes and using the area formula (1/2 * base * height) and the properties of similar triangles.",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "A train travels 360 km at a uniform speed. If the speed had been 5 km/h more, it would have taken 1 hour less for the same journey. Find the original speed of the train.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "30 km/h"
+      },
+      {
+        "label": "B",
+        "text": "35 km/h"
+      },
+      {
+        "label": "C",
+        "text": "40 km/h"
+      },
+      {
+        "label": "D",
+        "text": "45 km/h"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Let the original speed be x km/h. Time = 360/x. New speed = x + 5 km/h. New time = 360/(x+5). 360/x - 360/(x+5) = 1. 360(x+5) - 360x = x(x+5). 360x + 1800 - 360x = x^2 + 5x. x^2 + 5x - 1800 = 0. (x + 45)(x - 40) = 0. x = 40 or x = -45. Since speed cannot be negative, x = 40 km/h.",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "The sum of the first n terms of an A.P. is given by Sn = 3n^2 + 4n. Find the 25th term of the A.P.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "148"
+      },
+      {
+        "label": "B",
+        "text": "149"
+      },
+      {
+        "label": "C",
+        "text": "150"
+      },
+      {
+        "label": "D",
+        "text": "151"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "S_n = 3n^2 + 4n. a_n = S_n - S_(n-1). a_25 = S_25 - S_24. S_25 = 3(25^2) + 4(25) = 3(625) + 100 = 1875 + 100 = 1975. S_24 = 3(24^2) + 4(24) = 3(576) + 96 = 1728 + 96 = 1824. a_25 = 1975 - 1824 = 151.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Find the area of the triangle whose vertices are (1, -1), (-4, 6) and (-3, -5).",
+    "topic": "Coordinate Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "24 sq. units"
+      },
+      {
+        "label": "B",
+        "text": "28 sq. units"
+      },
+      {
+        "label": "C",
+        "text": "32 sq. units"
+      },
+      {
+        "label": "D",
+        "text": "36 sq. units"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Area = (1/2) |x1(y2 - y3) + x2(y3 - y1) + x3(y1 - y2)| = (1/2) |1(6 + 5) - 4(-5 + 1) - 3(-1 - 6)| = (1/2) |11 + 16 + 21| = (1/2) |48| = 24 sq. units.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A solid is composed of a cylinder with hemispherical ends. If the whole length of the solid is 100 cm and the diameter of the cylinder is 7 cm, then find the total surface area of the solid.",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "7436 sq. cm"
+      },
+      {
+        "label": "B",
+        "text": "7463 sq. cm"
+      },
+      {
+        "label": "C",
+        "text": "7643 sq. cm"
+      },
+      {
+        "label": "D",
+        "text": "7634 sq. cm"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Radius = 7/2 cm. Length of cylinder = 100 - 2(7/2) = 93 cm. Curved surface area of cylinder = 2πrh = 2 * (22/7) * (7/2) * 93 = 2046 sq. cm. Surface area of two hemispheres = 4πr^2 = 4 * (22/7) * (7/2)^2 = 154 sq. cm. Total surface area = 2046 + 154 = 2200 sq. cm.",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "Construct a triangle ABC with side BC = 7 cm, angle B = 45°, angle A = 105°. Then construct a triangle whose sides are 4/3 times the corresponding sides of triangle ABC.",
+    "topic": "Constructions",
+    "options": [
+      {
+        "label": "A",
+        "text": "Construction steps, no options needed"
+      },
+      {
+        "label": "B",
+        "text": "Construction steps, no options needed"
+      },
+      {
+        "label": "C",
+        "text": "Construction steps, no options needed"
+      },
+      {
+        "label": "D",
+        "text": "Construction steps, no options needed"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Construction involves drawing the base BC, constructing the angles, and then using the scale factor to construct the similar triangle.",
+    "difficulty": "medium",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "If tan(A + B) = √3 and tan(A - B) = 1/√3, 0° < A + B ≤ 90°; A > B, find A and B.",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "A = 45°, B = 15°"
+      },
+      {
+        "label": "B",
+        "text": "A = 60°, B = 30°"
+      },
+      {
+        "label": "C",
+        "text": "A = 30°, B = 0°"
+      },
+      {
+        "label": "D",
+        "text": "A = 45°, B = 30°"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "tan(A + B) = √3 => A + B = 60°. tan(A - B) = 1/√3 => A - B = 30°. Adding the two equations, 2A = 90° => A = 45°. Substituting A = 45° in A + B = 60°, 45° + B = 60° => B = 15°.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Find the value of p for which the points (-1, 3), (2, p) and (5, -1) are collinear.",
+    "topic": "Coordinate Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "p = 0"
+      },
+      {
+        "label": "B",
+        "text": "p = 1"
+      },
+      {
+        "label": "C",
+        "text": "p = 2"
+      },
+      {
+        "label": "D",
+        "text": "p = 3"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For collinear points, the area of the triangle formed by them is 0. (1/2) |(-1)(p + 1) + 2(-1 - 3) + 5(3 - p)| = 0. |-p - 1 - 8 + 15 - 5p| = 0. |-6p + 6| = 0. 6p = 6. p = 1.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A bag contains 5 red balls and 3 black balls. A ball is drawn at random from the bag. What is the probability that the ball drawn is not black?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "3/8"
+      },
+      {
+        "label": "B",
+        "text": "5/8"
+      },
+      {
+        "label": "C",
+        "text": "1/2"
+      },
+      {
+        "label": "D",
+        "text": "1/4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Total balls = 5 + 3 = 8. Number of red balls = 5. Probability of not black = Probability of red = 5/8.",
+    "difficulty": "easy",
+    "marks": 2,
+    "section": "B"
+  }
+]

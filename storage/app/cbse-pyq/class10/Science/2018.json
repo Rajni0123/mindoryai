@@ -1,0 +1,272 @@
+[
+  {
+    "question_text": "Write the molecular formula of the first two members of the homologous series having functional group -Cl.",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH3Cl, C2H4Cl"
+      },
+      {
+        "label": "B",
+        "text": "CH3Cl, C2H5Cl"
+      },
+      {
+        "label": "C",
+        "text": "CH4Cl, C2H6Cl"
+      },
+      {
+        "label": "D",
+        "text": "CHCl3, C2H5Cl"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The general formula for the homologous series of a functional group -Cl is CnH2n+1Cl. For n=1, it's CH3Cl and for n=2, it's C2H5Cl.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Name the method by which Spirogyra reproduces under favorable conditions. Is this method sexual or asexual?",
+    "topic": "How do Organisms Reproduce?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Budding, Sexual"
+      },
+      {
+        "label": "B",
+        "text": "Fragmentation, Asexual"
+      },
+      {
+        "label": "C",
+        "text": "Regeneration, Sexual"
+      },
+      {
+        "label": "D",
+        "text": "Binary Fission, Asexual"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Under favorable conditions, Spirogyra reproduces by fragmentation, which is an asexual method.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is an ecosystem?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "A group of similar organisms"
+      },
+      {
+        "label": "B",
+        "text": "A self-sustaining system where biotic and abiotic components interact"
+      },
+      {
+        "label": "C",
+        "text": "A collection of different species"
+      },
+      {
+        "label": "D",
+        "text": "The physical environment surrounding an organism"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "An ecosystem is a self-sustaining system where biotic (living) and abiotic (non-living) components of various communities interact with each other.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "An object is placed at a distance of 30 cm in front of a convex mirror of focal length 15 cm. Which of the following describes the image formed?",
+    "topic": "Light Reflection and Refraction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Real, inverted, and diminished"
+      },
+      {
+        "label": "B",
+        "text": "Virtual, erect, and magnified"
+      },
+      {
+        "label": "C",
+        "text": "Virtual, erect, and diminished"
+      },
+      {
+        "label": "D",
+        "text": "Real, inverted, and magnified"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Using the mirror formula (1/v + 1/u = 1/f), with u = -30 cm and f = 15 cm, we find v = 10 cm. Since v is positive, the image is virtual. Magnification (m = -v/u) is positive and less than 1, so the image is erect and diminished.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is sustainable management? Which of the following is the best reason why reuse is considered better than recycle?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "Recycling consumes more energy than reuse."
+      },
+      {
+        "label": "B",
+        "text": "Recycling creates more waste than reuse."
+      },
+      {
+        "label": "C",
+        "text": "Reuse requires breaking down the original product."
+      },
+      {
+        "label": "D",
+        "text": "Recycling is more expensive than reuse."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Sustainable management aims to conserve resources and use them efficiently. Reuse is better than recycling because recycling requires energy-intensive processes to reprocess the material, while reuse avoids these processes.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Management of forest and wildlife resources is a very challenging task. Which of the following is a reason for this?",
+    "topic": "Management of Natural Resources",
+    "options": [
+      {
+        "label": "A",
+        "text": "Forests have no economic value."
+      },
+      {
+        "label": "B",
+        "text": "There are many stakeholders with conflicting interests."
+      },
+      {
+        "label": "C",
+        "text": "Wildlife is not important for the ecosystem."
+      },
+      {
+        "label": "D",
+        "text": "The government is the only stakeholder."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Managing forests and wildlife is challenging because many stakeholders (local communities, industries, conservationists, etc.) have different and often conflicting interests.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Two carbon compounds X and Y have the molecular formula C4H8 and C5H12 respectively. Which one of these is most likely to show addition reaction?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "X (C4H8) because it is a saturated hydrocarbon."
+      },
+      {
+        "label": "B",
+        "text": "Y (C5H12) because it is an unsaturated hydrocarbon."
+      },
+      {
+        "label": "C",
+        "text": "X (C4H8) because it is an unsaturated hydrocarbon."
+      },
+      {
+        "label": "D",
+        "text": "Y (C5H12) because it is a saturated hydrocarbon."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "C4H8 is an alkene (unsaturated hydrocarbon) and will show addition reactions due to the presence of a double bond. C5H12 is an alkane (saturated hydrocarbon) and will not readily undergo addition reactions.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Which of the following correctly completes the chemical equation: FeSO4(s) --(heat)--> ?",
+    "topic": "Chemical Reactions and Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "FeO(s) + SO2(g)"
+      },
+      {
+        "label": "B",
+        "text": "Fe2O3(s) + SO2(g) + SO3(g)"
+      },
+      {
+        "label": "C",
+        "text": "Fe(s) + S(s) + O2(g)"
+      },
+      {
+        "label": "D",
+        "text": "FeO4(s) + S2O(g)"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The balanced equation for the thermal decomposition of ferrous sulfate is 2FeSO4(s) --(heat)--> Fe2O3(s) + SO2(g) + SO3(g).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are the vertical columns and horizontal rows in the Modern Periodic Table called, respectively? How does the metallic character of elements vary on moving down a vertical column?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Periods, Groups; Metallic character decreases"
+      },
+      {
+        "label": "B",
+        "text": "Groups, Periods; Metallic character decreases"
+      },
+      {
+        "label": "C",
+        "text": "Periods, Groups; Metallic character increases"
+      },
+      {
+        "label": "D",
+        "text": "Groups, Periods; Metallic character increases"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Vertical columns are called groups, and horizontal rows are called periods. Metallic character increases down a group because the outermost electrons are further from the nucleus and easier to lose.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "An element P (atomic number 20) reacts with an element Q (atomic number 17) to form a compound. What is the nature of the bond formed?",
+    "topic": "Chemical Reactions and Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Covalent bond"
+      },
+      {
+        "label": "B",
+        "text": "Metallic bond"
+      },
+      {
+        "label": "C",
+        "text": "Ionic bond"
+      },
+      {
+        "label": "D",
+        "text": "Hydrogen bond"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Element P (atomic number 20) is Calcium and Q (atomic number 17) is Chlorine. Calcium loses 2 electrons to form Ca2+ and Chlorine gains one electron to form Cl-. Hence, an ionic bond is formed between them.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

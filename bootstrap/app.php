@@ -30,16 +30,23 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin.ip.restrict' => \App\Http\Middleware\AdminIpRestrict::class, // Admin IP restriction
             'check.feature' => \App\Http\Middleware\CheckFeatureLimit::class, // Feature daily limit check
             'admin.only' => \App\Http\Middleware\AdminOnly::class, // Admin role enforcement
+            'smartcache' => \App\Http\Middleware\SmartCacheMiddleware::class, // Smart Cache for AI responses
         ]);
 
         // Apply maintenance mode check globally to web routes
         $middleware->web(append: [
             \App\Http\Middleware\CheckMaintenanceMode::class,
         ]);
+
+        // Apply Sanctum stateful middleware to API routes for SPA authentication
+        $middleware->api(prepend: [
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        ]);
     })
     ->withProviders([
         \App\Providers\AppServiceProvider::class,
         \App\Providers\OAuthConfigServiceProvider::class,
+        \App\Providers\SmartCacheServiceProvider::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
         //

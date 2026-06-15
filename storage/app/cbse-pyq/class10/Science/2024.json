@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Which of the following is NOT a characteristic of an image formed by a convex mirror when an object is placed at a distance of 30 cm in front of it, given its focal length is 15 cm?",
+    "topic": "Light: Reflection and Refraction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Erect"
+      },
+      {
+        "label": "B",
+        "text": "Inverted"
+      },
+      {
+        "label": "C",
+        "text": "Virtual"
+      },
+      {
+        "label": "D",
+        "text": "Smaller in size"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Convex mirrors always form virtual, erect, and diminished images, regardless of the object's distance. Therefore, an inverted image is not a characteristic.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following statements best describes sustainable management?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "Using resources rapidly for maximum profit."
+      },
+      {
+        "label": "B",
+        "text": "Conserving resources, using them efficiently, and avoiding misuse to ensure their availability for future generations."
+      },
+      {
+        "label": "C",
+        "text": "Ignoring environmental impacts for economic growth."
+      },
+      {
+        "label": "D",
+        "text": "Relying solely on recycling to manage resources."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Sustainable management focuses on the responsible use and conservation of resources for the benefit of both current and future generations.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Why is reuse considered a better environmental practice compared to recycling?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "Recycling consumes less energy."
+      },
+      {
+        "label": "B",
+        "text": "Reuse requires no additional processing or energy input, directly reducing waste and pollution."
+      },
+      {
+        "label": "C",
+        "text": "Recycling is always cheaper than reuse."
+      },
+      {
+        "label": "D",
+        "text": "Reuse creates more waste."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Reuse minimizes the need for resource extraction and manufacturing processes, saving energy and reducing pollution compared to recycling, which involves processing the material.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following is NOT a reason why managing forests and wildlife resources is a challenging task?",
+    "topic": "Management of Natural Resources",
+    "options": [
+      {
+        "label": "A",
+        "text": "The involvement of multiple stakeholders with conflicting interests."
+      },
+      {
+        "label": "B",
+        "text": "Industries lobbying for access to raw materials at low costs."
+      },
+      {
+        "label": "C",
+        "text": "Lack of government regulations regarding resource extraction."
+      },
+      {
+        "label": "D",
+        "text": "The need to balance conservation with the needs of local communities."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The presence of government regulations makes management challenging, but the *lack* of them would make it even harder. The other options are valid reasons why it is challenging.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Two carbon compounds, X (C4H8) and Y (C5H12), are given. Which compound is more likely to undergo an addition reaction, and why?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "X, because it is a saturated compound."
+      },
+      {
+        "label": "B",
+        "text": "Y, because it is an unsaturated compound."
+      },
+      {
+        "label": "C",
+        "text": "X, because it is an unsaturated compound."
+      },
+      {
+        "label": "D",
+        "text": "Y, because it is a saturated compound."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "C4H8 is an alkene (unsaturated) and will undergo addition reactions due to the presence of a double bond, while C5H12 is an alkane (saturated) and prefers substitution reactions.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Which of the following correctly completes the chemical equation: Fe + CuSO4 → ?",
+    "topic": "Chemical Reactions and Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Cu + FeSO3"
+      },
+      {
+        "label": "B",
+        "text": "Cu + FeSO4"
+      },
+      {
+        "label": "C",
+        "text": "Fe2SO4 + Cu"
+      },
+      {
+        "label": "D",
+        "text": "No reaction"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Iron is more reactive than copper, so it displaces copper from copper sulfate, forming iron sulfate and copper.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are the vertical columns and horizontal rows in the Modern Periodic Table called, respectively?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Periods and Groups"
+      },
+      {
+        "label": "B",
+        "text": "Families and Series"
+      },
+      {
+        "label": "C",
+        "text": "Groups and Periods"
+      },
+      {
+        "label": "D",
+        "text": "Series and Families"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The vertical columns are called groups, and the horizontal rows are called periods.",
+    "difficulty": "easy",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How does the metallic character of elements change as you move down a group in the Modern Periodic Table?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "It decreases."
+      },
+      {
+        "label": "B",
+        "text": "It remains the same."
+      },
+      {
+        "label": "C",
+        "text": "It increases."
+      },
+      {
+        "label": "D",
+        "text": "It fluctuates."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "As you move down a group, the atomic size increases, and the outermost electrons are further from the nucleus, making it easier to lose electrons and increasing metallic character.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How does the atomic radius generally change as you move from left to right across a period in the Modern Periodic Table?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "It increases."
+      },
+      {
+        "label": "B",
+        "text": "It remains the same."
+      },
+      {
+        "label": "C",
+        "text": "It decreases."
+      },
+      {
+        "label": "D",
+        "text": "It fluctuates."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Moving left to right, the nuclear charge increases, pulling the electrons closer and decreasing the atomic radius.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the molecular formula of the first member of the homologous series with the functional group -Cl?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH4Cl"
+      },
+      {
+        "label": "B",
+        "text": "CH3Cl"
+      },
+      {
+        "label": "C",
+        "text": "C2H5Cl"
+      },
+      {
+        "label": "D",
+        "text": "CHCl3"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The first member has one carbon atom. Using the general formula CnH2n+1Cl, with n=1, we get CH3Cl.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What type of reproduction is fragmentation, as seen in Spirogyra under favorable conditions?",
+    "topic": "How do Organisms Reproduce?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sexual reproduction"
+      },
+      {
+        "label": "B",
+        "text": "Asexual reproduction"
+      },
+      {
+        "label": "C",
+        "text": "Vegetative propagation"
+      },
+      {
+        "label": "D",
+        "text": "Spore formation"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Fragmentation is a form of asexual reproduction where an organism splits into fragments, each of which develops into a mature individual.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following best defines an ecosystem?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "A collection of only biotic components."
+      },
+      {
+        "label": "B",
+        "text": "A collection of only abiotic components."
+      },
+      {
+        "label": "C",
+        "text": "A self-sustaining system where biotic and abiotic components interact."
+      },
+      {
+        "label": "D",
+        "text": "A group of organisms of the same species."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "An ecosystem includes both living (biotic) and non-living (abiotic) components interacting with each other in a self-sustaining manner.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the general formula for the homologous series of alcohols?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "CnH2n+2O"
+      },
+      {
+        "label": "B",
+        "text": "CnH2nO"
+      },
+      {
+        "label": "C",
+        "text": "CnH2n+1OH"
+      },
+      {
+        "label": "D",
+        "text": "CnH2n-2OH"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The general formula for alcohols is CnH2n+1OH, where 'n' is the number of carbon atoms.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Which of the following is an example of a displacement reaction?",
+    "topic": "Chemical Reactions and Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "C + O2 → CO2"
+      },
+      {
+        "label": "B",
+        "text": "2H2 + O2 → 2H2O"
+      },
+      {
+        "label": "C",
+        "text": "Zn + CuSO4 → ZnSO4 + Cu"
+      },
+      {
+        "label": "D",
+        "text": "NaOH + HCl → NaCl + H2O"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "In a displacement reaction, a more reactive element displaces a less reactive element from its compound. Zinc displaces copper from copper sulfate.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the function of the ozone layer in the atmosphere?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "To trap heat and warm the Earth."
+      },
+      {
+        "label": "B",
+        "text": "To reflect sunlight back into space."
+      },
+      {
+        "label": "C",
+        "text": "To absorb harmful ultraviolet radiation from the sun."
+      },
+      {
+        "label": "D",
+        "text": "To produce oxygen for respiration."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The ozone layer absorbs a significant portion of the harmful ultraviolet (UV) radiation from the sun, protecting life on Earth.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of decomposers in an ecosystem?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "To produce food through photosynthesis."
+      },
+      {
+        "label": "B",
+        "text": "To consume primary producers."
+      },
+      {
+        "label": "C",
+        "text": "To break down dead organic matter and recycle nutrients."
+      },
+      {
+        "label": "D",
+        "text": "To hunt and kill other organisms."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Decomposers break down dead plants and animals, returning essential nutrients to the soil, which are then used by producers.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following is a renewable source of energy?",
+    "topic": "Sources of Energy",
+    "options": [
+      {
+        "label": "A",
+        "text": "Coal"
+      },
+      {
+        "label": "B",
+        "text": "Petroleum"
+      },
+      {
+        "label": "C",
+        "text": "Natural Gas"
+      },
+      {
+        "label": "D",
+        "text": "Solar energy"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Solar energy is a renewable source of energy because it is continuously replenished by the sun.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the function of xylem in plants?",
+    "topic": "Life Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Transport of food from leaves to other parts of the plant."
+      },
+      {
+        "label": "B",
+        "text": "Transport of water and minerals from roots to other parts of the plant."
+      },
+      {
+        "label": "C",
+        "text": "Synthesis of food through photosynthesis."
+      },
+      {
+        "label": "D",
+        "text": "Providing mechanical support to the plant."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Xylem is responsible for the transport of water and dissolved minerals from the roots to the rest of the plant.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of the human pancreas?",
+    "topic": "Life Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To secrete bile for digestion of fats."
+      },
+      {
+        "label": "B",
+        "text": "To store bile produced by the liver."
+      },
+      {
+        "label": "C",
+        "text": "To secrete enzymes for digestion and hormones like insulin."
+      },
+      {
+        "label": "D",
+        "text": "To absorb nutrients from digested food."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The pancreas secretes digestive enzymes and hormones like insulin, which regulates blood sugar levels.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the function of the lens in the human eye?",
+    "topic": "The Human Eye and the Colourful World",
+    "options": [
+      {
+        "label": "A",
+        "text": "To control the amount of light entering the eye."
+      },
+      {
+        "label": "B",
+        "text": "To convert light into electrical signals."
+      },
+      {
+        "label": "C",
+        "text": "To focus light onto the retina."
+      },
+      {
+        "label": "D",
+        "text": "To protect the eye from injury."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The lens focuses light rays onto the retina, allowing us to see objects clearly at different distances.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the unit of electric power?",
+    "topic": "Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Volt"
+      },
+      {
+        "label": "B",
+        "text": "Ampere"
+      },
+      {
+        "label": "C",
+        "text": "Ohm"
+      },
+      {
+        "label": "D",
+        "text": "Watt"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The unit of electric power is the watt (W).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is a greenhouse gas that contributes to global warming?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "Nitrogen"
+      },
+      {
+        "label": "B",
+        "text": "Oxygen"
+      },
+      {
+        "label": "C",
+        "text": "Carbon dioxide"
+      },
+      {
+        "label": "D",
+        "text": "Hydrogen"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Carbon dioxide (CO2) is a major greenhouse gas that traps heat in the atmosphere and contributes to global warming.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the function of the cerebrum in the human brain?",
+    "topic": "Control and Coordination",
+    "options": [
+      {
+        "label": "A",
+        "text": "To control reflexes."
+      },
+      {
+        "label": "B",
+        "text": "To regulate heart rate."
+      },
+      {
+        "label": "C",
+        "text": "To control thinking, learning, and memory."
+      },
+      {
+        "label": "D",
+        "text": "To maintain balance and coordination."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The cerebrum is responsible for higher-level cognitive functions such as thinking, learning, memory, and intelligence.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the process by which plants lose water through their leaves called?",
+    "topic": "Life Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Respiration"
+      },
+      {
+        "label": "B",
+        "text": "Transpiration"
+      },
+      {
+        "label": "C",
+        "text": "Photosynthesis"
+      },
+      {
+        "label": "D",
+        "text": "Digestion"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Transpiration is the process by which water is lost from plants through the stomata in their leaves.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the chemical formula of methane?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "C2H6"
+      },
+      {
+        "label": "B",
+        "text": "CH4"
+      },
+      {
+        "label": "C",
+        "text": "C2H4"
+      },
+      {
+        "label": "D",
+        "text": "CH3OH"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The chemical formula of methane is CH4.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  }
+]

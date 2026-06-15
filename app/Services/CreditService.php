@@ -233,11 +233,13 @@ class CreditService
             // ATOMIC UPDATE: Calculate new balance and update both fields
             $newBalance = $currentCredits->available_credits - $cost;
 
+            // Use explicit integer casting for defense-in-depth against SQL injection
+            $safeCost = (int) $cost;
             DB::table('user_credits')
                 ->where('user_id', $user->id)
                 ->update([
                     'available_credits' => $newBalance,
-                    'total_spent' => DB::raw('total_spent + ' . $cost),
+                    'total_spent' => DB::raw("total_spent + {$safeCost}"),
                     'updated_at' => now(),
                 ]);
 
@@ -518,8 +520,9 @@ class CreditService
             ]);
         }
 
-        // Increment based on action
-        $updates = ['credits_spent' => DB::raw("credits_spent + {$creditsSpent}")];
+        // Increment based on action (explicit cast for defense-in-depth)
+        $safeCredits = (int) $creditsSpent;
+        $updates = ['credits_spent' => DB::raw("credits_spent + {$safeCredits}")];
 
         if (in_array($action, ['chat_message', 'chat_message_with_image'])) {
             $updates['messages_sent'] = DB::raw('messages_sent + 1');

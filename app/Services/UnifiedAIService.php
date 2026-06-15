@@ -1057,7 +1057,17 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
     protected function getLanguageInstruction(): string
     {
         return match ($this->currentLanguage) {
-            'hindi' => "IMPORTANT LANGUAGE INSTRUCTION: Respond ONLY in Hindi (हिन्दी). Use Devanagari script. Do not use English except for technical terms that have no Hindi equivalent.",
+            'hindi' => "🚨 CRITICAL LANGUAGE INSTRUCTION - MUST FOLLOW:
+You MUST respond ONLY in Hindi using Devanagari script (हिन्दी लिपि).
+❌ WRONG: 'Photosynthesis ek process hai jismein plants...'
+✅ CORRECT: 'प्रकाश संश्लेषण एक प्रक्रिया है जिसमें पौधे...'
+
+Rules:
+1. Use ONLY Devanagari script (देवनागरी) - NOT Roman/English letters
+2. Technical terms can be in English but explanation MUST be in हिन्दी
+3. Example: 'Photosynthesis (प्रकाश संश्लेषण) एक प्रक्रिया है जिसमें पौधे सूर्य की रोशनी, पानी और कार्बन डाइऑक्साइड का उपयोग करके अपना भोजन बनाते हैं।'
+
+Write your ENTIRE response in देवनागरी script!",
             'hinglish' => "IMPORTANT LANGUAGE INSTRUCTION: Respond in Hinglish - a natural mix of Hindi and English like Indian students speak. Use Roman script. Mix Hindi words with English naturally. Example: 'Bhai ye question easy hai, bas formula lagao aur solve karo.'",
             default => "Respond in English. You may use simple Hindi words like 'samjho', 'dekho' occasionally if it helps explain better to Indian students.",
         };

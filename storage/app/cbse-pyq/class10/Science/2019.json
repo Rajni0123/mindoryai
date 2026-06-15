@@ -1,0 +1,272 @@
+[
+  {
+    "question_text": "Write the molecular formula of the first two members of the homologous series having functional group -Cl.",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH3Cl, C2H4Cl"
+      },
+      {
+        "label": "B",
+        "text": "CH3Cl, C2H5Cl"
+      },
+      {
+        "label": "C",
+        "text": "CH4Cl, C2H6Cl"
+      },
+      {
+        "label": "D",
+        "text": "CHCl3, C2Cl6"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The general formula for the homologous series with -Cl is CnH2n+1Cl. For n=1, it's CH3Cl. For n=2, it's C2H5Cl.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Name the method by which Spirogyra reproduces under favorable conditions. Is this method sexual or asexual?",
+    "topic": "How do Organisms Reproduce?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Budding, Sexual"
+      },
+      {
+        "label": "B",
+        "text": "Fragmentation, Asexual"
+      },
+      {
+        "label": "C",
+        "text": "Regeneration, Sexual"
+      },
+      {
+        "label": "D",
+        "text": "Binary Fission, Asexual"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Under favorable conditions, Spirogyra reproduces by fragmentation, which is an asexual method.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is an ecosystem?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "A group of similar organisms"
+      },
+      {
+        "label": "B",
+        "text": "A self-sustaining system where biotic and abiotic components interact"
+      },
+      {
+        "label": "C",
+        "text": "A collection of different species"
+      },
+      {
+        "label": "D",
+        "text": "The non-living components of an environment"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "An ecosystem is a self-sustaining system where biotic (living) and abiotic (non-living) components interact with each other.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "An object is placed at a distance of 30 cm in front of a convex mirror of focal length 15 cm. Which of the following describes the image formed?",
+    "topic": "Light: Reflection and Refraction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Real, inverted, and diminished"
+      },
+      {
+        "label": "B",
+        "text": "Virtual, erect, and magnified"
+      },
+      {
+        "label": "C",
+        "text": "Virtual, erect, and diminished"
+      },
+      {
+        "label": "D",
+        "text": "Real, erect, and same size"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Using the mirror formula 1/f = 1/v + 1/u, with u = -30 cm and f = 15 cm, we find v = 10 cm. Since v is positive, the image is virtual and erect. Magnification m = -v/u = -10/-30 = 1/3, so the image is diminished.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is sustainable management? Which of the following is a reason why reuse is considered better than recycling?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sustainable management is exploiting resources rapidly; Reuse requires more energy than recycling."
+      },
+      {
+        "label": "B",
+        "text": "Sustainable management is using resources efficiently for the future; Reuse saves energy and prevents pollution."
+      },
+      {
+        "label": "C",
+        "text": "Sustainable management is ignoring resource conservation; Reuse creates more waste."
+      },
+      {
+        "label": "D",
+        "text": "Sustainable management is focusing on individual gains; Reuse is more expensive."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Sustainable management aims to conserve resources for the future. Reuse is better because it saves energy and prevents environmental pollution compared to recycling.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Why is the management of forest and wildlife resources a challenging task? Choose the most appropriate reasons.",
+    "topic": "Management of Natural Resources",
+    "options": [
+      {
+        "label": "A",
+        "text": "Only the government is involved; there are no conflicting interests."
+      },
+      {
+        "label": "B",
+        "text": "There are many stakeholders with conflicting interests; industries lobby for raw materials at low rates."
+      },
+      {
+        "label": "C",
+        "text": "Forests are easy to manage; wildlife populations are always stable."
+      },
+      {
+        "label": "D",
+        "text": "There is a single, unified approach to forest management; resources are unlimited."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Management is challenging because of the many stakeholders with conflicting interests and the lobbying by industries for cheap raw materials.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Two carbon compounds X and Y have the molecular formula C4H8 and C5H12 respectively. Which one of these is most likely to show addition reaction?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "X (C4H8) because it is a saturated compound."
+      },
+      {
+        "label": "B",
+        "text": "Y (C5H12) because it is an unsaturated compound."
+      },
+      {
+        "label": "C",
+        "text": "X (C4H8) because it is an unsaturated compound."
+      },
+      {
+        "label": "D",
+        "text": "Y (C5H12) because it is a saturated compound."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "C4H8 is an alkene (unsaturated) and will show addition reactions. C5H12 is an alkane (saturated) and will not.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Which of the following correctly completes the chemical equation: Fe + CuSO4 → ?",
+    "topic": "Chemical Reactions and Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Cu + FeSO4"
+      },
+      {
+        "label": "B",
+        "text": "Fe2(SO4)3 + Cu"
+      },
+      {
+        "label": "C",
+        "text": "No reaction"
+      },
+      {
+        "label": "D",
+        "text": "FeS + CuO4"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Iron is more reactive than copper, so it displaces copper from copper sulfate, forming iron sulfate and copper.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are the vertical columns and horizontal rows in the Modern Periodic Table called, respectively? How does metallic character change down a group?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Periods and Groups; Metallic character decreases."
+      },
+      {
+        "label": "B",
+        "text": "Groups and Periods; Metallic character increases."
+      },
+      {
+        "label": "C",
+        "text": "Families and Series; Metallic character remains constant."
+      },
+      {
+        "label": "D",
+        "text": "Series and Families; Metallic character decreases."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Vertical columns are called groups, and horizontal rows are periods. Metallic character increases down a group because the atomic size increases, and the outermost electrons are more easily lost.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How does the size of the atomic radius vary on moving from left to right in a horizontal row (period) of the periodic table?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increases due to increasing number of shells."
+      },
+      {
+        "label": "B",
+        "text": "Decreases due to increasing nuclear charge."
+      },
+      {
+        "label": "C",
+        "text": "Remains constant."
+      },
+      {
+        "label": "D",
+        "text": "Increases due to decreasing nuclear charge."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Atomic radius decreases from left to right in a period because the nuclear charge increases, pulling the electrons closer to the nucleus.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

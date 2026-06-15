@@ -88,26 +88,36 @@ class MessageQualityGate
         }
 
         // Check 4: Minimum meaningful words after normalization
+        // EXCEPTION: Single academic keywords like "Photosynthesis" should be allowed
         $normalized = $this->normalizer->normalize($message);
         $words = array_filter(explode(' ', $normalized), fn($w) => mb_strlen($w) > 1);
         $wordCount = count($words);
 
         if ($wordCount < $minWords) {
-            return [
-                'passes' => false,
-                'reason' => 'too_few_words',
-                'details' => [
-                    'words' => $wordCount,
-                    'required' => $minWords,
-                    'words_found' => $words,
-                ]
-            ];
+            // If academic keyword present, allow single words
+            if ($bypassIfAcademic && $hasAcademicEarly && $wordCount >= 1) {
+                // Allow single academic keywords like "Photosynthesis", "Mitochondria"
+                // Continue to other checks
+            } else {
+                return [
+                    'passes' => false,
+                    'reason' => 'too_few_words',
+                    'details' => [
+                        'words' => $wordCount,
+                        'required' => $minWords,
+                        'words_found' => $words,
+                    ]
+                ];
+            }
         }
 
         // Check 5: Must contain academic keyword (if required)
+        // EXCEPTION: Questions starting with educational patterns are allowed
         if ($requireAcademic) {
             $hasAcademic = $this->hasAcademicKeyword($cleanedNoPunct);
-            if (!$hasAcademic) {
+            $hasEducationalPattern = $this->hasEducationalQuestionPattern($cleanedNoPunct);
+
+            if (!$hasAcademic && !$hasEducationalPattern) {
                 return [
                     'passes' => false,
                     'reason' => 'no_academic_keyword',
@@ -153,6 +163,77 @@ class MessageQualityGate
                 return true;
             }
         }
+        return false;
+    }
+
+    /**
+     * Check if message starts with educational question pattern
+     * Patterns like "what is", "explain", "define" are clearly educational
+     */
+    private function hasEducationalQuestionPattern(string $text): bool
+    {
+        $textLower = mb_strtolower(trim($text));
+
+        // Educational question patterns - these indicate learning intent
+        $patterns = [
+            // English patterns
+            'what is ',
+            'what are ',
+            'what was ',
+            'what were ',
+            'who is ',
+            'who are ',
+            'who was ',
+            'why is ',
+            'why are ',
+            'why do ',
+            'why does ',
+            'how is ',
+            'how are ',
+            'how do ',
+            'how does ',
+            'how to ',
+            'when is ',
+            'when was ',
+            'where is ',
+            'where are ',
+            'explain ',
+            'define ',
+            'describe ',
+            'meaning of ',
+            'definition of ',
+            // Hindi/Hinglish patterns
+            'kya hai ',
+            'kya hota ',
+            'kya hoti ',
+            'kya hote ',
+            'kaun hai ',
+            'kaun tha ',
+            'kyu hai ',
+            'kyu hota ',
+            'kaise hai ',
+            'kaise hota ',
+            'kab hai ',
+            'kab tha ',
+            'kaha hai ',
+            'samjhao ',
+            'batao ',
+            'bataiye ',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (str_starts_with($textLower, $pattern)) {
+                return true;
+            }
+        }
+
+        // Also check for question ending patterns
+        if (str_ends_with($textLower, ' kya hai') ||
+            str_ends_with($textLower, ' kya hota hai') ||
+            str_ends_with($textLower, ' kaise hota hai')) {
+            return true;
+        }
+
         return false;
     }
 

@@ -19,9 +19,11 @@ class ExamSeeder extends Seeder
                 'level' => 'national',
                 'subjects' => ['Physics', 'Chemistry', 'Mathematics'],
                 'config' => [
-                    'duration_minutes' => 180,
-                    'total_questions' => 75,
+                    'duration_minutes' => 75,  // 38 questions × 2 mins = 76 mins ≈ 75 mins
+                    'total_questions' => 38,
                     'marking_scheme' => ['correct' => 4, 'wrong' => -1],
+                    'time_per_question' => 2,  // minutes per question for dynamic calculation
+                    'auto_generate' => true,   // AI generates more when questions exhausted
                 ],
                 'is_active' => true,
                 'order' => 1,
@@ -34,9 +36,11 @@ class ExamSeeder extends Seeder
                 'level' => 'national',
                 'subjects' => ['Physics', 'Chemistry', 'Mathematics'],
                 'config' => [
-                    'duration_minutes' => 180,
-                    'total_questions' => 54,
+                    'duration_minutes' => 150,  // 75 questions × 2 mins = 150 mins (2.5 hours)
+                    'total_questions' => 75,
                     'marking_scheme' => ['correct' => 3, 'wrong' => -1],
+                    'time_per_question' => 2,  // minutes per question for dynamic calculation
+                    'auto_generate' => true,   // AI generates more when questions exhausted
                 ],
                 'is_active' => true,
                 'order' => 2,

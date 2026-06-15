@@ -181,9 +181,16 @@ Route::get('/contact', function() {
         Route::post('/payment/{payment}/verify', [\App\Http\Controllers\PaymentController::class, 'verifyPayment'])->name('payment.verify');
         Route::get('/payment/{payment}/status', [\App\Http\Controllers\PaymentController::class, 'paymentStatus'])->name('payment.status');
 
-        // Razorpay direct checkout (AJAX from pricing page)
-        Route::post('/payment/create-razorpay-order', [\App\Http\Controllers\PaymentController::class, 'createRazorpayOrder'])->name('payment.razorpay.create');
-        Route::post('/payment/verify-razorpay', [\App\Http\Controllers\PaymentController::class, 'verifyRazorpayOrder'])->name('payment.razorpay.verify');
+        // Razorpay direct checkout (AJAX from pricing page) - OLD ROUTES (deprecated)
+        // Route::post('/payment/create-razorpay-order', [\App\Http\Controllers\PaymentController::class, 'createRazorpayOrder'])->name('payment.razorpay.create');
+        // Route::post('/payment/verify-razorpay', [\App\Http\Controllers\PaymentController::class, 'verifyRazorpayOrder'])->name('payment.razorpay.verify');
+
+        // NEW: Razorpay routes using the new Plan model (for web session auth)
+        Route::prefix('web/razorpay')->name('web.razorpay.')->group(function () {
+            Route::post('/create-order', [\App\Http\Controllers\Api\RazorpayController::class, 'createOrder'])->name('create-order');
+            Route::post('/create-pack-order', [\App\Http\Controllers\Api\RazorpayController::class, 'createPackOrder'])->name('create-pack-order');
+            Route::post('/verify-payment', [\App\Http\Controllers\Api\RazorpayController::class, 'verifyPayment'])->name('verify-payment');
+        });
 
         // AI Chat interface (for users only) - requires active subscription
         Route::get('/chat', [HomeController::class, 'index'])->middleware('subscription.active')->name('chat');
@@ -196,10 +203,6 @@ Route::get('/contact', function() {
             Route::delete('/{id}', [\App\Http\Controllers\Api\ChatController::class, 'destroy']);
             Route::put('/{id}', [\App\Http\Controllers\Api\ChatController::class, 'update']);
         });
-
-        // Image generation for Canvas mode (web auth)
-        Route::post('/api/generate-image', [\App\Http\Controllers\ImageGenerationController::class, 'generate'])
-            ->name('generate.image');
 
         // Image analysis endpoint with rate limiting and AI access control
         // Rate limit: 10 requests per minute per IP
@@ -354,12 +357,6 @@ Route::get('/contact', function() {
             Route::put('/ai-models/{aiModel}', [\App\Http\Controllers\Admin\AiModelController::class, 'update'])->name('ai-models.update');
             Route::post('/ai-models/{aiModel}/toggle', [\App\Http\Controllers\Admin\AiModelController::class, 'toggleActive'])->name('ai-models.toggle');
 
-            // Whiteboard Video Settings
-            Route::prefix('whiteboard-video')->name('whiteboard-video.')->group(function () {
-                Route::get('/settings', [\App\Http\Controllers\Admin\WhiteboardVideoSettingsController::class, 'index'])->name('settings');
-                Route::post('/settings', [\App\Http\Controllers\Admin\WhiteboardVideoSettingsController::class, 'update'])->name('settings.update');
-            });
-
             // Feature-Specific AI Models Configuration
             Route::get('/feature-models', [\App\Http\Controllers\Admin\FeatureModelsController::class, 'index'])->name('feature-models.index');
             Route::post('/feature-models', [\App\Http\Controllers\Admin\FeatureModelsController::class, 'update'])->name('feature-models.update');
@@ -390,15 +387,6 @@ Route::get('/contact', function() {
             // Route::get('/payments', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
             // Route::post('/payments/{payment}/confirm', [\App\Http\Controllers\Admin\PaymentController::class, 'confirm'])->name('payments.confirm');
             // Route::post('/payments/{payment}/reject', [\App\Http\Controllers\Admin\PaymentController::class, 'reject'])->name('payments.reject');
-
-            // XML Import System (Admin Only)
-            Route::prefix('xml-import')->name('xml-import.')->controller(\App\Http\Controllers\Admin\XmlImportController::class)->group(function () {
-                Route::get('/', 'index')->name('index');                        // List all imports
-                Route::post('/upload', 'upload')->name('upload');               // Upload and process XML
-                Route::get('/{import}', 'show')->name('show');                  // View import details
-                Route::get('/{import}/download-log', 'downloadLog')->name('download-log'); // Download import log
-                Route::delete('/{import}', 'destroy')->name('destroy');         // Delete import record
-            });
 
             // Notifications Management (Admin Only)
             Route::prefix('notifications')->name('notifications.')->controller(\App\Http\Controllers\Admin\NotificationController::class)->group(function () {
@@ -524,51 +512,8 @@ Route::put('/update', 'update')->name('update');                // Update brandi
                 Route::post('/clear-cache', 'clearCache')->name('clear-cache');             // Clear settings cache
             });
 
-            // Dedicated Support (Ultimate Plan Users)
-            Route::prefix('dedicated-support')->name('dedicated-support.')->controller(\App\Http\Controllers\Admin\DedicatedSupportController::class)->group(function () {
-                Route::get('/', 'index')->name('index');                                    // List all support chats
-                Route::get('/{id}', 'show')->name('show');                                  // View single chat
-                Route::post('/{id}/reply', 'reply')->name('reply');                         // Send reply
-                Route::post('/{id}/close', 'close')->name('close');                         // Close chat
-                Route::post('/{id}/reopen', 'reopen')->name('reopen');                      // Reopen chat
-                Route::get('/{id}/messages', 'getNewMessages')->name('messages');           // AJAX: Get new messages
-                Route::get('/api/unread-count', 'getUnreadCount')->name('unread-count');    // AJAX: Get unread count
-            });
         });
     });
 });
-
-        // ========================================
-        // AI DOUBT SOLVER ROUTES (Student Tutor System)
-        // ========================================
-        Route::prefix('doubt-solver')->name('doubt.')->controller(\App\Http\Controllers\DoubtSolverController::class)->group(function () {
-            // Text-based doubt solving
-            Route::post('/solve-text', 'solveTextDoubt')->name('solve.text');
-            
-            // Image-based doubt solving (with file upload)
-            Route::post('/solve-image', 'solveImageDoubt')->name('solve.image');
-            
-            // Image-based doubt solving (with base64)
-            Route::post('/solve-image-base64', 'solveImageDoubtBase64')->name('solve.image.base64');
-            
-            // PDF-based doubt solving
-            Route::post('/solve-pdf', 'solvePdfDoubt')->name('solve.pdf');
-            
-            // Session management
-            Route::post('/set-subject', 'setSubject')->name('set.subject');
-            Route::post('/clear-history', 'clearHistory')->name('clear.history');
-            Route::get('/history', 'getHistory')->name('get.history');
-
-            // NEW FEATURES - Quiz, Practice, Concepts, Hints, Summaries
-            Route::post('/generate-quiz', 'generateQuiz')->name('generate.quiz');
-            Route::post('/generate-practice', 'generatePracticeProblems')->name('generate.practice');
-            Route::post('/explain-concept', 'explainConcept')->name('explain.concept');
-            Route::post('/get-hint', 'getHint')->name('get.hint');
-            Route::post('/summarize-topic', 'summarizeTopic')->name('summarize.topic');
-        });
-
-
-        // Note: Doubt solver features are now integrated into /chat page
-        // API endpoints remain available for the chat interface to use
 
 // End of main routes

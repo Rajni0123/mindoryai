@@ -1,0 +1,650 @@
+[
+  {
+    "question_text": "What type of defect can arise when a solid is heated?",
+    "topic": "Solid State",
+    "options": [
+      {
+        "label": "A",
+        "text": "Frenkel defect"
+      },
+      {
+        "label": "B",
+        "text": "Schottky defect"
+      },
+      {
+        "label": "C",
+        "text": "Metal excess defect"
+      },
+      {
+        "label": "D",
+        "text": "Metal deficiency defect"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Heating a solid can lead to a metal excess defect due to anionic vacancies. When heated, some anions leave the lattice site, creating vacancies, and the electrons released are trapped in these vacancies, maintaining electrical neutrality.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the Van't Hoff factor (i) for a compound which undergoes dissociation in solution?",
+    "topic": "Solutions",
+    "options": [
+      {
+        "label": "A",
+        "text": "i < 1"
+      },
+      {
+        "label": "B",
+        "text": "i = 1"
+      },
+      {
+        "label": "C",
+        "text": "i > 1"
+      },
+      {
+        "label": "D",
+        "text": "i = 0"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "For a compound undergoing dissociation in solution, the number of particles increases. The Van't Hoff factor (i) is defined as the ratio of the number of particles after dissociation to the number of particles before dissociation. Therefore, i > 1.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Write the IUPAC name of the following compound: CH3CH(Cl)CH2CH3",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "1-Chlorobutane"
+      },
+      {
+        "label": "B",
+        "text": "2-Chlorobutane"
+      },
+      {
+        "label": "C",
+        "text": "3-Chlorobutane"
+      },
+      {
+        "label": "D",
+        "text": "4-Chlorobutane"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The longest carbon chain contains 4 carbon atoms (Butane). The chlorine atom is attached to the 2nd carbon atom. Hence, the IUPAC name is 2-Chlorobutane.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the effect of adding a catalyst on the activation energy of a reaction?",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increases activation energy"
+      },
+      {
+        "label": "B",
+        "text": "Decreases activation energy"
+      },
+      {
+        "label": "C",
+        "text": "No effect on activation energy"
+      },
+      {
+        "label": "D",
+        "text": "Doubles activation energy"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A catalyst provides an alternative pathway for the reaction with a lower activation energy. This allows the reaction to proceed faster.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define the term 'peptization'.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Precipitation of a colloid"
+      },
+      {
+        "label": "B",
+        "text": "Conversion of a precipitate into a colloidal solution"
+      },
+      {
+        "label": "C",
+        "text": "Coagulation of a colloid"
+      },
+      {
+        "label": "D",
+        "text": "Dialysis of a colloid"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Peptization is the process of converting a precipitate into a colloidal solution by adding a suitable electrolyte. The electrolyte provides ions that are adsorbed onto the precipitate, causing it to break down into smaller colloidal particles.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Write the mechanism of hydration of ethene to yield ethanol.",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Electrophilic addition"
+      },
+      {
+        "label": "B",
+        "text": "Nucleophilic addition"
+      },
+      {
+        "label": "C",
+        "text": "Electrophilic substitution"
+      },
+      {
+        "label": "D",
+        "text": "Nucleophilic substitution"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Hydration of ethene involves the addition of water molecule to ethene in the presence of an acid catalyst. The mechanism involves protonation of ethene to form a carbocation, followed by nucleophilic attack of water and deprotonation to yield ethanol. This is an electrophilic addition reaction.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the following with suitable examples:\n(i) Kolbe's reaction\n(ii) Reimer-Tiemann reaction",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Kolbe's reaction introduces -CHO group, Reimer-Tiemann introduces -COOH group"
+      },
+      {
+        "label": "B",
+        "text": "Kolbe's reaction introduces -COOH group, Reimer-Tiemann introduces -CHO group"
+      },
+      {
+        "label": "C",
+        "text": "Both reactions introduce -COOH group"
+      },
+      {
+        "label": "D",
+        "text": "Both reactions introduce -CHO group"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Kolbe's reaction involves the carboxylation of phenol to form salicylic acid. Reimer-Tiemann reaction involves the formylation of phenol to form salicylaldehyde.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How do you convert:\n(i) Phenol to Anisole\n(ii) Ethanol to Propan-2-ol",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Phenol + NaOH + CH3I; Ethanol + H2SO4 + H2O"
+      },
+      {
+        "label": "B",
+        "text": "Phenol + CH3Cl + NaOH; Ethanol + H2SO4 + H2O"
+      },
+      {
+        "label": "C",
+        "text": "Phenol + NaOH + CH3I; Ethanol + H2SO4, then H2O/H+"
+      },
+      {
+        "label": "D",
+        "text": "Phenol + CH3Cl + NaOH; Ethanol + H2SO4, then H2O/H+"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Phenol to Anisole: Phenol reacts with NaOH to form sodium phenoxide, which then reacts with CH3I to form anisole (Williamson's ether synthesis). Ethanol to Propan-2-ol: Ethanol undergoes dehydration to form ethene, which then undergoes addition of water in the presence of acid to form propan-2-ol.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Write chemical equations for the following reactions:\n(i) Propanone reacts with sodium bisulphite\n(ii) Benzaldehyde reacts with hydrogen cyanide",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Addition reactions"
+      },
+      {
+        "label": "B",
+        "text": "Substitution reactions"
+      },
+      {
+        "label": "C",
+        "text": "Elimination reactions"
+      },
+      {
+        "label": "D",
+        "text": "Oxidation reactions"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Both reactions are nucleophilic addition reactions. Propanone reacts with sodium bisulphite to form an addition product. Benzaldehyde reacts with hydrogen cyanide to form benzaldehyde cyanohydrin.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Give reasons for the following:\n(i) Electrophilic substitution in aromatic amines takes place more readily than in benzene.\n(ii) CH3NH2 is more basic than C6H5NH2.",
+    "topic": "Amines",
+    "options": [
+      {
+        "label": "A",
+        "text": "Both are due to resonance"
+      },
+      {
+        "label": "B",
+        "text": "Both are due to inductive effect"
+      },
+      {
+        "label": "C",
+        "text": "(i) due to activation by -NH2, (ii) due to +I effect of CH3"
+      },
+      {
+        "label": "D",
+        "text": "(i) due to deactivation by -NH2, (ii) due to -I effect of CH3"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "(i) The -NH2 group in aromatic amines is strongly activating and ortho/para directing, making electrophilic substitution easier. (ii) CH3NH2 is more basic due to the +I effect of the CH3 group, which increases electron density on the nitrogen atom, making it more available for protonation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Define the following terms:\n(i) Mutarotation\n(ii) Invert sugar",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "Both are related to protein structure"
+      },
+      {
+        "label": "B",
+        "text": "Both are related to carbohydrate structure"
+      },
+      {
+        "label": "C",
+        "text": "(i) change in optical rotation, (ii) equimolar mixture of glucose and fructose"
+      },
+      {
+        "label": "D",
+        "text": "(i) change in pH, (ii) polymer of glucose"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "(i) Mutarotation is the change in the optical rotation because of the change in the equilibrium between two anomers, when the corresponding stereocenters interconvert. (ii) Invert sugar is an equimolar mixture of glucose and fructose, obtained by the hydrolysis of sucrose.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Differentiate between thermoplastic and thermosetting polymers. Give one example of each.",
+    "topic": "Polymers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Thermoplastic: soft on heating, Thermosetting: hard on heating"
+      },
+      {
+        "label": "B",
+        "text": "Thermoplastic: can be remolded, Thermosetting: cannot be remolded"
+      },
+      {
+        "label": "C",
+        "text": "Thermoplastic: linear, Thermosetting: cross-linked"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Thermoplastic polymers soften on heating and can be remolded, while thermosetting polymers undergo irreversible changes on heating and cannot be remolded. Thermoplastics have linear or slightly branched structures, while thermosetting polymers have highly cross-linked structures. Example of thermoplastic: Polyethylene. Example of thermosetting: Bakelite.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the transition elements? Why are most of the transition metal compounds coloured?",
+    "topic": "d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Due to d-d transitions"
+      },
+      {
+        "label": "B",
+        "text": "Due to f-f transitions"
+      },
+      {
+        "label": "C",
+        "text": "Due to charge transfer"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Transition elements are elements with partially filled d-orbitals. Most transition metal compounds are coloured due to d-d transitions. When light falls on these compounds, electrons absorb energy and jump from one d-orbital to another. The colour observed corresponds to the complementary colour of the light absorbed.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the preparation of potassium permanganate from pyrolusite ore. Write balanced chemical equations for the reactions involved.",
+    "topic": "d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Reduction of MnO2"
+      },
+      {
+        "label": "B",
+        "text": "Oxidation of MnO2"
+      },
+      {
+        "label": "C",
+        "text": "Disproportionation of MnO2"
+      },
+      {
+        "label": "D",
+        "text": "Decomposition of MnO2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The preparation of potassium permanganate from pyrolusite ore (MnO2) involves the oxidation of MnO2 in the presence of an alkali metal hydroxide (KOH) and an oxidizing agent (KNO3 or O2).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain Werner's theory with suitable examples.",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "Coordination compounds have only primary valency"
+      },
+      {
+        "label": "B",
+        "text": "Coordination compounds have only secondary valency"
+      },
+      {
+        "label": "C",
+        "text": "Coordination compounds have both primary and secondary valencies"
+      },
+      {
+        "label": "D",
+        "text": "Coordination compounds have no valencies"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Werner's theory states that coordination compounds have two types of valencies: primary (ionizable) and secondary (non-ionizable). The primary valency corresponds to the oxidation state of the metal ion, while the secondary valency corresponds to the coordination number of the metal ion.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the following reactions:\n(i) Williamson ether synthesis\n(ii) Friedel-Crafts acylation",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) SN1, (ii) Electrophilic substitution"
+      },
+      {
+        "label": "B",
+        "text": "(i) SN2, (ii) Nucleophilic substitution"
+      },
+      {
+        "label": "C",
+        "text": "(i) SN2, (ii) Electrophilic substitution"
+      },
+      {
+        "label": "D",
+        "text": "(i) SN1, (ii) Nucleophilic substitution"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Williamson ether synthesis is an SN2 reaction between an alkoxide ion and a primary alkyl halide to form an ether. Friedel-Crafts acylation is an electrophilic substitution reaction in which an acyl group is introduced onto an aromatic ring.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are the differences between DNA and RNA?",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sugar and base"
+      },
+      {
+        "label": "B",
+        "text": "Sugar and strand number"
+      },
+      {
+        "label": "C",
+        "text": "Base and strand number"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "DNA contains deoxyribose sugar and the base thymine, while RNA contains ribose sugar and the base uracil. DNA is a double-stranded molecule, while RNA is typically single-stranded.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Write the Nernst equation for the cell reaction in the Daniel cell. How will the Ecell be affected when the concentration of Zn2+ ions is increased?",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ecell increases"
+      },
+      {
+        "label": "B",
+        "text": "Ecell decreases"
+      },
+      {
+        "label": "C",
+        "text": "Ecell remains the same"
+      },
+      {
+        "label": "D",
+        "text": "Ecell becomes zero"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Nernst equation for the Daniel cell is: Ecell = E°cell - (0.0591/2) log([Zn2+]/[Cu2+]). Increasing the concentration of Zn2+ ions will increase the value of the log term, which will decrease the Ecell.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Define rate constant (k). Write the units of k for zero order and second order reactions.",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Zero order: s-1, Second order: L mol-1 s-1"
+      },
+      {
+        "label": "B",
+        "text": "Zero order: mol L-1 s-1, Second order: L mol-1 s-1"
+      },
+      {
+        "label": "C",
+        "text": "Zero order: mol L-1 s-1, Second order: s-1"
+      },
+      {
+        "label": "D",
+        "text": "Zero order: s-1, Second order: mol L-1 s-1"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The rate constant (k) is the proportionality constant in the rate law expression. For a zero-order reaction, the units of k are mol L-1 s-1. For a second-order reaction, the units of k are L mol-1 s-1.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is meant by coagulation of a colloidal solution? Describe briefly any three methods by which coagulation of lyophobic colloids can be carried out.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "By electrophoresis, adding electrolytes, and boiling"
+      },
+      {
+        "label": "B",
+        "text": "By electrophoresis, dialysis, and adding electrolytes"
+      },
+      {
+        "label": "C",
+        "text": "By adding electrolytes, dialysis, and cooling"
+      },
+      {
+        "label": "D",
+        "text": "By boiling, dialysis, and cooling"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Coagulation is the process of aggregating colloidal particles to form larger, insoluble particles that settle out of the solution. Three methods for coagulating lyophobic colloids are: (i) Electrophoresis: Movement of colloidal particles towards oppositely charged electrodes. (ii) Adding electrolytes: Neutralizing the charge on the colloidal particles. (iii) Boiling: Disrupting the hydration layer surrounding the colloidal particles.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Account for the following:\n(i) Haloalkanes are more reactive than haloarenes towards nucleophilic substitution reactions.\n(ii) Although chlorine is an electron withdrawing group, yet it is ortho- and para-directing in electrophilic aromatic substitution reactions.\n(iii) Grignard reagents should be prepared under anhydrous conditions.",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Due to resonance, +R effect, and reaction with water"
+      },
+      {
+        "label": "B",
+        "text": "Due to inductive effect, -I effect, and reaction with water"
+      },
+      {
+        "label": "C",
+        "text": "Due to resonance, -I effect, and reaction with water"
+      },
+      {
+        "label": "D",
+        "text": "Due to inductive effect, +R effect, and reaction with water"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Haloalkanes are more reactive due to weaker C-X bond and no resonance stabilization. (ii) Chlorine is ortho/para directing due to resonance (+R effect), which increases electron density at ortho and para positions. (iii) Grignard reagents react with water to form alkanes, hence anhydrous conditions are required.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Write the structures of the monomers used for getting the following polymers:\n(i) Teflon\n(ii) Polyacrylonitrile\n(iii) Neoprene",
+    "topic": "Polymers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Tetrafluoroethene, Acrylonitrile, Chloroprene"
+      },
+      {
+        "label": "B",
+        "text": "Ethene, Acrylonitrile, Chloroprene"
+      },
+      {
+        "label": "C",
+        "text": "Tetrafluoroethene, Vinyl chloride, Chloroprene"
+      },
+      {
+        "label": "D",
+        "text": "Ethene, Vinyl chloride, Chloroprene"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The monomers are: (i) Teflon: Tetrafluoroethene (CF2=CF2), (ii) Polyacrylonitrile: Acrylonitrile (CH2=CHCN), (iii) Neoprene: Chloroprene (CH2=CCl-CH=CH2).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Write the structures of the following:\n(i) p-Methylbenzaldehyde\n(ii) 4-Chloropentan-2-one",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Correct structures"
+      },
+      {
+        "label": "B",
+        "text": "Incorrect structures"
+      },
+      {
+        "label": "C",
+        "text": "Partially correct structures"
+      },
+      {
+        "label": "D",
+        "text": "No structures"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "p-Methylbenzaldehyde: A benzene ring with a methyl group at the para position and an aldehyde group attached to the benzene ring. 4-Chloropentan-2-one: CH3-CO-CH2-CH(Cl)-CH3",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How would you account for the following:\n(i) The transition metals exhibit higher enthalpies of atomization.\n(ii) The lowest oxide of transition metal is basic, the highest is amphoteric/acidic.\n(iii) E° value for the Mn3+/Mn2+ couple is much more positive than that for Cr3+/Cr2+.",
+    "topic": "d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Strong metallic bonding, oxidation state, stability"
+      },
+      {
+        "label": "B",
+        "text": "Weak metallic bonding, reduction potential, instability"
+      },
+      {
+        "label": "C",
+        "text": "Strong metallic bonding, reduction potential, stability"
+      },
+      {
+        "label": "D",
+        "text": "Weak metallic bonding, oxidation state, instability"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Transition metals have high enthalpies of atomization due to strong metallic bonding arising from unpaired electrons in d-orbitals. (ii) Lower oxides are basic due to lower oxidation state and ionic character, while higher oxides are acidic/amphoteric due to higher oxidation state and covalent character. (iii) Mn3+/Mn2+ has a more positive E° value because Mn2+ (d5) is more stable than Mn3+ (d4), while Cr2+ (d4) is less stable than Cr3+ (d3).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  }
+]

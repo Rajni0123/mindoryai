@@ -1,0 +1,704 @@
+[
+  {
+    "question_text": "What is the function of the tapetum?",
+    "topic": "Reproduction in Flowering Plants",
+    "options": [
+      {
+        "label": "A",
+        "text": "To provide nutrition to the developing pollen grains"
+      },
+      {
+        "label": "B",
+        "text": "To protect the ovule"
+      },
+      {
+        "label": "C",
+        "text": "To attract insects for pollination"
+      },
+      {
+        "label": "D",
+        "text": "To produce the egg cell"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The tapetum is the innermost layer of the microsporangium and provides nourishment to the developing pollen grains.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Name the enzyme responsible for the transcription of tRNA and 5s rRNA in eukaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "RNA polymerase I"
+      },
+      {
+        "label": "B",
+        "text": "RNA polymerase II"
+      },
+      {
+        "label": "C",
+        "text": "RNA polymerase III"
+      },
+      {
+        "label": "D",
+        "text": "Reverse transcriptase"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "RNA polymerase III is responsible for the transcription of tRNA, 5s rRNA, and snRNAs in eukaryotes.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of the codon AUG?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "It codes for the amino acid methionine only."
+      },
+      {
+        "label": "B",
+        "text": "It codes for the amino acid methionine and also acts as an initiation codon."
+      },
+      {
+        "label": "C",
+        "text": "It is a termination codon."
+      },
+      {
+        "label": "D",
+        "text": "It codes for the amino acid alanine."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "AUG codes for methionine and also serves as the initiation codon for protein synthesis.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Name the type of association that the mycorrhizae exhibit.",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Parasitism"
+      },
+      {
+        "label": "B",
+        "text": "Commensalism"
+      },
+      {
+        "label": "C",
+        "text": "Mutualism"
+      },
+      {
+        "label": "D",
+        "text": "Amensalism"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Mycorrhizae exhibit a mutualistic relationship between fungi and plant roots, where both organisms benefit.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is biopiracy?",
+    "topic": "Strategies for Enhancement in Food Production",
+    "options": [
+      {
+        "label": "A",
+        "text": "Using bioresources without proper authorization."
+      },
+      {
+        "label": "B",
+        "text": "Using only traditional knowledge."
+      },
+      {
+        "label": "C",
+        "text": "Using only modern techniques."
+      },
+      {
+        "label": "D",
+        "text": "Using only genetically modified organisms."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biopiracy refers to the use of bioresources by multinational companies and other organizations without proper authorization from the countries and people concerned without compensatory payment.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Write the scientific name of the organism from which cyclosporin A is obtained.",
+    "topic": "Microbes in Human Welfare",
+    "options": [
+      {
+        "label": "A",
+        "text": "Streptococcus"
+      },
+      {
+        "label": "B",
+        "text": "Trichoderma polysporum"
+      },
+      {
+        "label": "C",
+        "text": "Saccharomyces cerevisiae"
+      },
+      {
+        "label": "D",
+        "text": "Aspergillus niger"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Cyclosporin A is obtained from the fungus Trichoderma polysporum.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Differentiate between spermatogenesis and oogenesis.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Spermatogenesis produces one gamete, oogenesis produces four."
+      },
+      {
+        "label": "B",
+        "text": "Spermatogenesis occurs in the ovary, oogenesis in the testes."
+      },
+      {
+        "label": "C",
+        "text": "Spermatogenesis results in motile gametes, oogenesis in non-motile gametes."
+      },
+      {
+        "label": "D",
+        "text": "Spermatogenesis is discontinuous, oogenesis is continuous."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Spermatogenesis results in the formation of motile sperm, while oogenesis produces a single, non-motile ovum.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the role of the lac operon when lactose is present in the medium.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Lactose binds to the operator, preventing RNA polymerase from transcribing the lac genes."
+      },
+      {
+        "label": "B",
+        "text": "Lactose binds to the repressor, preventing it from binding to the operator, allowing transcription of the lac genes."
+      },
+      {
+        "label": "C",
+        "text": "Lactose binds to RNA polymerase, enhancing its activity."
+      },
+      {
+        "label": "D",
+        "text": "Lactose is broken down by the repressor protein."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "In the presence of lactose, it binds to the repressor protein, inactivating it. This prevents the repressor from binding to the operator region, allowing RNA polymerase to access the promoter and transcribe the lac genes.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of transcription in eukaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "RNA polymerase binds to the promoter, synthesizes mRNA, and terminates at a stop codon."
+      },
+      {
+        "label": "B",
+        "text": "RNA polymerase binds to the enhancer, synthesizes tRNA, and terminates at a polyadenylation signal."
+      },
+      {
+        "label": "C",
+        "text": "RNA polymerase binds to the promoter, synthesizes pre-mRNA, which undergoes splicing and capping before becoming mRNA."
+      },
+      {
+        "label": "D",
+        "text": "RNA polymerase binds to the ribosome, synthesizes rRNA, and terminates at a terminator sequence."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "In eukaryotes, transcription involves RNA polymerase binding to the promoter, synthesizing pre-mRNA, which then undergoes processing steps like splicing, capping, and tailing to become mature mRNA.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the significance of biodiversity hotspots.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are areas with high species richness and endemism, requiring conservation efforts."
+      },
+      {
+        "label": "B",
+        "text": "They are areas with low species richness but high economic value."
+      },
+      {
+        "label": "C",
+        "text": "They are areas with high pollution levels and require remediation."
+      },
+      {
+        "label": "D",
+        "text": "They are areas with high human population density and require development."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biodiversity hotspots are regions with exceptionally high species richness and endemism, making them crucial for conservation efforts to prevent species extinction.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the advantages of cleistogamy?",
+    "topic": "Reproduction in Flowering Plants",
+    "options": [
+      {
+        "label": "A",
+        "text": "It guarantees seed production even in the absence of pollinators."
+      },
+      {
+        "label": "B",
+        "text": "It promotes cross-pollination and genetic diversity."
+      },
+      {
+        "label": "C",
+        "text": "It results in larger and more viable seeds."
+      },
+      {
+        "label": "D",
+        "text": "It attracts more pollinators to the flower."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Cleistogamy is a type of self-pollination that occurs in closed flowers, ensuring seed production even when pollinators are absent.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of biological magnification.",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "The increase in population size of a species over time."
+      },
+      {
+        "label": "B",
+        "text": "The increase in concentration of toxic substances in successive trophic levels."
+      },
+      {
+        "label": "C",
+        "text": "The increase in the size of an organism due to better nutrition."
+      },
+      {
+        "label": "D",
+        "text": "The increase in the number of species in an ecosystem."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Biological magnification is the process where the concentration of toxic substances increases at each successive trophic level in a food chain.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the structure of a typical antibody molecule.",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "Two light chains and one heavy chain linked by disulfide bonds."
+      },
+      {
+        "label": "B",
+        "text": "One light chain and two heavy chains linked by peptide bonds."
+      },
+      {
+        "label": "C",
+        "text": "Two light chains and two heavy chains linked by disulfide bonds."
+      },
+      {
+        "label": "D",
+        "text": "Four identical polypeptide chains linked by hydrogen bonds."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "A typical antibody molecule consists of two identical light chains and two identical heavy chains, all linked together by disulfide bonds.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the different types of adaptations shown by xerophytes.",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Thick cuticle, sunken stomata, and CAM photosynthesis."
+      },
+      {
+        "label": "B",
+        "text": "Thin cuticle, numerous stomata, and C4 photosynthesis."
+      },
+      {
+        "label": "C",
+        "text": "Large leaves, absence of stomata, and C3 photosynthesis."
+      },
+      {
+        "label": "D",
+        "text": "Extensive root system, floating leaves, and C2 photosynthesis."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Xerophytes show adaptations like a thick cuticle to reduce water loss, sunken stomata to minimize transpiration, and CAM photosynthesis to conserve water.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the process of sewage treatment.",
+    "topic": "Microbes in Human Welfare",
+    "options": [
+      {
+        "label": "A",
+        "text": "Primary treatment involves filtration and sedimentation, secondary treatment involves biological treatment, and tertiary treatment involves chemical treatment."
+      },
+      {
+        "label": "B",
+        "text": "Primary treatment involves aeration, secondary treatment involves sedimentation, and tertiary treatment involves chlorination."
+      },
+      {
+        "label": "C",
+        "text": "Primary treatment involves biological treatment, secondary treatment involves physical treatment, and tertiary treatment involves radiation."
+      },
+      {
+        "label": "D",
+        "text": "Primary treatment involves chemical treatment, secondary treatment involves physical treatment, and tertiary treatment involves biological treatment."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Sewage treatment involves primary treatment (physical removal of solids), secondary treatment (biological degradation of organic matter), and tertiary treatment (chemical treatment to remove pollutants).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the principles of biotechnology involved in the production of human insulin by recombinant DNA technology.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Isolating the insulin gene, inserting it into a plasmid, introducing the plasmid into bacteria, and culturing the bacteria to produce insulin."
+      },
+      {
+        "label": "B",
+        "text": "Isolating the insulin protein, injecting it into bacteria, and extracting the modified protein."
+      },
+      {
+        "label": "C",
+        "text": "Using restriction enzymes to cut the insulin gene, ligating it with a viral vector, and infecting human cells to produce insulin."
+      },
+      {
+        "label": "D",
+        "text": "Using PCR to amplify the insulin gene, directly injecting it into human cells, and extracting the produced insulin."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Recombinant DNA technology involves isolating the human insulin gene, inserting it into a suitable plasmid vector, introducing the recombinant plasmid into a host bacterium (e.g., E. coli), and culturing the bacteria to produce human insulin.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the different types of ecological pyramids.",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Pyramid of numbers, pyramid of biomass, and pyramid of energy."
+      },
+      {
+        "label": "B",
+        "text": "Pyramid of species, pyramid of population, and pyramid of trophic levels."
+      },
+      {
+        "label": "C",
+        "text": "Pyramid of producers, pyramid of consumers, and pyramid of decomposers."
+      },
+      {
+        "label": "D",
+        "text": "Pyramid of size, pyramid of age, and pyramid of distribution."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The three types of ecological pyramids are the pyramid of numbers (representing the number of individuals at each trophic level), the pyramid of biomass (representing the total biomass at each trophic level), and the pyramid of energy (representing the energy flow at each trophic level).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of double fertilization in angiosperms.",
+    "topic": "Reproduction in Flowering Plants",
+    "options": [
+      {
+        "label": "A",
+        "text": "One sperm fuses with the egg cell, and the other sperm fuses with the synergids."
+      },
+      {
+        "label": "B",
+        "text": "One sperm fuses with the egg cell, and the other sperm fuses with the antipodal cells."
+      },
+      {
+        "label": "C",
+        "text": "One sperm fuses with the egg cell to form the zygote, and the other sperm fuses with the polar nuclei to form the endosperm."
+      },
+      {
+        "label": "D",
+        "text": "Both sperm cells fuse with the egg cell to form a diploid zygote."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Double fertilization in angiosperms involves one sperm cell fusing with the egg cell to form the diploid zygote, and the other sperm cell fusing with the two polar nuclei to form the triploid endosperm.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the Hershey-Chase experiment and its significance.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "They proved that proteins are the genetic material by labeling proteins with radioactive sulfur."
+      },
+      {
+        "label": "B",
+        "text": "They proved that DNA is the genetic material by labeling DNA with radioactive phosphorus and proteins with radioactive sulfur."
+      },
+      {
+        "label": "C",
+        "text": "They proved that RNA is the genetic material by labeling RNA with radioactive uracil."
+      },
+      {
+        "label": "D",
+        "text": "They proved that carbohydrates are the genetic material by labeling carbohydrates with radioactive carbon."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Hershey-Chase experiment used radioactive phosphorus to label DNA and radioactive sulfur to label proteins in bacteriophages. They showed that only the radioactive DNA entered the bacterial cells, proving that DNA is the genetic material.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the different types of gene therapy.",
+    "topic": "Biotechnology and its Applications",
+    "options": [
+      {
+        "label": "A",
+        "text": "Somatic cell gene therapy and germline gene therapy."
+      },
+      {
+        "label": "B",
+        "text": "Ex vivo gene therapy and in vitro gene therapy."
+      },
+      {
+        "label": "C",
+        "text": "In vivo gene therapy and ex vivo gene therapy."
+      },
+      {
+        "label": "D",
+        "text": "Autosomal gene therapy and sex-linked gene therapy."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Gene therapy can be broadly classified into in vivo gene therapy (where the gene is delivered directly into the patient's body) and ex vivo gene therapy (where cells are modified outside the body and then transplanted back).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the process of oogenesis in humans.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Oogonia multiply to form primary oocytes, which undergo meiosis I to form secondary oocytes and polar bodies. Meiosis II is completed after fertilization."
+      },
+      {
+        "label": "B",
+        "text": "Oogonia directly develop into secondary oocytes, which undergo meiosis I to form ova and polar bodies."
+      },
+      {
+        "label": "C",
+        "text": "Oogonia undergo mitosis to form ova, which are released during ovulation."
+      },
+      {
+        "label": "D",
+        "text": "Oogonia undergo meiosis to form primary oocytes, which are released during ovulation."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Oogenesis involves the multiplication of oogonia to form primary oocytes, which undergo meiosis I to form a secondary oocyte and a polar body. Meiosis II is completed only after fertilization.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the principles and applications of polymerase chain reaction (PCR).",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "PCR is used to amplify DNA sequences using primers, DNA polymerase, and thermal cycling. It is used in DNA fingerprinting, diagnostics, and research."
+      },
+      {
+        "label": "B",
+        "text": "PCR is used to cut DNA sequences using restriction enzymes. It is used in gene cloning and recombinant DNA technology."
+      },
+      {
+        "label": "C",
+        "text": "PCR is used to synthesize proteins using ribosomes and mRNA. It is used in protein engineering and drug discovery."
+      },
+      {
+        "label": "D",
+        "text": "PCR is used to sequence DNA using fluorescent dyes. It is used in genome sequencing and bioinformatics."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "PCR is a technique used to amplify specific DNA sequences in vitro. It involves repeated cycles of denaturation, annealing, and extension using primers, DNA polymerase, and thermal cycling. PCR is widely used in DNA fingerprinting, diagnostics, and research.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the structure and functions of different parts of a human sperm.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Head contains the nucleus and acrosome, middle piece contains mitochondria, and tail facilitates movement."
+      },
+      {
+        "label": "B",
+        "text": "Head contains the nucleus and ribosomes, middle piece contains Golgi apparatus, and tail facilitates attachment to the egg."
+      },
+      {
+        "label": "C",
+        "text": "Head contains the acrosome and endoplasmic reticulum, middle piece contains centrioles, and tail facilitates protein synthesis."
+      },
+      {
+        "label": "D",
+        "text": "Head contains the nucleus and lysosomes, middle piece contains ribosomes, and tail facilitates cell division."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The human sperm consists of a head (containing the nucleus and acrosome), a middle piece (containing mitochondria for energy), and a tail (for motility).",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the causes and effects of global warming.",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Global warming is caused by increased greenhouse gases, leading to rising temperatures, melting glaciers, and sea-level rise."
+      },
+      {
+        "label": "B",
+        "text": "Global warming is caused by decreased solar radiation, leading to lower temperatures, increased ice cover, and decreased sea levels."
+      },
+      {
+        "label": "C",
+        "text": "Global warming is caused by volcanic eruptions, leading to increased atmospheric dust, decreased sunlight, and cooling of the planet."
+      },
+      {
+        "label": "D",
+        "text": "Global warming is caused by deforestation, leading to decreased oxygen levels, increased carbon dioxide levels, and desertification."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Global warming is primarily caused by the increased concentration of greenhouse gases in the atmosphere, leading to rising global temperatures, melting glaciers and ice caps, sea-level rise, and changes in weather patterns.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the different types of interactions in a community.",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Mutualism, competition, predation, parasitism, commensalism, and amensalism."
+      },
+      {
+        "label": "B",
+        "text": "Symbiosis, antagonism, cooperation, neutrality, and exclusion."
+      },
+      {
+        "label": "C",
+        "text": "Evolution, adaptation, speciation, extinction, and migration."
+      },
+      {
+        "label": "D",
+        "text": "Growth, reproduction, mortality, immigration, and emigration."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The different types of interactions in a community include mutualism (both benefit), competition (both are harmed), predation (one benefits, one is harmed), parasitism (one benefits, one is harmed), commensalism (one benefits, the other is unaffected), and amensalism (one is harmed, the other is unaffected).",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the process of translation in prokaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "mRNA binds to the ribosome, tRNA brings amino acids, peptide bonds form, and the polypeptide chain is released at a stop codon."
+      },
+      {
+        "label": "B",
+        "text": "DNA binds to the ribosome, RNA polymerase synthesizes mRNA, and the polypeptide chain is released at a start codon."
+      },
+      {
+        "label": "C",
+        "text": "tRNA binds to the nucleus, mRNA brings amino acids, and the polypeptide chain is released at a promoter sequence."
+      },
+      {
+        "label": "D",
+        "text": "rRNA binds to the endoplasmic reticulum, tRNA brings amino acids, and the polypeptide chain is released at a terminator sequence."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "In prokaryotes, translation involves mRNA binding to the ribosome, tRNA molecules bringing specific amino acids to the ribosome according to the mRNA codons, peptide bonds forming between the amino acids, and the polypeptide chain being released at a stop codon.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  }
+]

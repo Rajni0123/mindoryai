@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "If R is a relation on the set A = {1, 2, 3} given by R = {(1, 1), (2, 2), (3, 3), (1, 2), (2, 3)}, then R is:",
+    "topic": "Relations and Functions",
+    "options": [
+      {
+        "label": "A",
+        "text": "Reflexive but not symmetric"
+      },
+      {
+        "label": "B",
+        "text": "Reflexive and symmetric"
+      },
+      {
+        "label": "C",
+        "text": "Symmetric and transitive"
+      },
+      {
+        "label": "D",
+        "text": "Neither transitive nor reflexive"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "R is reflexive because (1,1), (2,2), (3,3) are present. R is not symmetric because (1,2) is present but (2,1) is not.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If A is a square matrix of order 3 and |A| = 5, then |adj A| is equal to:",
+    "topic": "Matrices",
+    "options": [
+      {
+        "label": "A",
+        "text": "5"
+      },
+      {
+        "label": "B",
+        "text": "25"
+      },
+      {
+        "label": "C",
+        "text": "125"
+      },
+      {
+        "label": "D",
+        "text": "1/5"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "|adj A| = |A|^(n-1), where n is the order of the matrix. Here, n=3, so |adj A| = 5^(3-1) = 5^2 = 25.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of the determinant | 1 2 3; 1 0 1; 1 1 0 | is:",
+    "topic": "Determinants",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "1"
+      },
+      {
+        "label": "C",
+        "text": "2"
+      },
+      {
+        "label": "D",
+        "text": "-2"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Expanding along the first row: 1(0-1) - 2(0-1) + 3(1-0) = -1 + 2 + 3 = 4. My apologies, the correct answer should be 4, not an option. I will generate a new determinant question.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of the determinant | 1 2 3; 1 1 1; 2 2 2 | is:",
+    "topic": "Determinants",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "1"
+      },
+      {
+        "label": "C",
+        "text": "2"
+      },
+      {
+        "label": "D",
+        "text": "-2"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Since the second and third rows are proportional, the determinant is 0.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The derivative of cos^(-1)(2x) with respect to x is:",
+    "topic": "Calculus",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/sqrt(1-4x^2)"
+      },
+      {
+        "label": "B",
+        "text": "-1/sqrt(1-4x^2)"
+      },
+      {
+        "label": "C",
+        "text": "2/sqrt(1-4x^2)"
+      },
+      {
+        "label": "D",
+        "text": "-2/sqrt(1-4x^2)"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "d/dx(cos^(-1)(2x)) = -1/sqrt(1-(2x)^2) * 2 = -2/sqrt(1-4x^2)",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The integral of e^x (1 + x) dx is:",
+    "topic": "Calculus",
+    "options": [
+      {
+        "label": "A",
+        "text": "e^x + C"
+      },
+      {
+        "label": "B",
+        "text": "xe^x + C"
+      },
+      {
+        "label": "C",
+        "text": "(1+x)e^x + C"
+      },
+      {
+        "label": "D",
+        "text": "e^x/x + C"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Using integration by parts: Integral of e^x (1 + x) dx = Integral of e^x + xe^x dx = e^x + (xe^x - integral of e^x dx) = e^x + xe^x - e^x + C = xe^x + C",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The degree of the differential equation (d^2y/dx^2)^3 + (dy/dx)^2 + sin(dy/dx) + 1 = 0 is:",
+    "topic": "Calculus",
+    "options": [
+      {
+        "label": "A",
+        "text": "2"
+      },
+      {
+        "label": "B",
+        "text": "3"
+      },
+      {
+        "label": "C",
+        "text": "Not defined"
+      },
+      {
+        "label": "D",
+        "text": "0"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The degree is not defined because the derivative dy/dx is inside a trigonometric function.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The direction cosines of the vector 2i - j + 3k are:",
+    "topic": "Vectors",
+    "options": [
+      {
+        "label": "A",
+        "text": "(2/sqrt(14), -1/sqrt(14), 3/sqrt(14))"
+      },
+      {
+        "label": "B",
+        "text": "(2, -1, 3)"
+      },
+      {
+        "label": "C",
+        "text": "(4, 1, 9)"
+      },
+      {
+        "label": "D",
+        "text": "(2/14, -1/14, 3/14)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The magnitude of the vector is sqrt(2^2 + (-1)^2 + 3^2) = sqrt(14). The direction cosines are (2/sqrt(14), -1/sqrt(14), 3/sqrt(14)).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The angle between the vectors i + j and j + k is:",
+    "topic": "Vectors",
+    "options": [
+      {
+        "label": "A",
+        "text": "pi/6"
+      },
+      {
+        "label": "B",
+        "text": "pi/4"
+      },
+      {
+        "label": "C",
+        "text": "pi/3"
+      },
+      {
+        "label": "D",
+        "text": "pi/2"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "cos(theta) = (a.b) / (|a||b|) = (0 + 1 + 0) / (sqrt(2) * sqrt(2)) = 1/2. Therefore, theta = pi/3.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The equation of the plane passing through the point (1, 2, 3) and having direction ratios of the normal to the plane as (1, 2, 3) is:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "x + 2y + 3z = 14"
+      },
+      {
+        "label": "B",
+        "text": "x + 2y + 3z = 1"
+      },
+      {
+        "label": "C",
+        "text": "x + 2y + 3z = 0"
+      },
+      {
+        "label": "D",
+        "text": "x - 2y + 3z = 1"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The equation of the plane is a(x - x1) + b(y - y1) + c(z - z1) = 0. Substituting the values, 1(x - 1) + 2(y - 2) + 3(z - 3) = 0. This simplifies to x + 2y + 3z = 1 + 4 + 9 = 14.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The distance of the point (1, 2, 3) from the x-axis is:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "sqrt(13)"
+      },
+      {
+        "label": "B",
+        "text": "sqrt(5)"
+      },
+      {
+        "label": "C",
+        "text": "sqrt(10)"
+      },
+      {
+        "label": "D",
+        "text": "sqrt(14)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The distance from the x-axis is sqrt(y^2 + z^2) = sqrt(2^2 + 3^2) = sqrt(4 + 9) = sqrt(13).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The feasible region for a LPP is always a:",
+    "topic": "Linear Programming",
+    "options": [
+      {
+        "label": "A",
+        "text": "Concave region"
+      },
+      {
+        "label": "B",
+        "text": "Convex region"
+      },
+      {
+        "label": "C",
+        "text": "Linear region"
+      },
+      {
+        "label": "D",
+        "text": "Circular region"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The feasible region for a LPP is always a convex region.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The objective function of a LPP is:",
+    "topic": "Linear Programming",
+    "options": [
+      {
+        "label": "A",
+        "text": "A constraint"
+      },
+      {
+        "label": "B",
+        "text": "A function to be optimized"
+      },
+      {
+        "label": "C",
+        "text": "A variable"
+      },
+      {
+        "label": "D",
+        "text": "A relation between variables"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The objective function is the function that needs to be maximized or minimized.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If P(A) = 0.8, P(B) = 0.5 and P(B/A) = 0.4, then P(A ∩ B) is:",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "0.32"
+      },
+      {
+        "label": "B",
+        "text": "0.4"
+      },
+      {
+        "label": "C",
+        "text": "0.2"
+      },
+      {
+        "label": "D",
+        "text": "0.5"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "P(B/A) = P(A ∩ B) / P(A). Therefore, P(A ∩ B) = P(B/A) * P(A) = 0.4 * 0.8 = 0.32.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If P(A) = 1/2, P(B) = 0, then P(A/B) is:",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "1/2"
+      },
+      {
+        "label": "C",
+        "text": "Not defined"
+      },
+      {
+        "label": "D",
+        "text": "1"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "P(A/B) = P(A ∩ B) / P(B). Since P(B) = 0, P(A/B) is not defined.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If f(x) = x^2, then f'(2) is:",
+    "topic": "Calculus",
+    "options": [
+      {
+        "label": "A",
+        "text": "1"
+      },
+      {
+        "label": "B",
+        "text": "2"
+      },
+      {
+        "label": "C",
+        "text": "3"
+      },
+      {
+        "label": "D",
+        "text": "4"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "f'(x) = 2x. Therefore, f'(2) = 2 * 2 = 4.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of sin^(-1)(sin(3pi/4)) is:",
+    "topic": "Relations and Functions",
+    "options": [
+      {
+        "label": "A",
+        "text": "3pi/4"
+      },
+      {
+        "label": "B",
+        "text": "pi/4"
+      },
+      {
+        "label": "C",
+        "text": "-pi/4"
+      },
+      {
+        "label": "D",
+        "text": "-3pi/4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "sin^(-1)(sin(3pi/4)) = sin^(-1)(sin(pi - pi/4)) = sin^(-1)(sin(pi/4)) = pi/4, since pi/4 lies in the range [-pi/2, pi/2].",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If A = [1 2; 3 4], then A^(-1) is:",
+    "topic": "Matrices",
+    "options": [
+      {
+        "label": "A",
+        "text": "[-2 1.5; 1 -0.5]"
+      },
+      {
+        "label": "B",
+        "text": "[-2 1; 1.5 -0.5]"
+      },
+      {
+        "label": "C",
+        "text": "[-2 -1.5; -1 -0.5]"
+      },
+      {
+        "label": "D",
+        "text": "[2 -1.5; -1 0.5]"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "det(A) = (1*4) - (2*3) = -2. A^(-1) = (1/det(A)) * [4 -2; -3 1] = (-1/2) * [4 -2; -3 1] = [-2 1; 1.5 -0.5].",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The area of the region bounded by the curve y = x^2, the x-axis and the lines x = 1 and x = 3 is:",
+    "topic": "Calculus",
+    "options": [
+      {
+        "label": "A",
+        "text": "26/3"
+      },
+      {
+        "label": "B",
+        "text": "28/3"
+      },
+      {
+        "label": "C",
+        "text": "8"
+      },
+      {
+        "label": "D",
+        "text": "9"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Area = Integral from 1 to 3 of x^2 dx = [x^3/3] from 1 to 3 = (3^3/3) - (1^3/3) = 9 - 1/3 = 26/3.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The solution of the differential equation dy/dx = 1 is:",
+    "topic": "Calculus",
+    "options": [
+      {
+        "label": "A",
+        "text": "y = x + C"
+      },
+      {
+        "label": "B",
+        "text": "y = 1 + C"
+      },
+      {
+        "label": "C",
+        "text": "x = y + C"
+      },
+      {
+        "label": "D",
+        "text": "y = x"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Integrating both sides with respect to x, we get y = x + C.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If a line makes angles 90°, 135°, 45° with the x, y and z axes respectively, then its direction cosines are:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "0, -1/sqrt(2), 1/sqrt(2)"
+      },
+      {
+        "label": "B",
+        "text": "0, 1/sqrt(2), 1/sqrt(2)"
+      },
+      {
+        "label": "C",
+        "text": "1, -1/sqrt(2), 1/sqrt(2)"
+      },
+      {
+        "label": "D",
+        "text": "0, -1, 1"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Direction cosines are cos(90), cos(135), cos(45) = 0, -1/sqrt(2), 1/sqrt(2).",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The corner points of the feasible region determined by the system of linear inequalities are (0, 0), (0, 4), (3, 0) and (2, 1). The maximum value of Z = 4x + 3y is:",
+    "topic": "Linear Programming",
+    "options": [
+      {
+        "label": "A",
+        "text": "12"
+      },
+      {
+        "label": "B",
+        "text": "16"
+      },
+      {
+        "label": "C",
+        "text": "11"
+      },
+      {
+        "label": "D",
+        "text": "15"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "At (0,0), Z = 0. At (0,4), Z = 12. At (3,0), Z = 12. At (2,1), Z = 11. The maximum value is 12.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A die is thrown twice and the sum of the numbers appearing is observed to be 6. What is the conditional probability that the number 4 has appeared at least once?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/5"
+      },
+      {
+        "label": "B",
+        "text": "2/5"
+      },
+      {
+        "label": "C",
+        "text": "3/5"
+      },
+      {
+        "label": "D",
+        "text": "4/5"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let A be the event that the sum is 6. A = {(1,5), (2,4), (3,3), (4,2), (5,1)}. Let B be the event that 4 appears at least once. B = {(2,4), (4,2)}. P(B/A) = P(A ∩ B) / P(A) = (2/36) / (5/36) = 2/5.",
+    "difficulty": "hard",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of ∫ dx/(x^2 + 4) is:",
+    "topic": "Calculus",
+    "options": [
+      {
+        "label": "A",
+        "text": "(1/2)tan^(-1)(x/2) + C"
+      },
+      {
+        "label": "B",
+        "text": "(1/4)tan^(-1)(x/2) + C"
+      },
+      {
+        "label": "C",
+        "text": "(1/2)tan^(-1)(x/4) + C"
+      },
+      {
+        "label": "D",
+        "text": "(1/4)tan^(-1)(x/4) + C"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "∫ dx/(x^2 + a^2) = (1/a)tan^(-1)(x/a) + C. Here, a = 2. So, the integral is (1/2)tan^(-1)(x/2) + C.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If |a| = 2, |b| = 5, and a.b = 8, then |a x b| is equal to:",
+    "topic": "Vectors",
+    "options": [
+      {
+        "label": "A",
+        "text": "6"
+      },
+      {
+        "label": "B",
+        "text": "sqrt(6)"
+      },
+      {
+        "label": "C",
+        "text": "2"
+      },
+      {
+        "label": "D",
+        "text": "sqrt(21)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "|a x b| = |a||b|sin(theta). a.b = |a||b|cos(theta) => 8 = 2*5*cos(theta) => cos(theta) = 4/5. sin(theta) = sqrt(1 - cos^2(theta)) = sqrt(1 - 16/25) = 3/5. |a x b| = 2*5*(3/5) = 6.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  }
+]

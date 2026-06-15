@@ -72,8 +72,19 @@ class MobileChatController extends Controller
         $modelId = $request->input('ai_model_id');
         $hasImage = $request->hasFile('file');
 
-        // Auto-detect language from message content (priority over request param)
-        $language = $this->detectLanguageFromMessage($content);
+        // Get user's language preference from request (set in app settings)
+        $userLanguagePref = $request->input('language', null);
+
+        // Auto-detect language from message content
+        $detectedLanguage = $this->detectLanguageFromMessage($content);
+
+        // Use user preference if set AND detected is 'english' (meaning no explicit Hindi/Hinglish detected)
+        // This ensures: "Explain babar aajam" with Hindi preference → responds in Hindi
+        if ($userLanguagePref && $detectedLanguage === 'english') {
+            $language = $userLanguagePref;
+        } else {
+            $language = $detectedLanguage;
+        }
 
         // Track language preference for user
         if ($user && !empty($content)) {
@@ -461,6 +472,11 @@ class MobileChatController extends Controller
                 $result = $this->buildContinuationContext($conversationHistory, $continuationKeywords, $content, $contentLower);
                 if ($result) {
                     $content = $result;
+                }
+                // For continuation, check history for language preference (e.g., "in hindi")
+                $historyLanguage = $this->detectLanguageFromHistory($conversationHistory);
+                if ($historyLanguage === 'hindi') {
+                    $language = 'hindi';
                 }
             }
 
@@ -1157,43 +1173,85 @@ class MobileChatController extends Controller
     public function saveFeedback(Request $request)
     {
         $request->validate([
-            'message_id' => 'required|string',
-            'chat_id' => 'required|string',
+            'message_id' => 'required',
+            'chat_id' => 'required',
             'feedback_type' => 'required|in:like,dislike',
             'message_content' => 'nullable|string',
+            'question' => 'nullable|string',
+            'feedback_reason' => 'nullable|string|max:100',
+            'user_comment' => 'nullable|string|max:500',
         ]);
 
         $user = $request->user();
+        $feedbackType = $request->input('feedback_type');
+        $chatId = $request->input('chat_id');
+        $messageId = $request->input('message_id');
+        $aiResponse = $request->input('message_content', '');
+        $feedbackReason = $request->input('feedback_reason');
+        if ($feedbackReason) {
+            $feedbackReason = str_replace('_', ' ', $feedbackReason);
+        }
+
+        $question = $request->input('question', '');
+        if (empty($question)) {
+            $prevUser = \App\Models\MobileChatMessage::where('mobile_chat_id', $chatId)
+                ->where('sender', 'user')
+                ->when(is_numeric($messageId), fn ($q) => $q->where('id', '<', (int) $messageId))
+                ->orderByDesc('id')
+                ->first();
+            $question = $prevUser?->content ?? '';
+        }
+
+        if (empty($aiResponse)) {
+            $aiMessage = \App\Models\MobileChatMessage::find($messageId);
+            $aiResponse = $aiMessage?->content ?? '';
+        }
 
         try {
-            \DB::table('ai_feedback')->insert([
+            $result = \App\Services\FeedbackAnalysisService::processFeedback([
                 'user_id' => $user->id,
-                'chat_id' => $request->input('chat_id'),
-                'message_id' => $request->input('message_id'),
-                'feedback_type' => $request->input('feedback_type'),
-                'message_content' => $request->input('message_content'),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'conversation_id' => (string) $chatId,
+                'question' => $question,
+                'ai_response' => $aiResponse,
+                'feedback_type' => $feedbackType,
+                'feedback_reason' => $feedbackReason,
+                'user_comment' => $request->input('user_comment'),
+                'was_helpful' => $feedbackType === 'like',
+                'response_rating' => $feedbackType === 'like' ? 5 : 2,
             ]);
 
-            \Log::info('AI feedback saved', [
-                'user_id' => $user->id,
-                'feedback_type' => $request->input('feedback_type'),
-            ]);
+            try {
+                \DB::table('ai_feedback')->insert([
+                    'user_id' => $user->id,
+                    'chat_id' => $chatId,
+                    'message_id' => (string) $messageId,
+                    'feedback_type' => $feedbackType,
+                    'message_content' => $aiResponse,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } catch (\Exception $legacyError) {
+                \Log::warning('Legacy ai_feedback insert skipped', [
+                    'error' => $legacyError->getMessage(),
+                ]);
+            }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Feedback saved successfully',
+                'feedback_id' => $result['feedback_id'] ?? null,
+                'follow_up' => $result['follow_up'] ?? null,
             ]);
         } catch (\Exception $e) {
             \Log::error('Failed to save feedback', [
                 'error' => $e->getMessage(),
+                'user_id' => $user->id,
             ]);
 
             return response()->json([
-                'success' => true,
-                'message' => 'Feedback noted',
-            ]);
+                'success' => false,
+                'message' => 'Could not save feedback. Please try again.',
+            ], 500);
         }
     }
 
@@ -1204,6 +1262,12 @@ class MobileChatController extends Controller
     {
         if (empty($message)) {
             return 'hinglish';
+        }
+
+        // Check if user explicitly requested Hindi in message
+        $msgLower = strtolower($message);
+        if (strpos($msgLower, 'in hindi') !== false || strpos($msgLower, 'hindi me') !== false || strpos($msgLower, 'hindi mein') !== false || strpos($msgLower, 'hindi mai') !== false) {
+            return 'hindi';
         }
 
         if (preg_match('/[\x{0900}-\x{097F}]/u', $message)) {
@@ -1230,6 +1294,43 @@ class MobileChatController extends Controller
             return 'hinglish';
         }
 
+        return 'english';
+    }
+
+    /**
+     * Detect language from conversation history
+     * Used when current message is a short continuation like "yes", "haan"
+     */
+    private function detectLanguageFromHistory(array $history): string
+    {
+        // Look for Hindi indicators in user messages from history
+        foreach ($history as $msg) {
+            if (isset($msg['role']) && $msg['role'] === 'user' && isset($msg['content'])) {
+                $content = strtolower($msg['content']);
+                // Check for "hindi" word anywhere (e.g., "explain photosynthesis hindi")
+                if (preg_match('/\bhindi\b/i', $content)) {
+                    return 'hindi';
+                }
+                // Check for Devanagari script
+                if (preg_match('/[\x{0900}-\x{097F}]/u', $msg['content'])) {
+                    return 'hindi';
+                }
+                // Check for hinglish patterns
+                $hinglishWords = ['kya', 'hai', 'kaise', 'samjhao', 'batao', 'bata', 'padhao', 'sikho'];
+                foreach ($hinglishWords as $word) {
+                    if (preg_match('/\b' . $word . '\b/i', $content)) {
+                        return 'hinglish';
+                    }
+                }
+            }
+            // Also check assistant's previous response for Hindi content
+            if (isset($msg['role']) && $msg['role'] === 'assistant' && isset($msg['content'])) {
+                // If previous response was in Hindi (contains Hinglish words), continue in Hindi
+                if (preg_match('/\b(hai|hain|karte|karta|hota|milta|banate|aur)\b/i', $msg['content'])) {
+                    return 'hindi';
+                }
+            }
+        }
         return 'english';
     }
 }

@@ -10,16 +10,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        // BlinkStudy Brand Colors (matching mobile app)
+        // BlinkStudy Brand — purple (app) + teal (legacy)
+        brand: {
+          DEFAULT: '#705CF6',
+          light: '#7B61FF',
+          dark: '#5B4AE0',
+          50: '#F3EEFF',
+          100: '#E8E0FF',
+          200: '#D4C7FE',
+        },
         primary: {
-          DEFAULT: '#0D9488',
-          light: '#99F6E4',
-          dark: '#0F766E',
+          DEFAULT: '#705CF6',
+          light: '#7B61FF',
+          dark: '#5B4AE0',
         },
         secondary: {
-          DEFAULT: '#F59E0B',
-          light: '#FDE68A',
-          dark: '#D97706',
+          DEFAULT: '#5B8CFF',
+          light: '#93B4FF',
+          dark: '#3B6FE8',
         },
         accent: '#99F6E4',
         background: '#F0FDFA',
@@ -50,10 +58,17 @@ export default {
         'input': '24px',
       },
       boxShadow: {
-        'blinkstudy': '0 4px 14px rgba(13, 148, 136, 0.15)',
-        'blinkstudy-lg': '0 8px 30px rgba(13, 148, 136, 0.2)',
+        'blinkstudy': '0 4px 14px rgba(112, 92, 246, 0.15)',
+        'blinkstudy-lg': '0 8px 30px rgba(112, 92, 246, 0.22)',
+        'card': '0 8px 32px rgba(15, 23, 42, 0.06)',
+        'card-hover': '0 16px 48px rgba(112, 92, 246, 0.12)',
       },
     },
   },
   plugins: [],
+  safelist: [
+    'from-brand', 'to-brand-light', 'from-secondary', 'to-blue-400',
+    'from-emerald-500', 'to-teal-400', 'from-amber-500', 'to-orange-400',
+    'from-violet-500', 'to-brand', 'from-pink-500', 'to-rose-400',
+  ],
 }

@@ -63,15 +63,20 @@ class SmartCacheService
 
         // SAFETY NET: Ultra-short messages should NEVER hit cache
         // This prevents "Yes -> Gandhi" type bugs from ever happening
-        // EXCEPTION: First messages with academic keywords can bypass this
+        // EXCEPTION: First messages with academic keywords OR educational patterns can bypass
         $trimmed = trim($question);
         $minChars = config('smartcache.quality_gate.min_chars_for_cache_lookup', 15);
         if (mb_strlen($trimmed) <= $minChars) {
-            // For first messages, check if it has academic keyword - if yes, allow
-            if ($isFirstMessage && $this->hasAcademicKeyword($trimmed)) {
-                Log::debug("[SmartCache] Safety net bypassed - first message with academic keyword", [
+            // For first messages, check if it has academic keyword or educational pattern
+            $hasAcademic = $this->hasAcademicKeyword($trimmed);
+            $hasEducational = $this->hasEducationalQuestionPattern($trimmed);
+
+            if ($isFirstMessage && ($hasAcademic || $hasEducational)) {
+                Log::debug("[SmartCache] Safety net bypassed - first message with academic/educational content", [
                     'chars' => mb_strlen($trimmed),
-                    'question' => $trimmed
+                    'question' => $trimmed,
+                    'has_academic' => $hasAcademic,
+                    'has_educational' => $hasEducational,
                 ]);
                 // Continue to next checks instead of blocking
             } else {
@@ -203,6 +208,20 @@ class SmartCacheService
             return false;
         }
 
+        // CRITICAL: Don't store context-dependent responses
+        // These are responses that reference previous conversation
+        if ($this->isContextDependentResponse($answer)) {
+            Log::debug("[SmartCache] SKIP STORE - context-dependent response detected");
+            return false;
+        }
+
+        // CRITICAL: Don't store error/invalid responses
+        // These are API errors, timeouts, or "I don't understand" responses
+        if ($this->isErrorResponse($answer)) {
+            Log::debug("[SmartCache] SKIP STORE - error/invalid response detected");
+            return false;
+        }
+
         // Don't store if question is generic
         $genericPatterns = [
             '/^(what|how|why|when|where|who)\s+(is|are|was|were)\s*$/i',
@@ -286,6 +305,97 @@ class SmartCacheService
     }
 
     /**
+     * Check if response is context-dependent (references previous conversation)
+     * Such responses should NEVER be cached as they'll return wrong answers
+     */
+    private function isContextDependentResponse(string $answer): bool
+    {
+        $answerLower = mb_strtolower($answer, 'UTF-8');
+
+        // Phrases that indicate the response is context-dependent
+        $contextPhrases = [
+            'continue from where',
+            'where we left off',
+            'as i mentioned',
+            'as we discussed',
+            'let me continue',
+            'continuing from',
+            'back to our',
+            'as i was saying',
+            'as mentioned earlier',
+            'as i explained',
+            'going back to',
+            'returning to our',
+            'picking up from',
+            'as you asked earlier',
+            'to answer your previous',
+            'regarding your earlier',
+            'from our previous',
+            'in our last conversation',
+            // Hindi/Hinglish context phrases
+            'jaise maine bataya',
+            'jaise humne discuss kiya',
+            'pichle sawaal',
+            'aage badhte hain',
+            'jahan se chhoda tha',
+        ];
+
+        foreach ($contextPhrases as $phrase) {
+            if (str_contains($answerLower, $phrase)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if response is an error/invalid response
+     * Such responses should NEVER be cached
+     */
+    private function isErrorResponse(string $answer): bool
+    {
+        $answerLower = mb_strtolower($answer, 'UTF-8');
+
+        // Error/invalid response patterns
+        $errorPatterns = [
+            'i am sorry',
+            'i cannot understand',
+            'i don\'t understand',
+            'i dont understand',
+            "don't understand",
+            'dont understand',
+            'error occurred',
+            'unable to process',
+            'please try again',
+            'something went wrong',
+            'api error',
+            'rate limit',
+            'timeout',
+            'service unavailable',
+            'invalid request',
+            'please rephrase',
+            'could not process',
+            'failed to generate',
+            'technical difficulty',
+            'server error',
+            // Hindi error responses
+            'maaf kijiye',
+            'samajh nahi aaya',
+            'dobara try',
+            'kuch galat',
+        ];
+
+        foreach ($errorPatterns as $pattern) {
+            if (str_contains($answerLower, $pattern)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Check if message has academic keywords (for safety net bypass)
      */
     private function hasAcademicKeyword(string $text): bool
@@ -301,6 +411,43 @@ class SmartCacheService
                 return true;
             }
         }
+        return false;
+    }
+
+    /**
+     * Check if message starts with educational question pattern
+     * "what is X", "explain Y", "define Z" are clearly educational
+     */
+    private function hasEducationalQuestionPattern(string $text): bool
+    {
+        $textLower = mb_strtolower(trim($text), 'UTF-8');
+
+        // Educational question patterns
+        $patterns = [
+            'what is ', 'what are ', 'what was ', 'what were ',
+            'who is ', 'who are ', 'who was ',
+            'why is ', 'why are ', 'why do ', 'why does ',
+            'how is ', 'how are ', 'how do ', 'how does ', 'how to ',
+            'when is ', 'when was ', 'where is ', 'where are ',
+            'explain ', 'define ', 'describe ', 'meaning of ', 'definition of ',
+            // Hindi/Hinglish
+            'kya hai ', 'kya hota ', 'kya hoti ', 'kaun hai ',
+            'kyu hai ', 'kaise hai ', 'kaise hota ', 'kab hai ',
+            'samjhao ', 'batao ', 'bataiye ',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (str_starts_with($textLower, $pattern)) {
+                return true;
+            }
+        }
+
+        // Check for Hindi question endings
+        if (str_ends_with($textLower, ' kya hai') ||
+            str_ends_with($textLower, ' kya hota hai')) {
+            return true;
+        }
+
         return false;
     }
 

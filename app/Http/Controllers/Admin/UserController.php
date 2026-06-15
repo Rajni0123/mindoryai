@@ -151,13 +151,27 @@ class UserController extends Controller
 
         // Setup subscription and credits if plan assigned
         if (!empty($validated['plan_id'])) {
+            // Map user_plan to plans table for FeatureLimitService
+            $planSlug = strtolower($plan->slug ?? $plan->name);
+            $featurePlan = DB::table('plans')->where('slug', $planSlug)->first();
+            if (!$featurePlan) {
+                $featurePlan = DB::table('plans')->where('slug', 'free')->first();
+            }
+
+            $startDate = now();
+            $endDate = $plan->validity_days ? now()->addDays($plan->validity_days) : now()->addYear();
+
             UserSubscription::create([
                 'user_id' => $user->id,
-                'plan_id' => $plan->id,
+                'plan_id' => $featurePlan ? $featurePlan->id : 1,
                 'status' => 'active',
-                'start_date' => now(),
-                'end_date' => $plan->validity_days ? now()->addDays($plan->validity_days) : null,
+                'billing_cycle' => 'monthly',
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'starts_at' => $startDate,
+                'expires_at' => $endDate,
                 'credits_included' => $plan->message_tokens,
+                'payment_method' => 'admin',
             ]);
 
             DB::table('user_credits')->insert([
@@ -196,26 +210,51 @@ class UserController extends Controller
         $planId = $request->plan_id;
 
         if ($planId) {
-            $plan = UserPlan::findOrFail($planId);
+            $userPlan = UserPlan::findOrFail($planId);
 
-            // Update user's plan
+            // Update user's plan_id (references user_plans table)
             $user->update([
-                'plan_id' => $plan->id,
-                'can_use_gpt4' => $plan->can_use_gpt4,
-                'can_use_claude' => $plan->can_use_claude,
-                'can_use_deepseek' => $plan->can_use_deepseek,
-                'can_use_grok' => $plan->can_use_grok,
+                'plan_id' => $userPlan->id,
+                'can_use_gpt4' => $userPlan->can_use_gpt4,
+                'can_use_claude' => $userPlan->can_use_claude,
+                'can_use_deepseek' => $userPlan->can_use_deepseek,
+                'can_use_grok' => $userPlan->can_use_grok,
             ]);
 
-            // Create/update subscription
+            // Map user_plan slug to plans table for FeatureLimitService
+            // plans table: free=1, lite=2, pro=3, ultimate=4
+            $planSlug = strtolower($userPlan->slug ?? $userPlan->name);
+            $featurePlan = DB::table('plans')->where('slug', $planSlug)->first();
+
+            // Fallback mapping if slug doesn't match
+            if (!$featurePlan) {
+                $slugMap = [
+                    'free' => 'free',
+                    'lite' => 'lite',
+                    'pro' => 'pro',
+                    'ultimate' => 'ultimate',
+                ];
+                $mappedSlug = $slugMap[$planSlug] ?? 'free';
+                $featurePlan = DB::table('plans')->where('slug', $mappedSlug)->first();
+            }
+
+            // Calculate dates
+            $startDate = now();
+            $endDate = $userPlan->validity_days ? now()->addDays($userPlan->validity_days) : now()->addYear();
+
+            // Create/update subscription with BOTH date formats for compatibility
             UserSubscription::updateOrCreate(
                 ['user_id' => $user->id],
                 [
-                    'plan_id' => $plan->id,
+                    'plan_id' => $featurePlan ? $featurePlan->id : 1, // Use plans table ID
                     'status' => 'active',
-                    'start_date' => now(),
-                    'end_date' => $plan->validity_days ? now()->addDays($plan->validity_days) : null,
-                    'credits_included' => $plan->message_tokens,
+                    'billing_cycle' => 'monthly',
+                    'start_date' => $startDate,
+                    'end_date' => $endDate,
+                    'starts_at' => $startDate,      // Required for scopeActive
+                    'expires_at' => $endDate,       // Required for scopeActive
+                    'credits_included' => $userPlan->message_tokens,
+                    'payment_method' => 'admin',
                 ]
             );
 
@@ -223,19 +262,41 @@ class UserController extends Controller
             DB::table('user_credits')->updateOrInsert(
                 ['user_id' => $user->id],
                 [
-                    'available_credits' => $plan->unlimited_credits ? 0 : ($plan->message_tokens ?? 50),
-                    'unlimited_mode' => $plan->unlimited_credits ?? false,
+                    'available_credits' => $userPlan->unlimited_credits ? 0 : ($userPlan->message_tokens ?? 50),
+                    'unlimited_mode' => $userPlan->unlimited_credits ?? false,
                     'updated_at' => now(),
                 ]
             );
 
-            $planName = $plan->name;
+            // Clear cache for this user
+            \Illuminate\Support\Facades\Cache::forget("user_plan_{$user->id}");
+            \Illuminate\Support\Facades\Cache::forget("feature_limits_{$user->id}");
+
+            $planName = $userPlan->name;
         } else {
             // Set to free (remove plan)
             $user->update(['plan_id' => null]);
 
-            // Cancel subscription
-            UserSubscription::where('user_id', $user->id)->update(['status' => 'cancelled']);
+            // Get free plan from plans table
+            $freePlan = DB::table('plans')->where('slug', 'free')->first();
+
+            // Update subscription to free plan (not cancel - so scopeActive still works)
+            $startDate = now();
+            $endDate = now()->addYear();
+
+            UserSubscription::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'plan_id' => $freePlan ? $freePlan->id : 1,
+                    'status' => 'active',
+                    'billing_cycle' => 'monthly',
+                    'start_date' => $startDate,
+                    'end_date' => $endDate,
+                    'starts_at' => $startDate,
+                    'expires_at' => $endDate,
+                    'payment_method' => 'free',
+                ]
+            );
 
             // Reset credits to free tier
             DB::table('user_credits')->updateOrInsert(
@@ -246,6 +307,10 @@ class UserController extends Controller
                     'updated_at' => now(),
                 ]
             );
+
+            // Clear cache
+            \Illuminate\Support\Facades\Cache::forget("user_plan_{$user->id}");
+            \Illuminate\Support\Facades\Cache::forget("feature_limits_{$user->id}");
 
             $planName = 'Free';
         }
@@ -281,34 +346,52 @@ class UserController extends Controller
         $newPlanId = $validated['plan_id'] ?? null;
         if ($newPlanId != $user->plan_id) {
             if ($newPlanId) {
-                $plan = UserPlan::findOrFail($newPlanId);
+                $userPlan = UserPlan::findOrFail($newPlanId);
                 $user->update([
-                    'plan_id' => $plan->id,
-                    'can_use_gpt4' => $plan->can_use_gpt4,
-                    'can_use_claude' => $plan->can_use_claude,
-                    'can_use_deepseek' => $plan->can_use_deepseek,
-                    'can_use_grok' => $plan->can_use_grok,
+                    'plan_id' => $userPlan->id,
+                    'can_use_gpt4' => $userPlan->can_use_gpt4,
+                    'can_use_claude' => $userPlan->can_use_claude,
+                    'can_use_deepseek' => $userPlan->can_use_deepseek,
+                    'can_use_grok' => $userPlan->can_use_grok,
                 ]);
+
+                // Map to plans table for FeatureLimitService
+                $planSlug = strtolower($userPlan->slug ?? $userPlan->name);
+                $featurePlan = DB::table('plans')->where('slug', $planSlug)->first();
+                if (!$featurePlan) {
+                    $featurePlan = DB::table('plans')->where('slug', 'free')->first();
+                }
+
+                $startDate = now();
+                $endDate = $userPlan->validity_days ? now()->addDays($userPlan->validity_days) : now()->addYear();
 
                 UserSubscription::updateOrCreate(
                     ['user_id' => $user->id],
                     [
-                        'plan_id' => $plan->id,
+                        'plan_id' => $featurePlan ? $featurePlan->id : 1,
                         'status' => 'active',
-                        'start_date' => now(),
-                        'end_date' => $plan->validity_days ? now()->addDays($plan->validity_days) : null,
-                        'credits_included' => $plan->message_tokens,
+                        'billing_cycle' => 'monthly',
+                        'start_date' => $startDate,
+                        'end_date' => $endDate,
+                        'starts_at' => $startDate,
+                        'expires_at' => $endDate,
+                        'credits_included' => $userPlan->message_tokens,
+                        'payment_method' => 'admin',
                     ]
                 );
 
                 DB::table('user_credits')->updateOrInsert(
                     ['user_id' => $user->id],
                     [
-                        'available_credits' => $plan->unlimited_credits ? 0 : ($plan->message_tokens ?? 50),
-                        'unlimited_mode' => $plan->unlimited_credits ?? false,
+                        'available_credits' => $userPlan->unlimited_credits ? 0 : ($userPlan->message_tokens ?? 50),
+                        'unlimited_mode' => $userPlan->unlimited_credits ?? false,
                         'updated_at' => now(),
                     ]
                 );
+
+                // Clear cache
+                \Illuminate\Support\Facades\Cache::forget("user_plan_{$user->id}");
+                \Illuminate\Support\Facades\Cache::forget("feature_limits_{$user->id}");
             } else {
                 $user->update([
                     'plan_id' => null,
@@ -317,11 +400,34 @@ class UserController extends Controller
                     'can_use_deepseek' => false,
                     'can_use_grok' => false,
                 ]);
-                UserSubscription::where('user_id', $user->id)->update(['status' => 'cancelled']);
+
+                // Set to free plan instead of cancelling
+                $freePlan = DB::table('plans')->where('slug', 'free')->first();
+                $startDate = now();
+                $endDate = now()->addYear();
+
+                UserSubscription::updateOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                        'plan_id' => $freePlan ? $freePlan->id : 1,
+                        'status' => 'active',
+                        'billing_cycle' => 'monthly',
+                        'start_date' => $startDate,
+                        'end_date' => $endDate,
+                        'starts_at' => $startDate,
+                        'expires_at' => $endDate,
+                        'payment_method' => 'free',
+                    ]
+                );
+
                 DB::table('user_credits')->updateOrInsert(
                     ['user_id' => $user->id],
                     ['available_credits' => 50, 'unlimited_mode' => false, 'updated_at' => now()]
                 );
+
+                // Clear cache
+                \Illuminate\Support\Facades\Cache::forget("user_plan_{$user->id}");
+                \Illuminate\Support\Facades\Cache::forget("feature_limits_{$user->id}");
             }
         }
 
@@ -385,29 +491,45 @@ class UserController extends Controller
                 ->with('error', 'You cannot delete your own account!');
         }
 
-        // Clean up all related records before deleting (prevents SQLite cascade errors)
-        DB::statement('PRAGMA foreign_keys = OFF');
+        // Clean up all related records before deleting
+        // Use MySQL syntax for disabling foreign key checks (PRAGMA is SQLite only)
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
-        DB::table('faqs')->where('user_id', $user->id)->delete();
-        DB::table('study_guides')->where('user_id', $user->id)->delete();
-        DB::table('audio_overviews')->where('user_id', $user->id)->delete();
-        DB::table('quizzes')->where('user_id', $user->id)->delete();
-        DB::table('quiz_attempts')->where('user_id', $user->id)->delete();
-        DB::table('user_credits')->where('user_id', $user->id)->delete();
-        DB::table('user_subscriptions')->where('user_id', $user->id)->delete();
-        DB::table('conversations')->where('user_id', $user->id)->delete();
-        DB::table('messages')->where('user_id', $user->id)->delete();
-        DB::table('mobile_chats')->where('user_id', $user->id)->delete();
-        DB::table('mobile_chat_messages')->whereIn('chat_id', DB::table('mobile_chats')->where('user_id', $user->id)->pluck('id'))->delete();
-        DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->where('tokenable_type', 'App\\Models\\User')->delete();
-        DB::table('whiteboard_videos')->where('user_id', $user->id)->delete();
-        DB::table('image_analyses')->where('user_id', $user->id)->delete();
-        DB::table('ai_usage_tracking')->where('user_id', $user->id)->delete();
-        DB::table('credit_transactions')->where('user_id', $user->id)->delete();
+        try {
+            // Delete mobile chat messages first (child of mobile_chats)
+            $mobileChatIds = DB::table('mobile_chats')->where('user_id', $user->id)->pluck('id');
+            if ($mobileChatIds->count() > 0) {
+                DB::table('mobile_chat_messages')->whereIn('mobile_chat_id', $mobileChatIds)->delete();
+            }
 
-        $user->delete();
+            // Delete messages via conversations (messages table has conversation_id, not user_id)
+            $conversationIds = DB::table('conversations')->where('user_id', $user->id)->pluck('id');
+            if ($conversationIds->count() > 0) {
+                DB::table('messages')->whereIn('conversation_id', $conversationIds)->delete();
+            }
 
-        DB::statement('PRAGMA foreign_keys = ON');
+            // Delete all related records (only tables that have user_id column)
+            DB::table('faqs')->where('user_id', $user->id)->delete();
+            DB::table('study_guides')->where('user_id', $user->id)->delete();
+            DB::table('audio_overviews')->where('user_id', $user->id)->delete();
+            DB::table('quizzes')->where('user_id', $user->id)->delete();
+            DB::table('quiz_attempts')->where('user_id', $user->id)->delete();
+            DB::table('user_credits')->where('user_id', $user->id)->delete();
+            DB::table('user_subscriptions')->where('user_id', $user->id)->delete();
+            DB::table('conversations')->where('user_id', $user->id)->delete();
+            DB::table('mobile_chats')->where('user_id', $user->id)->delete();
+            DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->where('tokenable_type', 'App\\Models\\User')->delete();
+            DB::table('whiteboard_videos')->where('user_id', $user->id)->delete();
+            DB::table('ai_usage_tracking')->where('user_id', $user->id)->delete();
+            DB::table('credit_transactions')->where('user_id', $user->id)->delete();
+            DB::table('daily_challenge_attempts')->where('user_id', $user->id)->delete();
+            DB::table('daily_usage_limits')->where('user_id', $user->id)->delete();
+            // Note: image_analyses table doesn't have user_id column, skipped
+
+            $user->delete();
+        } finally {
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        }
 
         return redirect()->route('admin.users')
             ->with('success', 'User deleted successfully!');

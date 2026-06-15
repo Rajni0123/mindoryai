@@ -15,6 +15,7 @@ class GeminiService
     private string $feature;
     private ?int $userId;
     private string $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
+    private ?string $customSystemPrompt = null;
 
     /**
      * Initialize Gemini Service
@@ -28,8 +29,9 @@ class GeminiService
         ?string $modelName = null,
         ?int $userId = null
     ) {
-        // Get API key from FrontendConfig (admin panel saves here)
-        $this->apiKey = \App\Models\FrontendConfig::getValue('ai.gemini_api_key', '');
+        // Get API key from FrontendConfig (admin panel), then .env fallback
+        $this->apiKey = \App\Models\FrontendConfig::getValue('ai.gemini_api_key', '')
+            ?: (string) config('services.gemini.api_key', '');
 
         $this->model = $modelName ?? 'gemini-1.5-flash';
         $this->feature = $feature;
@@ -38,6 +40,14 @@ class GeminiService
         if (empty($this->apiKey)) {
             throw new Exception('Gemini API key not configured. Please set it in Admin Panel → AI Settings → Google Gemini section');
         }
+    }
+
+    /**
+     * Set a custom system prompt (for personalized responses)
+     */
+    public function setSystemPrompt(string $prompt): void
+    {
+        $this->customSystemPrompt = $prompt;
     }
 
     /**
@@ -50,11 +60,13 @@ class GeminiService
     public function generateContent(string $userPrompt, array $options = []): array
     {
         try {
-            $systemPrompt = AiSystemPrompt::getPromptFor($this->feature);
+            // Use custom system prompt if set (personalized), otherwise use feature-based prompt
+            $systemPrompt = $this->customSystemPrompt ?? AiSystemPrompt::getPromptFor($this->feature);
             $fullPrompt = $systemPrompt
                 ? "{$systemPrompt}\n\n{$userPrompt}"
                 : $userPrompt;
 
+            // SPEED OPTIMIZATION: Lower defaults for faster responses
             $requestPayload = [
                 'contents' => [
                     [
@@ -65,9 +77,9 @@ class GeminiService
                 ],
                 'generationConfig' => [
                     'temperature' => $options['temperature'] ?? 0.7,
-                    'topK' => $options['topK'] ?? 40,
-                    'topP' => $options['topP'] ?? 0.95,
-                    'maxOutputTokens' => $options['maxOutputTokens'] ?? 8192,
+                    'topK' => $options['topK'] ?? 32,  // Lower for faster
+                    'topP' => $options['topP'] ?? 0.9,  // Slightly lower for faster
+                    'maxOutputTokens' => $options['maxOutputTokens'] ?? 2048,  // Much lower default
                 ],
             ];
 
@@ -95,9 +107,15 @@ class GeminiService
                 'prompt_length' => strlen($userPrompt),
             ]);
 
-            $response = Http::timeout($options['timeout'] ?? 120)
+            // SPEED OPTIMIZATION: Lower timeout for faster fail/retry
+            $sslVerify = config('app.env') === 'local' ? false : true;
+            $timeout = $options['timeout'] ?? 30;  // Reduced from 45
+            $connectTimeout = $options['connect_timeout'] ?? 6;  // Fast connection
+
+            $response = Http::timeout($timeout)
+                ->connectTimeout($connectTimeout)
                 ->withHeaders(['Content-Type' => 'application/json'])
-                ->withOptions(['verify' => false]) // Disable SSL verification for local development
+                ->withOptions(['verify' => $sslVerify])
                 ->post($apiUrl, $requestPayload);
 
             if (!$response->successful()) {
@@ -115,20 +133,28 @@ class GeminiService
             $inputTokens = $data['usageMetadata']['promptTokenCount'] ?? 0;
             $outputTokens = $data['usageMetadata']['candidatesTokenCount'] ?? 0;
 
-            // Track usage
+            // Track usage - wrapped in try-catch to not fail the request
             if ($inputTokens > 0 || $outputTokens > 0) {
-                AiUsageTracking::track(
-                    feature: $this->feature,
-                    modelName: $this->model,
-                    inputTokens: $inputTokens,
-                    outputTokens: $outputTokens,
-                    userId: $this->userId,
-                    provider: 'google',
-                    metadata: [
-                        'prompt_length' => strlen($userPrompt),
-                        'response_length' => strlen($content),
-                    ]
-                );
+                try {
+                    AiUsageTracking::track(
+                        feature: $this->feature,
+                        modelName: $this->model,
+                        inputTokens: $inputTokens,
+                        outputTokens: $outputTokens,
+                        userId: $this->userId,
+                        provider: 'google',
+                        metadata: [
+                            'prompt_length' => strlen($userPrompt),
+                            'response_length' => strlen($content),
+                        ]
+                    );
+                } catch (\Exception $trackingError) {
+                    // Don't fail the request if tracking fails
+                    Log::warning('Failed to track AI usage', [
+                        'error' => $trackingError->getMessage(),
+                        'user_id' => $this->userId,
+                    ]);
+                }
             }
 
             Log::info("Gemini API Success", [
@@ -180,6 +206,7 @@ class GeminiService
                 ? "{$systemPrompt}\n\n{$userPrompt}"
                 : $userPrompt;
 
+            // SPEED OPTIMIZATION: Optimized vision settings
             $requestPayload = [
                 'contents' => [
                     [
@@ -197,8 +224,8 @@ class GeminiService
                 'generationConfig' => [
                     'temperature' => $options['temperature'] ?? 0.4,
                     'topK' => $options['topK'] ?? 32,
-                    'topP' => $options['topP'] ?? 1,
-                    'maxOutputTokens' => $options['maxOutputTokens'] ?? 4096,
+                    'topP' => $options['topP'] ?? 0.9,
+                    'maxOutputTokens' => $options['maxOutputTokens'] ?? 2048,  // Lower for speed
                 ],
             ];
 
@@ -210,9 +237,15 @@ class GeminiService
 
             $apiUrl = "{$this->baseUrl}{$this->model}:generateContent?key={$this->apiKey}";
 
-            $response = Http::timeout($options['timeout'] ?? 90)
+            // SPEED OPTIMIZATION: Lower timeout for faster responses
+            $sslVerify = config('app.env') === 'local' ? false : true;
+            $timeout = $options['timeout'] ?? 35;  // Reduced from 45
+            $connectTimeout = $options['connect_timeout'] ?? 6;
+
+            $response = Http::timeout($timeout)
+                ->connectTimeout($connectTimeout)
                 ->withHeaders(['Content-Type' => 'application/json'])
-                ->withOptions(['verify' => false]) // Disable SSL verification for local development
+                ->withOptions(['verify' => $sslVerify])
                 ->post($apiUrl, $requestPayload);
 
             if (!$response->successful()) {
@@ -229,16 +262,24 @@ class GeminiService
             $inputTokens = $data['usageMetadata']['promptTokenCount'] ?? 0;
             $outputTokens = $data['usageMetadata']['candidatesTokenCount'] ?? 0;
 
-            // Track usage
-            AiUsageTracking::track(
-                feature: $this->feature,
-                modelName: $this->model,
-                inputTokens: $inputTokens,
-                outputTokens: $outputTokens,
-                userId: $this->userId,
-                provider: 'google',
-                metadata: ['request_type' => 'vision', 'mime_type' => $mimeType]
-            );
+            // Track usage - wrapped in try-catch to not fail the request
+            try {
+                AiUsageTracking::track(
+                    feature: $this->feature,
+                    modelName: $this->model,
+                    inputTokens: $inputTokens,
+                    outputTokens: $outputTokens,
+                    userId: $this->userId,
+                    provider: 'google',
+                    metadata: ['request_type' => 'vision', 'mime_type' => $mimeType]
+                );
+            } catch (\Exception $trackingError) {
+                // Don't fail the request if tracking fails
+                Log::warning('Failed to track AI usage (vision)', [
+                    'error' => $trackingError->getMessage(),
+                    'user_id' => $this->userId,
+                ]);
+            }
 
             Log::info("Gemini Vision API Success", [
                 'feature' => $this->feature,

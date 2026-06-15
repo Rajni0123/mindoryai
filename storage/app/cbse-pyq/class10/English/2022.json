@@ -1,0 +1,272 @@
+[
+  {
+    "question_text": "How did the postal service begin?",
+    "topic": "Reading Comprehension - Postal Service",
+    "options": [
+      {
+        "label": "A",
+        "text": "As a means of entertainment for emperors"
+      },
+      {
+        "label": "B",
+        "text": "To maintain communication between different parts of an empire"
+      },
+      {
+        "label": "C",
+        "text": "To deliver gifts to citizens"
+      },
+      {
+        "label": "D",
+        "text": "To transport goods and merchandise"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that postal service originated from the necessity of maintaining communications between different parts of an empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the main advantage of the early postal service for rulers?",
+    "topic": "Reading Comprehension - Postal Service",
+    "options": [
+      {
+        "label": "A",
+        "text": "It allowed them to send birthday greetings."
+      },
+      {
+        "label": "B",
+        "text": "It enabled them to keep track of events and the progress of their army."
+      },
+      {
+        "label": "C",
+        "text": "It helped them collect taxes more efficiently."
+      },
+      {
+        "label": "D",
+        "text": "It improved trade relations with other empires."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that the postal service enabled the emperor to keep track of all that was happening, including the condition and progress of his army.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How are postal services different today compared to the early systems?",
+    "topic": "Reading Comprehension - Postal Service",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are slower and less reliable."
+      },
+      {
+        "label": "B",
+        "text": "They are only available to government officials."
+      },
+      {
+        "label": "C",
+        "text": "They rely solely on horse-and-foot runners."
+      },
+      {
+        "label": "D",
+        "text": "They utilize air, railway, and motor services for faster delivery."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The passage indicates that modern postal services use air, railway, and motor services to carry letters speedily to their destinations.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what difficulties did mail runners face in the past?",
+    "topic": "Reading Comprehension - Postal Service",
+    "options": [
+      {
+        "label": "A",
+        "text": "They had to deal with traffic jams in cities."
+      },
+      {
+        "label": "B",
+        "text": "They had to pass through jungles, climb hills, cross rivers, and brave wild animals and dacoits."
+      },
+      {
+        "label": "C",
+        "text": "They had to compete with other delivery services."
+      },
+      {
+        "label": "D",
+        "text": "They had to learn multiple languages to communicate with recipients."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that mail runners had to pass through jungles, climb hills, cross rivers, and brave wild animals and dacoits.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Who, according to the passage, was the first person to begin a postal organization in India?",
+    "topic": "Reading Comprehension - Postal Service",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sher Shah"
+      },
+      {
+        "label": "B",
+        "text": "Akbar"
+      },
+      {
+        "label": "C",
+        "text": "Alauddin Khilji"
+      },
+      {
+        "label": "D",
+        "text": "Raja Chikka Deva"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that Alauddin Khilji had a horse-and-foot postal organization.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How did Sher Shah contribute to the promotion of postal services?",
+    "topic": "Reading Comprehension - Postal Service",
+    "options": [
+      {
+        "label": "A",
+        "text": "By introducing the use of camels for mail delivery."
+      },
+      {
+        "label": "B",
+        "text": "By building a 2,000-mile road from Bengal to Sind and constructing sarais along the roads."
+      },
+      {
+        "label": "C",
+        "text": "By establishing the first post offices in Bombay and Madras."
+      },
+      {
+        "label": "D",
+        "text": "By opening the postal service to the public."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that Sher Shah built a 2,000-mile road and constructed sarais along the roads to promote postal services.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, where were the first major post offices established by the East India Company?",
+    "topic": "Reading Comprehension - Postal Service",
+    "options": [
+      {
+        "label": "A",
+        "text": "Delhi and Agra"
+      },
+      {
+        "label": "B",
+        "text": "Bombay and Madras"
+      },
+      {
+        "label": "C",
+        "text": "Calcutta and Surat"
+      },
+      {
+        "label": "D",
+        "text": "Bengal and Sind"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that the East India Company established major post offices at Bombay and Madras.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the purpose of the special copper token of the value of 2 annas?",
+    "topic": "Reading Comprehension - Postal Service",
+    "options": [
+      {
+        "label": "A",
+        "text": "To be used as currency in local markets."
+      },
+      {
+        "label": "B",
+        "text": "To facilitate the payment of postage."
+      },
+      {
+        "label": "C",
+        "text": "To serve as identification for mail runners."
+      },
+      {
+        "label": "D",
+        "text": "To commemorate the establishment of the postal service."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that the copper token was struck by the mint to facilitate the payment of postage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the main idea conveyed in the first paragraph of the second passage?",
+    "topic": "Reading Comprehension - Fast Foods",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fast foods are primarily for soldiers."
+      },
+      {
+        "label": "B",
+        "text": "Fast foods have evolved from a source of sustenance to a staple diet due to aggressive advertising."
+      },
+      {
+        "label": "C",
+        "text": "Fast foods are only consumed during economic crises."
+      },
+      {
+        "label": "D",
+        "text": "Fast foods are beneficial for health."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The first paragraph discusses how fast foods, initially a source of sustenance in emergencies, are becoming a staple diet due to advertising.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what is a major concern regarding instant noodles and similar convenience foods?",
+    "topic": "Reading Comprehension - Fast Foods",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are too expensive for the average consumer."
+      },
+      {
+        "label": "B",
+        "text": "They lack sufficient nutrition and may contain harmful substances."
+      },
+      {
+        "label": "C",
+        "text": "They are difficult to prepare."
+      },
+      {
+        "label": "D",
+        "text": "They are only available in limited flavors."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage highlights the lack of nutrition in these products and mentions the scare over high lead levels in Maggi noodles.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

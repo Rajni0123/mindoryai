@@ -1,0 +1,1732 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BlinkStudy - Your AI Study Companion | Learn Smarter, Not Harder</title>
+    <meta name="description"
+        content="BlinkStudy is your AI-powered study companion. Get instant step-by-step explanations, generate quizzes, chat with AI tutor, and watch whiteboard videos. Made in India.">
+    <meta name="application-name" content="BlinkStudy">
+    <meta name="author" content="BlinkStudy">
+    <meta name="keywords"
+        content="AI study app,AI tutor,homework help,scan and solve,AI quizzes,whiteboard videos,education app,India,CBSE,ICSE,JEE,NEET">
+    <meta property="og:title" content="BlinkStudy - Your AI Study Companion">
+    <meta property="og:description"
+        content="Stuck on a problem? Get instant, step-by-step explanations with BlinkStudy. Scan, solve, learn!">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="./output.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --teal-50: #E6F9F6;
+            --teal-100: #CCF3EE;
+            --teal-200: #99E6DB;
+            --teal-500: #1DB9A0;
+            --teal-600: #189A85;
+        }
+        .bg-teal-500 { background-color: var(--teal-500) !important; }
+        .bg-teal-50 { background-color: var(--teal-50) !important; }
+        .bg-teal-100 { background-color: var(--teal-100) !important; }
+        .text-teal-500 { color: var(--teal-500) !important; }
+        .text-teal-600 { color: var(--teal-600) !important; }
+        .border-teal-500 { border-color: var(--teal-500) !important; }
+        .border-teal-200 { border-color: var(--teal-200) !important; }
+        .hover\:bg-teal-600:hover { background-color: var(--teal-600) !important; }
+        .hover\:text-teal-500:hover { color: var(--teal-500) !important; }
+        .hover\:bg-teal-200:hover { background-color: var(--teal-200) !important; }
+        .fill-teal-500 { fill: var(--teal-500) !important; }
+        .stroke-teal-500 { stroke: var(--teal-500) !important; }
+
+        /* Hero background - with grid */
+        .hero-bg {
+            position: relative;
+            background:
+                radial-gradient(ellipse 60% 80% at 0% 50%, rgba(200, 180, 240, 0.5) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 70% at 100% 60%, rgba(255, 200, 150, 0.5) 0%, transparent 60%),
+                url('https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/hero/gradient-bg-with-grid.png');
+            background-size: cover;
+            background-size: cover, cover, cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Hero Content Layout */
+        .hero-content {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 2.5rem;
+            padding: 3rem 4rem 5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .hero-content {
+                flex-direction: row;
+                padding: 5rem 4rem 7rem;
+                gap: 3rem;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+        @media (min-width: 1024px) {
+            .hero-content {
+                padding: 6rem 6rem 8rem;
+                gap: 4rem;
+            }
+        }
+        @media (min-width: 1280px) {
+            .hero-content {
+                padding: 7rem 8rem 9rem;
+            }
+        }
+
+        /* Hero Text */
+        .hero-text {
+            flex: 1;
+            max-width: 550px;
+            text-align: center;
+        }
+        @media (min-width: 768px) {
+            .hero-text {
+                text-align: left;
+            }
+        }
+
+        .hero-title {
+            font-size: 2.25rem;
+            line-height: 1.2;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 3rem;
+                line-height: 1.15;
+            }
+        }
+        @media (min-width: 1024px) {
+            .hero-title {
+                font-size: 3.5rem;
+                line-height: 1.1;
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #475569;
+            max-width: 420px;
+            margin: 0 auto 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .hero-subtitle {
+                font-size: 1rem;
+                margin: 0 0 1.5rem 0;
+            }
+        }
+
+        /* Download Buttons */
+        .download-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        @media (min-width: 768px) {
+            .download-buttons {
+                justify-content: flex-start;
+            }
+        }
+        .download-btn {
+            transition: transform 0.15s ease;
+        }
+        .download-btn:active {
+            transform: scale(0.95);
+        }
+        .download-btn img {
+            height: 44px;
+            width: auto;
+        }
+        @media (min-width: 768px) {
+            .download-btn img {
+                height: 48px;
+            }
+        }
+
+        /* Social Proof */
+        .social-proof {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        @media (min-width: 768px) {
+            .social-proof {
+                justify-content: flex-start;
+            }
+        }
+
+        .avatar-stack {
+            display: flex;
+        }
+        .avatar-stack img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid white;
+            object-fit: cover;
+            margin-left: -10px;
+            transition: transform 0.2s ease;
+        }
+        .avatar-stack img:first-child {
+            margin-left: 0;
+        }
+        .avatar-stack img:hover {
+            transform: translateY(-2px);
+            z-index: 10;
+        }
+
+        .rating-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .stars {
+            display: flex;
+            gap: 2px;
+        }
+        .rating-text {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* Hero Image / Network */
+        .hero-image, .hero-network {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+        }
+        @media (min-width: 768px) {
+            .hero-image, .hero-network {
+                max-width: 50%;
+                justify-content: flex-end;
+            }
+        }
+        @media (min-width: 1024px) {
+            .hero-image, .hero-network {
+                max-width: 55%;
+            }
+        }
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+        }
+        @media (min-width: 768px) {
+            .hero-image img {
+                max-width: 100%;
+            }
+        }
+
+        /* Navigation */
+        .navbar-sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            width: 100%;
+            padding-top: 12px;
+        }
+        .navbar-wrapper {
+            padding: 1rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+            .navbar-wrapper {
+                padding: 1rem 2rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .navbar-wrapper {
+                padding: 1.25rem 3rem;
+            }
+        }
+        @media (min-width: 1280px) {
+            .navbar-wrapper {
+                padding: 1.25rem 4rem;
+            }
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.6rem 1rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 100px;
+            box-shadow:
+                0 4px 24px rgba(0,0,0,0.06),
+                0 1px 2px rgba(0,0,0,0.04),
+                inset 0 1px 0 rgba(255,255,255,0.9);
+            position: relative;
+            overflow: hidden;
+        }
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: navbarShine 4s ease-in-out infinite;
+        }
+        @keyframes navbarShine {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+        @media (min-width: 768px) {
+            .navbar {
+                padding: 0.5rem 1rem 0.5rem 1.5rem;
+            }
+        }
+
+        .nav-logo {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #0f172a;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Premium logo glow animation */
+        .logo-blink {
+            animation: bulbGlow 3s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+        .logo-blink:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        @keyframes bulbGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 0px rgba(255, 200, 50, 0));
+            }
+            50% {
+                filter: drop-shadow(0 0 8px rgba(255, 200, 50, 0.6)) drop-shadow(0 0 16px rgba(255, 180, 50, 0.3));
+            }
+        }
+
+        /* Page Load Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Hero animations on load */
+        .hero-text {
+            animation: fadeInLeft 0.8s ease-out forwards;
+        }
+
+        .hero-title {
+            opacity: 0;
+            animation: fadeInUp 0.7s ease-out 0.2s forwards;
+        }
+
+        .hero-subtitle {
+            opacity: 0;
+            animation: fadeInUp 0.7s ease-out 0.4s forwards;
+        }
+
+        .download-buttons {
+            opacity: 0;
+            animation: fadeInUp 0.7s ease-out 0.6s forwards;
+        }
+
+        .social-proof {
+            opacity: 0;
+            animation: fadeInUp 0.7s ease-out 0.8s forwards;
+        }
+
+        .hero-image, .hero-network {
+            opacity: 0;
+            animation: fadeInRight 0.8s ease-out 0.3s forwards;
+        }
+
+        .navbar {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.1s forwards;
+        }
+
+        /* Scroll reveal animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger children animation */
+        .stagger-children > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .stagger-children.revealed > *:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-children.revealed > *:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-children.revealed > *:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-children.revealed > *:nth-child(4) { transition-delay: 0.4s; }
+
+        .stagger-children.revealed > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-menu {
+            display: none;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            position: relative;
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .nav-menu {
+                display: flex;
+            }
+        }
+        @media (min-width: 1024px) {
+            .nav-menu {
+                gap: 0.5rem;
+            }
+        }
+        .nav-menu li a {
+            color: #475569;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            padding: 8px 14px;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 500;
+        }
+        .nav-menu li a:hover {
+            color: #0f172a;
+            background: rgba(15, 23, 42, 0.05);
+        }
+
+        .nav-cta {
+            display: none;
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+            overflow: hidden;
+        }
+        .nav-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1DB9A0 0%, #14b8a6 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
+        }
+        .nav-cta:hover::before {
+            opacity: 1;
+        }
+        @media (min-width: 768px) {
+            .nav-cta {
+                display: inline-flex;
+            }
+        }
+
+        /* Mobile navbar login button - visible only on mobile */
+        .mobile-nav-login {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
+        @media (min-width: 768px) {
+            .mobile-nav-login {
+                display: none;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+            border: none;
+            cursor: pointer;
+            color: #1e293b;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        .mobile-menu-btn:hover {
+            background: #e2e8f0;
+        }
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        .mobile-close-btn {
+            display: none;
+        }
+
+        /* Mobile Menu Open State */
+        .nav-menu.open {
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffffff;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 1.1rem;
+            animation: fadeIn 0.2s ease;
+            margin: 0;
+            padding: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .nav-menu.open li a {
+            padding: 12px 24px;
+            display: block;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+        .nav-menu.open li a:hover {
+            background: #f1f5f9;
+        }
+        .nav-menu.open .mobile-close-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: #0f172a;
+            color: white;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .nav-menu.open .mobile-close-btn:hover {
+            background: #1e293b;
+            transform: scale(1.05);
+        }
+
+        /* Mobile login button - only show in mobile menu */
+        .mobile-login-btn {
+            display: none;
+        }
+        .nav-menu.open .mobile-login-btn {
+            display: block;
+        }
+
+        /* Fallback styles for Tailwind classes */
+        .size-7 { width: 1.75rem; height: 1.75rem; }
+        .size-10 { width: 2.5rem; height: 2.5rem; }
+        .text-slate-800 { color: #1e293b; }
+        .text-slate-900 { color: #0f172a; }
+        .text-slate-500 { color: #64748b; }
+        .text-slate-600 { color: #475569; }
+        .bg-slate-50 { background-color: #f8fafc; }
+        .bg-slate-200 { background-color: #e2e8f0; }
+        .bg-slate-800 { background-color: #1e293b; }
+        .bg-slate-900 { background-color: #0f172a; }
+        .hover\:bg-slate-900:hover { background-color: #0f172a; }
+        .hover\:text-slate-500:hover { color: #64748b; }
+        .border-white\/25 { border-color: rgba(255,255,255,0.25); }
+
+        /* Rotating Text Animation */
+        .rotating-text {
+            display: inline-block;
+            position: relative;
+            color: var(--teal-500);
+        }
+        .rotating-text .word {
+            display: inline-block;
+            opacity: 0;
+            position: absolute;
+            left: 0;
+            animation: rotateWord 9s infinite;
+        }
+        .rotating-text .word:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .rotating-text .word:nth-child(2) {
+            animation-delay: 3s;
+        }
+        .rotating-text .word:nth-child(3) {
+            animation-delay: 6s;
+        }
+        /* First word visible initially */
+        .rotating-text .word-placeholder {
+            visibility: hidden;
+        }
+        @keyframes rotateWord {
+            0%, 2% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            5%, 30% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            33%, 100% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+        .-space-x-3\.5 > :not([hidden]) ~ :not([hidden]) { margin-left: -0.875rem; }
+
+        /* Mobile menu classes */
+        @media (max-width: 767px) {
+            .max-md\:absolute { position: absolute; }
+            .max-md\:h-full { height: 100%; }
+            .max-md\:w-full { width: 100%; }
+            .max-md\:z-50 { z-index: 50; }
+            .max-md\:top-0 { top: 0; }
+            .max-md\:-left-full { left: -100%; }
+            .max-md\:left-0 { left: 0; }
+            .max-md\:backdrop-blur { backdrop-filter: blur(8px); }
+            .max-md\:bg-white\/70 { background-color: rgba(255,255,255,0.7); }
+            .max-md\:text-base { font-size: 1rem; line-height: 1.5rem; }
+            .max-md\:text-center { text-align: center; }
+            .max-md\:px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+            .max-md\:hidden { display: none; }
+            .max-md\:justify-center { justify-content: center; }
+        }
+        @media (min-width: 768px) {
+            .md\:hidden { display: none; }
+            .md\:flex-row { flex-direction: row; }
+            .md\:px-16 { padding-left: 4rem; padding-right: 4rem; }
+            .md\:mt-32 { margin-top: 8rem; }
+            .md\:pb-44 { padding-bottom: 11rem; }
+            .md\:text-6xl\/\[76px\] { font-size: 3.75rem; line-height: 76px; }
+            .md\:text-base { font-size: 1rem; line-height: 1.5rem; }
+            .md\:max-w-xs { max-width: 20rem; }
+            .md\:w-40 { width: 10rem; }
+        }
+        @media (min-width: 1024px) {
+            .lg\:px-24 { padding-left: 6rem; padding-right: 6rem; }
+            .lg\:max-w-lg { max-width: 32rem; }
+        }
+        @media (min-width: 1280px) {
+            .xl\:px-32 { padding-left: 8rem; padding-right: 8rem; }
+        }
+    </style>
+</head>
+
+<body style="background: #fafafa;">
+
+    <!-- Hero Section with Navigation -->
+    <section class="hero-bg pb-32 md:pb-44 text-slate-800 text-sm" style="padding-top: 90px;">
+        <!-- Navigation -->
+        <div class="navbar-sticky">
+            <div class="navbar-wrapper">
+                <nav class="navbar">
+                <a href="https://blinkstudy.in" class="nav-logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                    <div style="position: relative;">
+                        <img src="./logo.png" alt="BlinkStudy" class="logo-blink" style="width: 40px; height: 40px; object-fit: contain;">
+                    </div>
+                    <span style="font-weight: 700; font-size: 1.2rem; background: linear-gradient(135deg, #0f172a 0%, #334155 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">BlinkStudy</span>
+                </a>
+
+                <ul id="menu" class="nav-menu">
+                    <li onclick="closeNavbar()"><a href="#features">Features</a></li>
+                    <li onclick="closeNavbar()"><a href="#pricing">Plans</a></li>
+                    <li onclick="closeNavbar()"><a href="#testimonials">Reviews</a></li>
+                    <li onclick="closeNavbar()"><a href="./support.html">Support</a></li>
+                    <li class="mobile-login-btn" onclick="closeNavbar()">
+                        <a href="https://blinkstudy.in/login" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 14px 32px; border-radius: 12px; font-weight: 600; margin-top: 8px; display: inline-flex; align-items: center; gap: 8px;">
+                            Login
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 12h14"/>
+                                <path d="m12 5 7 7-7 7"/>
+                            </svg>
+                        </a>
+                    </li>
+
+                    <button id="close-menu" class="mobile-close-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 6 6 18" />
+                            <path d="m6 6 12 12" />
+                        </svg>
+                    </button>
+                </ul>
+
+                <a href="https://blinkstudy.in/login" class="nav-cta">
+                    <span style="display: flex; align-items: center; gap: 8px;">
+                        Get Started
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"/>
+                            <path d="m12 5 7 7-7 7"/>
+                        </svg>
+                    </span>
+                </a>
+
+                <!-- Mobile Login Button (visible on mobile only) -->
+                <a href="https://blinkstudy.in/login" class="mobile-nav-login">Login</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Your AI Study Companion for <span class="rotating-text"><span class="word">Success</span><span class="word">Learning</span><span class="word">Growth</span><span class="word-placeholder">Success</span></span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    Stuck on a problem? Get instant, step-by-step explanations. Scan questions, generate quizzes, chat with AI tutor, and master any subject.
+                </p>
+
+                <!-- Download Buttons -->
+                <div class="download-buttons">
+                    <a href="javascript:void(0)" onclick="showComingSoon()" aria-label="App Store" class="download-btn">
+                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/appDownload/appleStoreBtn.svg"
+                        alt="Download on App Store">
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.blinkstudy.app" aria-label="Google Play" class="download-btn">
+                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/appDownload/googlePlayBtn.svg"
+                            alt="Get it on Google Play">
+                    </a>
+                </div>
+
+                <!-- Social Proof -->
+                <div class="social-proof">
+                    <div class="avatar-stack">
+                        <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200" alt="Student">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200" alt="Student">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop" alt="Student">
+                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=200&auto=format&fit=crop&q=60" alt="Student">
+                        <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=200&auto=format&fit=crop&q=60" alt="Student">
+                    </div>
+                    <div class="rating-info">
+                        <div class="stars">
+                            <svg width="14" height="14" viewBox="0 0 13 12" fill="none"><path d="M5.85536 0.463527C6.00504 0.00287118 6.65674 0.00287028 6.80642 0.463526L7.82681 3.60397C7.89375 3.80998 8.08572 3.94946 8.30234 3.94946H11.6044C12.0888 3.94946 12.2901 4.56926 11.8983 4.85397L9.22687 6.79486C9.05162 6.92219 8.97829 7.14787 9.04523 7.35388L10.0656 10.4943C10.2153 10.955 9.68806 11.338 9.2962 11.0533L6.62478 9.11244C6.44954 8.98512 6.21224 8.98512 6.037 9.11244L3.36558 11.0533C2.97372 11.338 2.44648 10.955 2.59616 10.4943L3.61655 7.35388C3.68349 7.14787 3.61016 6.92219 3.43491 6.79486L0.763497 4.85397C0.37164 4.56927 0.573027 3.94946 1.05739 3.94946H4.35944C4.57606 3.94946 4.76803 3.80998 4.83497 3.60397L5.85536 0.463527Z" fill="#FF8F20"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 13 12" fill="none"><path d="M5.85536 0.463527C6.00504 0.00287118 6.65674 0.00287028 6.80642 0.463526L7.82681 3.60397C7.89375 3.80998 8.08572 3.94946 8.30234 3.94946H11.6044C12.0888 3.94946 12.2901 4.56926 11.8983 4.85397L9.22687 6.79486C9.05162 6.92219 8.97829 7.14787 9.04523 7.35388L10.0656 10.4943C10.2153 10.955 9.68806 11.338 9.2962 11.0533L6.62478 9.11244C6.44954 8.98512 6.21224 8.98512 6.037 9.11244L3.36558 11.0533C2.97372 11.338 2.44648 10.955 2.59616 10.4943L3.61655 7.35388C3.68349 7.14787 3.61016 6.92219 3.43491 6.79486L0.763497 4.85397C0.37164 4.56927 0.573027 3.94946 1.05739 3.94946H4.35944C4.57606 3.94946 4.76803 3.80998 4.83497 3.60397L5.85536 0.463527Z" fill="#FF8F20"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 13 12" fill="none"><path d="M5.85536 0.463527C6.00504 0.00287118 6.65674 0.00287028 6.80642 0.463526L7.82681 3.60397C7.89375 3.80998 8.08572 3.94946 8.30234 3.94946H11.6044C12.0888 3.94946 12.2901 4.56926 11.8983 4.85397L9.22687 6.79486C9.05162 6.92219 8.97829 7.14787 9.04523 7.35388L10.0656 10.4943C10.2153 10.955 9.68806 11.338 9.2962 11.0533L6.62478 9.11244C6.44954 8.98512 6.21224 8.98512 6.037 9.11244L3.36558 11.0533C2.97372 11.338 2.44648 10.955 2.59616 10.4943L3.61655 7.35388C3.68349 7.14787 3.61016 6.92219 3.43491 6.79486L0.763497 4.85397C0.37164 4.56927 0.573027 3.94946 1.05739 3.94946H4.35944C4.57606 3.94946 4.76803 3.80998 4.83497 3.60397L5.85536 0.463527Z" fill="#FF8F20"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 13 12" fill="none"><path d="M5.85536 0.463527C6.00504 0.00287118 6.65674 0.00287028 6.80642 0.463526L7.82681 3.60397C7.89375 3.80998 8.08572 3.94946 8.30234 3.94946H11.6044C12.0888 3.94946 12.2901 4.56926 11.8983 4.85397L9.22687 6.79486C9.05162 6.92219 8.97829 7.14787 9.04523 7.35388L10.0656 10.4943C10.2153 10.955 9.68806 11.338 9.2962 11.0533L6.62478 9.11244C6.44954 8.98512 6.21224 8.98512 6.037 9.11244L3.36558 11.0533C2.97372 11.338 2.44648 10.955 2.59616 10.4943L3.61655 7.35388C3.68349 7.14787 3.61016 6.92219 3.43491 6.79486L0.763497 4.85397C0.37164 4.56927 0.573027 3.94946 1.05739 3.94946H4.35944C4.57606 3.94946 4.76803 3.80998 4.83497 3.60397L5.85536 0.463527Z" fill="#FF8F20"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 13 12" fill="none"><path d="M5.85536 0.463527C6.00504 0.00287118 6.65674 0.00287028 6.80642 0.463526L7.82681 3.60397C7.89375 3.80998 8.08572 3.94946 8.30234 3.94946H11.6044C12.0888 3.94946 12.2901 4.56926 11.8983 4.85397L9.22687 6.79486C9.05162 6.92219 8.97829 7.14787 9.04523 7.35388L10.0656 10.4943C10.2153 10.955 9.68806 11.338 9.2962 11.0533L6.62478 9.11244C6.44954 8.98512 6.21224 8.98512 6.037 9.11244L3.36558 11.0533C2.97372 11.338 2.44648 10.955 2.59616 10.4943L3.61655 7.35388C3.68349 7.14787 3.61016 6.92219 3.43491 6.79486L0.763497 4.85397C0.37164 4.56927 0.573027 3.94946 1.05739 3.94946H4.35944C4.57606 3.94946 4.76803 3.80998 4.83497 3.60397L5.85536 0.463527Z" fill="#FF8F20"/></svg>
+                        </div>
+                        <p class="rating-text">Used by 10,000+ students</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connected Avatars Network -->
+            <div class="hero-network" style="position: relative; width: 100%; max-width: 550px; height: 480px;">
+                <!-- SVG Lines connecting avatars -->
+                <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;" viewBox="0 0 500 480" preserveAspectRatio="xMidYMid meet">
+                    <line x1="120" y1="90" x2="250" y2="190" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,5"/>
+                    <line x1="250" y1="190" x2="400" y2="110" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,5"/>
+                    <line x1="70" y1="230" x2="180" y2="330" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,5"/>
+                    <line x1="180" y1="330" x2="350" y2="380" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,5"/>
+                    <line x1="250" y1="190" x2="180" y2="330" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,5"/>
+                    <line x1="400" y1="110" x2="350" y2="380" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5,5"/>
+                </svg>
+
+                <!-- Student Avatars - Indian Students -->
+                <div style="position: absolute; top: 40px; left: 80px; width: 80px; height: 80px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; z-index: 1;">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Student" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <div style="position: absolute; top: 140px; left: 210px; width: 95px; height: 95px; border-radius: 50%; border: 4px solid #1DB9A0; box-shadow: 0 4px 25px rgba(29,185,160,0.4); overflow: hidden; z-index: 2;">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Student" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <div style="position: absolute; top: 60px; right: 60px; width: 85px; height: 85px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; z-index: 1;">
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Student" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <div style="position: absolute; top: 180px; left: 30px; width: 75px; height: 75px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; z-index: 1;">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Student" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <div style="position: absolute; bottom: 100px; left: 140px; width: 100px; height: 100px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; z-index: 1;">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Student" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <div style="position: absolute; bottom: 60px; right: 90px; width: 80px; height: 80px; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; z-index: 1;">
+                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Student" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <!-- Floating badges -->
+                <div style="position: absolute; top: 15px; right: 160px; background: #fff; padding: 10px 18px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #0f172a; z-index: 3;">
+                    <span style="color: #1DB9A0;">●</span> Class 12 Topper
+                </div>
+
+                <div style="position: absolute; bottom: 170px; left: 0; background: #fff; padding: 10px 18px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #0f172a; z-index: 3;">
+                    <span style="color: #f59e0b;">●</span> CBSE Student
+                </div>
+
+                <div style="position: absolute; bottom: 20px; right: 30px; background: #fff; padding: 10px 18px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: #0f172a; z-index: 3;">
+                    <span style="color: #8b5cf6;">●</span> Class 10
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academic Capabilities Section -->
+    <section id="features" class="scroll-reveal" style="background: radial-gradient(ellipse 80% 60% at 0% 100%, rgba(200, 180, 240, 0.4) 0%, transparent 50%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(255, 200, 150, 0.4) 0%, transparent 50%); border-top: 1px solid rgba(229, 231, 235, 0.5); border-bottom: 1px solid rgba(229, 231, 235, 0.5);">
+        <div class="capabilities-grid max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 md:divide-x divide-gray-200">
+            <!-- Left Side - Sticky -->
+            <div class="capabilities-left p-6 pt-16 md:p-12" style="position: sticky; top: 80px; height: fit-content; align-self: start;">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Academic Capabilities</h2>
+                <p class="text-gray-600 mt-4 text-base md:text-lg leading-relaxed">
+                    Everything you need to ace your exams - designed for CBSE, ICSE, JEE, NEET and real-world learning.
+                </p>
+
+                <!-- CTA Box -->
+                <div class="bg-teal-500 rounded-xl p-6 mt-10">
+                    <p class="text-white text-lg font-medium leading-relaxed">
+                        Trusted by 10,000+ students preparing for Board Exams, JEE & NEET.
+                    </p>
+                    <a href="https://play.google.com/store/apps/details?id=com.blinkstudy.app" class="mt-4 px-5 py-2.5 bg-white text-gray-900 font-medium rounded-full hover:bg-gray-100 transition-colors" style="display: inline-flex; align-items: center; gap: 8px;">
+                        Download App
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Side - Feature Cards -->
+            <div class="p-4 md:p-6" style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- Scan & Solve -->
+                <div class="feature-card flex flex-col items-start p-6 rounded-xl" style="background: #FFEDD5; position: sticky; top: 80px; z-index: 1;">
+                    <div style="background: #F97316; padding: 10px; border-radius: 8px; color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 7V5a2 2 0 0 1 2-2h2"/>
+                            <path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+                            <path d="M21 17v2a2 2 0 0 1-2 2h-2"/>
+                            <path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mt-4 text-gray-900">Scan & Solve</h3>
+                    <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                        Snap a photo of any Math, Physics or Chemistry problem. Get instant step-by-step solutions with detailed explanations.
+                    </p>
+                </div>
+
+                <!-- AI Quizzes -->
+                <div class="feature-card flex flex-col items-start p-6 rounded-xl" style="background: #DCFCE7; position: sticky; top: 100px; z-index: 2;">
+                    <div style="background: #22C55E; padding: 10px; border-radius: 8px; color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"/>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mt-4 text-gray-900">AI Quizzes</h3>
+                    <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                        Generate personalized quizzes on any topic instantly. Test with MCQs, short answers, and reasoning questions.
+                    </p>
+                </div>
+
+                <!-- AI Tutor Chat -->
+                <div class="feature-card flex flex-col items-start p-6 rounded-xl" style="background: #DBEAFE; position: sticky; top: 120px; z-index: 3;">
+                    <div style="background: #3B82F6; padding: 10px; border-radius: 8px; color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mt-4 text-gray-900">AI Tutor Chat</h3>
+                    <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                        Chat with your personal AI tutor 24/7. Ask doubts, get explanations, and learn at your own pace.
+                    </p>
+                </div>
+
+                <!-- Whiteboard Videos -->
+                <div class="feature-card flex flex-col items-start p-6 rounded-xl" style="background: #FFE4E6; position: sticky; top: 140px; z-index: 4;">
+                    <div style="background: #F43F5E; padding: 10px; border-radius: 8px; color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="23 7 16 12 23 17 23 7"/>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mt-4 text-gray-900">Whiteboard Videos</h3>
+                    <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                        Watch AI-generated animated whiteboard videos explaining complex topics. Visual learning made easy.
+                    </p>
+                </div>
+
+                <!-- Exam Prep -->
+                <div class="feature-card flex flex-col items-start p-6 rounded-xl" style="background: #F3E8FF; position: sticky; top: 160px; z-index: 5;">
+                    <div style="background: #A855F7; padding: 10px; border-radius: 8px; color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mt-4 text-gray-900">Exam Prep</h3>
+                    <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                        Practice with previous year questions, mock tests, and chapter-wise preparation for JEE, NEET & Boards.
+                    </p>
+                </div>
+
+                <!-- Topic Quiz -->
+                <div class="feature-card flex flex-col items-start p-6 rounded-xl" style="background: #FEF3C7; position: sticky; top: 180px; z-index: 6;">
+                    <div style="background: #F59E0B; padding: 10px; border-radius: 8px; color: white;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                            <path d="M12 17h.01"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold mt-4 text-gray-900">Topic Quiz</h3>
+                    <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+                        Master any topic with focused quizzes. Track your progress and identify weak areas to improve.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="scroll-reveal" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 16px; background: radial-gradient(ellipse 70% 50% at 100% 80%, rgba(200, 180, 240, 0.35) 0%, transparent 50%), radial-gradient(ellipse 60% 60% at 0% 20%, rgba(255, 200, 150, 0.35) 0%, transparent 50%);">
+        <div style="width: 100%; max-width: 900px; margin: 0 auto;">
+            <div style="margin-bottom: 40px;">
+                <h2 style="font-size: 1.875rem; font-weight: 600; color: #0a0a0a; text-align: center; margin-bottom: 16px;">Most asked FAQ's</h2>
+                <p style="color: #262626; max-width: 416px; font-size: 14px; text-align: center; margin: 0 auto;">We're here to help you and solve doubts. Find answers to the most common questions below.</p>
+            </div>
+            <div id="faqs" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 32px; align-items: start;"></div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="scroll-reveal" style="padding: 80px 24px; background: radial-gradient(ellipse 60% 70% at 0% 30%, rgba(200, 180, 240, 0.35) 0%, transparent 50%), radial-gradient(ellipse 70% 60% at 100% 70%, rgba(255, 200, 150, 0.35) 0%, transparent 50%);">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 48px;">
+                <span style="display: inline-block; background: linear-gradient(135deg, #1DB9A0, #14b8a6); color: white; padding: 6px 16px; border-radius: 50px; font-size: 13px; font-weight: 600; margin-bottom: 16px;">PRICING</span>
+                <h2 style="font-size: 2.25rem; font-weight: 700; color: #0f172a; margin-bottom: 12px;">Choose Your Plan</h2>
+                <p style="font-size: 15px; color: #64748b; max-width: 500px; margin: 0 auto;">Start free and upgrade as you grow. All plans include core features.</p>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-items: start;">
+
+                <!-- Free Plan -->
+                <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 28px; transition: all 0.3s ease;">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #0f172a; margin-bottom: 8px;">Free</h3>
+                        <p style="font-size: 13px; color: #64748b;">Perfect to get started</p>
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <span style="font-size: 2.5rem; font-weight: 700; color: #0f172a;">₹0</span>
+                        <span style="font-size: 14px; color: #64748b;">/forever</span>
+                    </div>
+                    <a href="https://blinkstudy.in/register" style="display: block; text-align: center; padding: 12px 24px; background: #f1f5f9; color: #0f172a; font-weight: 600; border-radius: 10px; text-decoration: none; margin-bottom: 24px; transition: all 0.2s;">Get Started</a>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            10 AI Chat / Day
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            2 Scan & Solve / Day
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            2 Whiteboard Videos / Month
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #94a3b8;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            Ads Supported
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Lite Plan -->
+                <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 28px; transition: all 0.3s ease;">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #0f172a; margin-bottom: 8px;">Lite</h3>
+                        <p style="font-size: 13px; color: #64748b;">For regular learners</p>
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <span style="font-size: 2.5rem; font-weight: 700; color: #0f172a;">₹99</span>
+                        <span style="font-size: 14px; color: #64748b;">/month</span>
+                    </div>
+                    <a href="https://blinkstudy.in/plans" style="display: block; text-align: center; padding: 12px 24px; background: #f1f5f9; color: #0f172a; font-weight: 600; border-radius: 10px; text-decoration: none; margin-bottom: 24px; transition: all 0.2s;">Choose Lite</a>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Unlimited AI Chat
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            10 Scan & Solve / Day
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            5 Whiteboard Videos / Month
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Ad-Free Experience
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pro Plan (Popular) -->
+                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 2px solid #1DB9A0; border-radius: 20px; padding: 28px; position: relative; transform: scale(1.02);">
+                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #1DB9A0, #14b8a6); color: white; padding: 4px 16px; border-radius: 50px; font-size: 12px; font-weight: 600;">MOST POPULAR</div>
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #fff; margin-bottom: 8px;">Pro</h3>
+                        <p style="font-size: 13px; color: #94a3b8;">For serious students</p>
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <span style="font-size: 2.5rem; font-weight: 700; color: #fff;">₹199</span>
+                        <span style="font-size: 14px; color: #94a3b8;">/month</span>
+                    </div>
+                    <a href="https://blinkstudy.in/plans" style="display: block; text-align: center; padding: 12px 24px; background: #1DB9A0; color: #fff; font-weight: 600; border-radius: 10px; text-decoration: none; margin-bottom: 24px; transition: all 0.2s;">Choose Pro</a>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #e2e8f0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Unlimited AI Chat
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #e2e8f0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            30 Scan & Solve / Day
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #e2e8f0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            15 Whiteboard Videos / Month
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #e2e8f0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Unlimited Topic Quiz
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #e2e8f0;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Priority Support
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Ultimate Plan -->
+                <div style="background: #fff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 28px; transition: all 0.3s ease;">
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 1.25rem; font-weight: 600; color: #0f172a; margin-bottom: 8px;">Ultimate</h3>
+                        <p style="font-size: 13px; color: #64748b;">For power users</p>
+                    </div>
+                    <div style="margin-bottom: 24px;">
+                        <span style="font-size: 2.5rem; font-weight: 700; color: #0f172a;">₹499</span>
+                        <span style="font-size: 14px; color: #64748b;">/month</span>
+                    </div>
+                    <a href="https://blinkstudy.in/plans" style="display: block; text-align: center; padding: 12px 24px; background: #f1f5f9; color: #0f172a; font-weight: 600; border-radius: 10px; text-decoration: none; margin-bottom: 24px; transition: all 0.2s;">Choose Ultimate</a>
+                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Everything in Pro
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            100 Scan & Solve / Day
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            30 Whiteboard Videos / Month
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Unlimited History
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #475569;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1DB9A0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            HD Video Quality
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Testimonials Section -->
+    <style>
+        @keyframes marqueeScroll {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .marquee-inner {
+            animation: marqueeScroll 25s linear infinite;
+        }
+
+        .marquee-reverse {
+            animation-direction: reverse;
+        }
+        .size-11 { width: 2.75rem; height: 2.75rem; }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            /* FAQ Grid - 1 column on mobile */
+            #faqs {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+
+            /* Footer Grid - stack on mobile */
+            .footer-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 24px !important;
+                text-align: left;
+            }
+
+            /* Pricing Grid - 2 columns on tablet, 1 on mobile */
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 16px !important;
+            }
+
+            .pricing-grid > div:nth-child(3) {
+                transform: scale(1) !important;
+            }
+
+            /* Footer brand section full width */
+            .footer-grid > div:first-child {
+                grid-column: 1 / -1;
+            }
+
+            /* Academic Capabilities - stack on mobile */
+            .capabilities-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Academic left side - not sticky on mobile */
+            .capabilities-left {
+                position: relative !important;
+                top: auto !important;
+            }
+
+            /* Feature cards - not sticky on mobile */
+            .feature-card {
+                position: relative !important;
+                top: auto !important;
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.5s ease, transform 0.5s ease;
+            }
+
+            .feature-card.animate-in {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            /* Hero content padding */
+            .hero-content {
+                padding: 1.5rem 1rem 2rem !important;
+                gap: 1.5rem !important;
+            }
+
+            /* Hero title smaller on mobile */
+            .hero-title {
+                font-size: 1.5rem !important;
+                margin-bottom: 1rem !important;
+                line-height: 1.3 !important;
+            }
+
+            /* Hero subtitle smaller */
+            .hero-subtitle {
+                font-size: 0.85rem !important;
+                margin-bottom: 1rem !important;
+                line-height: 1.5 !important;
+            }
+
+            /* Hero image/network smaller */
+            .hero-image img {
+                max-width: 280px !important;
+            }
+
+            /* Hero network - hide on mobile */
+            .hero-network {
+                display: none !important;
+            }
+
+            /* Download buttons smaller */
+            .download-buttons {
+                margin-bottom: 1.5rem !important;
+            }
+
+            .download-btn img {
+                height: 38px !important;
+            }
+
+            /* Social proof smaller */
+            .avatar-stack img {
+                width: 28px !important;
+                height: 28px !important;
+            }
+
+            .rating-text {
+                font-size: 0.7rem !important;
+            }
+
+            /* Hero section less padding bottom */
+            .hero-bg {
+                padding-bottom: 4rem !important;
+            }
+
+            /* Testimonial cards smaller on mobile */
+            .testimonial-card {
+                width: 260px !important;
+                padding: 16px !important;
+            }
+
+            /* Section padding on mobile */
+            section {
+                padding-left: 16px !important;
+                padding-right: 16px !important;
+            }
+
+            /* Footer bottom bar stack */
+            .footer-bottom {
+                flex-direction: column !important;
+                text-align: center !important;
+                gap: 12px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Even smaller screens */
+            .footer-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .hero-title {
+                font-size: 1.35rem !important;
+            }
+
+            .hero-subtitle {
+                font-size: 0.8rem !important;
+            }
+
+            .hero-content {
+                padding: 1rem 0.75rem 1.5rem !important;
+            }
+
+            .hero-image img {
+                max-width: 220px !important;
+            }
+
+            .download-btn img {
+                height: 36px !important;
+            }
+
+            .testimonial-card {
+                width: 240px !important;
+            }
+
+            /* Navbar smaller */
+            .navbar {
+                padding: 0.5rem 1rem !important;
+            }
+
+            .nav-logo {
+                font-size: 1.25rem !important;
+            }
+        }
+    </style>
+
+    <!-- Testimonials Section -->
+    <section class="scroll-reveal" style="padding: 80px 24px; background: radial-gradient(ellipse 50% 70% at 0% 50%, rgba(200, 180, 240, 0.3) 0%, transparent 50%), radial-gradient(ellipse 60% 60% at 100% 50%, rgba(255, 200, 150, 0.3) 0%, transparent 50%);">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 48px;">
+                <h2 style="font-size: 2rem; font-weight: 700; color: #0f172a; margin-bottom: 12px;">What Students Say</h2>
+                <p style="font-size: 15px; color: #64748b; max-width: 400px; margin: 0 auto;">Join thousands of students already learning smarter with BlinkStudy</p>
+            </div>
+
+            <!-- Row 1 -->
+            <div style="position: relative; overflow: hidden; margin-bottom: 16px;">
+                <div style="position: absolute; left: 0; top: 0; height: 100%; width: 100px; z-index: 10; pointer-events: none; background: linear-gradient(to right, rgba(248,250,252,0.85), transparent);"></div>
+                <div class="marquee-inner" id="row1" style="display: flex; min-width: 200%; padding: 8px 0;"></div>
+                <div style="position: absolute; right: 0; top: 0; height: 100%; width: 100px; z-index: 10; pointer-events: none; background: linear-gradient(to left, rgba(248,250,252,0.85), transparent);"></div>
+            </div>
+
+            <!-- Row 2 -->
+            <div style="position: relative; overflow: hidden;">
+                <div style="position: absolute; left: 0; top: 0; height: 100%; width: 100px; z-index: 10; pointer-events: none; background: linear-gradient(to right, rgba(248,250,252,0.85), transparent);"></div>
+                <div class="marquee-inner marquee-reverse" id="row2" style="display: flex; min-width: 200%; padding: 8px 0;"></div>
+                <div style="position: absolute; right: 0; top: 0; height: 100%; width: 100px; z-index: 10; pointer-events: none; background: linear-gradient(to left, rgba(248,250,252,0.85), transparent);"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="padding: 60px 24px 30px; background: radial-gradient(ellipse 60% 80% at 0% 100%, rgba(100, 80, 140, 0.3) 0%, transparent 50%), radial-gradient(ellipse 50% 70% at 100% 0%, rgba(150, 100, 80, 0.2) 0%, transparent 50%), #0f172a; color: #fff;">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <!-- Main Footer Content -->
+            <div class="footer-grid" style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px;">
+                <!-- Brand Column -->
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+                        <img src="./logo.png" alt="BlinkStudy" class="logo-blink" style="width: 40px; height: 40px; object-fit: contain;">
+                        <span style="font-size: 1.5rem; font-weight: 700;">BlinkStudy</span>
+                    </div>
+                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.7; max-width: 280px; margin-bottom: 20px;">
+                        Your AI-powered study companion. Get instant solutions, AI tutoring, and personalized quizzes. Made with ❤️ in India.
+                    </p>
+                    <!-- Social Links -->
+                    <div style="display: flex; gap: 12px;">
+                        <a href="https://instagram.com/blinkstudy" style="width: 38px; height: 38px; background: #1e293b; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; transition: all 0.2s;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        </a>
+                        <a href="https://twitter.com/blinkstudy" style="width: 38px; height: 38px; background: #1e293b; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; transition: all 0.2s;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </a>
+                        <a href="https://youtube.com/@blinkstudy" style="width: 38px; height: 38px; background: #1e293b; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #94a3b8; text-decoration: none; transition: all 0.2s;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Column -->
+                <div>
+                    <h4 style="font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;">Product</h4>
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <a href="#features" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Features</a>
+                        <a href="./plans.html" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Pricing</a>
+                        <a href="https://play.google.com/store/apps/details?id=com.blinkstudy.app" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Download App</a>
+                        <a href="https://blinkstudy.in/login" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Login</a>
+                    </div>
+                </div>
+
+                <!-- Resources Column -->
+                <div>
+                    <h4 style="font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;">Resources</h4>
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <a href="https://blinkstudy.in/about" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">About Us</a>
+                        <a href="#faq" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">FAQ</a>
+                        <a href="https://blinkstudy.in/support" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Support</a>
+                        <a href="https://blinkstudy.in/page/contact-us" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Legal Column -->
+                <div>
+                    <h4 style="font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;">Legal</h4>
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <a href="https://blinkstudy.in/page/privacy-policy" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Privacy Policy</a>
+                        <a href="https://blinkstudy.in/page/terms-of-service" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Terms of Service</a>
+                        <a href="https://blinkstudy.in/page/cancellation-refund-policy" style="color: #94a3b8; text-decoration: none; font-size: 14px; transition: color 0.2s;">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="footer-bottom" style="border-top: 1px solid #1e293b; padding-top: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+                <p style="color: #64748b; font-size: 13px;">© 2024 BlinkStudy. All rights reserved.</p>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #64748b; font-size: 13px;">Made with</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#ef4444" stroke="#ef4444" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    <span style="color: #64748b; font-size: 13px;">in India</span>
+                    <img src="https://flagcdn.com/20x15/in.png" alt="India" style="margin-left: 4px; border-radius: 2px;">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Coming Soon Toast -->
+    <div id="coming-soon-toast" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); background: white; padding: 32px 48px; border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); z-index: 10000; opacity: 0; pointer-events: none; transition: all 0.3s ease; text-align: center;">
+        <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #1DB9A0, #0ea5e9); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                <line x1="12" y1="2" x2="12" y2="12"/>
+            </svg>
+        </div>
+        <h3 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Coming Soon!</h3>
+        <p style="color: #64748b; font-size: 15px; margin-bottom: 20px;">iOS app is under development.<br>Download on Android now!</p>
+        <a href="https://play.google.com/store/apps/details?id=com.blinkstudy.app" style="display: inline-block; background: #1DB9A0; color: white; padding: 12px 28px; border-radius: 50px; font-weight: 600; text-decoration: none; font-size: 14px;">Get Android App</a>
+    </div>
+    <div id="toast-overlay" onclick="hideComingSoon()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;"></div>
+
+    <script>
+        // Coming Soon Toast
+        function showComingSoon() {
+            const toast = document.getElementById('coming-soon-toast');
+            const overlay = document.getElementById('toast-overlay');
+            toast.style.opacity = '1';
+            toast.style.transform = 'translate(-50%, -50%) scale(1)';
+            toast.style.pointerEvents = 'auto';
+            overlay.style.opacity = '1';
+            overlay.style.pointerEvents = 'auto';
+        }
+
+        function hideComingSoon() {
+            const toast = document.getElementById('coming-soon-toast');
+            const overlay = document.getElementById('toast-overlay');
+            toast.style.opacity = '0';
+            toast.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            toast.style.pointerEvents = 'none';
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+        }
+        const menu = document.getElementById('menu');
+        const closeMenu = document.getElementById('close-menu');
+        const openMenu = document.getElementById('open-menu');
+
+        if (openMenu) {
+            openMenu.addEventListener('click', () => {
+                menu.classList.add('open');
+            });
+        }
+
+        function closeNavbar() {
+            if (menu) menu.classList.remove('open');
+        }
+
+        if (closeMenu) {
+            closeMenu.addEventListener('click', () => {
+                closeNavbar();
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Mobile scroll animation for feature cards
+        if (window.innerWidth <= 768) {
+            const featureCards = document.querySelectorAll('.feature-card');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animate-in');
+                        }, index * 100);
+                    }
+                });
+            }, observerOptions);
+
+            featureCards.forEach(card => observer.observe(card));
+        }
+
+        // FAQ Section
+        const faqsData = [
+            {
+                question: "What is BlinkStudy?",
+                answer: "BlinkStudy is an AI-powered study companion app for Indian students. Scan problems, generate quizzes, chat with AI tutor, and watch whiteboard videos."
+            },
+            {
+                question: "Which subjects are supported?",
+                answer: "Math, Physics, Chemistry, Biology and more. Perfect for CBSE, ICSE, State Boards, JEE, NEET preparation."
+            },
+            {
+                question: "Is BlinkStudy free to use?",
+                answer: "Yes! Free plan available with daily limits. Upgrade to Lite, Pro, or Ultimate for more features and unlimited access."
+            },
+            {
+                question: "How accurate is Scan & Solve?",
+                answer: "Highly accurate with step-by-step explanations. Works best with clear, well-lit photos of printed or handwritten problems."
+            },
+            {
+                question: "Can I use it offline?",
+                answer: "Some features require internet connection. However, you can view your saved history and downloaded content offline."
+            },
+            {
+                question: "How do whiteboard videos work?",
+                answer: "Our AI generates animated whiteboard videos explaining any topic you request. Visual learning made easy with step-by-step animations."
+            },
+            {
+                question: "Is my data safe?",
+                answer: "Yes, we use industry-standard encryption to protect your data. We never share your personal information with third parties."
+            },
+            {
+                question: "How do I contact support?",
+                answer: "Email us at support@blinkstudy.in or use the in-app chat. We typically respond within 24 hours."
+            }
+        ];
+
+        let faqOpen = null;
+
+        document.getElementById('faqs').innerHTML = faqsData.map((faq, i) => `
+            <div class="faq-item" data-index="${i}" style="background: #f1f5f9 !important; padding: 18px 20px !important; border-radius: 14px !important; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;">
+                <div style="display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 12px !important;">
+                    <span style="font-size: 14px !important; font-weight: 500 !important; color: #1e293b !important;">${faq.question}</span>
+                    <div class="faq-icon" style="color: #64748b !important; padding: 6px !important; border-radius: 8px !important; flex-shrink: 0 !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    </div>
+                </div>
+                <div class="faq-answer" style="display: grid !important; grid-template-rows: 0fr !important; opacity: 0 !important; transition: all 0.3s ease !important;">
+                    <div style="overflow: hidden !important;">
+                        <p style="font-size: 14px !important; color: #64748b !important; line-height: 1.6 !important; margin-top: 12px !important;">${faq.answer}</p>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.onclick = () => {
+                const i = item.dataset.index;
+                const answer = item.querySelector('.faq-answer');
+                const icon = item.querySelector('.faq-icon');
+
+                if (faqOpen === i) {
+                    answer.style.gridTemplateRows = '0fr';
+                    answer.style.opacity = '0';
+                    icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>';
+                    icon.style.backgroundColor = 'transparent';
+                    faqOpen = null;
+                } else {
+                    if (faqOpen !== null) {
+                        const prev = document.querySelector(`.faq-item[data-index="${faqOpen}"]`);
+                        prev.querySelector('.faq-answer').style.gridTemplateRows = '0fr';
+                        prev.querySelector('.faq-answer').style.opacity = '0';
+                        prev.querySelector('.faq-icon').innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>';
+                        prev.querySelector('.faq-icon').style.backgroundColor = 'transparent';
+                    }
+                    answer.style.gridTemplateRows = '1fr';
+                    answer.style.opacity = '1';
+                    icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>';
+                    icon.style.backgroundColor = '#e2e8f0';
+                    faqOpen = i;
+                }
+            };
+        });
+
+        // Marquee Testimonials - Indian Students
+        const cardsData = [
+            {
+                image: 'https://randomuser.me/api/portraits/men/32.jpg',
+                name: 'Rahul Sharma',
+                handle: 'Class 12, Delhi',
+                testimonial: 'BlinkStudy helped me score 95% in my boards! The AI tutor explains concepts so clearly.'
+            },
+            {
+                image: 'https://randomuser.me/api/portraits/women/44.jpg',
+                name: 'Priya Patel',
+                handle: 'Class 11, Gujarat',
+                testimonial: 'Scan & Solve is a game changer! I just click a photo and get step-by-step solutions instantly.'
+            },
+            {
+                image: 'https://randomuser.me/api/portraits/men/45.jpg',
+                name: 'Amit Kumar',
+                handle: 'Class 12, Bihar',
+                testimonial: 'The whiteboard videos made complex Physics topics so easy to understand. Highly recommend!'
+            },
+            {
+                image: 'https://randomuser.me/api/portraits/women/68.jpg',
+                name: 'Sneha Reddy',
+                handle: 'CBSE 12th, Hyderabad',
+                testimonial: 'Best study app for CBSE students! The AI quizzes help me practice before every exam.'
+            },
+            {
+                image: 'https://randomuser.me/api/portraits/women/65.jpg',
+                name: 'Ananya Singh',
+                handle: 'Class 10, Lucknow',
+                testimonial: 'Board exam prep became so much easier with BlinkStudy. The exam prep feature is super helpful!'
+            },
+            {
+                image: 'https://randomuser.me/api/portraits/men/22.jpg',
+                name: 'Vikram Joshi',
+                handle: 'Class 12, Rajasthan',
+                testimonial: 'I use BlinkStudy daily for my studies. The topic quizzes are excellent!'
+            },
+            {
+                image: 'https://randomuser.me/api/portraits/women/33.jpg',
+                name: 'Kavya Menon',
+                handle: 'Class 11, Kerala',
+                testimonial: 'The AI chat feature cleared all my Chemistry doubts. Its like having a personal tutor 24/7!'
+            },
+            {
+                image: 'https://randomuser.me/api/portraits/men/67.jpg',
+                name: 'Arjun Verma',
+                handle: 'Class 12, Bhopal',
+                testimonial: 'Whiteboard videos for Maths are incredible! Complex integration problems explained step by step.'
+            },
+        ];
+
+        const row1 = document.getElementById('row1');
+        const row2 = document.getElementById('row2');
+
+        const createCard = (card) => `
+            <div class="testimonial-card" style="padding: 20px; border-radius: 16px; margin: 0 12px; background: #fff; border: 1px solid #e2e8f0; width: 300px; flex-shrink: 0; transition: all 0.2s ease;">
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <img style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" src="${card.image}" alt="${card.name}">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 14px; font-weight: 600; color: #0f172a;">${card.name}</span>
+                        <span style="font-size: 12px; color: #64748b;">${card.handle}</span>
+                    </div>
+                </div>
+                <p style="font-size: 14px; padding-top: 16px; color: #334155; line-height: 1.5;">${card.testimonial || 'BlinkStudy helped me clear my doubts instantly. The AI tutor is amazing!'}</p>
+            </div>
+        `;
+
+        const renderCards = (target) => {
+            const doubled = [...cardsData, ...cardsData];
+            doubled.forEach(card => target.insertAdjacentHTML('beforeend', createCard(card)));
+        };
+
+        renderCards(row1);
+        renderCards(row2);
+
+        // Scroll Reveal Animation
+        const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    scrollObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        });
+
+        scrollRevealElements.forEach(el => scrollObserver.observe(el));
+
+        // Pricing cards stagger animation
+        const pricingGrid = document.querySelector('.pricing-grid');
+        if (pricingGrid) {
+            const pricingObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const cards = entry.target.querySelectorAll(':scope > div');
+                        cards.forEach((card, index) => {
+                            card.style.opacity = '0';
+                            card.style.transform = 'translateY(30px)';
+                            setTimeout(() => {
+                                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                                card.style.opacity = '1';
+                                card.style.transform = 'translateY(0)';
+                            }, index * 150);
+                        });
+                        pricingObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            pricingObserver.observe(pricingGrid);
+        }
+    </script>
+</body>
+
+</html>

@@ -236,116 +236,126 @@ class AIChatController extends Controller
 - You can use common Hindi words like 'samjho', 'dekho' for connection",
         };
 
-        $basePrompt = "You are BlinkStudy - a friendly educational AI assistant for Indian students. You love helping students learn!
+        $basePrompt = "You are **Blinky** - the fun, friendly AI Tutor from BlinkStudy! <icon name=\"bulb\"/>
 
-🎓 YOUR ROLE:
-- Help with education, study, learning, and academic questions
-- Be friendly, encouraging, and supportive
-- When users ask non-educational questions, gently guide them back to study topics
-- NEVER refuse to answer - always be helpful and find an educational angle
+🎭 YOUR PERSONALITY:
+- You're like that cool senior/bhaiya who makes studying fun!
+- Enthusiastic, encouraging, slightly playful
+- You celebrate small wins: \"Bahut badhiya! 🎉\", \"Sahi jawab! <icon name=\"tick\"/>\"
+- You use relatable Indian examples (cricket, movies, food, daily life)
+- You're patient - never make students feel dumb
 
-✅ TOPICS YOU LOVE:
-- Academic subjects (Math, Science, History, Geography, etc.)
-- Study material, homework, exam preparation
-- NCERT/CBSE syllabus questions
-- Educational concepts and explanations
-- Career guidance related to education
-- Learning techniques and study methods
-- Technical/programming education for students
-
-💡 YOUR APPROACH FOR NON-EDUCATIONAL QUESTIONS:
-Instead of refusing, find a creative way to connect it to learning.
-
-Your identity:
-- Name: BlinkStudy
-- Purpose: Help students with studies and learning
-- Audience: Indian students (CBSE / NCERT focus)
 {$languageInstruction}
 
-⚠️ CRITICAL LANGUAGE RULE:
-Match the user's language! If user writes in Hindi (देवनागरी), respond in Hindi (देवनागरी).
-If user writes in Hinglish (Roman), respond in Hinglish. If English, respond in English.
+📝 RESPONSE STYLE - VERY IMPORTANT:
+You MUST use visual icons to make explanations engaging!
 
-RESPONSE FORMATTING:
-- Use plain text
-- No markdown headers
+**ICON SYNTAX:** Use <icon name=\"xyz\"/> inline in your text.
+
+**AVAILABLE ICONS (USE THESE!):**
+Physics: <icon name=\"sun\"/> <icon name=\"atom\"/> <icon name=\"magnet\"/> <icon name=\"wave\"/> <icon name=\"battery\"/> <icon name=\"energy\"/>
+Chemistry: <icon name=\"flask\"/> <icon name=\"molecule\"/> <icon name=\"water\"/> <icon name=\"fire\"/> <icon name=\"crystal\"/>
+Biology: <icon name=\"dna\"/> <icon name=\"cell\"/> <icon name=\"heart\"/> <icon name=\"plant\"/> <icon name=\"brain\"/> <icon name=\"leaf\"/>
+Maths: <icon name=\"graph\"/> <icon name=\"triangle\"/> <icon name=\"formula\"/> <icon name=\"calculator\"/> <icon name=\"infinity\"/>
+General: <icon name=\"bulb\"/> <icon name=\"star\"/> <icon name=\"warning\"/> <icon name=\"tick\"/> <icon name=\"cross\"/> <icon name=\"arrow\"/>
+
+**EXAMPLE RESPONSE (FOLLOW THIS FORMAT!):**
+
+**Photosynthesis** <icon name=\"leaf\"/>
+
+Socho plants apna khana kaise banate hain? <icon name=\"bulb\"/>
+
+**Simple Formula:**
+Sunlight <icon name=\"sun\"/> + Water <icon name=\"water\"/> + CO₂ → Glucose + Oxygen
+
+**Step-by-step:**
+1. <icon name=\"sun\"/> Sunlight leaves pe padti hai
+2. <icon name=\"leaf\"/> Chlorophyll light absorb karta hai
+3. <icon name=\"water\"/> Roots se water aata hai
+4. <icon name=\"energy\"/> Energy se glucose banta hai!
+
+**Yaad rakho:** <icon name=\"star\"/>
+• Chlorophyll = Green color = Light absorber
+• Photosynthesis sirf din mein hoti hai (sunlight chahiye!)
+
+Samajh aaya? Koi doubt ho toh poocho! <icon name=\"bulb\"/>
+
+---
+
+**FORMATTING RULES:**
+- Use **bold** for headings and key terms
+- Use <icon name=\"xyz\"/> for visual elements (MINIMUM 3-5 icons per response!)
 - Use • for bullet points
-- Keep mobile-friendly spacing
-- Use Unicode for math: ², ³, ₂, →, ≈, √, ∑
+- Use 1. 2. 3. for steps
+- Keep paragraphs short (mobile-friendly)
+- Use Unicode: ², ³, ₂, →, ≈, √, ∑, ×, ÷
 
-TEACHING STYLE:
-- Patient and motivating
-- NCERT terminology
-- Exam-focused
-- Never hallucinate
-- Always helpful, guide gently to study topics";
+**TEACHING APPROACH:**
+- Start with a hook/interesting fact
+- Use analogies from daily life (\"Socho jaise...\")
+- Break complex topics into small chunks
+- End with a quick summary or memory trick
+- Encourage questions: \"Kuch aur poochna hai?\"
 
-        // PREMIUM USERS: Direct detailed answers without asking
+**YOUR CATCHPHRASES:**
+- \"Bahut easy hai, dekho...\"
+- \"Ek simple trick batata hoon...\"
+- \"Exam mein ye zaroor aata hai!\"
+- \"Real life example dekho...\"
+- \"Yaad karne ka shortcut...\"";
+
+        // Add language matching rule
+        $basePrompt .= "
+
+⚠️ LANGUAGE RULE: Match the student's language!
+- Hindi (देवनागरी) → Reply in Hindi
+- Hinglish (Roman) → Reply in Hinglish
+- English → Reply in English";
+
+        // PREMIUM USERS: Full detailed tutoring
         if ($isPremium) {
             $basePrompt .= "
 
-⭐ PREMIUM USER - RESPONSE RULE:
-This is a PREMIUM user. Give FULL, DETAILED, COMPREHENSIVE answers directly.
-- DO NOT give short answers
-- DO NOT ask \"Kya main detail me samjhau?\"
-- Provide complete step-by-step solutions
-- Include formulas, examples, and explanations
-- Give exam-focused detailed content immediately
+⭐ **PREMIUM STUDENT** - VIP Treatment!
+- Give FULL, DETAILED explanations directly
+- No need to ask \"detail mein samjhau?\"
+- Include: concept + formula + example + exam tips
+- Use MORE icons (5-7 per response) <icon name=\"star\"/>
+- Add practice questions at the end
+- Be extra encouraging!
 
-SUBJECT HANDLING (PREMIUM - ALWAYS DETAILED):
-
-• Mathematics:
-  - Full step-by-step solution
-  - Formula with derivation
-  - Similar example problems
-
-• Science:
-  - Complete concept explanation
-  - Real-world examples
-  - Important keywords for exams
-
-• Social Science:
-  - Detailed cause-effect analysis
-  - Historical context
-  - Important dates and facts
-
-• English:
-  - Full grammar rules with examples
-  - Multiple usage examples
-  - Common mistakes to avoid";
+**Response Structure for Premium:**
+1. <icon name=\"bulb\"/> **Quick Hook** - interesting fact
+2. <icon name=\"formula\"/> **Main Concept** - detailed explanation with icons
+3. <icon name=\"tick\"/> **Key Points** - bullet summary
+4. <icon name=\"star\"/> **Exam Tip** - what examiners look for
+5. <icon name=\"calculator\"/> **Practice** - try this question!";
         } else {
-            // FREE USERS: Short answer first, then ask for detail
+            // FREE USERS: Engaging short answer, then offer more
             $basePrompt .= "
 
-RESPONSE RULE (FREE USER):
-1. FIRST give a SHORT, DIRECT ANSWER (2-5 lines max)
-2. AFTER short answer, ALWAYS ask:
-   \"Kya main isko detail me samjhau? (Yes / Ha / Batav likho)\"
-3. ONLY IF user replies yes/ha/haan/batav/explain/detail, give FULL explanation
-4. If user doesn't ask for detail, STOP after short answer
+📚 **FREE STUDENT** - Response Flow:
+1. Give a SHORT but ENGAGING answer (3-5 lines)
+2. Include 2-3 icons to make it visual
+3. End with: \"Detail mein samjhna hai? Bol 'haan' ya 'explain'! <icon name=\"bulb\"/>\"
+4. If they say yes → Give FULL explanation with 5+ icons
 
-SUBJECT HANDLING:
+**Short Answer Example:**
+\"<icon name=\"atom\"/> **Atom** basically matter ki sabse chhoti unit hai!
+Isme protons (+), neutrons (0), aur electrons (-) hote hain.
+Socho jaise solar system - nucleus sun hai, electrons planets!
 
-• Mathematics:
-  - Short: final answer
-  - Detail: full steps, formulas, explanation
-
-• Science:
-  - Short: definition/key point
-  - Detail: concept + example + keywords
-
-• Social Science:
-  - Short: main point
-  - Detail: cause, effect, structured bullets
-
-• English:
-  - Short: rule or meaning
-  - Detail: explanation + examples";
+Detail mein samjhna hai? <icon name=\"bulb\"/>\"";
         }
 
         $basePrompt .= "
 
-Remember: You are a HELPFUL EDUCATIONAL ASSISTANT. Always be helpful, guide gently to study topics, but never refuse to answer.";
+🎯 **REMEMBER:**
+- You are BLINKY - the friendly tutor, NOT a boring textbook!
+- ALWAYS use icons - they make learning visual and fun
+- Keep energy high, make students excited to learn
+- Use Indian context and examples
+- Be like that helpful friend who makes studies easy!";
 
         return $basePrompt;
     }
@@ -713,33 +723,24 @@ GIVE THE DETAILED EXPLANATION NOW.";
             // Build optimized prompt based on action
             $prompt = $this->buildFastSolvePrompt($action, $fileExtension);
 
-            // Use GeminiService directly for SPEED (bypass UnifiedAIService routing)
-            $geminiService = new \App\Services\GeminiService(
-                feature: 'scan_solve',
-                modelName: 'gemini-2.0-flash', // Always use fastest model
-                userId: $user?->id
-            );
-
             // Extract base64 from data URI
             $imageBase64 = explode(',', $imageData['uri'])[1];
 
             // Speed-optimized options based on plan
             $maxTokens = match($planSlug) {
-                'ultimate' => 4096,  // Full detailed solutions
+                'ultimate' => 4096,
                 'pro' => 3072,
                 'starter' => 2048,
                 default => 1536,
             };
 
-            $response = $geminiService->generateContentWithVision(
-                userPrompt: $prompt,
-                imageData: $imageBase64,
+            $response = $this->solveImageWithGemini(
+                imageBase64: $imageBase64,
                 mimeType: $imageData['type'],
-                options: [
-                    'temperature' => 0.3,  // Lower = faster, more deterministic
-                    'maxOutputTokens' => $maxTokens,
-                    'timeout' => $isPremium ? 45 : 30,
-                ]
+                prompt: $prompt,
+                userId: $user?->id,
+                maxTokens: $maxTokens,
+                timeout: $isPremium ? 45 : 30,
             );
 
             // Record usage after successful processing
@@ -760,23 +761,153 @@ GIVE THE DETAILED EXPLANATION NOW.";
             Log::error('Fast Scan/Solve Error', ['error' => $e->getMessage()]);
 
             // Fallback to regular method if fast mode fails
-            $systemPrompt = $this->buildSolveSystemPrompt();
-            $prompt = $this->buildFastSolvePrompt($action, $fileExtension);
-            $response = $this->getAIResponse($prompt, $systemPrompt, [], 'detail', $uploadedFile);
+            try {
+                $systemPrompt = $this->buildSolveSystemPrompt();
+                $prompt = $this->buildFastSolvePrompt($action, $fileExtension);
+                $response = $this->getAIResponse($prompt, $systemPrompt, [], 'detail', $uploadedFile);
 
-            // Record usage after successful fallback processing
-            if ($user) {
-                $usageLimitService = app(\App\Services\UsageLimitService::class);
-                $usageLimitService->recordUsage($user, 'scan_solve');
+                if ($this->isAiServiceErrorResponse($response)) {
+                    throw new \Exception('AI fallback returned service error');
+                }
+
+                // CRITICAL: Validate fallback response is not empty/error
+                if (empty($response) || strlen($response) < 50) {
+                    throw new \Exception('Fallback returned empty or invalid response');
+                }
+
+                // Check if response contains error indicators
+                $errorIndicators = ['error:', 'failed', 'timeout', 'unable to process'];
+                $responseLower = strtolower($response);
+                foreach ($errorIndicators as $indicator) {
+                    if (str_contains($responseLower, $indicator) && strlen($response) < 200) {
+                        throw new \Exception('Fallback returned error response: ' . substr($response, 0, 100));
+                    }
+                }
+
+                // Record usage after successful fallback processing
+                if ($user) {
+                    $usageLimitService = app(\App\Services\UsageLimitService::class);
+                    $usageLimitService->recordUsage($user, 'scan_solve');
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'response' => $response,
+                    'action' => $action,
+                    'file_type' => $fileExtension,
+                    'fallback_mode' => true,
+                ]);
+            } catch (\Exception $fallbackError) {
+                Log::error('Scan/Solve Fallback Also Failed', [
+                    'primary_error' => $e->getMessage(),
+                    'fallback_error' => $fallbackError->getMessage(),
+                ]);
+
+                // Return proper error response so frontend can show message
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unable to process image. Please try again with a clearer image or try later.',
+                    'error_code' => 'SCAN_SOLVE_FAILED',
+                    'action' => $action,
+                ], 500);
             }
-
-            return response()->json([
-                'success' => true,
-                'response' => $response,
-                'action' => $action,
-                'file_type' => $fileExtension,
-            ]);
         }
+    }
+
+    /**
+     * Try multiple Gemini vision models for scan/solve reliability.
+     */
+    private function solveImageWithGemini(
+        string $imageBase64,
+        string $mimeType,
+        string $prompt,
+        ?int $userId,
+        int $maxTokens,
+        int $timeout,
+    ): array {
+        $models = $this->getScanSolveGeminiModels();
+        $lastError = null;
+
+        foreach ($models as $modelName) {
+            try {
+                $geminiService = new \App\Services\GeminiService(
+                    feature: 'scan_solve',
+                    modelName: $modelName,
+                    userId: $userId
+                );
+
+                $response = $geminiService->generateContentWithVision(
+                    userPrompt: $prompt,
+                    imageData: $imageBase64,
+                    mimeType: $mimeType,
+                    options: [
+                        'temperature' => 0.3,
+                        'maxOutputTokens' => $maxTokens,
+                        'timeout' => $timeout,
+                    ]
+                );
+
+                if (!empty(trim($response['content'] ?? ''))) {
+                    return $response;
+                }
+            } catch (\Exception $e) {
+                $lastError = $e;
+                Log::warning('Scan solve Gemini model failed', [
+                    'model' => $modelName,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        throw new \Exception($lastError?->getMessage() ?? 'Gemini vision failed for all models');
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function getScanSolveGeminiModels(): array
+    {
+        $fromDb = \App\Models\AiModel::where('provider', 'google')
+            ->where('is_active', true)
+            ->orderBy('order')
+            ->pluck('model_identifier')
+            ->filter()
+            ->values()
+            ->all();
+
+        $defaults = [
+            'gemini-2.0-flash',
+            'gemini-1.5-flash',
+            'gemini-1.5-flash-8b',
+            'gemini-1.5-pro',
+        ];
+
+        return array_values(array_unique(array_merge($fromDb, $defaults)));
+    }
+
+    private function isAiServiceErrorResponse(string $response): bool
+    {
+        $lower = strtolower(trim($response));
+        if ($lower === '') {
+            return true;
+        }
+
+        $needles = [
+            'all ai services are currently unavailable',
+            'ai service unavailable',
+            'ai service temporarily unavailable',
+            'gemini api key not configured',
+            'service temporarily unavailable',
+            'please try again in a few moments',
+        ];
+
+        foreach ($needles as $needle) {
+            if (str_contains($lower, $needle)) {
+                return true;
+            }
+        }
+
+        return str_starts_with($lower, 'error:');
     }
 
     /**

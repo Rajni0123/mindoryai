@@ -65,32 +65,47 @@ class DashboardController extends Controller
             'messages_sent_today' => DB::table('mobile_chat_messages')->whereDate('created_at', today())->count(),
         ];
 
-        // Recent Activity (Last 10 actions)
+        // Recent Activity (Last 10 actions) - Fixed N+1 by using JOIN
         $recentActivities = DB::table('credit_transactions')
-            ->orderBy('created_at', 'desc')
+            ->leftJoin('users', 'credit_transactions.user_id', '=', 'users.id')
+            ->select(
+                'credit_transactions.id',
+                'credit_transactions.type',
+                'credit_transactions.amount',
+                'credit_transactions.reason',
+                'credit_transactions.created_at',
+                'users.name as user_name',
+                'users.mobile as user_mobile'
+            )
+            ->orderBy('credit_transactions.created_at', 'desc')
             ->limit(10)
             ->get()
             ->map(function ($transaction) {
-                $user = User::find($transaction->user_id);
                 return [
                     'id' => $transaction->id,
                     'type' => $transaction->type,
                     'amount' => $transaction->amount,
                     'reason' => $transaction->reason,
-                    'user_name' => $user?->name ?? 'Unknown',
-                    'user_mobile' => $user?->mobile ?? 'N/A',
+                    'user_name' => $transaction->user_name ?? 'Unknown',
+                    'user_mobile' => $transaction->user_mobile ?? 'N/A',
                     'created_at' => $transaction->created_at,
                 ];
             });
 
-        // User Growth Chart Data (Last 30 days)
+        // User Growth Chart Data (Last 30 days) - Fixed N+1 by using single GROUP BY query
+        $startDate = now()->subDays(29)->startOfDay();
+        $growthData = User::where('created_at', '>=', $startDate)
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->pluck('count', 'date')
+            ->toArray();
+
         $userGrowth = [];
         for ($i = 29; $i >= 0; $i--) {
             $date = now()->subDays($i)->format('Y-m-d');
-            $count = User::whereDate('created_at', $date)->count();
             $userGrowth[] = [
                 'date' => $date,
-                'count' => $count,
+                'count' => $growthData[$date] ?? 0,
             ];
         }
 
@@ -108,20 +123,26 @@ class DashboardController extends Controller
             ];
         }
 
-        // Top Active Users (Last 7 days)
+        // Top Active Users (Last 7 days) - Fixed N+1 by using JOIN
         $topActiveUsers = DB::table('credit_transactions')
-            ->select('user_id', DB::raw('COUNT(*) as activity_count, SUM(ABS(amount)) as total_spent'))
-            ->where('created_at', '>=', now()->subDays(7))
-            ->groupBy('user_id')
+            ->join('users', 'credit_transactions.user_id', '=', 'users.id')
+            ->select(
+                'users.id',
+                'users.name',
+                'users.mobile',
+                DB::raw('COUNT(*) as activity_count'),
+                DB::raw('SUM(ABS(credit_transactions.amount)) as total_spent')
+            )
+            ->where('credit_transactions.created_at', '>=', now()->subDays(7))
+            ->groupBy('users.id', 'users.name', 'users.mobile')
             ->orderByDesc('activity_count')
             ->limit(10)
             ->get()
             ->map(function ($data) {
-                $user = User::find($data->user_id);
                 return [
-                    'id' => $user?->id,
-                    'name' => $user?->name,
-                    'mobile' => $user?->mobile,
+                    'id' => $data->id,
+                    'name' => $data->name,
+                    'mobile' => $data->mobile,
                     'activity_count' => $data->activity_count,
                     'total_spent' => $data->total_spent,
                 ];
@@ -187,6 +208,7 @@ class DashboardController extends Controller
             'maintenance_mode' => '0',
             'maintenance_message' => 'We are currently performing scheduled maintenance. Please check back soon.',
             'show_pricing_section' => '1',
+            'show_seasonal_packs' => '0',
         ];
 
         foreach ($defaults as $key => $value) {
@@ -280,6 +302,7 @@ class DashboardController extends Controller
             'maintenance_mode' => '0',
             'maintenance_message' => 'We are currently performing scheduled maintenance. Please check back soon.',
             'show_pricing_section' => '1',
+            'show_seasonal_packs' => '0',
         ];
 
         foreach ($defaults as $key => $value) {
@@ -348,9 +371,27 @@ class DashboardController extends Controller
             \App\Models\FrontendConfig::setValue($key, $value, 'string');
         }
 
-        // Clear cache
+        // Clear all related caches to ensure settings persist
         \Cache::forget('mobile_app_config');
         \Cache::forget('ai_config');
+        \Cache::forget(\App\Models\FrontendConfig::CACHE_KEY);
+
+        // Clear Laravel config cache
+        try {
+            \Artisan::call('config:clear');
+        } catch (\Exception $e) {
+            // Config clear may fail in some environments, that's OK
+            \Log::warning('Config clear failed: ' . $e->getMessage());
+        }
+
+        // Force FrontendConfig to refresh
+        \App\Models\FrontendConfig::clearCache();
+
+        \Log::info('AI Settings Updated', [
+            'admin_id' => auth()->id(),
+            'openai_enabled' => $aiSettings['openai_enabled'],
+            'gemini_enabled' => $aiSettings['gemini_enabled'],
+        ]);
 
         return redirect()->back()->with('success', 'AI settings updated successfully');
     }

@@ -28,28 +28,75 @@ database/database.sqlite
 /storage/app/public/homepage
 /storage/app/public/icons
 /storage/app/public/logos
-/mindory-app
-nul
-errdebug.md
-__pycache__/
-*.pyc
 
-# Root-level test/debug media files
-/*.mp4
+# Mobile app source (separate repo folder - do not track)
+/mindory-app
+
+# Flutter app build artifacts
+/updated App/build/
+/updated App/.dart_tool/
+/updated App/.flutter-plugins
+/updated App/.flutter-plugins-dependencies
+
+# ============================================================
+# NEVER commit heavy binaries / build artifacts
+# ============================================================
+*.apk
+*.aab
+*.rar
+*.tar.gz
+*.zip
+*.7z
+*.keystore
+*.jks
+*.pem
+*.mp4
+*.lnk
+
+# Root-level debug/test media (frames, screenshots)
+/frame_*.jpg
+/frame_*.png
+/frame_*.jpeg
+/last_*.jpg
+/v5_frame_*.jpg
+/v6_last_*.jpg
+/photo_frame_*.png
 /*.jpg
 /*.jpeg
 /*.png
-/*.zip
+!public/**/*.png
+!public/**/*.jpg
+!templates/**/*.png
+!playstore-graphics/**/*.png
+!updated App/**/*.png
 
-# Manim server generated files
-/manim-server/temp/
-/manim-server/media/
-/manim-server/output/
+# Root-level ops scripts (keep app/ only)
+/*.py
+/*.sh
+/diagnose_*.php
+/test_*.php
+/debug_*.php
+/update_*.php
+/seed_*.php
+/setup_*.php
+/plan_*.php
+/roadmap_*.php
+/verify_*.php
+/temp_*.php
+/server_*.php
+/*_check_result.txt
 
-# Test frames
+# Debug docs
+errdebug.md
+prd-chat-blinkstudy.md
+plan.md
+prd.txt
+
+# Junk / accidental folders
 /frames_check/
+/resourcesviewsadmin*/
+/backups/
 
-# Archive files
-*.rar
-*.tar.gz
-*.7z
+nul
+__pycache__/
+*.pyc

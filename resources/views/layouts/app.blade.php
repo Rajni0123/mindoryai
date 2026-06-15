@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,7 +67,7 @@
     <!-- Robots -->
     <meta name="robots" content="index, follow">
     <meta name="author" content="BlinkStudy">
-    <meta name="theme-color" content="#0D9488">
+    <meta name="theme-color" content="#705CF6">
 
     <!-- TailwindCSS -->
     @vite(['resources/css/app.css', 'resources/js/app.tsx'])
@@ -92,7 +92,7 @@
     <!-- Theme init (before paint) -->
     <script>
         (function() {
-            const saved = localStorage.getItem('theme') || 'dark';
+            const saved = localStorage.getItem('theme') || 'light';
             if (saved === 'light') { document.documentElement.classList.remove('dark'); document.documentElement.classList.add('light'); }
             else if (saved === 'system') {
                 if (!window.matchMedia('(prefers-color-scheme: dark)').matches) { document.documentElement.classList.remove('dark'); document.documentElement.classList.add('light'); }
@@ -111,7 +111,7 @@
         .fade-in { animation: fadeIn 0.3s ease-out; }
     </style>
 </head>
-<body class="dark:bg-[#05080a] bg-gray-50 dark:text-white text-gray-900 antialiased min-h-screen flex flex-col">
+<body class="bg-[#F8FAFF] text-slate-800 antialiased min-h-screen flex flex-col">
 
     <!-- Header -->
     @include('components.header')

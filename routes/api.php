@@ -189,73 +189,149 @@ Route::middleware('auth:sanctum')->put('/user/update-mobile', function (Request 
     ]);
 });
 
-// Complete profile (for first-time login)
+// Complete profile (for first-time login / study setup)
 Route::middleware('auth:sanctum')->post('/user/complete-profile', function (Request $request) {
     $validated = $request->validate([
         'name' => 'required|string|min:2|max:50',
         'mobile' => 'nullable|digits:10|unique:users,mobile,' . $request->user()->id,
+        'target_exam' => 'nullable|string|max:50',
+        'student_class' => 'nullable|string|in:6,7,8,9,10,11,12',
+        'subjects' => 'nullable|string|max:30',
+        'favorite_subject' => 'nullable|string|max:30',
+        'exam_date' => 'nullable|date|after:today',
     ]);
 
     $user = $request->user();
     $user->name = $validated['name'];
+    $user->is_profile_complete = true;
+    $user->profile_completed = true;
+    $user->profile_completed_at = now();
 
     if (isset($validated['mobile'])) {
         $user->mobile = $validated['mobile'];
     }
+    if (!empty($validated['target_exam'])) {
+        $user->target_exam = $validated['target_exam'];
+    }
+    if (!empty($validated['student_class'])) {
+        $user->student_class = $validated['student_class'];
+    }
+    $subjects = $validated['subjects'] ?? $validated['favorite_subject'] ?? null;
+    if (!empty($subjects)) {
+        $user->favorite_subject = $subjects;
+    }
+    if (!empty($validated['exam_date'])) {
+        $user->exam_date = $validated['exam_date'];
+    }
 
     $user->save();
-
-    // Mark profile as completed
-    $user->markProfileCompleted();
 
     return response()->json([
         'success' => true,
         'message' => 'Profile completed successfully',
-        'user' => $user,
+        'user' => $user->fresh(),
+        'is_profile_complete' => true,
     ]);
 });
 
 // Update profile (name and/or mobile)
 Route::middleware('auth:sanctum')->put('/user/profile', function (Request $request) {
-    $validated = $request->validate([
-        'name' => 'nullable|string|min:2|max:50',
-        'mobile' => 'nullable|digits:10|unique:users,mobile,' . $request->user()->id,
-    ]);
+    try {
+        $user = $request->user();
 
-    $user = $request->user();
-    $updated = false;
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated',
+            ], 401);
+        }
 
-    if (isset($validated['name']) && $validated['name']) {
-        $user->name = $validated['name'];
-        $updated = true;
-    }
+        $validated = $request->validate([
+            'name' => 'nullable|string|min:2|max:50',
+            'mobile' => 'nullable|digits:10|unique:users,mobile,' . $user->id,
+            'target_exam' => 'nullable|string|max:50',
+            'student_class' => 'nullable|string|in:6,7,8,9,10,11,12',
+            'subjects' => 'nullable|string|max:30',
+            'favorite_subject' => 'nullable|string|max:30',
+            'exam_date' => 'nullable|date|after:today',
+        ]);
 
-    if (isset($validated['mobile']) && $validated['mobile']) {
-        // Check if mobile is different from current
-        if ($user->mobile !== $validated['mobile']) {
-            $user->mobile = $validated['mobile'];
-            $user->mobile_verified_at = null; // Reset verification if mobile changed
+        $updated = false;
+
+        if (isset($validated['name']) && $validated['name']) {
+            $user->name = $validated['name'];
+            $user->is_profile_complete = true;
+            $user->profile_completed = true;
+            $user->profile_completed_at = now();
             $updated = true;
         }
-    }
 
-    if ($updated) {
-        $user->save();
-    }
+        if (!empty($validated['target_exam'])) {
+            $user->target_exam = $validated['target_exam'];
+            $updated = true;
+        }
+        if (!empty($validated['student_class'])) {
+            $user->student_class = $validated['student_class'];
+            $updated = true;
+        }
+        $subjects = $validated['subjects'] ?? $validated['favorite_subject'] ?? null;
+        if (!empty($subjects)) {
+            $user->favorite_subject = $subjects;
+            $updated = true;
+        }
+        if (!empty($validated['exam_date'])) {
+            $user->exam_date = $validated['exam_date'];
+            $updated = true;
+        }
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Profile updated successfully',
-        'user' => [
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'mobile' => $user->mobile,
-            'role' => $user->role,
-            'plan_id' => $user->plan_id,
-            'is_active' => $user->is_active,
-        ],
-    ]);
+        if (isset($validated['mobile']) && $validated['mobile']) {
+            // Check if mobile is different from current
+            if ($user->mobile !== $validated['mobile']) {
+                $user->mobile = $validated['mobile'];
+                $user->mobile_verified_at = null; // Reset verification if mobile changed
+                $updated = true;
+            }
+        }
+
+        if ($updated) {
+            $user->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profile updated successfully',
+            'is_profile_complete' => true,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'mobile' => $user->mobile,
+                'role' => $user->role,
+                'plan_id' => $user->plan_id,
+                'is_active' => $user->is_active,
+                'is_profile_complete' => (bool) $user->is_profile_complete,
+                'student_class' => $user->student_class,
+                'target_exam' => $user->target_exam,
+                'subjects' => $user->favorite_subject,
+                'favorite_subject' => $user->favorite_subject,
+            ],
+        ]);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => collect($e->errors())->flatten()->first() ?? 'Validation failed',
+            'errors' => $e->errors(),
+        ], 422);
+    } catch (\Exception $e) {
+        \Log::error('Profile update failed', [
+            'user_id' => $request->user()->id ?? null,
+            'error' => $e->getMessage(),
+        ]);
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to update profile. Please try again.',
+        ], 500);
+    }
 });
 
 // Get usage limits and summary
@@ -393,9 +469,9 @@ Route::middleware('auth:sanctum')->get('/payments', function (Request $request) 
 // ========================================
 // MOBILE APP AUTHENTICATION (OTP-based)
 // ========================================
-// Mobile OTP Login Routes
-Route::post('/login/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP']);
-Route::post('/login/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP']);
+// Mobile OTP Login Routes (lightweight — no web session)
+Route::post('/login/send-otp', [\App\Http\Controllers\Api\AuthController::class, 'sendOTP']);
+Route::post('/login/verify-otp', [\App\Http\Controllers\Api\AuthController::class, 'verifyOTP']);
 
 // Email OTP Login Routes
 Route::post('/login/send-email-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendEmailOTP']);
@@ -489,9 +565,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/voice/transcribe', [\App\Http\Controllers\VoiceController::class, 'transcribe']);
     Route::post('/voice/summarize', [\App\Http\Controllers\VoiceController::class, 'summarize']);
 
-    // Image generation for study content
-    Route::post('/generate-image', [\App\Http\Controllers\ImageGenerationController::class, 'generate']);
-
     // Quiz generation from image with caching
     Route::post('/quiz/generate-from-image', [\App\Http\Controllers\QuizController::class, 'generateFromImage'])
         ->middleware('check.feature:video_quiz');
@@ -515,14 +588,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/notifications/mark-all-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAllAsRead']);
     Route::delete('/notifications/{id}', [\App\Http\Controllers\Api\NotificationController::class, 'destroy']);
 
-    // Referral System routes
-    Route::prefix('referral')->group(function () {
-        Route::get('/info', [\App\Http\Controllers\ReferralController::class, 'getReferralInfo']);
-        Route::post('/validate', [\App\Http\Controllers\ReferralController::class, 'validateReferralCode']);
-        Route::post('/apply', [\App\Http\Controllers\ReferralController::class, 'applyReferralCode']);
-        Route::get('/leaderboard', [\App\Http\Controllers\ReferralController::class, 'getLeaderboard']);
-        Route::get('/share', [\App\Http\Controllers\ReferralController::class, 'shareReferral']);
-    });
+    // Quiz routes (continued below in file)
 });
 
 // App Configuration (synced with admin panel) - PUBLIC endpoint
@@ -1146,6 +1212,16 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
                 'started_at' => \Carbon\Carbon::now()->subSeconds($timeTaken),
                 'completed_at' => \Carbon\Carbon::now(),
             ]);
+
+            if (!empty($validated['topic'])) {
+                \App\Services\LearningAnalyticsService::trackPerformance(
+                    $user->id,
+                    $validated['topic'],
+                    $validated['subject'] ?? 'General',
+                    $calculatedScore >= 60,
+                    $timeTaken
+                );
+            }
 
             return response()->json([
                 'success' => true,
@@ -1778,6 +1854,15 @@ Route::middleware(['auth:sanctum', 'admin.only'])->prefix('admin/app')->group(fu
 });
 
 // ============================================================
+// PERSONALIZED REVISION
+// ============================================================
+Route::middleware('auth:sanctum')->prefix('revision')->group(function () {
+    Route::get('/profile', [\App\Http\Controllers\Api\RevisionController::class, 'profile']);
+    Route::get('/plan', [\App\Http\Controllers\Api\RevisionController::class, 'plan']);
+    Route::get('/flashcards', [\App\Http\Controllers\Api\RevisionController::class, 'flashcards']);
+});
+
+// ============================================================
 // EXAM PREP SYSTEM
 // ============================================================
 Route::middleware('auth:sanctum')->prefix('exams')->group(function () {
@@ -1815,35 +1900,7 @@ Route::middleware('auth:sanctum')->prefix('daily-challenge')->group(function () 
 });
 
 // ============================================================
-// WHITEBOARD VIDEO GENERATION
-// ============================================================
-Route::middleware('auth:sanctum')->prefix('whiteboard-video')->group(function () {
-    Route::post('/create', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'create'])
-        ->middleware('check.feature:whiteboard_video');
-    Route::get('/status/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'status']);
-    Route::get('/list', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'list']);
-    Route::delete('/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'delete']);
-    Route::post('/preview-storyboard', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'previewStoryboard']);
-});
-
-// Video streaming (auth via query token - video players can't send headers)
-Route::get('/whiteboard-video/stream/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'stream']);
-Route::get('/whiteboard-video/thumbnail/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'thumbnail']);
-Route::get('/whiteboard-video/pdf/{jobId}', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'downloadPdf']);
-
-// Manim Python server callback (no auth - uses secret token)
-Route::post('/whiteboard-video/callback', [\App\Http\Controllers\Api\WhiteboardVideoController::class, 'manimCallback']);
-
-// ============================================================
-// AI MICROSERVICE (Fast text → AI answer)
-// ============================================================
-Route::middleware('auth:sanctum')->prefix('ai')->group(function () {
-    Route::post('/ask', [\App\Http\Controllers\Api\AIController::class, 'ask']);
-});
-Route::get('/ai/health', [\App\Http\Controllers\Api\AIController::class, 'health']);
-
-// ============================================================
-// REAL-TIME USAGE TRACKING (PUBLIC - For mobile/website dashboard)
+// DAILY CHALLENGE
 // ============================================================
 Route::middleware(['auth:sanctum', 'admin.only'])->get('/usage/stats', function (Request $request) {
     try {
@@ -1860,7 +1917,7 @@ Route::middleware(['auth:sanctum', 'admin.only'])->get('/usage/stats', function 
 
         // Get feature breakdown
         $featureStats = [];
-        foreach (['chat', 'quiz', 'whiteboard', 'image_generation'] as $feature) {
+        foreach (['chat', 'quiz'] as $feature) {
             $stats = \App\Models\AiUsageTracking::getFeatureStats($feature, $days);
             $featureStats[$feature] = [
                 'requests' => $stats['total_requests'] ?? 0,
@@ -1903,17 +1960,7 @@ Route::middleware(['auth:sanctum', 'admin.only'])->get('/usage/stats', function 
 });
 
 // ============================================================
-// DEDICATED SUPPORT CHAT (Ultimate Plan Only)
-// ============================================================
-Route::middleware('auth:sanctum')->prefix('support-chat')->group(function () {
-    Route::get('/', [\App\Http\Controllers\Api\SupportChatController::class, 'getChat']);
-    Route::post('/send', [\App\Http\Controllers\Api\SupportChatController::class, 'sendMessage']);
-    Route::get('/unread-count', [\App\Http\Controllers\Api\SupportChatController::class, 'getUnreadCount']);
-    Route::get('/access', [\App\Http\Controllers\Api\SupportChatController::class, 'checkSupportAccess']);
-});
-
-// ============================================================
-// TOPPER CONNECT SYSTEM
+// TOPPER CONNECT SYSTEM (PRD: Community)
 // ============================================================
 Route::middleware('auth:sanctum')->prefix('topper-connect')->group(function () {
     // Get available toppers
@@ -1940,18 +1987,6 @@ Route::middleware('auth:sanctum')->prefix('topper-connect')->group(function () {
 });
 
 // ============================================================
-// TOKEN WALLET SYSTEM
-// ============================================================
-Route::middleware('auth:sanctum')->prefix('token-wallet')->group(function () {
-    Route::get('/summary', [\App\Http\Controllers\Api\TokenWalletController::class, 'getSummary']);
-    Route::get('/balance', [\App\Http\Controllers\Api\TokenWalletController::class, 'getBalance']);
-    Route::get('/packages', [\App\Http\Controllers\Api\TokenWalletController::class, 'getPackages']);
-    Route::get('/transactions', [\App\Http\Controllers\Api\TokenWalletController::class, 'getTransactions']);
-    Route::post('/create-order', [\App\Http\Controllers\Api\TokenWalletController::class, 'createOrder']);
-    Route::post('/verify-payment', [\App\Http\Controllers\Api\TokenWalletController::class, 'verifyPayment']);
-});
-
-// ============================================================
 // TOPPER DASHBOARD (For Toppers)
 // ============================================================
 Route::middleware('auth:sanctum')->prefix('topper-dashboard')->group(function () {
@@ -1974,5 +2009,21 @@ Route::middleware('auth:sanctum')->prefix('topper-dashboard')->group(function ()
 // ============================================================
 Route::prefix('webhooks')->group(function () {
     Route::post('/razorpay', [\App\Http\Controllers\WebhookController::class, 'razorpay']);
-    // Future: Add Cashfree, PhonePe webhooks here
+});
+
+// ============================================================
+// STUDY BATTLES (PRD: Gamified Learning)
+// ============================================================
+Route::middleware('auth:sanctum')->prefix('study-battle')->group(function () {
+    Route::post('/create', [\App\Http\Controllers\Api\StudyBattleController::class, 'create']);
+    Route::post('/join/{code}', [\App\Http\Controllers\Api\StudyBattleController::class, 'join']);
+    Route::post('/leave', [\App\Http\Controllers\Api\StudyBattleController::class, 'leave']);
+    Route::post('/ready', [\App\Http\Controllers\Api\StudyBattleController::class, 'ready']);
+    Route::post('/start', [\App\Http\Controllers\Api\StudyBattleController::class, 'start']);
+    Route::get('/poll/{roomId}', [\App\Http\Controllers\Api\StudyBattleController::class, 'poll']);
+    Route::post('/answer', [\App\Http\Controllers\Api\StudyBattleController::class, 'answer']);
+    Route::get('/results/{roomId}', [\App\Http\Controllers\Api\StudyBattleController::class, 'results']);
+    Route::get('/history', [\App\Http\Controllers\Api\StudyBattleController::class, 'history']);
+    Route::get('/leaderboard', [\App\Http\Controllers\Api\StudyBattleController::class, 'leaderboard']);
+    Route::get('/rooms', [\App\Http\Controllers\Api\StudyBattleController::class, 'rooms']);
 });

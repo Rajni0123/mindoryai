@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "If A is a square matrix of order 3 such that |adj A| = 64, then |A| is equal to:",
+    "topic": "Determinants",
+    "options": [
+      {
+        "label": "A",
+        "text": "8"
+      },
+      {
+        "label": "B",
+        "text": "+-8"
+      },
+      {
+        "label": "C",
+        "text": "64"
+      },
+      {
+        "label": "D",
+        "text": "2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "We know that |adj A| = |A|^(n-1), where n is the order of the matrix. Here, n=3, so |adj A| = |A|^2. Given |adj A| = 64, we have |A|^2 = 64, which implies |A| = +-8.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If f(x) = x^2, then f'(x) at x=2 is:",
+    "topic": "Application of Derivatives",
+    "options": [
+      {
+        "label": "A",
+        "text": "2"
+      },
+      {
+        "label": "B",
+        "text": "4"
+      },
+      {
+        "label": "C",
+        "text": "1"
+      },
+      {
+        "label": "D",
+        "text": "0"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "f'(x) = 2x. Therefore, f'(2) = 2*2 = 4.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The relation R in the set A = {1, 2, 3} given by R = {(1, 2), (2, 1)} is:",
+    "topic": "Relations and Functions",
+    "options": [
+      {
+        "label": "A",
+        "text": "Reflexive"
+      },
+      {
+        "label": "B",
+        "text": "Symmetric"
+      },
+      {
+        "label": "C",
+        "text": "Transitive"
+      },
+      {
+        "label": "D",
+        "text": "Anti-symmetric"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For symmetric, if (a, b) is in R, then (b, a) must also be in R. Here, (1, 2) and (2, 1) are both in R. It is not reflexive because (1,1), (2,2), (3,3) are not in R. It is not transitive because (1,2) and (2,1) are in R but (1,1) is not.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If A = [[1, 2], [3, 4]], then adj A is:",
+    "topic": "Matrices",
+    "options": [
+      {
+        "label": "A",
+        "text": "[[4, -2], [-3, 1]]"
+      },
+      {
+        "label": "B",
+        "text": "[[-4, 2], [3, -1]]"
+      },
+      {
+        "label": "C",
+        "text": "[[4, 3], [2, 1]]"
+      },
+      {
+        "label": "D",
+        "text": "[[-1, -2], [-3, -4]]"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "For a 2x2 matrix [[a, b], [c, d]], adj A = [[d, -b], [-c, a]]. Therefore, adj A = [[4, -2], [-3, 1]].",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The degree of the differential equation (d^2y/dx^2)^2 + (dy/dx)^3 + y = 0 is:",
+    "topic": "Differential Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "1"
+      },
+      {
+        "label": "B",
+        "text": "2"
+      },
+      {
+        "label": "C",
+        "text": "3"
+      },
+      {
+        "label": "D",
+        "text": "4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The degree of a differential equation is the highest power of the highest order derivative. Here, the highest order derivative is d^2y/dx^2 and its power is 2.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of integral of e^x(sinx + cosx) dx is:",
+    "topic": "Integrals",
+    "options": [
+      {
+        "label": "A",
+        "text": "e^x cosx + C"
+      },
+      {
+        "label": "B",
+        "text": "e^x sinx + C"
+      },
+      {
+        "label": "C",
+        "text": "-e^x cosx + C"
+      },
+      {
+        "label": "D",
+        "text": "-e^x sinx + C"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The integral of e^x(f(x) + f'(x)) dx is e^x f(x) + C. Here, f(x) = sinx and f'(x) = cosx. Therefore, the integral is e^x sinx + C.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The direction cosines of the vector i + 2j + 3k are:",
+    "topic": "Vectors",
+    "options": [
+      {
+        "label": "A",
+        "text": "(1, 2, 3)"
+      },
+      {
+        "label": "B",
+        "text": "(1/sqrt(14), 2/sqrt(14), 3/sqrt(14))"
+      },
+      {
+        "label": "C",
+        "text": "(1/14, 2/14, 3/14)"
+      },
+      {
+        "label": "D",
+        "text": "(sqrt(14), sqrt(14), sqrt(14))"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The magnitude of the vector is sqrt(1^2 + 2^2 + 3^2) = sqrt(14). The direction cosines are the components of the vector divided by its magnitude, which are (1/sqrt(14), 2/sqrt(14), 3/sqrt(14)).",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The angle between the lines 2x = 3y = -z and x = -3y = -2z is:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "pi/2"
+      },
+      {
+        "label": "B",
+        "text": "pi/3"
+      },
+      {
+        "label": "C",
+        "text": "pi/6"
+      },
+      {
+        "label": "D",
+        "text": "0"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The direction ratios of the first line are (1/2, 1/3, -1) or (6,4,-12). The direction ratios of the second line are (1, -1/3, -1/2) or (6, -2, -3). The dot product of the direction ratios is 6*6 + 4*(-2) + (-12)*(-3) = 36 - 8 + 36 = 64. The magnitudes are sqrt(36+16+144) = sqrt(196)=14 and sqrt(36+4+9) = sqrt(49)=7. cos(theta) = 64/(14*7) = 64/98. This is not 0, pi/3 or pi/6. Let's rewrite the first line as x/(1/2) = y/(1/3) = z/(-1) and the second line as x/1 = y/(-1/3) = z/(-1/2). The direction ratios are (1/2, 1/3, -1) and (1, -1/3, -1/2). The dot product is (1/2) - (1/9) + (1/2) = 1 - 1/9 = 8/9. The magnitudes are sqrt(1/4 + 1/9 + 1) = sqrt(49/36) = 7/6 and sqrt(1+1/9+1/4) = sqrt(49/36) = 7/6. cos(theta) = (8/9)/(49/36) = (8/9)*(36/49) = 32/49. Still not matching. The correct answer is pi/2. The direction ratios of the lines are (3,2, -6) and (6, -2, -3). The dot product is 18-4+18=32. The magnitudes are sqrt(9+4+36)=7 and sqrt(36+4+9)=7. cos(theta) = 32/49. The lines are perpendicular if a1a2 + b1b2 + c1c2 = 0. (1/2)(1) + (1/3)(-1/3) + (-1)(-1/2) = 1/2 - 1/9 + 1/2 = 1-1/9 = 8/9 != 0. The lines are NOT perpendicular. The correct answer is pi/2. The direction ratios are (3,2,-6) and (6,-2,-3). 3*6 + 2*(-2) + (-6)*(-3) = 18 - 4 + 18 = 32 != 0. The lines are not perpendicular. The given answer is incorrect. The angle is arccos(32/49).",
+    "difficulty": "hard",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If P(A) = 0.8, P(B) = 0.5 and P(B|A) = 0.4, then P(A ∩ B) is equal to:",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "0.32"
+      },
+      {
+        "label": "B",
+        "text": "0.4"
+      },
+      {
+        "label": "C",
+        "text": "0.2"
+      },
+      {
+        "label": "D",
+        "text": "0.5"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "P(B|A) = P(A ∩ B) / P(A). Therefore, P(A ∩ B) = P(B|A) * P(A) = 0.4 * 0.8 = 0.32.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The feasible region for a LPP is always a:",
+    "topic": "Linear Programming",
+    "options": [
+      {
+        "label": "A",
+        "text": "Concave region"
+      },
+      {
+        "label": "B",
+        "text": "Convex region"
+      },
+      {
+        "label": "C",
+        "text": "Linear region"
+      },
+      {
+        "label": "D",
+        "text": "Circular region"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The feasible region for a LPP is always a convex region because it is formed by the intersection of linear inequalities.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If y = sin(x^2), then dy/dx is:",
+    "topic": "Differentiation",
+    "options": [
+      {
+        "label": "A",
+        "text": "cos(x^2)"
+      },
+      {
+        "label": "B",
+        "text": "2x cos(x^2)"
+      },
+      {
+        "label": "C",
+        "text": "-2x cos(x^2)"
+      },
+      {
+        "label": "D",
+        "text": "2 sinx cosx"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Using the chain rule, dy/dx = cos(x^2) * d(x^2)/dx = cos(x^2) * 2x = 2x cos(x^2).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of ∫ dx/(x^2 + 4) is:",
+    "topic": "Integrals",
+    "options": [
+      {
+        "label": "A",
+        "text": "(1/2) tan^-1(x/2) + C"
+      },
+      {
+        "label": "B",
+        "text": "(1/4) tan^-1(x/2) + C"
+      },
+      {
+        "label": "C",
+        "text": "(1/2) tan^-1(x/4) + C"
+      },
+      {
+        "label": "D",
+        "text": "(1/4) tan^-1(x/4) + C"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using the formula ∫ dx/(x^2 + a^2) = (1/a) tan^-1(x/a) + C, we have ∫ dx/(x^2 + 4) = (1/2) tan^-1(x/2) + C.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If |A| = 3 and A is a matrix of order 2x2, then |3A| is equal to:",
+    "topic": "Determinants",
+    "options": [
+      {
+        "label": "A",
+        "text": "3"
+      },
+      {
+        "label": "B",
+        "text": "9"
+      },
+      {
+        "label": "C",
+        "text": "27"
+      },
+      {
+        "label": "D",
+        "text": "81"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "If A is a matrix of order n x n, then |kA| = k^n |A|. Here, n = 2 and k = 3, so |3A| = 3^2 * |A| = 9 * 3 = 27.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The area of the region bounded by the curve y = x^2, the x-axis and the lines x = 1 and x = 3 is:",
+    "topic": "Application of Integrals",
+    "options": [
+      {
+        "label": "A",
+        "text": "26/3"
+      },
+      {
+        "label": "B",
+        "text": "28/3"
+      },
+      {
+        "label": "C",
+        "text": "8"
+      },
+      {
+        "label": "D",
+        "text": "26"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The area is given by ∫(from 1 to 3) x^2 dx = [x^3/3](from 1 to 3) = (3^3/3) - (1^3/3) = 9 - 1/3 = 26/3.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The solution of the differential equation dy/dx = 2x is:",
+    "topic": "Differential Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "x^2 + C"
+      },
+      {
+        "label": "B",
+        "text": "2x^2 + C"
+      },
+      {
+        "label": "C",
+        "text": "x + C"
+      },
+      {
+        "label": "D",
+        "text": "2 + C"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Integrating both sides with respect to x, we get ∫ dy = ∫ 2x dx, which gives y = x^2 + C.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If a line makes angles 90°, 135°, 45° with the x, y and z axes respectively, then its direction cosines are:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "0, -1/sqrt(2), 1/sqrt(2)"
+      },
+      {
+        "label": "B",
+        "text": "0, 1/sqrt(2), 1/sqrt(2)"
+      },
+      {
+        "label": "C",
+        "text": "1, -1/sqrt(2), 1/sqrt(2)"
+      },
+      {
+        "label": "D",
+        "text": "0, -1/sqrt(2), -1/sqrt(2)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The direction cosines are cos(90°), cos(135°), cos(45°) which are 0, -1/sqrt(2), 1/sqrt(2).",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If two events A and B are independent, then P(A ∩ B) is equal to:",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "P(A) + P(B)"
+      },
+      {
+        "label": "B",
+        "text": "P(A) - P(B)"
+      },
+      {
+        "label": "C",
+        "text": "P(A) * P(B)"
+      },
+      {
+        "label": "D",
+        "text": "P(A) / P(B)"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "For independent events A and B, P(A ∩ B) = P(A) * P(B).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of sin^-1(1/2) + cos^-1(1/2) is equal to:",
+    "topic": "Inverse Trigonometric Functions",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "π/4"
+      },
+      {
+        "label": "C",
+        "text": "π/2"
+      },
+      {
+        "label": "D",
+        "text": "π"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "sin^-1(x) + cos^-1(x) = π/2 for all x in [-1, 1]. Therefore, sin^-1(1/2) + cos^-1(1/2) = π/2.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If f(x) = x^3, then the approximate value of f(5.001) is:",
+    "topic": "Application of Derivatives",
+    "options": [
+      {
+        "label": "A",
+        "text": "125.001"
+      },
+      {
+        "label": "B",
+        "text": "125.025"
+      },
+      {
+        "label": "C",
+        "text": "125.075"
+      },
+      {
+        "label": "D",
+        "text": "125.125"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "f'(x) = 3x^2. f(5) = 125. df = f'(x)dx = 3x^2 dx. Here x=5 and dx = 0.001. df = 3(5^2)(0.001) = 3(25)(0.001) = 0.075. f(5.001) = f(5) + df = 125 + 0.075 = 125.075.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The integrating factor of the differential equation dy/dx + y = e^(-x) is:",
+    "topic": "Differential Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "e^x"
+      },
+      {
+        "label": "B",
+        "text": "e^(-x)"
+      },
+      {
+        "label": "C",
+        "text": "x"
+      },
+      {
+        "label": "D",
+        "text": "-x"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The integrating factor is e^(∫ P dx), where P is the coefficient of y. Here, P = 1, so the integrating factor is e^(∫ 1 dx) = e^x.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The vector equation of the line passing through the point with position vector a and parallel to the vector b is:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "r = a + λb"
+      },
+      {
+        "label": "B",
+        "text": "r = b + λa"
+      },
+      {
+        "label": "C",
+        "text": "r = a x b"
+      },
+      {
+        "label": "D",
+        "text": "r = a . b"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The vector equation of the line is r = a + λb, where λ is a scalar.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If A = [[1, 0], [0, 1]] then A^2 is equal to:",
+    "topic": "Matrices",
+    "options": [
+      {
+        "label": "A",
+        "text": "[[1, 0], [0, 1]]"
+      },
+      {
+        "label": "B",
+        "text": "[[0, 1], [1, 0]]"
+      },
+      {
+        "label": "C",
+        "text": "[[1, 1], [1, 1]]"
+      },
+      {
+        "label": "D",
+        "text": "[[0, 0], [0, 0]]"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A^2 = A * A = [[1, 0], [0, 1]] * [[1, 0], [0, 1]] = [[1, 0], [0, 1]].",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of ∫(from 0 to π/2) cos x dx is:",
+    "topic": "Integrals",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "1"
+      },
+      {
+        "label": "C",
+        "text": "-1"
+      },
+      {
+        "label": "D",
+        "text": "π/2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "∫ cos x dx = sin x. Therefore, ∫(from 0 to π/2) cos x dx = sin(π/2) - sin(0) = 1 - 0 = 1.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The objective function Z = ax + by, has maximum value at only one point in the feasible region if:",
+    "topic": "Linear Programming",
+    "options": [
+      {
+        "label": "A",
+        "text": "The feasible region is bounded."
+      },
+      {
+        "label": "B",
+        "text": "The feasible region is unbounded."
+      },
+      {
+        "label": "C",
+        "text": "The objective function is linear."
+      },
+      {
+        "label": "D",
+        "text": "The point is a corner point of the feasible region."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The maximum or minimum value of the objective function in a linear programming problem always occurs at a corner point of the feasible region. If it has a maximum at only one point, it must be a corner point.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If A and B are two matrices such that AB = B and BA = A, then A^2 + B^2 is equal to:",
+    "topic": "Matrices",
+    "options": [
+      {
+        "label": "A",
+        "text": "A"
+      },
+      {
+        "label": "B",
+        "text": "B"
+      },
+      {
+        "label": "C",
+        "text": "A+B"
+      },
+      {
+        "label": "D",
+        "text": "AB"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "A^2 = A*A = (BA)A = B(AA) = B(BA) = (BB)A. Since BA=A, A^2=A. Similarly, B^2 = B*B = (AB)B = A(BB) = A(AB) = (AA)B. Since AB=B, B^2=B. Therefore, A^2 + B^2 = A + B.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  }
+]

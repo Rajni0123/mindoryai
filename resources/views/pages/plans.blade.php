@@ -1,417 +1,775 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plans - BlinkStudy</title>
+    <meta name="description" content="Choose your study plan. Pocket-friendly plans built for Indian students.">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/png" href="/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Poppins', sans-serif; }
+        body { background: #f8fafc; }
 
-@section('title', 'Plans - ' . ($settings['site_name'] ?? 'BlinkStudy'))
-
-@push('styles')
-<style>
-    .plan-card {
-        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .plan-card:hover {
-        transform: translateY(-6px);
-    }
-    .plan-popular {
-        border-color: #0D9488 !important;
-        box-shadow: 0 0 0 1px #0D9488, 0 20px 60px -15px rgba(13,148,136,0.25);
-    }
-
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-up {
-        animation: fadeUp 0.5s ease-out forwards;
-        opacity: 0;
-    }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-
-    .feature-row {
-        display: flex; align-items: center; gap: 8px;
-        padding: 3px 0;
-    }
-</style>
-@endpush
-
-@section('content')
-    {{-- ═══════ HERO ═══════ --}}
-    <section class="pt-16 pb-6 px-4">
-        <div class="max-w-3xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full dark:bg-primary/10 bg-primary/5 border dark:border-primary/20 border-primary/15 mb-6">
-                <span class="material-symbols-outlined text-primary text-sm">workspace_premium</span>
-                <span class="text-xs font-semibold text-primary tracking-wide">SIMPLE & TRANSPARENT PRICING</span>
-            </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold dark:text-white text-slate-900 tracking-tight mb-4">
-                Choose Your <span class="bg-gradient-to-r from-primary to-teal-300 bg-clip-text text-transparent">Study Plan</span>
-            </h1>
-            <p class="text-lg dark:text-gray-400 text-gray-500 max-w-xl mx-auto">
-                Pocket-friendly plans built for Indian students. Start free, upgrade anytime.
-            </p>
-        </div>
-    </section>
-
-    {{-- ═══════ PRICING CARDS ═══════ --}}
-    <section class="pb-20 px-4">
-        <div class="max-w-6xl mx-auto">
-            @php
-                $planCount = $pricingPlans->count();
-                $gridCols = $planCount <= 2 ? 'lg:grid-cols-2 max-w-3xl' : ($planCount == 3 ? 'lg:grid-cols-3 max-w-5xl' : 'lg:grid-cols-4 max-w-6xl');
-            @endphp
-            <div class="grid grid-cols-1 md:grid-cols-2 {{ $gridCols }} gap-6 mx-auto">
-                @foreach($pricingPlans as $index => $plan)
-                    @php
-                        $features = $plan->features ?? [];
-                        $featuresList = $features['features_list'] ?? $features['features'] ?? [];
-                        $dailyLimits = $features['daily_limits'] ?? [];
-                        $isRecommended = ($features['recommended'] ?? false);
-                        $isPopular = !$isRecommended && ($plan->is_popular || ($features['popular'] ?? false));
-                        $isFree = $plan->price == 0;
-                        $hasWatermark = $features['watermark'] ?? false;
-                        $hasAds = $features['ads'] ?? false;
-                        $hasPriority = $features['priority_queue'] ?? false;
-                        $historyDays = $features['history_days'] ?? 0;
-                        $maxVideoLen = $features['max_video_length_seconds'] ?? 0;
-
-                        $planColors = [
-                            'free'      => ['ring' => 'ring-gray-200 dark:ring-white/10', 'badge' => 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400', 'icon' => 'text-gray-400', 'btn' => 'dark:bg-white/5 bg-gray-100 dark:text-white text-gray-800 dark:hover:bg-white/10 hover:bg-gray-200'],
-                            'basic'     => ['ring' => 'ring-primary/30', 'badge' => 'bg-primary/10 text-primary', 'icon' => 'text-primary', 'btn' => 'bg-primary text-white hover:bg-primary/90'],
-                            'starter'   => ['ring' => 'ring-primary/30', 'badge' => 'bg-primary/10 text-primary', 'icon' => 'text-primary', 'btn' => 'bg-primary text-white hover:bg-primary/90'],
-                            'pro'       => ['ring' => 'ring-secondary/40', 'badge' => 'bg-secondary/10 text-secondary', 'icon' => 'text-secondary', 'btn' => 'bg-gradient-to-r from-secondary to-orange-500 text-white hover:shadow-lg hover:shadow-secondary/25'],
-                            'unlimited' => ['ring' => 'ring-purple-500/40', 'badge' => 'bg-purple-500/10 text-purple-400', 'icon' => 'text-purple-400', 'btn' => 'bg-gradient-to-r from-purple-600 to-indigo-500 text-white hover:shadow-lg hover:shadow-purple-500/25'],
-                        ];
-                        $slug = $plan->slug ?? 'basic';
-                        $colors = $planColors[$slug] ?? $planColors['basic'];
-                    @endphp
-
-                    @php $hasBadge = $isPopular || $isRecommended; @endphp
-                    <div class="plan-card animate-fade-up delay-{{ $index + 1 }} relative flex flex-col rounded-2xl border
-                                dark:bg-[#0d1117] bg-white
-                                {{ $isPopular ? 'plan-popular border-primary' : ($isRecommended ? 'border-secondary shadow-lg shadow-secondary/10' : 'dark:border-white/8 border-gray-200') }}
-                                overflow-hidden">
-
-                        @if($isPopular)
-                            <div class="absolute top-0 left-0 right-0">
-                                <div class="bg-gradient-to-r from-primary to-teal-500 text-center py-1.5">
-                                    <span class="text-[11px] font-bold text-white uppercase tracking-wider">Most Popular</span>
-                                </div>
-                            </div>
-                        @elseif($isRecommended)
-                            <div class="absolute top-0 left-0 right-0">
-                                <div class="bg-gradient-to-r from-secondary to-orange-500 text-center py-1.5">
-                                    <span class="text-[11px] font-bold text-white uppercase tracking-wider">Best Value</span>
-                                </div>
-                            </div>
-                        @endif
-
-                        <div class="flex flex-col flex-1 p-5 {{ $hasBadge ? 'pt-11' : 'pt-5' }}">
-                            <div class="flex items-center justify-between mb-4">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-8 h-8 rounded-lg {{ $colors['badge'] }} flex items-center justify-center">
-                                        @if($isFree)
-                                            <span class="material-symbols-outlined text-[16px]">person</span>
-                                        @elseif($slug === 'unlimited')
-                                            <span class="material-symbols-outlined text-[16px]">all_inclusive</span>
-                                        @elseif($slug === 'pro')
-                                            <span class="material-symbols-outlined text-[16px]">diamond</span>
-                                        @else
-                                            <span class="material-symbols-outlined text-[16px]">bolt</span>
-                                        @endif
-                                    </div>
-                                    <h3 class="text-base font-bold dark:text-white text-slate-900">{{ $plan->name }}</h3>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-2xl font-extrabold dark:text-white text-slate-900">
-                                        {{ $isFree ? 'Free' : '₹' . intval($plan->price) }}
-                                    </span>
-                                    @if(!$isFree)
-                                        <span class="text-xs dark:text-gray-500 text-gray-400">/{{ $plan->billing_period ?? 'mo' }}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            @if($plan->description)
-                                <p class="text-xs dark:text-gray-500 text-gray-400 mb-3 -mt-1">{{ $plan->description }}</p>
-                            @endif
-
-                            <div class="mb-4">
-                                @auth
-                                    @if($isFree)
-                                        <div class="w-full py-2.5 rounded-xl font-semibold text-center text-sm dark:bg-white/5 bg-gray-100 dark:text-gray-400 text-gray-500 cursor-default">
-                                            Current Plan
-                                        </div>
-                                    @else
-                                        <button id="buy-btn-{{ $plan->id }}"
-                                                onclick="buyPlan({{ $plan->id }}, '{{ addslashes($plan->name) }}', {{ $plan->price }})"
-                                                class="block w-full py-2.5 rounded-xl font-semibold text-center text-sm transition-all cursor-pointer {{ $colors['btn'] }}">
-                                            Get {{ $plan->name }}
-                                        </button>
-                                    @endif
-                                @else
-                                    <a href="{{ route('register') }}"
-                                       class="block w-full py-2.5 rounded-xl font-semibold text-center text-sm transition-all {{ $colors['btn'] }}">
-                                        {{ $isFree ? 'Start Free' : 'Get ' . $plan->name }}
-                                    </a>
-                                @endauth
-                            </div>
-
-                            <div class="dark:border-white/5 border-gray-100 border-t mb-3"></div>
-
-                            @if(!empty($featuresList))
-                                <ul class="space-y-1.5 flex-1">
-                                    @foreach($featuresList as $feature)
-                                        <li class="flex items-center gap-2 py-0.5">
-                                            <svg class="w-3.5 h-3.5 flex-shrink-0 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
-                                            </svg>
-                                            <span class="text-xs dark:text-gray-300 text-gray-600">{{ $feature }}</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-
-                            <div class="flex flex-wrap gap-1.5 mt-3 pt-3 border-t dark:border-white/5 border-gray-100">
-                                @if($hasAds)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-medium">
-                                        <span class="material-symbols-outlined text-[12px]">campaign</span> Ads
-                                    </span>
-                                @endif
-                                @if($hasWatermark)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 text-[10px] font-medium">
-                                        <span class="material-symbols-outlined text-[12px]">branding_watermark</span> Watermark
-                                    </span>
-                                @endif
-                                @if($hasPriority)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
-                                        <span class="material-symbols-outlined text-[12px]">bolt</span> Priority
-                                    </span>
-                                @endif
-                                @if(!$hasAds && !$isFree)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-medium">
-                                        <span class="material-symbols-outlined text-[12px]">block</span> No Ads
-                                    </span>
-                                @endif
-                                @if($historyDays == -1)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-medium">
-                                        <span class="material-symbols-outlined text-[12px]">all_inclusive</span> Unlimited History
-                                    </span>
-                                @elseif($historyDays > 0)
-                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full dark:bg-white/5 bg-gray-100 dark:text-gray-400 text-gray-500 text-[10px] font-medium">
-                                        <span class="material-symbols-outlined text-[12px]">history</span> {{ $historyDays }}d History
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <p class="text-center text-xs dark:text-gray-500 text-gray-400 mt-8">
-                All daily limits reset at <strong>12:00 AM IST</strong>. Cancel anytime — no questions asked.
-            </p>
-        </div>
-    </section>
-
-    {{-- ═══════ COMPARISON TABLE (Desktop) ═══════ --}}
-    <section class="pb-20 px-4 hidden lg:block">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-2xl font-bold dark:text-white text-slate-900 text-center mb-8">Compare Plans</h2>
-
-            <div class="rounded-2xl border dark:border-white/8 border-gray-200 overflow-hidden dark:bg-[#0d1117] bg-white">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="dark:bg-white/3 bg-gray-50">
-                            <th class="text-left px-6 py-4 dark:text-gray-400 text-gray-500 font-semibold w-1/3">Feature</th>
-                            @foreach($pricingPlans as $plan)
-                                <th class="text-center px-4 py-4 dark:text-white text-slate-900 font-bold">{{ $plan->name }}</th>
-                            @endforeach
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y dark:divide-white/5 divide-gray-100">
-                        <tr>
-                            <td class="px-6 py-3.5 dark:text-gray-400 text-gray-500 font-medium">Price</td>
-                            @foreach($pricingPlans as $plan)
-                                <td class="text-center px-4 py-3.5 font-bold dark:text-white text-slate-900">
-                                    {{ $plan->price == 0 ? 'Free' : '₹' . intval($plan->price) . '/' . ($plan->billing_period ?? 'mo') }}
-                                </td>
-                            @endforeach
-                        </tr>
-                        @php
-                            $compareKeys = [
-                                'video_quiz_per_day' => 'Quizzes / Day',
-                                'topic_quiz_per_day' => 'Topic Quizzes / Day',
-                                'scan_solve_per_day' => 'Scan & Solve / Day',
-                                'whiteboard_videos_per_day' => 'Whiteboard Videos / Day',
-                                'whiteboard_videos_per_month' => 'Whiteboard Videos / Month',
-                                'exam_prep_per_day' => 'Exam Prep / Day',
-                                'pdf_uploads_per_month' => 'PDF Uploads / Month',
-                            ];
-                        @endphp
-                        @foreach($compareKeys as $key => $label)
-                            @php
-                                $anyHas = $pricingPlans->contains(fn($p) => isset(($p->features['daily_limits'] ?? [])[$key]));
-                            @endphp
-                            @if($anyHas)
-                                <tr>
-                                    <td class="px-6 py-3.5 dark:text-gray-400 text-gray-500 font-medium">{{ $label }}</td>
-                                    @foreach($pricingPlans as $plan)
-                                        @php $val = ($plan->features['daily_limits'] ?? [])[$key] ?? '-'; @endphp
-                                        <td class="text-center px-4 py-3.5 font-semibold {{ $val == -1 ? 'text-primary' : 'dark:text-gray-300 text-gray-600' }}">
-                                            {{ $val == -1 ? 'Unlimited' : ($val === '-' ? '-' : $val) }}
-                                        </td>
-                                    @endforeach
-                                </tr>
-                            @endif
-                        @endforeach
-                        <tr>
-                            <td class="px-6 py-3.5 dark:text-gray-400 text-gray-500 font-medium">Ad-Free</td>
-                            @foreach($pricingPlans as $plan)
-                                <td class="text-center px-4 py-3.5">
-                                    @if(!($plan->features['ads'] ?? true))
-                                        <span class="text-emerald-500 material-symbols-outlined text-[18px]">check_circle</span>
-                                    @else
-                                        <span class="dark:text-gray-600 text-gray-300 material-symbols-outlined text-[18px]">cancel</span>
-                                    @endif
-                                </td>
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-3.5 dark:text-gray-400 text-gray-500 font-medium">No Watermark</td>
-                            @foreach($pricingPlans as $plan)
-                                <td class="text-center px-4 py-3.5">
-                                    @if(!($plan->features['watermark'] ?? true))
-                                        <span class="text-emerald-500 material-symbols-outlined text-[18px]">check_circle</span>
-                                    @else
-                                        <span class="dark:text-gray-600 text-gray-300 material-symbols-outlined text-[18px]">cancel</span>
-                                    @endif
-                                </td>
-                            @endforeach
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-3.5 dark:text-gray-400 text-gray-500 font-medium">Priority Queue</td>
-                            @foreach($pricingPlans as $plan)
-                                <td class="text-center px-4 py-3.5">
-                                    @if($plan->features['priority_queue'] ?? false)
-                                        <span class="text-emerald-500 material-symbols-outlined text-[18px]">check_circle</span>
-                                    @else
-                                        <span class="dark:text-gray-600 text-gray-300 material-symbols-outlined text-[18px]">cancel</span>
-                                    @endif
-                                </td>
-                            @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    {{-- ═══════ FAQ Link ═══════ --}}
-    <section class="pb-20 px-4 text-center">
-        <p class="dark:text-gray-400 text-gray-600 text-sm">
-            Have questions? Check our <a href="{{ route('faq') }}" class="text-primary font-semibold hover:underline">FAQ page</a> for answers.
-        </p>
-    </section>
-@endsection
-
-@auth
-@push('scripts')
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script>
-function buyPlan(planId, planName, price) {
-    var btn = document.getElementById('buy-btn-' + planId);
-    var originalText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Processing...';
-    btn.style.opacity = '0.7';
-
-    fetch('/payment/create-razorpay-order', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({ plan_id: planId })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-        if (!data.success) {
-            alert(data.message || 'Failed to create payment order.');
-            resetBtn();
-            return;
+        .plan-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .plan-card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        .plan-best-value {
+            border: 2px solid #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+        .plan-ultimate {
+            border: 2px solid #8b5cf6;
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
         }
 
-        var options = {
-            key: data.razorpay_key,
-            amount: data.amount,
-            currency: data.currency,
-            name: 'BlinkStudy',
-            description: planName + ' Plan',
-            order_id: data.order_id,
-            prefill: {
-                name: data.user_name || '',
-                email: data.user_email || '',
-                contact: data.user_phone || ''
-            },
-            theme: { color: '#0D9488' },
-            handler: function(response) {
-                btn.textContent = 'Verifying...';
-                fetch('/payment/verify-razorpay', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_order_id: response.razorpay_order_id,
-                        razorpay_signature: response.razorpay_signature,
-                        plan_id: planId,
-                        transaction_id: data.transaction_id
-                    })
-                })
-                .then(function(r) { return r.json(); })
-                .then(function(verifyData) {
-                    if (verifyData.success) {
-                        btn.textContent = 'Activated!';
-                        btn.classList.add('bg-green-500');
-                        setTimeout(function() {
-                            window.location.href = verifyData.redirect_url || '/chat';
-                        }, 800);
-                    } else {
-                        alert(verifyData.message || 'Payment verification failed.');
-                        resetBtn();
-                    }
-                })
-                .catch(function() {
-                    alert('Payment verification failed. Please contact support.');
-                    resetBtn();
-                });
-            },
-            modal: {
-                ondismiss: function() { resetBtn(); }
+        .feature-category {
+            font-size: 10px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 12px 0 6px 0;
+        }
+        .feature-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: 12px;
+        }
+        .feature-name {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #334155;
+        }
+        .feature-value {
+            font-weight: 500;
+            color: #64748b;
+            text-align: right;
+            font-size: 11px;
+        }
+        .feature-disabled {
+            color: #cbd5e1;
+            text-decoration: line-through;
+        }
+        .unlimited-badge {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .toggle-btn {
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .toggle-active {
+            background: #0f172a;
+            color: white;
+        }
+        .toggle-inactive {
+            background: transparent;
+            color: #64748b;
+        }
+
+        .btn-choose {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-free { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        .btn-lite { background: #0f172a; color: white; }
+        .btn-pro { background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); color: white; }
+        .btn-ultimate { background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color: white; }
+
+        .expanded-features {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .expanded-features.show {
+            max-height: 600px;
+        }
+
+        .see-all-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 12px;
+            color: #3b82f6;
+            cursor: pointer;
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .see-all-btn:hover {
+            background: #eff6ff;
+        }
+        .see-all-btn svg {
+            transition: transform 0.3s;
+        }
+        .see-all-btn.expanded svg {
+            transform: rotate(180deg);
+        }
+
+        .pack-card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .plan-current {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
+        }
+
+        @media (max-width: 1024px) {
+            .plans-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .packs-grid { grid-template-columns: repeat(3, 1fr) !important; }
+        }
+        @media (max-width: 768px) {
+            .packs-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 640px) {
+            .plans-grid { grid-template-columns: 1fr !important; }
+            .packs-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 12px;">
+        <div style="max-width: 1400px; margin: 0 auto; padding: 0 16px;">
+            <nav style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: rgba(255,255,255,0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.8); border-radius: 100px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);">
+                <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                    <img src="/logo.png" alt="BlinkStudy" style="width: 36px; height: 36px;">
+                    <span style="font-weight: 700; font-size: 1.1rem; color: #0f172a;">BlinkStudy</span>
+                </a>
+                <a href="/login" style="padding: 10px 20px; background: #0f172a; color: white; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 14px;">Get Started</a>
+            </nav>
+        </div>
+    </div>
+
+    <div style="padding-top: 100px;">
+        <!-- Header -->
+        <section style="text-align: center; padding: 30px 24px 16px;">
+            <div style="display: inline-block; background: #fef3c7; color: #92400e; padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px;">
+                10,000+ Students Trust BlinkStudy
+            </div>
+            <h1 style="font-size: 2rem; font-weight: 800; color: #0f172a; margin-bottom: 10px;">
+                Apni Padhai Ko <span style="color: #f59e0b;">Supercharge</span> Karo
+            </h1>
+            <p style="font-size: 14px; color: #64748b; margin-bottom: 20px;">
+                AI tutor sirf ₹3/din se — Chai se bhi sasta ☕
+            </p>
+
+            <!-- Monthly/Annual Toggle - YEARLY DISABLED FOR NOW -->
+            {{--
+            <div style="display: inline-flex; background: #f1f5f9; border-radius: 50px; padding: 4px; position: relative;">
+                <button id="toggle-monthly" class="toggle-btn toggle-active" onclick="toggleBilling('monthly')">Monthly</button>
+                <button id="toggle-annual" class="toggle-btn toggle-inactive" onclick="toggleBilling('annual')" style="position: relative;">
+                    Annual
+                    <span style="position: absolute; top: -8px; right: -10px; background: #ef4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 700;">SAVE 30%</span>
+                </button>
+            </div>
+            --}}
+        </section>
+
+        <!-- Plans Grid -->
+        <section style="padding: 30px 24px 50px;">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <div class="plans-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: start;">
+
+                    @foreach($plans as $plan)
+                    @php
+                        $isFree = $plan->price_monthly == 0;
+                        $isRecommended = $plan->is_recommended;
+                        $isUltimate = $plan->slug === 'ultimate';
+                        $features = $plan->features->keyBy('feature_slug');
+                        $isUserCurrentPlan = auth()->check() && ($currentPlanSlug ?? 'free') === $plan->slug;
+                    @endphp
+
+                    <div class="plan-card {{ $isRecommended ? 'plan-best-value' : ($isUltimate ? 'plan-ultimate' : '') }} {{ $isUserCurrentPlan ? 'plan-current' : '' }}" style="{{ $isUserCurrentPlan ? 'border: 2px solid #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);' : '' }}">
+                        @if($isUserCurrentPlan)
+                        <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 3px 12px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase;">✓ Your Plan</div>
+                        @elseif($isRecommended)
+                        <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #f59e0b, #f97316); color: white; padding: 3px 12px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Best Value</div>
+                        @elseif($isUltimate)
+                        <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #8b5cf6, #6366f1); color: white; padding: 3px 12px; border-radius: 50px; font-size: 10px; font-weight: 700; text-transform: uppercase;">Everything</div>
+                        @endif
+
+                        <!-- Plan Header -->
+                        <div style="margin-bottom: 12px; {{ $isRecommended || $isUltimate ? 'padding-top: 6px;' : '' }}">
+                            <h3 style="font-size: 1.1rem; font-weight: 700; color: {{ $isRecommended ? '#92400e' : ($isUltimate ? '#6b21a8' : '#0f172a') }}; margin-bottom: 2px;">
+                                {{ $plan->name }} @if($isUltimate) 👑 @endif
+                            </h3>
+                            <p style="font-size: 12px; color: #64748b;">{{ $plan->description }}</p>
+                        </div>
+
+                        <!-- Price -->
+                        <div style="margin-bottom: 14px;">
+                            @if($isFree)
+                            <span style="font-size: 2rem; font-weight: 800; color: #0f172a;">Free</span>
+                            @else
+                            <span style="font-size: 12px; color: #64748b;">₹</span>
+                            <span class="price-monthly" style="font-size: 2rem; font-weight: 800; color: #0f172a;">{{ $plan->price_monthly }}</span>
+                            <span class="price-annual" style="font-size: 2rem; font-weight: 800; color: #0f172a; display: none;">{{ $plan->price_annual }}</span>
+                            <span class="suffix-monthly" style="font-size: 12px; color: #64748b;">/mo</span>
+                            <span class="suffix-annual" style="font-size: 12px; color: #64748b; display: none;">/year</span>
+                            @endif
+                        </div>
+
+                        <!-- CTA Button -->
+                        @auth
+                            @php
+                                $userPlanSlug = $currentPlanSlug ?? 'free';
+                                $isCurrentPlan = ($plan->slug === $userPlanSlug);
+                                $planOrder = ['free' => 1, 'lite' => 2, 'pro' => 3, 'ultimate' => 4];
+                                $userPlanOrder = $planOrder[$userPlanSlug] ?? 1;
+                                $thisPlanOrder = $planOrder[$plan->slug] ?? 1;
+                                $isUpgrade = $thisPlanOrder > $userPlanOrder;
+                                $isDowngrade = $thisPlanOrder < $userPlanOrder;
+                            @endphp
+
+                            @if($isCurrentPlan)
+                            <button class="btn-choose btn-{{ $plan->slug }}" disabled style="opacity: 0.7; cursor: not-allowed;">
+                                ✓ Current Plan
+                            </button>
+                            @if($currentSubscription && $currentSubscription->expires_at)
+                            <p style="font-size: 10px; color: #64748b; text-align: center; margin-top: 6px;">
+                                Expires: {{ $currentSubscription->expires_at->format('d M Y') }}
+                            </p>
+                            @endif
+                            @elseif($isUpgrade)
+                            <button class="btn-choose btn-{{ $plan->slug }}" onclick="buyPlan('{{ $plan->slug }}', '{{ $plan->name }}')">
+                                ⬆ Upgrade to {{ $plan->name }}
+                            </button>
+                            @elseif($isDowngrade && !$isFree)
+                            <button class="btn-choose btn-free" style="background: #f1f5f9; color: #64748b;" onclick="buyPlan('{{ $plan->slug }}', '{{ $plan->name }}')">
+                                Switch to {{ $plan->name }}
+                            </button>
+                            @elseif($isFree)
+                            <button class="btn-choose btn-free" disabled style="opacity: 0.5;">
+                                Free Plan
+                            </button>
+                            @else
+                            <button class="btn-choose btn-{{ $plan->slug }}" onclick="buyPlan('{{ $plan->slug }}', '{{ $plan->name }}')">
+                                Choose {{ $plan->name }}
+                            </button>
+                            @endif
+                        @else
+                        <a href="/login" class="btn-choose btn-{{ $plan->slug }}" style="display: block; text-align: center; text-decoration: none;">
+                            {{ $isFree ? 'Get Started' : 'Choose ' . $plan->name }}
+                        </a>
+                        @endauth
+
+                        <!-- Key Features (Always Visible) -->
+                        <div style="margin-top: 14px;">
+                            <div class="feature-category">AI & Solving</div>
+                            @php $f = $features->get('ai_doubt'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    AI Doubt Solving
+                                </span>
+                                <span class="feature-value {{ $f && $f->isUnlimited() ? 'unlimited-badge' : '' }}">
+                                    @if($f && $f->isUnlimited()) Unlimited ⚡ @elseif($f) {{ $f->limit_value }}/day @endif
+                                </span>
+                            </div>
+
+                            @php $f = $features->get('scan_solve'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Scan to Solve
+                                </span>
+                                <span class="feature-value">{{ $f ? $f->limit_value . '/day' : '' }}</span>
+                            </div>
+
+                            @php $f = $features->get('reasoning'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Reasoning Practice
+                                </span>
+                                <span class="feature-value {{ $f && $f->isUnlimited() ? 'unlimited-badge' : '' }}">
+                                    @if($f && $f->isUnlimited()) Unlimited ⚡ @elseif($f) {{ $f->limit_value }}/day @endif
+                                </span>
+                            </div>
+
+                            <div class="feature-category">Quiz & Practice</div>
+                            @php $f = $features->get('quiz'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Quiz
+                                </span>
+                                <span class="feature-value {{ $f && $f->isUnlimited() ? 'unlimited-badge' : '' }}">
+                                    @if($f && $f->isUnlimited()) Unlimited ⚡ @elseif($f) {{ $f->limit_value }}/day @endif
+                                </span>
+                            </div>
+
+                            @php $f = $features->get('topic_quiz_gen'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name {{ $f && $f->limit_value == 0 ? 'feature-disabled' : '' }}">
+                                    @if($f && $f->limit_value == 0)
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    @else
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    @endif
+                                    Generate Quiz by Topic
+                                </span>
+                                <span class="feature-value {{ $f && $f->isUnlimited() ? 'unlimited-badge' : '' }}">
+                                    @if($f && $f->limit_value == 0) — @elseif($f && $f->isUnlimited()) Unlimited ⚡ @elseif($f) {{ $f->limit_value }}/day @endif
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Expandable Features -->
+                        <div class="expanded-features" id="expanded-{{ $plan->slug }}">
+                            <div class="feature-category">Content & Media</div>
+                            @php $f = $features->get('whiteboard_video'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Whiteboard Videos
+                                </span>
+                                <span class="feature-value" style="font-size: 10px;">
+                                    {{ $f ? $f->limit_value . '/mo' : '' }}
+                                    @if($f && $f->extra_info)
+                                        @if($f->extra_info['watermark'] ?? false) • WM @else • {{ $f->extra_info['quality'] ?? 'SD' }} @endif
+                                    @endif
+                                </span>
+                            </div>
+
+                            @php $f = $features->get('notes_diagrams'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name {{ $f && $f->limit_value == 0 ? 'feature-disabled' : '' }}">
+                                    @if($f && $f->limit_value == 0)
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    @else
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    @endif
+                                    Notes with Diagrams
+                                </span>
+                                <span class="feature-value">
+                                    @if($f && $f->limit_value == 0) — @elseif($f && $f->limit_type === 'daily') {{ $f->limit_value }}/day @endif
+                                </span>
+                            </div>
+
+                            <div class="feature-category">Social & Analytics</div>
+                            @php $f = $features->get('leaderboard'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Leaderboard
+                                </span>
+                                <span class="feature-value">
+                                    @if($f && ($f->extra_info['access'] ?? '') === 'full') Full Access @else View Only @endif
+                                </span>
+                            </div>
+
+                            @php $f = $features->get('student_chat'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name {{ $f && $f->limit_value == 0 ? 'feature-disabled' : '' }}">
+                                    @if($f && $f->limit_value == 0)
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    @else
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    @endif
+                                    Student Chat
+                                </span>
+                                <span class="feature-value {{ $f && $f->isUnlimited() ? 'unlimited-badge' : '' }}">
+                                    @if($f && $f->limit_value == 0) — @elseif($f && $f->isUnlimited()) Unlimited @elseif($f) {{ $f->limit_value }}/day @endif
+                                </span>
+                            </div>
+
+                            <div class="feature-category">Other</div>
+                            @php $f = $features->get('ads'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    @if($f && $f->limit_value == 1) Ads @else No Ads @endif
+                                </span>
+                                <span class="feature-value" style="color: {{ $f && $f->limit_value == 0 ? '#10b981' : '#64748b' }};">
+                                    @if($f && $f->limit_value == 1) Yes @else Clean @endif
+                                </span>
+                            </div>
+
+                            @php $f = $features->get('support'); @endphp
+                            <div class="feature-row">
+                                <span class="feature-name {{ $f && $f->limit_value == 0 ? 'feature-disabled' : '' }}">
+                                    @if($f && $f->limit_value == 0)
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    @else
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                                    @endif
+                                    @if($f && ($f->extra_info['type'] ?? '') === 'dedicated') Dedicated Support
+                                    @elseif($f && ($f->extra_info['type'] ?? '') === 'priority') Priority Support
+                                    @elseif($f && ($f->extra_info['type'] ?? '') === 'email') Email Support
+                                    @else Support @endif
+                                </span>
+                                <span class="feature-value">
+                                    @if($f && $f->limit_value == 0) — @else ✓ @endif
+                                </span>
+                            </div>
+
+                            <!-- Footer inside expanded -->
+                            @if(!$isFree)
+                            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #e2e8f0; text-align: center;">
+                                <span class="daily-rate-monthly" style="font-size: 11px; color: #64748b;">
+                                    ₹{{ max(1, round($plan->price_monthly / 30)) }}/din — Chai se bhi sasta ☕
+                                </span>
+                                <span class="daily-rate-annual" style="font-size: 11px; color: #64748b; display: none;">
+                                    ₹{{ max(1, round($plan->price_annual / 365)) }}/din — Chai se bhi sasta ☕
+                                </span>
+                            </div>
+                            @endif
+                        </div>
+
+                        <!-- See All Features Button -->
+                        <div class="see-all-btn" id="toggle-btn-{{ $plan->slug }}" onclick="toggleFeatures('{{ $plan->slug }}')">
+                            <span id="toggle-text-{{ $plan->slug }}">See All Features</span>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                    </div>
+                    @endforeach
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Special Season Packs Section -->
+        @if(isset($seasonalPacks) && $seasonalPacks->count() > 0 && ($settings['show_seasonal_packs'] ?? false))
+        <section id="season-packs-section" style="padding: 40px 24px 60px; background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);">
+            <div style="max-width: 1200px; margin: 0 auto;">
+                <!-- Section Header -->
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h2 style="font-size: 1.75rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">
+                        <span style="font-size: 1.5rem;">🔥</span> Special Season Packs
+                    </h2>
+                    <p style="font-size: 14px; color: #64748b;">
+                        Exam ke time limited period offers — grab karo jaldi!
+                    </p>
+                </div>
+
+                <!-- Packs Grid -->
+                <div class="packs-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                    @foreach($seasonalPacks as $pack)
+                    @php
+                        $planSlug = $pack->plan->slug ?? 'lite';
+                        $planName = $pack->plan->name ?? 'Lite';
+
+                        // Color schemes based on pack type
+                        $colors = [
+                            'first-month-trial' => ['bg' => '#fff', 'btn' => '#10b981', 'tag' => '#10b981'],
+                            'board-exam-pack' => ['bg' => '#fff', 'btn' => '#334155', 'tag' => '#3b82f6'],
+                            'jee-crash-pack' => ['bg' => 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)', 'btn' => '#10b981', 'tag' => '#10b981'],
+                            'neet-booster' => ['bg' => '#fff', 'btn' => '#f97316', 'tag' => '#f97316'],
+                            'summer-study-pack' => ['bg' => '#fff', 'btn' => '#f59e0b', 'tag' => '#64748b'],
+                            'topper-pack' => ['bg' => '#fff', 'btn' => '#10b981', 'tag' => '#ef4444'],
+                        ];
+                        $packColors = $colors[$pack->slug] ?? ['bg' => '#fff', 'btn' => '#0f172a', 'tag' => '#64748b'];
+                        $isBestDeal = $pack->slug === 'topper-pack';
+                    @endphp
+
+                    <div class="pack-card" style="background: {{ $packColors['bg'] }}; border-radius: 16px; padding: 20px; border: 1px solid #e2e8f0; position: relative; {{ $isBestDeal ? 'border: 2px solid #ef4444;' : '' }}">
+                        <!-- Tag Badge -->
+                        <div style="position: absolute; top: 12px; right: 12px; background: {{ $packColors['tag'] }}; color: white; padding: 3px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase;">
+                            {{ $pack->tag }}
+                        </div>
+
+                        <!-- Icon -->
+                        <div style="font-size: 2rem; margin-bottom: 10px;">{{ $pack->icon }}</div>
+
+                        <!-- Pack Name -->
+                        <h3 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">{{ $pack->name }}</h3>
+
+                        <!-- Description -->
+                        <p style="font-size: 11px; color: #64748b; margin-bottom: 12px; min-height: 32px;">{{ $pack->description }}</p>
+
+                        <!-- Price -->
+                        <div style="margin-bottom: 12px;">
+                            <span style="font-size: 11px; color: #64748b;">₹</span>
+                            <span style="font-size: 1.75rem; font-weight: 800; color: #0f172a;">{{ $pack->price }}</span>
+                        </div>
+
+                        <!-- Duration & Plan Badges -->
+                        <div style="display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap;">
+                            <span style="background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;">
+                                {{ $pack->duration_days }} Days
+                            </span>
+                            <span style="background: #f1f5f9; color: #475569; padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;">
+                                {{ $planName }} Access
+                            </span>
+                        </div>
+
+                        <!-- CTA Button -->
+                        @auth
+                        @php
+                            $userPlanSlug = $currentPlanSlug ?? 'free';
+                            $packPlanSlug = $pack->plan->slug ?? 'lite';
+                            $planOrder = ['free' => 1, 'lite' => 2, 'pro' => 3, 'ultimate' => 4];
+                            $userPlanOrder = $planOrder[$userPlanSlug] ?? 1;
+                            $packPlanOrder = $planOrder[$packPlanSlug] ?? 2;
+                            $hasHigherPlan = $userPlanOrder >= $packPlanOrder;
+                        @endphp
+
+                        @if($hasHigherPlan && $userPlanSlug !== 'free')
+                        <button disabled
+                                style="width: 100%; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: not-allowed; border: none; background: #e2e8f0; color: #64748b; transition: all 0.2s;">
+                            ✓ You have {{ ucfirst($userPlanSlug) }}
+                        </button>
+                        @else
+                        <button onclick="buyPack('{{ $pack->slug }}', '{{ $pack->name }}')"
+                                style="width: 100%; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; border: none; background: {{ $packColors['btn'] }}; color: white; transition: all 0.2s;">
+                            Get This Pack
+                        </button>
+                        @endif
+                        @else
+                        <a href="/login" style="display: block; width: 100%; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 13px; text-align: center; text-decoration: none; background: {{ $packColors['btn'] }}; color: white;">
+                            Get This Pack
+                        </a>
+                        @endauth
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+        @endif
+    </div>
+
+    <!-- Footer -->
+    <footer style="padding: 30px 24px; background: #0f172a; color: #fff; text-align: center;">
+        <p style="color: #64748b; font-size: 12px;">© {{ date('Y') }} BlinkStudy. All rights reserved. Made with ❤️ in India</p>
+    </footer>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        let currentBilling = 'monthly';
+
+        function toggleBilling(type) {
+            currentBilling = type;
+            document.getElementById('toggle-monthly').className = 'toggle-btn ' + (type === 'monthly' ? 'toggle-active' : 'toggle-inactive');
+            document.getElementById('toggle-annual').className = 'toggle-btn ' + (type === 'annual' ? 'toggle-active' : 'toggle-inactive');
+            // Toggle price amounts
+            document.querySelectorAll('.price-monthly').forEach(el => el.style.display = type === 'monthly' ? 'inline' : 'none');
+            document.querySelectorAll('.price-annual').forEach(el => el.style.display = type === 'annual' ? 'inline' : 'none');
+            // Toggle price suffix (/mo or /year)
+            document.querySelectorAll('.suffix-monthly').forEach(el => el.style.display = type === 'monthly' ? 'inline' : 'none');
+            document.querySelectorAll('.suffix-annual').forEach(el => el.style.display = type === 'annual' ? 'inline' : 'none');
+            // Toggle daily rate display
+            document.querySelectorAll('.daily-rate-monthly').forEach(el => el.style.display = type === 'monthly' ? 'inline' : 'none');
+            document.querySelectorAll('.daily-rate-annual').forEach(el => el.style.display = type === 'annual' ? 'inline' : 'none');
+            // Hide/Show Season Packs section (only show for monthly)
+            const seasonPacksSection = document.getElementById('season-packs-section');
+            if (seasonPacksSection) {
+                seasonPacksSection.style.display = type === 'monthly' ? 'block' : 'none';
             }
-        };
+        }
 
-        var rzp = new Razorpay(options);
-        rzp.on('payment.failed', function(response) {
-            alert('Payment failed: ' + (response.error.description || 'Unknown error'));
-            resetBtn();
-        });
-        rzp.open();
-    })
-    .catch(function(err) {
-        alert('Something went wrong. Please try again.');
-        resetBtn();
-    });
+        function toggleFeatures(planSlug) {
+            const expanded = document.getElementById('expanded-' + planSlug);
+            const btn = document.getElementById('toggle-btn-' + planSlug);
+            const text = document.getElementById('toggle-text-' + planSlug);
 
-    function resetBtn() {
-        btn.disabled = false;
-        btn.textContent = originalText;
-        btn.style.opacity = '1';
-    }
-}
-</script>
-@endpush
-@endauth
+            if (expanded.classList.contains('show')) {
+                expanded.classList.remove('show');
+                btn.classList.remove('expanded');
+                text.textContent = 'See All Features';
+            } else {
+                expanded.classList.add('show');
+                btn.classList.add('expanded');
+                text.textContent = 'Hide Features';
+            }
+        }
+
+        function buyPack(packSlug, packName) {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+
+            fetch('/web/razorpay/create-pack-order', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ pack_slug: packSlug })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.subscription) {
+                    btn.textContent = 'Activated!';
+                    setTimeout(() => window.location.href = '/chat', 800);
+                    return;
+                }
+                if (!data.success) {
+                    alert(data.message || data.errors?.pack_slug?.[0] || 'Failed to create order');
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                    return;
+                }
+
+                const options = {
+                    key: data.key,
+                    amount: data.amount * 100,
+                    currency: data.currency,
+                    name: 'BlinkStudy',
+                    description: packName,
+                    order_id: data.order_id,
+                    theme: { color: '#0f172a' },
+                    handler: function(response) {
+                        btn.textContent = 'Verifying...';
+                        fetch('/web/razorpay/verify-payment', {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature,
+                                pack_slug: packSlug
+                            })
+                        })
+                        .then(r => r.json())
+                        .then(verifyData => {
+                            if (verifyData.success) {
+                                btn.textContent = 'Activated!';
+                                btn.style.background = '#10b981';
+                                setTimeout(() => window.location.href = '/chat', 800);
+                            } else {
+                                alert(verifyData.message || 'Verification failed');
+                                btn.disabled = false;
+                                btn.textContent = originalText;
+                            }
+                        });
+                    },
+                    modal: { ondismiss: () => { btn.disabled = false; btn.textContent = originalText; } }
+                };
+
+                new Razorpay(options).open();
+            })
+            .catch(err => {
+                console.error('Payment error:', err);
+                alert('Something went wrong. Please try again.');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
+        }
+
+        function buyPlan(planSlug, planName) {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+
+            fetch('/web/razorpay/create-order', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ plan_slug: planSlug, billing_cycle: currentBilling })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.subscription) {
+                    btn.textContent = 'Activated!';
+                    setTimeout(() => window.location.href = '/chat', 800);
+                    return;
+                }
+                if (!data.success) {
+                    alert(data.message || data.errors?.plan_slug?.[0] || 'Failed to create order');
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                    return;
+                }
+
+                const options = {
+                    key: data.key,
+                    amount: data.amount * 100,
+                    currency: data.currency,
+                    name: 'BlinkStudy',
+                    description: planName + ' Plan (' + (currentBilling === 'annual' ? 'Annual' : 'Monthly') + ')',
+                    order_id: data.order_id,
+                    theme: { color: '#0f172a' },
+                    handler: function(response) {
+                        btn.textContent = 'Verifying...';
+                        fetch('/web/razorpay/verify-payment', {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature,
+                                plan_slug: planSlug,
+                                billing_cycle: currentBilling
+                            })
+                        })
+                        .then(r => r.json())
+                        .then(verifyData => {
+                            if (verifyData.success) {
+                                btn.textContent = 'Activated!';
+                                btn.style.background = '#10b981';
+                                setTimeout(() => window.location.href = '/chat', 800);
+                            } else {
+                                alert(verifyData.message || 'Verification failed');
+                                btn.disabled = false;
+                                btn.textContent = originalText;
+                            }
+                        });
+                    },
+                    modal: { ondismiss: () => { btn.disabled = false; btn.textContent = originalText; } }
+                };
+
+                new Razorpay(options).open();
+            })
+            .catch(err => {
+                console.error('Payment error:', err);
+                alert('Something went wrong. Please try again.');
+                btn.disabled = false;
+                btn.textContent = originalText;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "A biconvex lens made of glass of refractive index 1.5 is immersed in a liquid having refractive index 1.7. How will its nature change?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "The lens will behave as a converging lens with increased focal length."
+      },
+      {
+        "label": "B",
+        "text": "The lens will behave as a diverging lens."
+      },
+      {
+        "label": "C",
+        "text": "The lens will behave as a converging lens with decreased focal length."
+      },
+      {
+        "label": "D",
+        "text": "The lens will disappear."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "When a lens is immersed in a liquid with a higher refractive index than the lens material, the lens's nature reverses. A convex lens becomes diverging, and vice versa.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the effect on the interference fringes in a Young's double-slit experiment due to each of the following operations: (a) The screen is moved away from the plane of the slits. (b) The width of the source slit is increased.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "(a) Fringe width decreases, (b) Fringes become sharper"
+      },
+      {
+        "label": "B",
+        "text": "(a) Fringe width increases, (b) Fringes become less distinct"
+      },
+      {
+        "label": "C",
+        "text": "(a) Fringe width remains the same, (b) Fringes disappear"
+      },
+      {
+        "label": "D",
+        "text": "(a) Fringe width decreases, (b) Fringes become less distinct"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "(a) Fringe width is directly proportional to the distance between the screen and the slits. (b) Increasing the source slit width decreases the coherence, making fringes less distinct.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Define the term 'threshold frequency' in the context of photoelectric emission. State two factors on which it depends.",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Minimum frequency for electron emission; Depends on intensity and voltage."
+      },
+      {
+        "label": "B",
+        "text": "Maximum frequency for electron emission; Depends on work function and intensity."
+      },
+      {
+        "label": "C",
+        "text": "Minimum frequency for electron emission; Depends on work function and material."
+      },
+      {
+        "label": "D",
+        "text": "Maximum frequency for electron emission; Depends on voltage and material."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Threshold frequency is the minimum frequency of incident radiation required to cause photoelectric emission. It depends on the work function of the material and the nature of the material.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Draw a labelled ray diagram to show the formation of a final image by a compound microscope. Write the expression for its magnifying power.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Diagram showing image formation; Magnifying power: m = (v_o/u_o)(D/f_e)"
+      },
+      {
+        "label": "B",
+        "text": "Diagram showing image formation; Magnifying power: m = (u_o/v_o)(f_e/D)"
+      },
+      {
+        "label": "C",
+        "text": "Diagram showing image formation; Magnifying power: m = (v_o/u_o)(f_e/D)"
+      },
+      {
+        "label": "D",
+        "text": "Diagram showing image formation; Magnifying power: m = (u_o/v_o)(D/f_e)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The ray diagram should show the objective lens forming a real, inverted image, and the eyepiece magnifying this image. Magnifying power m = (v_o/u_o)(D/f_e), where v_o and u_o are the image and object distances for the objective, D is the least distance of distinct vision, and f_e is the focal length of the eyepiece.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "State Huygens' principle. Use it to explain the refraction of a plane wavefront at a plane surface. Hence, prove Snell's law of refraction.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Huygens' principle stated; Refraction explained and Snell's law derived."
+      },
+      {
+        "label": "B",
+        "text": "Huygens' principle stated; Reflection explained and Snell's law derived."
+      },
+      {
+        "label": "C",
+        "text": "Huygens' principle stated; Diffraction explained and Snell's law derived."
+      },
+      {
+        "label": "D",
+        "text": "Huygens' principle stated; Polarization explained and Snell's law derived."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Huygens' principle states that every point on a wavefront is a source of secondary wavelets. Using this, explain how the wavefront bends as it enters a different medium, leading to Snell's law: n1sinθ1 = n2sinθ2.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the de Broglie wavelength of an electron accelerated through a potential difference of V volts?",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "λ = h / √(meV)"
+      },
+      {
+        "label": "B",
+        "text": "λ = h / √(2meV)"
+      },
+      {
+        "label": "C",
+        "text": "λ = √(2meV) / h"
+      },
+      {
+        "label": "D",
+        "text": "λ = √(meV) / h"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The de Broglie wavelength is given by λ = h/p, where p is the momentum. The kinetic energy of the electron is eV = p^2/2m, so p = √(2meV). Therefore, λ = h / √(2meV).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write Einstein’s photoelectric equation. State clearly the three salient features observed in photoelectric effect, which can be explained on the basis of this equation.",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "KE = hν - φ; Instantaneous emission, threshold frequency, KE depends on frequency."
+      },
+      {
+        "label": "B",
+        "text": "KE = hν + φ; Delayed emission, threshold frequency, KE depends on intensity."
+      },
+      {
+        "label": "C",
+        "text": "KE = hν - φ; Delayed emission, no threshold frequency, KE depends on intensity."
+      },
+      {
+        "label": "D",
+        "text": "KE = hν + φ; Instantaneous emission, no threshold frequency, KE depends on frequency."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Einstein's photoelectric equation is KE = hν - φ, where KE is the kinetic energy of the emitted electron, hν is the energy of the photon, and φ is the work function. The salient features are: (1) Instantaneous emission, (2) Existence of threshold frequency, (3) Kinetic energy of photoelectrons depends on the frequency of incident radiation and is independent of its intensity.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the function of a repeater in a communication system?",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "To amplify the signal only."
+      },
+      {
+        "label": "B",
+        "text": "To filter noise from the signal."
+      },
+      {
+        "label": "C",
+        "text": "To amplify and retransmit the signal."
+      },
+      {
+        "label": "D",
+        "text": "To modulate the signal."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "A repeater amplifies the received signal and retransmits it to extend the range of communication.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Name the electromagnetic radiations used for (a) water purification, and (b) eye surgery.",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "(a) Infrared, (b) Microwaves"
+      },
+      {
+        "label": "B",
+        "text": "(a) Ultraviolet, (b) Infrared"
+      },
+      {
+        "label": "C",
+        "text": "(a) Microwaves, (b) Ultraviolet"
+      },
+      {
+        "label": "D",
+        "text": "(a) Ultraviolet, (b) X-rays"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Ultraviolet radiation is used for water purification, and infrared radiation is used in certain types of eye surgery.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "A ray of light falls on a transparent glass slab of refractive index 1.62. What should be the angle of incidence so that the reflected ray is completely polarized?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "tan⁻¹(1.62)"
+      },
+      {
+        "label": "B",
+        "text": "sin⁻¹(1.62)"
+      },
+      {
+        "label": "C",
+        "text": "cos⁻¹(1.62)"
+      },
+      {
+        "label": "D",
+        "text": "cot⁻¹(1.62)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "For complete polarization, the angle of incidence should be equal to Brewster's angle, which is given by tan⁻¹(n), where n is the refractive index. Therefore, the angle of incidence = tan⁻¹(1.62).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write two differences between nuclear fission and nuclear fusion.",
+    "topic": "Nuclear Physics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fission: Splitting of a heavy nucleus, Fusion: Combining of light nuclei; Fission: Releases less energy, Fusion: Releases more energy"
+      },
+      {
+        "label": "B",
+        "text": "Fission: Combining of light nuclei, Fusion: Splitting of a heavy nucleus; Fission: Requires high temperature, Fusion: Requires low temperature"
+      },
+      {
+        "label": "C",
+        "text": "Fission: Splitting of a heavy nucleus, Fusion: Combining of light nuclei; Fission: Releases more energy, Fusion: Releases less energy"
+      },
+      {
+        "label": "D",
+        "text": "Fission: Splitting of a heavy nucleus, Fusion: Combining of light nuclei; Fission: Releases energy, Fusion: Requires extremely high temperature"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Nuclear fission is the splitting of a heavy nucleus into lighter nuclei, while nuclear fusion is the combining of light nuclei into a heavier nucleus. Fission releases energy, and fusion requires extremely high temperatures to initiate.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the ratio of radii of nuclei with mass numbers 8 and 27?",
+    "topic": "Nuclear Physics",
+    "options": [
+      {
+        "label": "A",
+        "text": "8/27"
+      },
+      {
+        "label": "B",
+        "text": "2/3"
+      },
+      {
+        "label": "C",
+        "text": "27/8"
+      },
+      {
+        "label": "D",
+        "text": "3/2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The radius of a nucleus is proportional to A^(1/3), where A is the mass number. So, the ratio of radii is (8/27)^(1/3) = 2/3.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In a p-n junction diode, what is the effect of increasing the reverse bias on the width of the depletion region?",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "The width decreases."
+      },
+      {
+        "label": "B",
+        "text": "The width increases."
+      },
+      {
+        "label": "C",
+        "text": "The width remains the same."
+      },
+      {
+        "label": "D",
+        "text": "The width initially increases then decreases."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Increasing the reverse bias pulls the majority carriers away from the junction, increasing the width of the depletion region.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the working principle of a solar cell.",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Photovoltaic effect: Light creates electron-hole pairs, separated by the junction, generating voltage."
+      },
+      {
+        "label": "B",
+        "text": "Thermionic emission: Heat creates electron-hole pairs, separated by the junction, generating voltage."
+      },
+      {
+        "label": "C",
+        "text": "Recombination: Light causes recombination of electron-hole pairs, generating voltage."
+      },
+      {
+        "label": "D",
+        "text": "Diffusion: Light causes diffusion of electrons, generating voltage."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A solar cell works on the principle of the photovoltaic effect. When light falls on the p-n junction, electron-hole pairs are created. The electric field at the junction separates these pairs, causing electrons to move to the n-side and holes to the p-side, generating a voltage.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the function of a modulator in a communication system?",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "To amplify the signal."
+      },
+      {
+        "label": "B",
+        "text": "To convert analog signal to digital signal."
+      },
+      {
+        "label": "C",
+        "text": "To superimpose the message signal onto a carrier wave."
+      },
+      {
+        "label": "D",
+        "text": "To filter noise from the signal."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "A modulator superimposes the message signal onto a high-frequency carrier wave for efficient transmission.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the concept of 'displacement current'.",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "Current due to flow of free electrons in a conductor."
+      },
+      {
+        "label": "B",
+        "text": "Current due to the changing electric field."
+      },
+      {
+        "label": "C",
+        "text": "Current due to the flow of holes in a semiconductor."
+      },
+      {
+        "label": "D",
+        "text": "Current due to the changing magnetic field."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Displacement current is the current that arises due to a changing electric field, particularly in a region where there is no flow of charge carriers.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Derive the lens maker's formula.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Formula derived correctly with all steps."
+      },
+      {
+        "label": "B",
+        "text": "Formula derived with some steps missing."
+      },
+      {
+        "label": "C",
+        "text": "Only the final formula is written."
+      },
+      {
+        "label": "D",
+        "text": "Incorrect formula derived."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The lens maker's formula relates the focal length of a lens to the refractive index of the lens material and the radii of curvature of its two surfaces. The derivation involves applying the refraction formula twice, once for each surface of the lens, and then simplifying to obtain the final formula: 1/f = (n-1)(1/R1 - 1/R2).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the working of a full-wave rectifier using a p-n junction diode. Draw the circuit diagram and input/output waveforms.",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Circuit diagram and waveforms correctly drawn; Working explained clearly."
+      },
+      {
+        "label": "B",
+        "text": "Circuit diagram and waveforms partially correct; Working explained vaguely."
+      },
+      {
+        "label": "C",
+        "text": "Only circuit diagram drawn; Working not explained."
+      },
+      {
+        "label": "D",
+        "text": "Incorrect circuit diagram and waveforms."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A full-wave rectifier converts AC voltage to DC voltage using two diodes. During one half-cycle, one diode conducts, and during the other half-cycle, the other diode conducts, resulting in a rectified output. The circuit diagram should show a center-tapped transformer and two diodes. The input and output waveforms should be clearly labeled.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the range of frequencies used in satellite communication?",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "3 kHz to 30 kHz"
+      },
+      {
+        "label": "B",
+        "text": "30 MHz to 300 MHz"
+      },
+      {
+        "label": "C",
+        "text": "3 GHz to 30 GHz"
+      },
+      {
+        "label": "D",
+        "text": "300 GHz to 3000 GHz"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Satellite communication typically uses frequencies in the range of 3 GHz to 30 GHz.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define 'work function' in the context of photoelectric effect.",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "The maximum energy of emitted photoelectrons."
+      },
+      {
+        "label": "B",
+        "text": "The minimum energy required to emit an electron from a metal surface."
+      },
+      {
+        "label": "C",
+        "text": "The energy of incident photons."
+      },
+      {
+        "label": "D",
+        "text": "The kinetic energy of incident photons."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Work function is the minimum energy required to remove an electron from the surface of a solid.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the difference between constructive and destructive interference.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Constructive: Waves are in phase, amplitude increases; Destructive: Waves are out of phase, amplitude decreases."
+      },
+      {
+        "label": "B",
+        "text": "Constructive: Waves are out of phase, amplitude increases; Destructive: Waves are in phase, amplitude decreases."
+      },
+      {
+        "label": "C",
+        "text": "Constructive: Waves are in phase, amplitude decreases; Destructive: Waves are out of phase, amplitude increases."
+      },
+      {
+        "label": "D",
+        "text": "Constructive: Waves are out of phase, amplitude remains same; Destructive: Waves are in phase, amplitude remains same."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Constructive interference occurs when waves are in phase, resulting in an increased amplitude. Destructive interference occurs when waves are out of phase, resulting in a decreased amplitude.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the function of base region in a transistor?",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "To supply majority carriers."
+      },
+      {
+        "label": "B",
+        "text": "To control the flow of current between emitter and collector."
+      },
+      {
+        "label": "C",
+        "text": "To collect majority carriers."
+      },
+      {
+        "label": "D",
+        "text": "To provide the necessary voltage."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The base region in a transistor controls the flow of current between the emitter and the collector. A small change in the base current can cause a large change in the collector current.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the concept of modulation index in amplitude modulation (AM).",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ratio of carrier wave amplitude to message signal amplitude."
+      },
+      {
+        "label": "B",
+        "text": "Ratio of message signal amplitude to carrier wave amplitude."
+      },
+      {
+        "label": "C",
+        "text": "Product of carrier wave amplitude and message signal amplitude."
+      },
+      {
+        "label": "D",
+        "text": "Sum of carrier wave amplitude and message signal amplitude."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The modulation index in AM is the ratio of the amplitude of the message signal to the amplitude of the carrier wave. It indicates the degree of modulation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the concept of nuclear binding energy.",
+    "topic": "Nuclear Physics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Energy required to break a nucleus into its constituent nucleons."
+      },
+      {
+        "label": "B",
+        "text": "Energy released when nucleons combine to form a nucleus."
+      },
+      {
+        "label": "C",
+        "text": "Both A and B are correct."
+      },
+      {
+        "label": "D",
+        "text": "Neither A nor B is correct."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Nuclear binding energy is the energy required to separate a nucleus into its constituent protons and neutrons, or equivalently, the energy released when these nucleons combine to form the nucleus.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the function of a Zener diode?",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Amplification"
+      },
+      {
+        "label": "B",
+        "text": "Rectification"
+      },
+      {
+        "label": "C",
+        "text": "Voltage regulation"
+      },
+      {
+        "label": "D",
+        "text": "Switching"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "A Zener diode is primarily used for voltage regulation. It maintains a constant voltage across its terminals when operated in the reverse breakdown region.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  }
+]

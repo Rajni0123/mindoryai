@@ -46,88 +46,105 @@ class UnifiedLoginController extends Controller
      */
     public function sendOTP(Request $request)
     {
-        // Rate limiting: 5 attempts per 10 minutes
-        $key = 'unified-otp-send:' . $request->ip();
+        try {
+            // Rate limiting: 5 attempts per 10 minutes
+            $key = 'unified-otp-send:' . $request->ip();
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $seconds = RateLimiter::availableIn($key);
-            return response()->json([
-                'success' => false,
-                'message' => "Too many OTP requests. Please try again in {$seconds} seconds."
-            ], 429);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'mobile' => ['required', 'string', 'regex:/^[6-9]\d{9}$/']
-        ], [
-            'mobile.required' => 'Mobile number is required',
-            'mobile.regex' => 'Please enter a valid 10-digit mobile number'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors()->first()
-            ], 422);
-        }
-
-        $mobile = $request->mobile;
-
-        // Check if mobile exists in database
-        $user = User::where('mobile', $mobile)->first();
-
-        if (!$user) {
-            // For security: Don't reveal if user exists or not
-            // For new users, we'll handle registration during OTP verification
-            Log::info('Login attempt with unregistered mobile', [
-                'mobile' => $mobile,
-                'ip' => $request->ip(),
-            ]);
-        } else {
-            // Check if account is locked (for admin accounts)
-            if ($user->role === 'admin' && $user->isLocked()) {
-                $minutesLeft = now()->diffInMinutes($user->locked_until);
+            if (RateLimiter::tooManyAttempts($key, 5)) {
+                $seconds = RateLimiter::availableIn($key);
                 return response()->json([
                     'success' => false,
-                    'message' => "Account is locked. Try again in {$minutesLeft} minutes."
-                ], 423);
+                    'message' => "Too many OTP requests. Please try again in {$seconds} seconds."
+                ], 429);
             }
 
-            // Store role in session for later use (encrypted session)
-            session(['pending_login_role' => $user->role]);
-            session(['pending_login_mobile' => $mobile]);
-        }
+            $validator = Validator::make($request->all(), [
+                'mobile' => ['required', 'string', 'regex:/^[6-9]\d{9}$/']
+            ], [
+                'mobile.required' => 'Mobile number is required',
+                'mobile.regex' => 'Please enter a valid 10-digit mobile number'
+            ]);
 
-        // Check OTP method preference - first from request, then from config
-        $otpMethod = $request->input('otp_method', \App\Models\FrontendConfig::getValue('auth.otp.method', 'sms'));
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $validator->errors()->first()
+                ], 422);
+            }
 
-        // Send OTP via selected method
-        if ($otpMethod === 'whatsapp') {
-            $result = $this->otpService->sendWhatsAppOTP($mobile, $request->ip(), $request->userAgent());
-        } else {
-            $result = $this->otpService->sendOTP($mobile, $request->ip(), $request->userAgent());
-        }
+            $mobile = $request->mobile;
 
-        if ($result['success']) {
-            RateLimiter::hit($key, 600); // 10 minutes
+            // Check if mobile exists in database
+            $user = User::where('mobile', $mobile)->first();
 
-            Log::info('Unified login OTP sent', [
-                'mobile' => $mobile,
-                'ip' => $request->ip(),
-                'role' => $user?->role ?? 'new_user',
+            if (!$user) {
+                // For security: Don't reveal if user exists or not
+                // For new users, we'll handle registration during OTP verification
+                Log::info('Login attempt with unregistered mobile', [
+                    'mobile' => $mobile,
+                    'ip' => $request->ip(),
+                ]);
+            } else {
+                // Check if account is locked (for admin accounts)
+                if ($user->role === 'admin' && $user->isLocked()) {
+                    $minutesLeft = now()->diffInMinutes($user->locked_until);
+                    return response()->json([
+                        'success' => false,
+                        'message' => "Account is locked. Try again in {$minutesLeft} minutes."
+                    ], 423);
+                }
+
+                // Web login only — API/mobile uses token auth, no PHP session
+                if (!$request->is('api/*')) {
+                    session(['pending_login_role' => $user->role]);
+                    session(['pending_login_mobile' => $mobile]);
+                }
+            }
+
+            // Check OTP method preference - first from request, then from config
+            $otpMethod = $request->input('otp_method', \App\Models\FrontendConfig::getValue('auth.otp.method', 'sms'));
+
+            // Send OTP via selected method
+            if ($otpMethod === 'whatsapp') {
+                $result = $this->otpService->sendWhatsAppOTP($mobile, $request->ip(), $request->userAgent());
+            } else {
+                $result = $this->otpService->sendOTP($mobile, $request->ip(), $request->userAgent());
+            }
+
+            if ($result['success']) {
+                RateLimiter::hit($key, 600); // 10 minutes
+
+                Log::info('Unified login OTP sent', [
+                    'mobile' => $mobile,
+                    'ip' => $request->ip(),
+                    'role' => $user?->role ?? 'new_user',
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => $result['message'],
+                    'expires_in' => $result['expires_in'],
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => $result['message']
+            ], 400);
+
+        } catch (\Throwable $e) {
+            Log::error('SendOTP critical error', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile() . ':' . $e->getLine(),
+                'trace' => $e->getTraceAsString(),
             ]);
 
             return response()->json([
-                'success' => true,
-                'message' => $result['message'],
-                'expires_in' => $result['expires_in'],
-            ]);
+                'success' => false,
+                'message' => 'OTP service temporarily unavailable. Please try again.',
+                'debug_hint' => config('app.debug') ? $e->getMessage() : null,
+            ], 500);
         }
-
-        return response()->json([
-            'success' => false,
-            'message' => $result['message']
-        ], 400);
     }
 
     /**
@@ -208,8 +225,9 @@ class UnifiedLoginController extends Controller
             $uniqueEmail = $mobile . '_' . time() . '@mobile.user';
 
             try {
-                // Get default plan (check user_plans table, not pricing_plans)
-                $defaultPlanId = DB::table('user_plans')->where('id', 1)->exists() ? 1 : null;
+                // Get FREE plan by slug (not by ID - IDs can vary across environments)
+                $freePlan = DB::table('user_plans')->where('slug', 'free')->first();
+                $defaultPlanId = $freePlan ? $freePlan->id : null;
 
                 // Use forceFill to set 'role' which is guarded against mass-assignment
                 $user = new User();
@@ -273,6 +291,28 @@ class UnifiedLoginController extends Controller
                 }
             }
         }
+
+        // ═══════════════════════════════════════════════════════════════
+        // Google Play Reviewer Test Account - Assign Ultimate Plan
+        // ═══════════════════════════════════════════════════════════════
+        $testPhone = env('TEST_PHONE', '');
+        if (!empty($testPhone) && $mobile === $testPhone) {
+            // Get Ultimate plan from database
+            $ultimatePlan = DB::table('user_plans')->where('slug', 'ultimate')->first();
+
+            if ($ultimatePlan) {
+                $user->plan_id = $ultimatePlan->id;
+                $user->plan_expires_at = \Carbon\Carbon::parse('2030-12-31 23:59:59');
+                $user->save();
+
+                Log::info('🧪 Google Play Reviewer Test Account - Ultimate plan assigned', [
+                    'user_id' => $user->id,
+                    'plan_id' => $ultimatePlan->id,
+                    'expires_at' => '2030-12-31'
+                ]);
+            }
+        }
+        // ═══════════════════════════════════════════════════════════════
 
         // Check if admin needs 2FA
         if ($user->role === 'admin' && $user->two_factor_enabled) {
@@ -409,25 +449,26 @@ class UnifiedLoginController extends Controller
      *
      * ROLE-BASED REDIRECTION:
      * - admin → /admin/dashboard
-     * - user (new, no class) → /select-class
-     * - user (existing) → /chat
+     * - user → https://chat.blinkstudy.in/ with auth token
      */
     private function getRedirectRoute(User $user, bool $isNewUser): string
     {
         if ($user->role === 'admin') {
-            // Admin redirect to admin subdomain
-            $adminUrl = config('services.subdomains.admin_url');
-            if ($adminUrl) {
-                return rtrim($adminUrl, '/') . '/admin/dashboard';
-            }
-            // Fallback to route if URL not configured
+            // Admin redirect to admin dashboard
             return route('admin.dashboard');
         }
 
-        // Profile completion is now handled via popup on the chat page
+        // Normal users redirect to chat subdomain with auth token
+        $chatUrl = env('CHAT_SUBDOMAIN_URL', 'https://chat.blinkstudy.in');
 
-        // Redirect to chat after successful login
-        return route('chat');
+        // Generate a one-time auth token for cross-domain transfer
+        $authToken = $user->createToken('web-chat-transfer', ['web-chat'])->plainTextToken;
+
+        // Store token hash in cache for 5 minutes (one-time use)
+        $tokenHash = hash('sha256', $authToken);
+        \Illuminate\Support\Facades\Cache::put("chat_auth_transfer:{$tokenHash}", $user->id, now()->addMinutes(5));
+
+        return $chatUrl . '?auth_token=' . urlencode($authToken);
     }
 
     /**
@@ -680,8 +721,9 @@ class UnifiedLoginController extends Controller
             $userName = ucfirst($emailName);
 
             try {
-                // Get default plan (check user_plans table, not pricing_plans)
-                $defaultPlanId = DB::table('user_plans')->where('id', 1)->exists() ? 1 : null;
+                // Get FREE plan by slug (not by ID - IDs can vary across environments)
+                $freePlan = DB::table('user_plans')->where('slug', 'free')->first();
+                $defaultPlanId = $freePlan ? $freePlan->id : null;
 
                 // Use forceFill to set 'role' which is guarded against mass-assignment
                 $user = new User();

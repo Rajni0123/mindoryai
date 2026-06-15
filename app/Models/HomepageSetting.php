@@ -32,10 +32,26 @@ class HomepageSetting extends Model
         });
     }
 
-    // Clear cache
+    // Get all settings as key-value pairs (optimized for landing page)
+    public static function getAllCached()
+    {
+        return Cache::remember('homepage_settings_all', 3600, function () {
+            return self::all()->pluck('value', 'key')->toArray();
+        });
+    }
+
+    // Clear cache - ONLY clear homepage setting keys, not entire cache!
     public static function clearCache()
     {
-        Cache::flush();
+        // Clear specific cache keys instead of flushing everything
+        Cache::forget('homepage_settings_grouped');
+        Cache::forget('homepage_settings_all');
+
+        // Clear individual setting caches
+        $keys = self::pluck('key')->toArray();
+        foreach ($keys as $key) {
+            Cache::forget("homepage_setting_{$key}");
+        }
     }
 
     // Boot method to clear cache on save/delete
@@ -43,12 +59,17 @@ class HomepageSetting extends Model
     {
         parent::boot();
 
-        static::saved(function () {
-            self::clearCache();
+        static::saved(function ($model) {
+            // Clear specific caches only
+            Cache::forget('homepage_settings_grouped');
+            Cache::forget('homepage_settings_all');
+            Cache::forget("homepage_setting_{$model->key}");
         });
 
-        static::deleted(function () {
-            self::clearCache();
+        static::deleted(function ($model) {
+            Cache::forget('homepage_settings_grouped');
+            Cache::forget('homepage_settings_all');
+            Cache::forget("homepage_setting_{$model->key}");
         });
     }
 }

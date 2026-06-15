@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BlinkStudy</title>
+    <link rel="icon" type="image/png" href="./logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #fafafa; }
+        .page-bg {
+            background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(200, 180, 240, 0.3) 0%, transparent 60%),
+                        radial-gradient(ellipse 50% 70% at 100% 60%, rgba(255, 200, 150, 0.3) 0%, transparent 60%);
+            min-height: 100vh;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #0f172a;
+            text-decoration: none;
+        }
+        .nav-logo img { width: 42px; height: 42px; }
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid #e2e8f0;
+            background: rgba(255,255,255,0.8);
+            transition: all 0.2s;
+        }
+        .nav-back:hover { background: #fff; color: #0f172a; }
+        .content-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+        }
+        .stat-card {
+            text-align: center;
+            padding: 24px;
+            background: #f8fafc;
+            border-radius: 16px;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1DB9A0;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+        .value-card {
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            background: #fff;
+        }
+        .value-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        @media (max-width: 768px) {
+            .content-card { padding: 24px; }
+            .navbar { padding: 1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .values-grid { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-bg">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <a href="./index.html" class="nav-logo">
+                <img src="./logo.png" alt="BlinkStudy">
+                BlinkStudy
+            </a>
+            <a href="./index.html" class="nav-back">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                Back to Home
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <div style="max-width: 900px; margin: 0 auto; padding: 40px 24px 80px;">
+            <div class="content-card">
+                <!-- Header -->
+                <div style="text-align: center; margin-bottom: 48px;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #1DB9A0, #14b8a6); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <h1 style="font-size: 2.5rem; font-weight: 700; color: #0f172a; margin-bottom: 16px;">About BlinkStudy</h1>
+                    <p style="color: #64748b; font-size: 18px; max-width: 600px; margin: 0 auto; line-height: 1.7;">We're on a mission to make quality education accessible to every student in India through the power of AI.</p>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px;">
+                    <div class="stat-card">
+                        <div class="stat-number">10K+</div>
+                        <div class="stat-label">Active Students</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">50K+</div>
+                        <div class="stat-label">Problems Solved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4.9</div>
+                        <div class="stat-label">App Rating</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">AI Availability</div>
+                    </div>
+                </div>
+
+                <!-- Story -->
+                <div style="margin-bottom: 48px;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 16px;">Our Story</h2>
+                    <p style="color: #475569; line-height: 1.8; font-size: 15px; margin-bottom: 16px;">
+                        BlinkStudy was born from a simple observation: millions of Indian students struggle with their studies, not because they lack intelligence, but because they lack access to quality guidance when they need it most - at 2 AM before an exam, during a confusing homework problem, or when preparing for competitive exams.
+                    </p>
+                    <p style="color: #475569; line-height: 1.8; font-size: 15px; margin-bottom: 16px;">
+                        We built BlinkStudy to be that reliable study companion that's always available. Using cutting-edge AI technology, we've created tools that understand how Indian students learn and what they need - from CBSE and ICSE board exams to JEE and NEET preparation.
+                    </p>
+                    <p style="color: #475569; line-height: 1.8; font-size: 15px;">
+                        Today, thousands of students across India use BlinkStudy daily to scan problems, generate quizzes, watch whiteboard explanations, and chat with their AI tutor. And we're just getting started.
+                    </p>
+                </div>
+
+                <!-- Values -->
+                <div>
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 24px; text-align: center;">Our Values</h2>
+                    <div class="values-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div class="value-card">
+                            <div class="value-icon" style="background: #DBEAFE;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+                            </div>
+                            <h3 style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 8px;">Student First</h3>
+                            <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Every feature we build starts with one question: "Will this help students learn better?"</p>
+                        </div>
+
+                        <div class="value-card">
+                            <div class="value-icon" style="background: #DCFCE7;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                            </div>
+                            <h3 style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 8px;">Accuracy Matters</h3>
+                            <p style="color: #64748b; font-size: 14px; line-height: 1.6;">We continuously improve our AI to provide accurate, helpful solutions you can trust.</p>
+                        </div>
+
+                        <div class="value-card">
+                            <div class="value-icon" style="background: #FEF3C7;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M12 2v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="M2 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="M12 22v-4"/><path d="m19.07 19.07-2.83-2.83"/><path d="M22 12h-4"/><path d="m19.07 4.93-2.83 2.83"/></svg>
+                            </div>
+                            <h3 style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 8px;">Accessible to All</h3>
+                            <p style="color: #64748b; font-size: 14px; line-height: 1.6;">Quality education shouldn't be a luxury. We keep our plans affordable for every student.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <div style="text-align: center; margin-top: 48px; padding-top: 48px; border-top: 1px solid #e2e8f0;">
+                    <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a; margin-bottom: 12px;">Ready to Start Learning?</h2>
+                    <p style="color: #64748b; margin-bottom: 24px;">Join thousands of students who are already learning smarter with BlinkStudy.</p>
+                    <a href="https://play.google.com/store/apps/details?id=com.blinkstudy.app" style="display: inline-block; background: linear-gradient(135deg, #1DB9A0, #14b8a6); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; text-decoration: none; font-size: 15px;">Download Free App</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer style="padding: 24px; text-align: center; color: #64748b; font-size: 13px;">
+            <p>© 2024 BlinkStudy. All rights reserved. Made with ❤️ in India</p>
+        </footer>
+    </div>
+</body>
+</html>

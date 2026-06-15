@@ -84,6 +84,7 @@
                                 @elseif($group === 'subjects') menu_book
                                 @elseif($group === 'impact') workspace_premium
                                 @elseif($group === 'cta') campaign
+                                @elseif($group === 'pricing') payments
                                 @elseif($group === 'footer') view_agenda
                                 @else settings
                                 @endif

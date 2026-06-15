@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Feature;
 use App\Models\HomepageSetting;
 use App\Models\Page;
+use App\Models\Plan;
 use App\Models\PricingPlan;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -20,7 +21,48 @@ class PageController extends Controller
      */
     public function landing()
     {
-        $pricingPlans = PricingPlan::getActivePlans();
+        // Use new Plan model and transform to match view expectations
+        $plans = Plan::where('is_active', true)
+            ->orderBy('sort_order')
+            ->with('features')
+            ->get();
+
+        // Transform to match the view's expected format
+        $pricingPlans = $plans->map(function ($plan) {
+            // Get feature descriptions for display - key features only
+            $featuresList = [];
+            $keyFeatures = ['ai_doubt', 'scan_solve', 'quiz', 'reasoning', 'whiteboard_video', 'pdf_analysis_pages', 'chat_history_days', 'support', 'ads'];
+
+            foreach ($plan->features as $feature) {
+                if (in_array($feature->feature_slug, $keyFeatures)) {
+                    if ($feature->feature_slug === 'ads') {
+                        $featuresList[] = $feature->limit_value == 0 ? 'No Ads - Clean Experience' : 'With Ads';
+                    } elseif ($feature->isUnlimited()) {
+                        $featuresList[] = $feature->getDisplayName() . ': Unlimited';
+                    } elseif ($feature->limit_value > 0) {
+                        $featuresList[] = $feature->getDisplayName() . ': ' . $feature->getLimitDescription();
+                    }
+                }
+            }
+
+            return (object) [
+                'id' => $plan->id,
+                'name' => $plan->name,
+                'slug' => $plan->slug,
+                'description' => $plan->description,
+                'price' => $plan->price_monthly,
+                'price_annual' => $plan->price_annual,
+                'billing_period' => 'month',
+                'is_popular' => $plan->is_recommended, // Pro is recommended = popular
+                'is_recommended' => $plan->is_recommended,
+                'features' => [
+                    'popular' => $plan->is_recommended,
+                    'recommended' => $plan->is_recommended,
+                    'features_list' => $featuresList,
+                ],
+            ];
+        });
+
         $features = Feature::getActiveFeatures();
 
         // Optimized: Batch load all settings at once
@@ -47,11 +89,8 @@ class PageController extends Controller
 
         $settings = Setting::getMany($settingKeys, $defaults);
 
-        // Homepage dynamic settings (from admin panel)
-        $allHomepageSettings = HomepageSetting::all()->pluck('value', 'key')->toArray();
-        $h = function ($key, $default = '') use ($allHomepageSettings) {
-            return $allHomepageSettings[$key] ?? $default;
-        };
+        // Homepage dynamic settings (from admin panel) - CACHED for performance
+        $allHomepageSettings = HomepageSetting::getAllCached();
 
         return view('pages.landing', compact('pricingPlans', 'features', 'settings', 'allHomepageSettings'));
     }
@@ -63,13 +102,62 @@ class PageController extends Controller
      */
     public function plans()
     {
-        $pricingPlans = PricingPlan::getActivePlans();
+        // Use new subscription Plan model with features
+        $plans = Plan::where('is_active', true)
+            ->orderBy('sort_order')
+            ->with('features')
+            ->get();
+
+        // Get active seasonal packs with their plan info (handle missing table gracefully)
+        $seasonalPacks = collect();
+        try {
+            if (\Schema::hasTable('seasonal_packs')) {
+                $seasonalPacks = \App\Models\SeasonalPack::available()
+                    ->with('plan')
+                    ->get();
+            }
+        } catch (\Exception $e) {
+            // Log but don't fail - seasonal packs are optional
+            \Log::warning('SeasonalPack query failed: ' . $e->getMessage());
+        }
+
+        // Get user's current subscription info
+        $currentSubscription = null;
+        $currentPlan = null;
+        $currentPlanSlug = 'free';
+
+        if (auth()->check()) {
+            try {
+                $currentSubscription = \App\Models\UserSubscription::where('user_id', auth()->id())
+                    ->active()
+                    ->with('plan')
+                    ->first();
+
+                if ($currentSubscription && $currentSubscription->plan) {
+                    $currentPlan = $currentSubscription->plan;
+                    $currentPlanSlug = $currentPlan->slug;
+                }
+            } catch (\Exception $e) {
+                \Log::warning('UserSubscription query failed: ' . $e->getMessage());
+            }
+        }
 
         $settingKeys = ['site_name'];
         $defaults = ['site_name' => 'BlinkStudy'];
         $settings = Setting::getMany($settingKeys, $defaults);
 
-        return view('pages.plans', compact('pricingPlans', 'settings'));
+        // Get show_seasonal_packs from FrontendConfig (admin settings) - handle missing table
+        try {
+            if (\Schema::hasTable('frontend_configs')) {
+                $settings['show_seasonal_packs'] = \App\Models\FrontendConfig::where('config_key', 'show_seasonal_packs')->value('config_value') ?? '0';
+            } else {
+                $settings['show_seasonal_packs'] = '0';
+            }
+        } catch (\Exception $e) {
+            $settings['show_seasonal_packs'] = '0';
+        }
+
+        return view('pages.plans', compact('plans', 'seasonalPacks', 'settings', 'currentSubscription', 'currentPlan', 'currentPlanSlug'));
     }
 
     /**

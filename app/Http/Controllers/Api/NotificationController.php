@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use App\Services\FunNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    protected FunNotificationService $funNotificationService;
+
+    public function __construct(FunNotificationService $funNotificationService)
+    {
+        $this->funNotificationService = $funNotificationService;
+    }
+
     /**
      * Get all notifications for authenticated user
      */
@@ -116,6 +124,140 @@ class NotificationController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Notification deleted successfully',
+        ]);
+    }
+
+    /**
+     * Get a smart fun notification for the current user (Zomato-style)
+     */
+    public function getSmartNotification(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $notification = $this->funNotificationService->getSmartNotification($user);
+
+        return response()->json([
+            'success' => true,
+            'notification' => $notification,
+        ]);
+    }
+
+    /**
+     * Get fun notification by type
+     */
+    public function getFunNotificationByType(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $type = $request->input('type', 'study_reminder');
+        $notification = $this->funNotificationService->getNotification($user, $type);
+
+        return response()->json([
+            'success' => true,
+            'notification' => $notification,
+        ]);
+    }
+
+    /**
+     * Get available fun notification types for user
+     */
+    public function getFunNotificationTypes(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $types = $this->funNotificationService->getAvailableTypes($user);
+
+        return response()->json([
+            'success' => true,
+            'types' => $types,
+        ]);
+    }
+
+    /**
+     * Update notification preferences
+     */
+    public function updatePreferences(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $preferences = $request->validate([
+            'study_reminders' => 'boolean',
+            'streak_alerts' => 'boolean',
+            'achievement_alerts' => 'boolean',
+            'fun_notifications' => 'boolean',
+            'quiet_hours_start' => 'nullable|integer|min:0|max:23',
+            'quiet_hours_end' => 'nullable|integer|min:0|max:23',
+        ]);
+
+        $currentPreferences = $user->notification_preferences ?? [];
+        $updatedPreferences = array_merge($currentPreferences, $preferences);
+
+        $user->notification_preferences = $updatedPreferences;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Preferences updated successfully',
+            'preferences' => $updatedPreferences,
+        ]);
+    }
+
+    /**
+     * Get notification preferences
+     */
+    public function getPreferences(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $defaultPreferences = [
+            'study_reminders' => true,
+            'streak_alerts' => true,
+            'achievement_alerts' => true,
+            'fun_notifications' => true,
+            'quiet_hours_start' => 22,
+            'quiet_hours_end' => 7,
+        ];
+
+        $preferences = array_merge($defaultPreferences, $user->notification_preferences ?? []);
+
+        return response()->json([
+            'success' => true,
+            'preferences' => $preferences,
         ]);
     }
 }

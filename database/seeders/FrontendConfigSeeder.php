@@ -98,9 +98,9 @@ class FrontendConfigSeeder extends Seeder
             [
                 'config_key' => 'theme_colors',
                 'config_value' => json_encode([
-                    'primary' => '#3b82f6',
-                    'secondary' => '#10b981',
-                    'accent' => '#8b5cf6'
+                    'primary' => '#0D9488',
+                    'secondary' => '#F59E0B',
+                    'accent' => '#99F6E4'
                 ]),
                 'value_type' => 'json',
                 'description' => 'Theme color configuration',

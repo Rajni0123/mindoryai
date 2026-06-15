@@ -100,6 +100,10 @@ class HomepageSettingsSeeder extends Seeder
             ['key' => 'cta_badge1', 'value' => '95% Better Grades', 'type' => 'text', 'group' => 'cta', 'order' => 6],
             ['key' => 'cta_badge2', 'value' => 'Millions of Solutions', 'type' => 'text', 'group' => 'cta', 'order' => 7],
             ['key' => 'cta_badge3', 'value' => 'Interactive Learning', 'type' => 'text', 'group' => 'cta', 'order' => 8],
+
+            // ── Pricing Section ──
+            ['key' => 'pricing_title', 'value' => 'Choose Your Plan', 'type' => 'text', 'group' => 'pricing', 'order' => 1],
+            ['key' => 'pricing_description', 'value' => 'Start free and upgrade as you grow. All plans include core features.', 'type' => 'textarea', 'group' => 'pricing', 'order' => 2],
         ];
 
         foreach ($settings as $setting) {

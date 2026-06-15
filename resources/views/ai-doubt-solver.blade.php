@@ -333,16 +333,23 @@ function solveImageDoubt() {
     .then(data => {
         showLoading(false);
         if (data.success) {
-            displayContent('image-answer-content', data.answer);
+            // CRITICAL: Validate response is not empty
+            const answer = data.answer || '';
+            if (!answer || answer.trim().length < 10) {
+                alert('❌ Response was empty. Please try again with a clearer image.');
+                return;
+            }
+            displayContent('image-answer-content', answer);
             document.getElementById('image-tokens').textContent = data.tokens_used || 0;
             document.getElementById('image-answer').classList.remove('hidden');
         } else {
-            alert('❌ Error: ' + (data.error || 'Unknown error'));
+            alert('❌ Error: ' + (data.error || data.message || 'Unknown error'));
         }
     })
     .catch(err => {
         showLoading(false);
-        alert('❌ Error: ' + err.message);
+        console.error('Image solve error:', err);
+        alert('❌ Error: ' + (err.message || 'Request failed. Please try again.'));
     });
 }
 
@@ -383,15 +390,22 @@ function solvePdfDoubt() {
     .then(data => {
         showLoading(false);
         if (data.success) {
-            displayContent('pdf-answer-content', data.answer);
+            // CRITICAL: Validate response is not empty
+            const answer = data.answer || '';
+            if (!answer || answer.trim().length < 10) {
+                alert('❌ Response was empty. Please try again.');
+                return;
+            }
+            displayContent('pdf-answer-content', answer);
             document.getElementById('pdf-answer').classList.remove('hidden');
         } else {
-            alert('❌ Error: ' + (data.error || 'Unknown error'));
+            alert('❌ Error: ' + (data.error || data.message || 'Unknown error'));
         }
     })
     .catch(err => {
         showLoading(false);
-        alert('❌ Error: ' + err.message);
+        console.error('PDF solve error:', err);
+        alert('❌ Error: ' + (err.message || 'Request failed. Please try again.'));
     });
 }
 </script>

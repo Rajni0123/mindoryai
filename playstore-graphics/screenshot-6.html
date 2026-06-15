@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Screenshot 6 - Advanced Solutions</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { width: 1080px; height: 1920px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .container {
+            width: 1080px; height: 1920px;
+            background: linear-gradient(180deg, #1E3A5F 0%, #0F766E 50%, #0D9488 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+            padding: 80px 60px; position: relative; overflow: hidden;
+        }
+        .circle1 { position: absolute; width: 380px; height: 380px; background: rgba(245, 158, 11, 0.1); border-radius: 50%; top: -50px; right: -100px; }
+        .circle2 { position: absolute; width: 320px; height: 320px; background: rgba(255,255,255,0.05); border-radius: 50%; bottom: 100px; left: -120px; }
+        .header-text { text-align: center; z-index: 10; }
+        .header-text h2 { color: white; font-size: 72px; font-weight: 800; margin-bottom: 20px; line-height: 1.15; }
+        .header-text p { color: rgba(255,255,255,0.9); font-size: 36px; }
+        .phone-frame {
+            width: 600px; height: 1200px; background: #1a1a1a; border-radius: 60px; padding: 12px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5); z-index: 10; position: relative;
+        }
+        .phone-screen { width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: #fff; }
+        .phone-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+        .phone-frame::before {
+            content: ''; position: absolute; top: 25px; left: 50%; transform: translateX(-50%);
+            width: 180px; height: 40px; background: #1a1a1a; border-radius: 0 0 25px 25px; z-index: 20;
+        }
+        .badge {
+            background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); padding: 24px 48px;
+            border-radius: 50px; color: white; font-size: 32px; font-weight: 600; z-index: 10;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="header-text">
+            <h2>Complex Problems<br>Simplified</h2>
+            <p>From LCM to Calculus</p>
+        </div>
+        <div class="phone-frame">
+            <div class="phone-screen">
+                <img src="../soluction page.jpeg" alt="Advanced Solution">
+            </div>
+        </div>
+        <div class="badge">🔢 All Subjects Covered</div>
+    </div>
+</body>
+</html>

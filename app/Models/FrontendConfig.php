@@ -31,16 +31,21 @@ class FrontendConfig extends Model
      */
     public static function getAllConfigs(): array
     {
-        return Cache::remember(self::CACHE_KEY, self::CACHE_DURATION, function () {
-            $configs = self::where('is_active', true)->get();
-            $result = [];
+        try {
+            return Cache::remember(self::CACHE_KEY, self::CACHE_DURATION, function () {
+                $configs = self::where('is_active', true)->get();
+                $result = [];
 
-            foreach ($configs as $config) {
-                $result[$config->config_key] = $config->getParsedValue();
-            }
+                foreach ($configs as $config) {
+                    $result[$config->config_key] = $config->getParsedValue();
+                }
 
-            return $result;
-        });
+                return $result;
+            });
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::warning('FrontendConfig: Could not load configs', ['error' => $e->getMessage()]);
+            return [];
+        }
     }
 
     /**
@@ -106,6 +111,8 @@ class FrontendConfig extends Model
     public static function clearCache(): void
     {
         Cache::forget(self::CACHE_KEY);
+        // Also clear OTP service settings cache since it depends on FrontendConfig
+        Cache::forget('otp_service_settings');
     }
 
     /**
@@ -115,8 +122,13 @@ class FrontendConfig extends Model
     {
         parent::boot();
 
-        static::saved(function () {
+        static::saved(function ($model) {
             self::clearCache();
+
+            // Clear OTP service static cache if auth settings changed
+            if (str_starts_with($model->config_key ?? '', 'auth.')) {
+                \App\Services\RenflairOTPService::clearSettingsCache();
+            }
         });
 
         static::deleted(function () {

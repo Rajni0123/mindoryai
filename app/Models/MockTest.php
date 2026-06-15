@@ -34,6 +34,15 @@ class MockTest extends Model
         'answers' => 'array',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
+        'user_id' => 'integer',
+        'exam_id' => 'integer',
+        'total_questions' => 'integer',
+        'duration_minutes' => 'integer',
+        'score' => 'integer',
+        'correct_answers' => 'integer',
+        'wrong_answers' => 'integer',
+        'unanswered' => 'integer',
+        'time_taken_seconds' => 'integer',
     ];
 
     public function user()

@@ -37,21 +37,21 @@ class MobileAppConfigSeeder extends Seeder
             ],
             [
                 'config_key' => 'mobile.primary_color',
-                'config_value' => '#0df259',
+                'config_value' => '#0D9488',
                 'value_type' => 'string',
                 'description' => 'Primary theme color (hex)',
                 'is_active' => true
             ],
             [
                 'config_key' => 'mobile.secondary_color',
-                'config_value' => '#3b82f6',
+                'config_value' => '#F59E0B',
                 'value_type' => 'string',
                 'description' => 'Secondary theme color (hex)',
                 'is_active' => true
             ],
             [
                 'config_key' => 'mobile.accent_color',
-                'config_value' => '#8b5cf6',
+                'config_value' => '#99F6E4',
                 'value_type' => 'string',
                 'description' => 'Accent theme color (hex)',
                 'is_active' => true

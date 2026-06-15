@@ -18,6 +18,9 @@ return [
     'stateful' => explode(',', env(
         'SANCTUM_STATEFUL_DOMAINS',
         implode(',', array_filter([
+            // Production domains - always include main domain
+            'blinkstudy.in',
+            'www.blinkstudy.in',
             // Production domains (derived from env)
             env('MAIN_DOMAIN'),
             env('CHAT_SUBDOMAIN'),

@@ -189,6 +189,24 @@
                                 </label>
                             </div>
 
+                            <div class="flex items-center justify-between p-4 bg-gray-800/30 border border-gray-700 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-icons-outlined text-orange-400">local_fire_department</span>
+                                    <div>
+                                        <p class="text-sm font-semibold text-white">Special Season Packs</p>
+                                        <p class="text-xs text-soft-grey/70">Show/hide "Special Season Packs" section on /plans page</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox"
+                                           id="show_seasonal_packs"
+                                           name="show_seasonal_packs"
+                                           {{ old('show_seasonal_packs', $settings['show_seasonal_packs'] ?? '0') == '1' ? 'checked' : '' }}
+                                           class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-500/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-orange-500"></div>
+                                </label>
+                            </div>
+
                             <div class="bg-blue-500/10 border border-blue-500/50 rounded-lg p-3 flex items-start gap-2">
                                 <span class="material-icons-outlined text-blue-400 text-sm mt-0.5">info</span>
                                 <p class="text-xs text-blue-300">Control which sections appear on your landing page. Disabled sections will be completely hidden from visitors.</p>

@@ -1,0 +1,731 @@
+[
+  {
+    "question_text": "The ratio of the height of a tower and the length of its shadow on the ground is √3 : 1. What is the angle of elevation of the sun?",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "30°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "90°"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Let the height of the tower be √3h and the length of the shadow be h. Then, tan θ = (√3h)/h = √3. Therefore, θ = 60°.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Volume and surface area of a solid hemisphere are numerically equal. What is the diameter of the hemisphere?",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "3"
+      },
+      {
+        "label": "B",
+        "text": "4.5"
+      },
+      {
+        "label": "C",
+        "text": "6"
+      },
+      {
+        "label": "D",
+        "text": "9"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Volume of hemisphere = (2/3)πr^3. Surface area of hemisphere = 3πr^2. Equating them, (2/3)πr^3 = 3πr^2 => r = 9/2. Diameter = 2r = 9 units.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A number is chosen at random from the numbers -3, -2, -1, 0, 1, 2, 3. What will be the probability that the square of this number is less than or equal to 1?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/7"
+      },
+      {
+        "label": "B",
+        "text": "2/7"
+      },
+      {
+        "label": "C",
+        "text": "3/7"
+      },
+      {
+        "label": "D",
+        "text": "4/7"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Possible outcomes: {-3, -2, -1, 0, 1, 2, 3}. Total outcomes = 7. Favorable outcomes (square <= 1): {-1, 0, 1}. Number of favorable outcomes = 3. Probability = 3/7.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If the distance between the points (4, k) and (1, 0) is 5, then what can be the possible values of k?",
+    "topic": "Coordinate Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "±3"
+      },
+      {
+        "label": "B",
+        "text": "±4"
+      },
+      {
+        "label": "C",
+        "text": "±5"
+      },
+      {
+        "label": "D",
+        "text": "±2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Distance = √((4-1)^2 + (k-0)^2) = 5.  √(9 + k^2) = 5. Squaring both sides, 9 + k^2 = 25. k^2 = 16. k = ±4.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Find the roots of the quadratic equation √2 x² + 7x + 5√2 = 0.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "-√2, -5√2"
+      },
+      {
+        "label": "B",
+        "text": "-√2, -5"
+      },
+      {
+        "label": "C",
+        "text": "√2, 5"
+      },
+      {
+        "label": "D",
+        "text": "√2, 5√2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "√2 x² + 7x + 5√2 = 0. √2 x² + 2x + 5x + 5√2 = 0. √2x(x + √2) + 5(x + √2) = 0. (√2x + 5)(x + √2) = 0. x = -5/√2, -√2",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find how many integers between 200 and 500 are divisible by 8.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "36"
+      },
+      {
+        "label": "B",
+        "text": "37"
+      },
+      {
+        "label": "C",
+        "text": "38"
+      },
+      {
+        "label": "D",
+        "text": "39"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The first number divisible by 8 in the range is 208, and the last is 496. So, 208, 216, ..., 496 is an AP with a = 208, d = 8, and an = 496. an = a + (n-1)d => 496 = 208 + (n-1)8 => 288 = (n-1)8 => 36 = n-1 => n = 37.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Tangents drawn at the ends of a diameter of a circle are:",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "Perpendicular"
+      },
+      {
+        "label": "B",
+        "text": "Parallel"
+      },
+      {
+        "label": "C",
+        "text": "Intersecting"
+      },
+      {
+        "label": "D",
+        "text": "None of the above"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Tangents at the end of the diameter are parallel because the radius is perpendicular to the tangent at the point of contact, and the radii at the ends of a diameter are collinear, making the tangents parallel.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find the value of k for which the equation x² + k(2x + k – 1) + 2 = 0 has real and equal roots.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "1"
+      },
+      {
+        "label": "B",
+        "text": "2"
+      },
+      {
+        "label": "C",
+        "text": "3"
+      },
+      {
+        "label": "D",
+        "text": "4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "x² + k(2x + k – 1) + 2 = 0 => x² + 2kx + k² - k + 2 = 0. For real and equal roots, b² - 4ac = 0. (2k)² - 4(1)(k² - k + 2) = 0 => 4k² - 4k² + 4k - 8 = 0 => 4k = 8 => k = 2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "In the given figure, PA and PB are tangents to the circle from an external point P. CD is another tangent touching the circle at Q. If PA = 12 cm, QC = QD = 3 cm, then find PC + PD.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "12 cm"
+      },
+      {
+        "label": "B",
+        "text": "15 cm"
+      },
+      {
+        "label": "C",
+        "text": "18 cm"
+      },
+      {
+        "label": "D",
+        "text": "21 cm"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "PA = PB = 12 cm. QC = AC = 3 cm and QD = BD = 3 cm. PC = PA - AC = 12 - 3 = 9 cm. PD = PB - BD = 12 - 3 = 9 cm. PC + PD = 9 + 9 = 18 cm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "If the mth term of an A.P. is 1/n and nth term is 1/m, then find the (mn)th term.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "1"
+      },
+      {
+        "label": "C",
+        "text": "2"
+      },
+      {
+        "label": "D",
+        "text": "3"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "am = a + (m-1)d = 1/n and an = a + (n-1)d = 1/m. Subtracting, (m-n)d = 1/n - 1/m = (m-n)/mn => d = 1/mn. Substituting d in am, a + (m-1)(1/mn) = 1/n => a = 1/n - (m-1)/mn = (m - m + 1)/mn = 1/mn. So, amn = a + (mn-1)d = 1/mn + (mn-1)(1/mn) = 1/mn + 1 - 1/mn = 1.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "If the equation (1 + m²)x² + 2mcx + c² – a² = 0 has equal roots then which of the following is true?",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "c² = a²(1 + m²)"
+      },
+      {
+        "label": "B",
+        "text": "a² = c²(1 + m²)"
+      },
+      {
+        "label": "C",
+        "text": "m² = a²(1 + c²)"
+      },
+      {
+        "label": "D",
+        "text": "a² = m²(1 + c²)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "For equal roots, D = b² - 4ac = 0. (2mc)² - 4(1 + m²)(c² - a²) = 0 => 4m²c² - 4(c² - a² + m²c² - m²a²) = 0 => m²c² - c² + a² - m²c² + m²a² = 0 => -c² + a² + m²a² = 0 => c² = a²(1 + m²).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A cone of height 24 cm and radius of base 6 cm is made up of modeling clay. A child reshapes it in the form of a sphere. Find the radius of the sphere.",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "6 cm"
+      },
+      {
+        "label": "B",
+        "text": "12 cm"
+      },
+      {
+        "label": "C",
+        "text": "8 cm"
+      },
+      {
+        "label": "D",
+        "text": "4 cm"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Volume of cone = (1/3)πr²h = (1/3)π(6²)(24) = π(36)(8) = 288π. Volume of sphere = (4/3)πR³. Equating, (4/3)πR³ = 288π => R³ = (3/4)(288) = 3(72) = 216 => R = ∛216 = 6 cm.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Prove that the angle between the two tangents drawn from an external point to a circle is supplementary to the angle subtended by the line-segment joining the points of contact at the center.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "The sum of the angles is 90 degrees"
+      },
+      {
+        "label": "B",
+        "text": "The sum of the angles is 180 degrees"
+      },
+      {
+        "label": "C",
+        "text": "The angles are equal"
+      },
+      {
+        "label": "D",
+        "text": "The angles are complementary"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let O be the center, P be the external point, and A, B be the points of contact. Then, OAPB is a quadrilateral. ∠OAP = ∠OBP = 90°. Therefore, ∠AOB + ∠APB = 360° - 90° - 90° = 180°. Hence, the angles are supplementary.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A statue, 1.6 m tall, stands on the top of a pedestal. From a point on the ground, the angle of elevation of the top of the statue is 60° and from the same point the angle of elevation of the top of the pedestal is 45°. Find the height of the pedestal.",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "2.18 m"
+      },
+      {
+        "label": "B",
+        "text": "2.20 m"
+      },
+      {
+        "label": "C",
+        "text": "2.22 m"
+      },
+      {
+        "label": "D",
+        "text": "2.16 m"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Let the height of the pedestal be h. Let the distance of the point from the base of the pedestal be x. tan 45° = h/x => x = h. tan 60° = (h + 1.6)/x => √3 = (h + 1.6)/h => √3h = h + 1.6 => h(√3 - 1) = 1.6 => h = 1.6/(√3 - 1) = 1.6(√3 + 1)/(3 - 1) = 0.8(√3 + 1) = 0.8(1.732 + 1) = 0.8(2.732) = 2.1856 ≈ 2.18 m.",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "From a point on a bridge across a river, the angles of depression of the banks on opposite sides of the river are 30° and 45°, respectively. If the bridge is at a height of 3 m from the banks, find the width of the river.",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "3(√3 + 1) m"
+      },
+      {
+        "label": "B",
+        "text": "3(√3 - 1) m"
+      },
+      {
+        "label": "C",
+        "text": "(√3 + 1) m"
+      },
+      {
+        "label": "D",
+        "text": "(√3 - 1) m"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Let the width of the river be x + y, where x and y are the distances from the foot of the bridge to the banks. tan 30° = 3/x => x = 3√3. tan 45° = 3/y => y = 3. Width of the river = x + y = 3√3 + 3 = 3(√3 + 1) m.",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "A container shaped like a right circular cylinder having diameter 12 cm and height 15 cm is full of ice cream. The ice cream is to be filled into cones of height 12 cm and diameter 6 cm, having a hemispherical shape on the top. Find the number of such cones which can be filled with ice cream.",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "10"
+      },
+      {
+        "label": "B",
+        "text": "12"
+      },
+      {
+        "label": "C",
+        "text": "15"
+      },
+      {
+        "label": "D",
+        "text": "18"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Volume of cylinder = πr²h = π(6²)(15) = 540π. Volume of cone = (1/3)πr²h = (1/3)π(3²)(12) = 36π. Volume of hemisphere = (2/3)πr³ = (2/3)π(3³) = 18π. Volume of one ice cream cone = 36π + 18π = 54π. Number of cones = 540π / 54π = 10.",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "If a line intersects a circle in two distinct points, the line is called a:",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "Tangent"
+      },
+      {
+        "label": "B",
+        "text": "Radius"
+      },
+      {
+        "label": "C",
+        "text": "Secant"
+      },
+      {
+        "label": "D",
+        "text": "Diameter"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "A line that intersects a circle at two distinct points is called a secant.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The length of the tangent from a point A at a distance of 5 cm from the center of the circle is 4 cm. Find the radius of the circle.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "2 cm"
+      },
+      {
+        "label": "B",
+        "text": "3 cm"
+      },
+      {
+        "label": "C",
+        "text": "4 cm"
+      },
+      {
+        "label": "D",
+        "text": "5 cm"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let O be the center, and let the point of tangency be T. Then, OA = 5 cm, AT = 4 cm, and OT is the radius. By the Pythagorean theorem, OT² + AT² = OA² => OT² + 4² = 5² => OT² = 25 - 16 = 9 => OT = 3 cm.",
+    "difficulty": "easy",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find the area of a sector of a circle with radius 6 cm if angle of the sector is 60°.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "132/7 cm²"
+      },
+      {
+        "label": "B",
+        "text": "142/7 cm²"
+      },
+      {
+        "label": "C",
+        "text": "152/7 cm²"
+      },
+      {
+        "label": "D",
+        "text": "162/7 cm²"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Area of sector = (θ/360°)πr² = (60/360) * (22/7) * 6² = (1/6) * (22/7) * 36 = (22/7) * 6 = 132/7 cm².",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "If the sum of the first n terms of an AP is given by Sn = 3n² + 5n, then find its common difference.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "3"
+      },
+      {
+        "label": "B",
+        "text": "5"
+      },
+      {
+        "label": "C",
+        "text": "6"
+      },
+      {
+        "label": "D",
+        "text": "8"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "S1 = 3(1)² + 5(1) = 8 = a1. S2 = 3(2)² + 5(2) = 12 + 10 = 22. a2 = S2 - S1 = 22 - 8 = 14. d = a2 - a1 = 14 - 8 = 6.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find the probability of getting a sum of 9 when two dice are thrown simultaneously.",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/6"
+      },
+      {
+        "label": "B",
+        "text": "1/9"
+      },
+      {
+        "label": "C",
+        "text": "1/12"
+      },
+      {
+        "label": "D",
+        "text": "2/9"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Total possible outcomes = 36. Favorable outcomes (sum = 9): (3, 6), (4, 5), (5, 4), (6, 3). Number of favorable outcomes = 4. Probability = 4/36 = 1/9.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find the coordinates of the point which divides the line segment joining the points (4, -3) and (8, 5) in the ratio 3:1 internally.",
+    "topic": "Coordinate Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "(7, 3)"
+      },
+      {
+        "label": "B",
+        "text": "(3, 7)"
+      },
+      {
+        "label": "C",
+        "text": "(6, 1)"
+      },
+      {
+        "label": "D",
+        "text": "(1, 6)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using the section formula, x = (m1x2 + m2x1)/(m1 + m2) = (3*8 + 1*4)/(3 + 1) = (24 + 4)/4 = 28/4 = 7. y = (m1y2 + m2y1)/(m1 + m2) = (3*5 + 1*(-3))/(3 + 1) = (15 - 3)/4 = 12/4 = 3. Therefore, the coordinates are (7, 3).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "If tan A = 3/4, find the value of sin A cos A.",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "12/25"
+      },
+      {
+        "label": "B",
+        "text": "11/25"
+      },
+      {
+        "label": "C",
+        "text": "13/25"
+      },
+      {
+        "label": "D",
+        "text": "14/25"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "tan A = 3/4. Let the sides be 3k and 4k. Then, hypotenuse = √(3k)² + (4k)² = 5k. sin A = 3k/5k = 3/5. cos A = 4k/5k = 4/5. sin A cos A = (3/5)(4/5) = 12/25.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find the area of the triangle with vertices (1, -1), (-4, 6) and (-3, -5).",
+    "topic": "Coordinate Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "24"
+      },
+      {
+        "label": "B",
+        "text": "25"
+      },
+      {
+        "label": "C",
+        "text": "26"
+      },
+      {
+        "label": "D",
+        "text": "27"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Area = (1/2) |x1(y2 - y3) + x2(y3 - y1) + x3(y1 - y2)| = (1/2) |1(6 + 5) - 4(-5 + 1) - 3(-1 - 6)| = (1/2) |11 + 16 + 21| = (1/2) |48| = 24 square units.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A bag contains 5 red balls and 3 blue balls. If a ball is drawn at random from the bag, what is the probability that the ball is blue?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "5/8"
+      },
+      {
+        "label": "B",
+        "text": "3/8"
+      },
+      {
+        "label": "C",
+        "text": "5/3"
+      },
+      {
+        "label": "D",
+        "text": "3/5"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Total number of balls = 5 + 3 = 8. Number of blue balls = 3. Probability of drawing a blue ball = 3/8.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Find the 11th term from the last term of the AP: 10, 7, 4, ..., -62.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "-32"
+      },
+      {
+        "label": "B",
+        "text": "-22"
+      },
+      {
+        "label": "C",
+        "text": "-12"
+      },
+      {
+        "label": "D",
+        "text": "-42"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The AP is 10, 7, 4, ..., -62. Here, a = 10, d = -3, l = -62. The 11th term from the last is l - (n-1)d = -62 - (10)(-3) = -62 + 30 = -32.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Two tangents TP and TQ are drawn to a circle with center O from an external point T. Prove that ∠PTQ = 2∠OPQ.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "∠PTQ = ∠OPQ"
+      },
+      {
+        "label": "B",
+        "text": "∠PTQ = 2∠OPQ"
+      },
+      {
+        "label": "C",
+        "text": "∠PTQ = 3∠OPQ"
+      },
+      {
+        "label": "D",
+        "text": "∠PTQ = 4∠OPQ"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let ∠PTQ = θ. TP = TQ (Tangents from an external point). Therefore, ∠TPQ = ∠TQP = (180 - θ)/2 = 90 - θ/2. ∠OPT = 90° (Radius is perpendicular to the tangent). ∠OPQ = ∠OPT - ∠TPQ = 90 - (90 - θ/2) = θ/2. Therefore, θ = 2∠OPQ, so ∠PTQ = 2∠OPQ.",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  }
+]

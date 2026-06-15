@@ -1,67 +1,58 @@
-{{-- Shared Header — used by all pages --}}
+{{-- Shared Header — premium light glass nav --}}
 @php
     $siteLogo = \App\Models\HomepageSetting::getValue('site_logo');
     $siteName = \App\Models\HomepageSetting::getValue('site_name', 'BlinkStudy');
-    $logoIcon = \App\Models\HomepageSetting::getValue('logo_icon', 'school');
+    $logoIcon = \App\Models\HomepageSetting::getValue('logo_icon', 'auto_stories');
+    $isHome = Request::routeIs('home');
 @endphp
-<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-4 pt-3">
-    <div class="max-w-7xl mx-auto dark:bg-[#05080a]/80 bg-white/90 backdrop-blur-xl border dark:border-white/10 border-gray-200/60 rounded-2xl shadow-lg shadow-black/5">
-        <div class="px-6 h-14 flex items-center justify-between">
-            {{-- Logo --}}
-            <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+<header class="fixed top-0 left-0 right-0 z-50 px-4 pt-4">
+    <div class="max-w-6xl mx-auto bg-white/80 backdrop-blur-xl border border-slate-200/70 rounded-2xl shadow-card">
+        <div class="px-5 h-14 flex items-center justify-between">
+            <a href="{{ route('home') }}" class="flex items-center gap-2.5 group">
                 @if($siteLogo)
-                    <img src="{{ $siteLogo }}" alt="{{ $siteName }}" class="h-9 w-auto object-contain">
+                    <img src="{{ $siteLogo }}" alt="{{ $siteName }}" class="h-8 w-auto object-contain">
                 @else
-                    <div class="relative flex items-center justify-center w-9 h-9 rounded-lg dark:bg-[#1a1f2e] bg-primary/5 border dark:border-white/10 border-primary/10 group-hover:border-primary/50 transition-colors">
-                        <span class="material-symbols-outlined text-primary text-xl group-hover:animate-pulse">{{ $logoIcon }}</span>
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand to-secondary flex items-center justify-center shadow-blinkstudy group-hover:scale-105 transition-transform">
+                        <span class="material-symbols-outlined text-white text-lg">{{ $logoIcon }}</span>
                     </div>
                 @endif
-                <span class="text-base font-bold tracking-tight dark:text-white text-slate-800 group-hover:text-primary transition-colors">{{ $siteName }}</span>
+                <span class="text-[15px] font-extrabold tracking-tight text-slate-900">{{ $siteName }}</span>
             </a>
 
-            {{-- Nav --}}
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
-                <a class="dark:text-gray-400 text-gray-500 hover:text-primary transition-colors" href="{{ route('home') }}">Home</a>
-                <a class="dark:text-gray-400 text-gray-500 hover:text-primary transition-colors" href="{{ route('plans') }}">Plans</a>
-                <a class="dark:text-gray-400 text-gray-500 hover:text-primary transition-colors" href="{{ route('support') }}">Support</a>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-500">
+                <a class="hover:text-brand transition-colors {{ $isHome ? 'text-brand' : '' }}" href="{{ route('home') }}">Home</a>
+                <a class="hover:text-brand transition-colors" href="{{ route('home') }}#features">Features</a>
+                <a class="hover:text-brand transition-colors" href="{{ route('plans') }}">Plans</a>
+                <a class="hover:text-brand transition-colors" href="{{ route('support') }}">Support</a>
             </nav>
 
-            {{-- Actions --}}
-            <div class="flex items-center gap-3">
-                @if(Request::routeIs('home'))
-                <button onclick="document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light')"
-                        class="w-9 h-9 rounded-lg dark:hover:bg-white/5 hover:bg-gray-100 flex items-center justify-center transition-colors">
-                    <span class="material-symbols-outlined text-lg text-secondary">light_mode</span>
-                </button>
-                @endif
+            <div class="flex items-center gap-2.5">
                 @if(auth()->check())
-                    <a href="{{ route('chat') }}" class="hidden md:flex items-center justify-center px-5 h-9 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all uppercase tracking-wider">
+                    <a href="{{ route('chat') }}" class="hidden sm:inline-flex items-center justify-center px-5 h-9 rounded-xl bg-gradient-to-r from-brand to-secondary text-white text-xs font-bold shadow-blinkstudy hover:shadow-blinkstudy-lg hover:-translate-y-0.5 transition-all">
                         Open App
                     </a>
                 @else
-                    <a href="{{ route('login') }}" class="hidden md:flex items-center justify-center px-5 h-9 rounded-lg bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-all uppercase tracking-wider">
-                        Start Learning
+                    <a href="{{ route('login') }}" class="hidden sm:inline-flex items-center justify-center px-5 h-9 rounded-xl bg-gradient-to-r from-brand to-secondary text-white text-xs font-bold shadow-blinkstudy hover:shadow-blinkstudy-lg hover:-translate-y-0.5 transition-all">
+                        Get Started
                     </a>
                 @endif
-                {{-- Mobile menu --}}
-                <button id="mobile-menu-btn" class="md:hidden dark:text-white text-gray-700" onclick="document.getElementById('mobile-nav').classList.toggle('hidden')">
+                <button id="mobile-menu-btn" class="md:hidden w-9 h-9 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-700" onclick="document.getElementById('mobile-nav').classList.toggle('hidden')">
                     <span class="material-symbols-outlined">menu</span>
                 </button>
             </div>
         </div>
 
-        {{-- Mobile Nav --}}
-        <div id="mobile-nav" class="hidden md:hidden border-t dark:border-white/5 border-gray-200/60 dark:bg-[#05080a] bg-white px-6 py-4 space-y-2 rounded-b-2xl">
-            <a href="{{ route('home') }}" class="block py-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-primary transition-colors">Home</a>
-            <a href="{{ route('plans') }}" class="block py-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-primary transition-colors">Plans</a>
-            <a href="{{ route('support') }}" class="block py-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-primary transition-colors">Support</a>
+        <div id="mobile-nav" class="hidden md:hidden border-t border-slate-100 px-5 py-4 space-y-1 rounded-b-2xl bg-white">
+            <a href="{{ route('home') }}" class="block py-2.5 text-sm font-semibold text-slate-600 hover:text-brand">Home</a>
+            <a href="{{ route('home') }}#features" class="block py-2.5 text-sm font-semibold text-slate-600 hover:text-brand">Features</a>
+            <a href="{{ route('plans') }}" class="block py-2.5 text-sm font-semibold text-slate-600 hover:text-brand">Plans</a>
+            <a href="{{ route('support') }}" class="block py-2.5 text-sm font-semibold text-slate-600 hover:text-brand">Support</a>
             @if(auth()->check())
-                <a href="{{ route('chat') }}" class="block py-2.5 mt-2 text-center text-sm font-bold bg-primary text-white rounded-lg">Open App</a>
+                <a href="{{ route('chat') }}" class="block py-3 mt-2 text-center text-sm font-bold bg-gradient-to-r from-brand to-secondary text-white rounded-xl">Open App</a>
             @else
-                <a href="{{ route('login') }}" class="block py-2.5 mt-2 text-center text-sm font-bold bg-primary text-white rounded-lg">Start Learning</a>
+                <a href="{{ route('login') }}" class="block py-3 mt-2 text-center text-sm font-bold bg-gradient-to-r from-brand to-secondary text-white rounded-xl">Get Started</a>
             @endif
         </div>
     </div>
 </header>
-{{-- Spacer for fixed header --}}
-<div class="h-16"></div>
+<div class="h-[4.5rem]"></div>

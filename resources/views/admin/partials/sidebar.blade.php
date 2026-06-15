@@ -53,11 +53,6 @@
             <span class="material-icons-outlined text-sm">psychology</span>
             <span>AI Models</span>
         </a>
-        <a href="{{ route('admin.whiteboard-video.settings') }}" class="flex items-center gap-2 px-3 py-2 rounded {{ request()->routeIs('admin.whiteboard-video.*') ? 'bg-blue-500/10 text-blue-400' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50' }} transition-all text-xs font-medium">
-            <span class="material-icons-outlined text-sm">video_library</span>
-            <span>Whiteboard Video</span>
-        </a>
-
         <!-- AI Management Section -->
         <div class="text-[9px] uppercase text-gray-600 px-3 py-2 mt-3 font-semibold">AI Management</div>
 
@@ -106,10 +101,6 @@
             <span class="material-icons-outlined text-sm">people</span>
             <span>Users</span>
         </a>
-        <a href="{{ route('admin.xml-import.index') }}" class="flex items-center gap-2 px-3 py-2 rounded {{ request()->routeIs('admin.xml-import.*') ? 'bg-blue-500/10 text-blue-400' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50' }} transition-all text-xs font-medium">
-            <span class="material-icons-outlined text-sm">upload_file</span>
-            <span>Import</span>
-        </a>
         <a href="{{ route('admin.notifications.index') }}" class="flex items-center gap-2 px-3 py-2 rounded {{ request()->routeIs('admin.notifications.*') ? 'bg-blue-500/10 text-blue-400' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50' }} transition-all text-xs font-medium">
             <span class="material-icons-outlined text-sm">notifications</span>
             <span>Notifications</span>
@@ -120,14 +111,6 @@
             @php $unreadContactCount = \App\Models\ContactMessage::where('status', 'new')->count(); @endphp
             @if($unreadContactCount > 0)
             <span class="ml-auto px-1.5 py-0.5 bg-red-500 text-white text-[9px] font-bold rounded-full min-w-[18px] text-center">{{ $unreadContactCount }}</span>
-            @endif
-        </a>
-        <a href="{{ route('admin.dedicated-support.index') }}" class="flex items-center gap-2 px-3 py-2 rounded {{ request()->routeIs('admin.dedicated-support.*') ? 'bg-yellow-500/10 text-yellow-400' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50' }} transition-all text-xs font-medium">
-            <span class="material-icons-outlined text-sm">headset_mic</span>
-            <span>Dedicated Support</span>
-            @php $unreadSupportCount = \App\Models\SupportMessage::where('sender_type', 'user')->where('is_read', false)->count(); @endphp
-            @if($unreadSupportCount > 0)
-            <span class="ml-auto px-1.5 py-0.5 bg-yellow-500 text-black text-[9px] font-bold rounded-full min-w-[18px] text-center">{{ $unreadSupportCount }}</span>
             @endif
         </a>
         <a href="{{ route('admin.deletion-requests.index') }}" class="flex items-center gap-2 px-3 py-2 rounded {{ request()->routeIs('admin.deletion-requests.*') ? 'bg-red-500/10 text-red-400' : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50' }} transition-all text-xs font-medium">

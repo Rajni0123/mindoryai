@@ -8,10 +8,8 @@ use Illuminate\Database\Seeder;
 class UserPlanSeeder extends Seeder
 {
     /**
-     * Final pricing plans:
-     * AI Models: Gemini Flash (default) + GPT-4o Mini (paid plans)
-     * Chat: Limited in Free, Unlimited in all paid
-     * Whiteboard: NEVER unlimited (₹3-5/video server cost)
+     * OFFICIAL PRICING PLANS - DO NOT CHANGE WITHOUT APPROVAL
+     * Free: ₹0 | Lite: ₹79/mo, ₹649/yr | Pro: ₹249/mo, ₹1999/yr | Ultimate: ₹799/mo, ₹6499/yr
      */
     public function run(): void
     {
@@ -20,7 +18,7 @@ class UserPlanSeeder extends Seeder
             [
                 'name' => 'Free',
                 'slug' => 'free',
-                'description' => 'Start Your Learning Journey',
+                'description' => 'Padhai Shuru Karo',
                 'price' => 0,
                 'billing_period' => 'month',
                 'billing_description' => 'Free Forever',
@@ -45,7 +43,7 @@ class UserPlanSeeder extends Seeder
                         'whiteboard_videos_per_month' => 2,
                         'topic_quiz_per_day' => 3,
                         'exam_prep_per_day' => 1,
-                        'scan_solve_per_day' => 3,
+                        'scan_solve_per_day' => 1,
                         'pdf_uploads_per_month' => 1,
                     ],
                     'max_video_length_seconds' => 30,
@@ -64,21 +62,20 @@ class UserPlanSeeder extends Seeder
                         '2 Whiteboard Videos / Month',
                         '3 Topic Quizzes / Day',
                         '1 Exam Prep / Day',
-                        '3 Scan & Solve / Day',
+                        '1 Scan & Solve / Day',
                         '1 PDF Upload / Month (5 pages)',
                         '3 Days History',
-                        'Gemini Flash AI',
                         'Watermark on Videos',
                         'Ad-Supported',
                     ],
                 ]),
             ],
 
-            // ── STARTER – ₹79/month ──
+            // ── LITE – ₹79/month, ₹649/year ──
             [
-                'name' => 'Starter',
-                'slug' => 'starter',
-                'description' => 'Boost Your Exam Prep',
+                'name' => 'Lite',
+                'slug' => 'lite',
+                'description' => 'Regular Padhai',
                 'price' => 79,
                 'billing_period' => 'month',
                 'billing_description' => '₹79 / month',
@@ -97,13 +94,14 @@ class UserPlanSeeder extends Seeder
                 'features' => json_encode([
                     'popular' => false,
                     'recommended' => false,
+                    'price_annual' => 649,
                     'daily_limits' => [
                         'chat_messages_per_day' => -1,
                         'video_quiz_per_day' => 5,
                         'whiteboard_videos_per_month' => 5,
                         'topic_quiz_per_day' => 10,
                         'exam_prep_per_day' => 3,
-                        'scan_solve_per_day' => 10,
+                        'scan_solve_per_day' => 5,
                         'pdf_uploads_per_month' => 5,
                     ],
                     'max_video_length_seconds' => 60,
@@ -118,12 +116,11 @@ class UserPlanSeeder extends Seeder
                     'analytics_tier' => 'basic',
                     'features_list' => [
                         'Unlimited AI Chat',
-                        'Gemini Flash + GPT-4o Mini',
                         '5 Video Quizzes / Day',
                         '5 Whiteboard Videos / Month',
                         '10 Topic Quizzes / Day',
                         '3 Exam Prep / Day',
-                        '10 Scan & Solve / Day',
+                        '5 Scan & Solve / Day',
                         '5 PDF Uploads / Month (15 pages)',
                         '7 Days History',
                         'No Watermark',
@@ -132,11 +129,11 @@ class UserPlanSeeder extends Seeder
                 ]),
             ],
 
-            // ── PRO – ₹249/month ⭐ MOST POPULAR ──
+            // ── PRO – ₹249/month, ₹1999/year ⭐ RECOMMENDED ──
             [
                 'name' => 'Pro',
                 'slug' => 'pro',
-                'description' => 'The Topper\'s Secret Weapon',
+                'description' => 'Serious Padhai',
                 'price' => 249,
                 'billing_period' => 'month',
                 'billing_description' => '₹249 / month',
@@ -153,8 +150,9 @@ class UserPlanSeeder extends Seeder
                 'is_active' => true,
                 'order' => 3,
                 'features' => json_encode([
-                    'popular' => true,
+                    'popular' => false,
                     'recommended' => true,
+                    'price_annual' => 1999,
                     'daily_limits' => [
                         'chat_messages_per_day' => -1,
                         'video_quiz_per_day' => 15,
@@ -176,7 +174,6 @@ class UserPlanSeeder extends Seeder
                     'analytics_tier' => 'standard',
                     'features_list' => [
                         'Unlimited AI Chat',
-                        'Gemini Flash + GPT-4o Mini',
                         '15 Video Quizzes / Day',
                         '15 Whiteboard Videos / Month',
                         'Unlimited Topic Quizzes',
@@ -192,14 +189,14 @@ class UserPlanSeeder extends Seeder
                 ]),
             ],
 
-            // ── ULTIMATE – ₹599/month ──
+            // ── ULTIMATE – ₹799/month, ₹6499/year ──
             [
                 'name' => 'Ultimate',
                 'slug' => 'ultimate',
-                'description' => 'Maximum Power for Serious Students',
-                'price' => 599,
+                'description' => 'Topper Mode',
+                'price' => 799,
                 'billing_period' => 'month',
-                'billing_description' => '₹599 / month',
+                'billing_description' => '₹799 / month',
                 'validity_days' => 30,
                 'message_tokens' => 0,
                 'image_credits' => 0,
@@ -215,6 +212,7 @@ class UserPlanSeeder extends Seeder
                 'features' => json_encode([
                     'popular' => false,
                     'recommended' => false,
+                    'price_annual' => 6499,
                     'daily_limits' => [
                         'chat_messages_per_day' => -1,
                         'video_quiz_per_day' => -1,
@@ -236,7 +234,6 @@ class UserPlanSeeder extends Seeder
                     'analytics_tier' => 'advanced',
                     'features_list' => [
                         'Unlimited AI Chat',
-                        'Gemini Flash + GPT-4o Mini',
                         'Unlimited Video Quizzes',
                         '30 Whiteboard Videos / Month',
                         'Unlimited Topic Quizzes',
@@ -250,77 +247,10 @@ class UserPlanSeeder extends Seeder
                         'Advanced Analytics',
                         'No Watermark',
                         'Ad-Free Experience',
-                    ],
-                ]),
-            ],
-
-            // ── LIFETIME – ₹4,999/year (one-time) ──
-            [
-                'name' => 'Lifetime',
-                'slug' => 'lifetime',
-                'description' => '1 Year of Unlimited Learning - Best Value',
-                'price' => 4999,
-                'billing_period' => 'year',
-                'billing_description' => '₹4,999 / year (Save 30%)',
-                'validity_days' => 365,
-                'message_tokens' => 0,
-                'image_credits' => 0,
-                'api_calls' => 0,
-                'image_uploads' => 0,
-                'can_use_gpt4' => true,
-                'can_use_claude' => false,
-                'can_use_deepseek' => false,
-                'can_use_grok' => false,
-                'unlimited_credits' => false,
-                'is_active' => true,
-                'order' => 5,
-                'features' => json_encode([
-                    'popular' => false,
-                    'recommended' => false,
-                    'daily_limits' => [
-                        'chat_messages_per_day' => -1,
-                        'video_quiz_per_day' => -1,
-                        'whiteboard_videos_per_month' => 30,
-                        'topic_quiz_per_day' => -1,
-                        'exam_prep_per_day' => -1,
-                        'scan_solve_per_day' => 100,
-                        'pdf_uploads_per_month' => 50,
-                    ],
-                    'max_video_length_seconds' => 600,
-                    'frames_per_video' => 40,
-                    'pages_per_pdf' => 50,
-                    'history_days' => -1,
-                    'watermark' => false,
-                    'ads' => false,
-                    'priority_queue' => true,
-                    'video_quality' => 'hd',
-                    'device_limit' => 5,
-                    'analytics_tier' => 'advanced',
-                    'features_list' => [
-                        'Everything in Ultimate',
-                        'Unlimited AI Chat',
-                        'Gemini Flash + GPT-4o Mini',
-                        'Unlimited Video Quizzes',
-                        '30 Whiteboard Videos / Month',
-                        'Unlimited Topic Quizzes',
-                        'Unlimited Exam Prep',
-                        '100 Scan & Solve / Day',
-                        '50 PDF Uploads / Month (50 pages)',
-                        'Unlimited History',
-                        'Priority Processing',
-                        'HD Video Quality',
-                        'Up to 5 Devices',
-                        'Advanced Analytics',
-                        'No Watermark',
-                        'Ad-Free Experience',
-                        'Save 30% vs Monthly',
                     ],
                 ]),
             ],
         ];
-
-        // Remove old plans not in new structure
-        UserPlan::whereNotIn('slug', ['free', 'starter', 'pro', 'ultimate', 'lifetime'])->delete();
 
         foreach ($plans as $plan) {
             UserPlan::updateOrCreate(

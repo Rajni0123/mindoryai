@@ -40,10 +40,25 @@ class QuizController extends Controller
     {
         $request->validate([
             'source' => 'required|in:notes,chat',
-            'question_count' => 'sometimes|integer|min:5|max:50',
+            'question_count' => 'sometimes|integer|min:3|max:50',  // Min 3 questions
             'difficulty' => 'sometimes|in:easy,medium,hard',
             'notebook_id' => 'sometimes|integer|exists:notebooks,id',
         ]);
+
+        // Check usage limits
+        $user = Auth::user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'video_quiz');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
+        }
 
         $source = $request->get('source');
         $questionCount = $request->get('question_count', 10);
@@ -116,6 +131,11 @@ class QuizController extends Controller
                     ], 400);
                 }
 
+                // Record usage after successful quiz generation
+                if ($user) {
+                    $this->usageLimitService->recordUsage($user, 'video_quiz');
+                }
+
                 return response()->json([
                     'success' => true,
                     'quiz' => [
@@ -159,6 +179,11 @@ class QuizController extends Controller
                         'success' => false,
                         'message' => 'Failed to generate quiz. Please try again.'
                     ], 400);
+                }
+
+                // Record usage after successful quiz generation
+                if ($user) {
+                    $this->usageLimitService->recordUsage($user, 'video_quiz');
                 }
 
                 return response()->json([
@@ -871,10 +896,11 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                 }
 
                 // Normalize structure - sanitize each field
+                $rawAnswer = $this->extractCorrectAnswerRaw($question);
                 $normalizedQuestion = [
                     'question' => $this->sanitizeUtf8((string)($question['question'] ?? '')),
                     'options' => null,
-                    'correct_answer' => $this->sanitizeUtf8((string)($question['correct_answer'] ?? '')),
+                    'correct_answer' => $this->sanitizeUtf8((string)($rawAnswer ?? '')),
                     'explanation' => $this->sanitizeUtf8((string)($question['explanation'] ?? '')),
                 ];
 
@@ -900,6 +926,13 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                             $normalizedQuestion['options'][$key] = '';
                         }
                     }
+
+                    $correctIndex = $this->resolveMcqCorrectIndex(
+                        $rawAnswer,
+                        $normalizedQuestion['options']
+                    );
+                    $normalizedQuestion['correct_index'] = $correctIndex;
+                    $normalizedQuestion['correct_answer'] = ['A', 'B', 'C', 'D'][$correctIndex] ?? 'A';
                 }
 
                 $validatedQuestions[] = $normalizedQuestion;
@@ -966,10 +999,11 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                 continue;
             }
 
+            $rawAnswer = $this->extractCorrectAnswerRaw($question);
             $normalizedQuestion = [
                 'question' => $this->sanitizeUtf8((string)($question['question'] ?? '')),
                 'options' => null,
-                'correct_answer' => $this->sanitizeUtf8((string)($question['correct_answer'] ?? '')),
+                'correct_answer' => $this->sanitizeUtf8((string)($rawAnswer ?? '')),
                 'explanation' => $this->sanitizeUtf8((string)($question['explanation'] ?? '')),
             ];
 
@@ -982,6 +1016,15 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
 
             if ($quizType === 'mcq' && (!is_array($normalizedQuestion['options']) || empty($normalizedQuestion['options']))) {
                 continue;
+            }
+
+            if ($quizType === 'mcq' && is_array($normalizedQuestion['options'])) {
+                $correctIndex = $this->resolveMcqCorrectIndex(
+                    $rawAnswer,
+                    $normalizedQuestion['options']
+                );
+                $normalizedQuestion['correct_index'] = $correctIndex;
+                $normalizedQuestion['correct_answer'] = ['A', 'B', 'C', 'D'][$correctIndex] ?? 'A';
             }
 
             $validatedQuestions[] = $normalizedQuestion;
@@ -1089,6 +1132,20 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
         // Don't forget the last question
         if ($currentQuestion && !empty($currentQuestion['question'])) {
             $questions[] = $currentQuestion;
+        }
+
+        if ($quizType === 'mcq') {
+            foreach ($questions as $idx => $question) {
+                if (!is_array($question['options'] ?? null)) {
+                    continue;
+                }
+                $correctIndex = $this->resolveMcqCorrectIndex(
+                    $question['correct_answer'] ?? '',
+                    $question['options']
+                );
+                $questions[$idx]['correct_index'] = $correctIndex;
+                $questions[$idx]['correct_answer'] = ['A', 'B', 'C', 'D'][$correctIndex] ?? 'A';
+            }
         }
 
         // Log result
@@ -1261,9 +1318,9 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             'subject' => 'sometimes|string|max:255',
             'exam_type' => 'sometimes|string|max:100',
             'difficulty' => 'sometimes|string|in:easy,medium,hard',
-            'question_count' => 'sometimes|integer|min:5|max:100',
-            'duration' => 'sometimes|integer|min:5|max:180',
-            'language' => 'sometimes|string|in:english,hindi',
+            'question_count' => 'sometimes|integer|min:3|max:50',  // Min 3, Max 50 for optimal generation
+            'duration' => 'sometimes|integer|min:3|max:180',       // Min 3 minutes
+            'language' => 'sometimes|string|in:english,hindi,hinglish',
             'year' => 'sometimes|nullable|string|max:20', // Optional year filter (e.g., "2023", "2020-2023")
         ]);
 
@@ -1448,12 +1505,26 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             'category' => 'required|string|max:255',
             'difficulty' => 'required|string|in:easy,medium,hard',
             'language' => 'required|string|in:english,hindi',
-            'duration' => 'required|integer|min:5|max:180',
-            'question_count' => 'sometimes|integer|min:5|max:50',
+            'duration' => 'required|integer|min:3|max:180',  // Min 3 minutes
+            'question_count' => 'sometimes|integer|min:3|max:50',  // Min 3 questions
         ]);
 
+        // Check usage limits
+        $user = Auth::user();
+        if ($user) {
+            $limitCheck = $this->usageLimitService->canUse($user, 'topic_quiz');
+            if (!$limitCheck['allowed']) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $limitCheck['reason'],
+                    'limit_reached' => true,
+                    'used' => $limitCheck['used'],
+                    'limit' => $limitCheck['limit'],
+                ], 429);
+            }
+        }
+
         try {
-            $user = Auth::user();
             $category = $request->input('category');
             $difficulty = $request->input('difficulty');
             $language = $request->input('language');
@@ -1562,6 +1633,11 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
                     'message' => $userMessage,
                     'error_details' => config('app.debug') ? $lastError : null,
                 ], 500);
+            }
+
+            // Record usage after successful quiz generation
+            if ($user) {
+                $this->usageLimitService->recordUsage($user, 'topic_quiz');
             }
 
             $reasoningResult = [
@@ -1700,44 +1776,138 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
     }
 
     /**
+     * Extract correct answer from various AI response field names.
+     */
+    private function extractCorrectAnswerRaw(array $question): mixed
+    {
+        foreach (['correct_answer', 'correctAnswer', 'correct_option', 'answer', 'correct'] as $key) {
+            if (array_key_exists($key, $question) && $question[$key] !== '' && $question[$key] !== null) {
+                return $question[$key];
+            }
+        }
+
+        if (array_key_exists('correct_index', $question) && $question['correct_index'] !== '' && $question['correct_index'] !== null) {
+            return $question['correct_index'];
+        }
+
+        return '';
+    }
+
+    /**
+     * Resolve 0-based correct option index for MCQ questions.
+     */
+    private function resolveMcqCorrectIndex(mixed $answer, array $options): int
+    {
+        $keys = ['A', 'B', 'C', 'D'];
+        $normalizedOpts = [];
+
+        foreach ($options as $key => $value) {
+            $normalizedOpts[strtoupper((string) $key)] = trim((string) $value);
+        }
+
+        if (is_int($answer) || (is_string($answer) && ctype_digit(trim($answer)))) {
+            $n = (int) $answer;
+            if ($n >= 1 && $n <= 4) {
+                return $n - 1;
+            }
+            if ($n >= 0 && $n <= 3) {
+                return $n;
+            }
+        }
+
+        $answerStr = strtoupper(trim((string) $answer));
+
+        if (preg_match('/^([A-D])$/', $answerStr, $match)) {
+            return ord($match[1]) - ord('A');
+        }
+
+        if (preg_match('/(?:^|[^A-Z])([A-D])(?:[^A-Z]|$)/', $answerStr, $match)) {
+            return ord($match[1]) - ord('A');
+        }
+
+        foreach ($keys as $index => $key) {
+            if (isset($normalizedOpts[$key]) && strcasecmp($normalizedOpts[$key], (string) $answer) === 0) {
+                return $index;
+            }
+        }
+
+        $listIndex = 0;
+        foreach ($options as $value) {
+            if (strcasecmp(trim((string) $value), (string) $answer) === 0) {
+                return $listIndex;
+            }
+            $listIndex++;
+        }
+
+        \Log::warning('Could not resolve MCQ correct answer, defaulting to A', [
+            'answer' => $answer,
+            'options' => $options,
+        ]);
+
+        return 0;
+    }
+
+    /**
      * Calculate optimal question count based on duration and difficulty
      *
-     * Formula:
-     * - Base: 1 question per 1.5-2 minutes
-     * - Easy: More questions (faster to solve) - 1 question per 1.5 min
-     * - Medium: Normal pace - 1 question per 2 min
-     * - Hard: Fewer questions (need more time) - 1 question per 2.5 min
+     * FORMULA: questions = duration ÷ time_per_question
      *
-     * @param int $durationMinutes Duration in minutes (5-180)
+     * Time per question by difficulty:
+     * - Easy: 1 min per question (fast, simple questions)
+     * - Medium: 1.5 min per question (normal pace)
+     * - Hard: 2 min per question (complex, need thinking)
+     *
+     * Examples:
+     * - 5 min easy = 5 questions
+     * - 5 min hard = 2-3 questions
+     * - 10 min easy = 10 questions
+     * - 10 min medium = 6-7 questions
+     * - 15 min hard = 7-8 questions
+     * - 30 min medium = 20 questions
+     *
+     * @param int $durationMinutes Duration in minutes (3-180)
      * @param string $difficulty Difficulty level (easy, medium, hard)
      * @return int Calculated question count
      */
     private function calculateQuestionCount(int $durationMinutes, string $difficulty): int
     {
         // Time per question based on difficulty (in minutes)
+        // Easy = fast questions, Hard = slow/complex questions
         $timePerQuestion = match ($difficulty) {
-            'easy' => 1.5,      // Easy questions: 1.5 min each
-            'medium' => 2.0,    // Medium questions: 2 min each
-            'hard' => 2.5,      // Hard questions: 2.5 min each
-            default => 2.0,     // Default to medium
+            'easy' => 1.0,      // Easy: 1 min each (simple recall)
+            'medium' => 1.5,    // Medium: 1.5 min each (some thinking)
+            'hard' => 2.0,      // Hard: 2 min each (complex analysis)
+            default => 1.5,     // Default to medium
         };
 
-        // Calculate base question count
+        // Calculate question count directly from duration
         $questionCount = (int) floor($durationMinutes / $timePerQuestion);
 
-        // Apply min/max limits based on duration
-        if ($durationMinutes <= 10) {
-            // Short quiz: 5-10 questions
-            return max(5, min($questionCount, 10));
-        } elseif ($durationMinutes <= 30) {
-            // Medium quiz: 10-20 questions
-            return max(10, min($questionCount, 20));
-        } elseif ($durationMinutes <= 60) {
-            // Long quiz: 15-40 questions
-            return max(15, min($questionCount, 40));
-        } else {
-            // Very long quiz (1+ hour): 30-100 questions
-            return max(30, min($questionCount, 100));
-        }
+        // Apply reasonable bounds only (no forced minimums per duration)
+        // Min 3 questions (too few = not useful)
+        // Max 50 questions (too many = AI generation issues)
+        return max(3, min($questionCount, 50));
+    }
+
+    /**
+     * Get recommended duration based on question count and difficulty
+     *
+     * @param int $questionCount Number of questions
+     * @param string $difficulty Difficulty level
+     * @return int Recommended duration in minutes
+     */
+    private function calculateDuration(int $questionCount, string $difficulty): int
+    {
+        $timePerQuestion = match ($difficulty) {
+            'easy' => 1.0,
+            'medium' => 1.5,
+            'hard' => 2.0,
+            default => 1.5,
+        };
+
+        $duration = (int) ceil($questionCount * $timePerQuestion);
+
+        // Apply reasonable bounds
+        return max(3, min($duration, 180));
     }
 }

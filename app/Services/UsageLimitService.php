@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -36,6 +37,8 @@ class UsageLimitService
         'pdf_uploads_per_month'       => 'pdf_upload',
         'chat_messages_per_day'       => 'chat',
         'messages_per_day'            => 'chat',
+        'study_battles_per_day'       => 'study_battle',
+        'study_battle_per_day'        => 'study_battle',
     ];
 
     /**
@@ -49,6 +52,7 @@ class UsageLimitService
         'scan_solve'        => 'scans_used',
         'pdf_upload'        => 'pdf_uploads_used',
         'chat'              => 'messages_sent',
+        'study_battle'      => 'study_battles_used',
     ];
 
     /**
@@ -62,6 +66,7 @@ class UsageLimitService
         'scan_solve'        => 'scan_solve_per_day',
         'pdf_upload'        => 'pdf_uploads_per_month',
         'chat'              => 'chat_messages_per_day',
+        'study_battle'      => 'study_battles_per_day',
     ];
 
     /**
@@ -202,6 +207,7 @@ class UsageLimitService
                 'video_solutions_used' => 0,
                 'quizzes_used' => 0,
                 'mock_tests_used' => 0,
+                'study_battles_used' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -215,10 +221,13 @@ class UsageLimitService
                 'updated_at' => now(),
             ]);
 
-        Log::info('Usage recorded', [
+        // Clear usage cache so next check gets fresh data
+        Cache::forget("usage_daily_{$user->id}_{$today}");
+        Cache::forget("usage_monthly_{$user->id}_{$feature}_" . now()->format('Y_m'));
+
+        Log::debug('Usage recorded', [
             'user_id' => $user->id,
             'feature' => $feature,
-            'column' => $column,
         ]);
     }
 
@@ -326,49 +335,59 @@ class UsageLimitService
 
     // ── Private helpers ──
 
+    /**
+     * Cache duration for plan data (5 minutes)
+     */
+    private const PLAN_CACHE_TTL = 300;
+
     private function getUserPlan(User $user)
     {
         if (!$user->plan_id) {
-            // Default to free plan
-            $freePlan = DB::table('user_plans')
-                ->where('slug', 'free')
-                ->where('is_active', true)
-                ->first();
+            // Default to free plan - cache for faster access
+            return Cache::remember('user_plan_free', self::PLAN_CACHE_TTL, function () {
+                $freePlan = DB::table('user_plans')
+                    ->where('slug', 'free')
+                    ->where('is_active', true)
+                    ->first();
 
-            // Safety: if free plan doesn't exist, create a minimal one
-            if (!$freePlan) {
-                Log::warning('Free plan not found in database - creating default free plan');
-                $id = DB::table('user_plans')->insertGetId([
-                    'name' => 'Free',
-                    'slug' => 'free',
-                    'description' => 'Free plan with basic features',
-                    'price' => 0,
-                    'billing_period' => 'monthly',
-                    'validity_days' => 0,
-                    'is_active' => true,
-                    'order' => 0,
-                    'features' => json_encode([
-                        'daily_limits' => [
-                            'quizzes_per_day' => 3,
-                            'whiteboard_videos_per_month' => 2,
-                            'exam_prep_per_day' => 2,
-                        ],
-                        'ads' => true,
-                        'watermark' => true,
-                    ]),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-                $freePlan = DB::table('user_plans')->find($id);
-            }
+                // Safety: if free plan doesn't exist, create a minimal one
+                if (!$freePlan) {
+                    Log::warning('Free plan not found in database - creating default free plan');
+                    $id = DB::table('user_plans')->insertGetId([
+                        'name' => 'Free',
+                        'slug' => 'free',
+                        'description' => 'Free plan with basic features',
+                        'price' => 0,
+                        'billing_period' => 'monthly',
+                        'validity_days' => 0,
+                        'is_active' => true,
+                        'order' => 0,
+                        'features' => json_encode([
+                            'daily_limits' => [
+                                'quizzes_per_day' => 3,
+                                'whiteboard_videos_per_month' => 2,
+                                'exam_prep_per_day' => 2,
+                            ],
+                            'ads' => true,
+                            'watermark' => true,
+                        ]),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                    $freePlan = DB::table('user_plans')->find($id);
+                }
 
-            return $freePlan;
+                return $freePlan;
+            });
         }
 
-        return DB::table('user_plans')
-            ->where('id', $user->plan_id)
-            ->where('is_active', true)
-            ->first();
+        // Cache user's specific plan
+        return Cache::remember("user_plan_{$user->plan_id}", self::PLAN_CACHE_TTL, function () use ($user) {
+            return DB::table('user_plans')
+                ->where('id', $user->plan_id)
+                ->where('is_active', true)
+                ->first();
+        });
     }
 
     private function getPlanFeatures($plan): array
@@ -400,18 +419,27 @@ class UsageLimitService
         if (!$column) return 0;
 
         if ($monthly) {
-            return (int) DB::table('daily_usage_limits')
-                ->where('user_id', $user->id)
-                ->whereYear('usage_date', now()->year)
-                ->whereMonth('usage_date', now()->month)
-                ->sum($column);
+            // Cache monthly usage for 60 seconds
+            $cacheKey = "usage_monthly_{$user->id}_{$feature}_" . now()->format('Y_m');
+            return Cache::remember($cacheKey, 60, function () use ($user, $column) {
+                return (int) DB::table('daily_usage_limits')
+                    ->where('user_id', $user->id)
+                    ->whereYear('usage_date', now()->year)
+                    ->whereMonth('usage_date', now()->month)
+                    ->sum($column);
+            });
         }
 
+        // Cache daily usage for 30 seconds (short TTL since it changes frequently)
         $today = now()->toDateString();
-        $record = DB::table('daily_usage_limits')
-            ->where('user_id', $user->id)
-            ->where('usage_date', $today)
-            ->first();
+        $cacheKey = "usage_daily_{$user->id}_{$today}";
+
+        $record = Cache::remember($cacheKey, 30, function () use ($user, $today) {
+            return DB::table('daily_usage_limits')
+                ->where('user_id', $user->id)
+                ->where('usage_date', $today)
+                ->first();
+        });
 
         return $record ? (int) ($record->$column ?? 0) : 0;
     }

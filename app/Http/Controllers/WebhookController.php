@@ -93,70 +93,98 @@ class WebhookController extends Controller
             return response()->json(['status' => 'already_processed']);
         }
 
-        // Mark transaction as completed
-        $transaction->markAsCompleted($paymentId, $payment);
+        // Wrap all database operations in a transaction for atomicity
+        try {
+            DB::beginTransaction();
 
-        // Activate user plan
-        $planId = $transaction->metadata['plan_id'] ?? null;
-        if ($planId) {
-            $plan = PricingPlan::find($planId);
-            $user = $transaction->user;
+            // Mark transaction as completed
+            $transaction->markAsCompleted($paymentId, $payment);
 
-            if ($plan && $user) {
-                $expiryDate = now()->addDays($plan->validity_days ?? 30);
+            // Activate user plan
+            $planId = $transaction->metadata['plan_id'] ?? null;
+            $plan = null;
+            $user = null;
+            $expiryDate = null;
 
-                $user->update([
-                    'plan_id' => $plan->id,
-                    'plan_expires_at' => $expiryDate,
-                    'is_active' => true,
-                    'token_limit' => $plan->message_tokens ?? 10000,
-                    'tokens_used' => 0,
-                    'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
-                    'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
-                    'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
-                    'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
-                ]);
+            if ($planId) {
+                $plan = PricingPlan::find($planId);
+                $user = $transaction->user;
 
-                // Create Payment record
-                Payment::create([
-                    'user_id' => $user->id,
-                    'plan_id' => $plan->id,
-                    'amount' => $transaction->amount,
-                    'transaction_id' => $paymentId,
-                    'payment_method' => 'razorpay',
-                    'status' => 'completed',
-                    'upi_transaction_id' => $orderId,
-                    'verified_at' => now(),
-                ]);
+                if ($plan && $user) {
+                    $expiryDate = now()->addDays($plan->validity_days ?? 30);
 
-                // Log subscription event
-                $this->logSubscriptionEvent($user->id, 'purchase', [
-                    'plan_id' => $plan->id,
-                    'plan_name' => $plan->name,
-                    'amount' => $transaction->amount,
-                    'payment_id' => $paymentId,
-                    'expires_at' => $expiryDate->toDateTimeString(),
-                ]);
+                    $user->update([
+                        'plan_id' => $plan->id,
+                        'plan_expires_at' => $expiryDate,
+                        'is_active' => true,
+                        'token_limit' => $plan->message_tokens ?? 10000,
+                        'tokens_used' => 0,
+                        'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
+                        'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
+                        'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
+                        'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
+                    ]);
 
-                // Send success email
-                EmailService::sendPaymentSuccess(
-                    $user,
-                    $plan->name ?? 'Premium',
-                    (string) $transaction->amount,
-                    $paymentId,
-                    'razorpay',
-                    $expiryDate->format('d M Y')
-                );
+                    // Create Payment record
+                    Payment::create([
+                        'user_id' => $user->id,
+                        'plan_id' => $plan->id,
+                        'amount' => $transaction->amount,
+                        'transaction_id' => $paymentId,
+                        'payment_method' => 'razorpay',
+                        'status' => 'completed',
+                        'upi_transaction_id' => $orderId,
+                        'verified_at' => now(),
+                    ]);
 
-                Log::info('Razorpay webhook: Plan activated', [
-                    'user_id' => $user->id,
-                    'plan_id' => $plan->id,
-                    'payment_id' => $paymentId,
-                ]);
+                    // Log subscription event
+                    $this->logSubscriptionEvent($user->id, 'purchase', [
+                        'plan_id' => $plan->id,
+                        'plan_name' => $plan->name,
+                        'amount' => $transaction->amount,
+                        'payment_id' => $paymentId,
+                        'expires_at' => $expiryDate->toDateTimeString(),
+                    ]);
+
+                    Log::info('Razorpay webhook: Plan activated', [
+                        'user_id' => $user->id,
+                        'plan_id' => $plan->id,
+                        'payment_id' => $paymentId,
+                    ]);
+                }
             }
-        }
 
-        return response()->json(['status' => 'success']);
+            DB::commit();
+
+            // Send success email AFTER commit (email failures shouldn't rollback payment)
+            if ($plan && $user && $expiryDate) {
+                try {
+                    EmailService::sendPaymentSuccess(
+                        $user,
+                        $plan->name ?? 'Premium',
+                        (string) $transaction->amount,
+                        $paymentId,
+                        'razorpay',
+                        $expiryDate->format('d M Y')
+                    );
+                } catch (\Exception $emailError) {
+                    Log::warning('Razorpay webhook: Email sending failed', [
+                        'user_id' => $user->id,
+                        'error' => $emailError->getMessage(),
+                    ]);
+                }
+            }
+
+            return response()->json(['status' => 'success']);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Razorpay webhook: Payment processing failed', [
+                'order_id' => $orderId,
+                'error' => $e->getMessage(),
+            ]);
+            return response()->json(['error' => 'Processing failed'], 500);
+        }
     }
 
     /**
@@ -222,30 +250,45 @@ class WebhookController extends Controller
         $payment = Payment::where('transaction_id', $paymentId)->first();
 
         if ($payment) {
-            $payment->update([
-                'status' => 'refunded',
-            ]);
+            try {
+                // Wrap refund operations in transaction for atomicity
+                DB::beginTransaction();
 
-            $user = $payment->user;
-            if ($user) {
-                // Downgrade to free plan
-                $user->update([
-                    'plan_id' => null,
-                    'plan_expires_at' => null,
+                $payment->update([
+                    'status' => 'refunded',
                 ]);
 
-                // Log refund
-                $this->logSubscriptionEvent($user->id, 'refund', [
+                $user = $payment->user;
+                if ($user) {
+                    // Downgrade to free plan
+                    $user->update([
+                        'plan_id' => null,
+                        'plan_expires_at' => null,
+                    ]);
+
+                    // Log refund
+                    $this->logSubscriptionEvent($user->id, 'refund', [
+                        'payment_id' => $paymentId,
+                        'refund_amount' => $refundAmount,
+                        'plan_id' => $payment->plan_id,
+                    ]);
+
+                    Log::info('Razorpay webhook: Refund processed, user downgraded', [
+                        'user_id' => $user->id,
+                        'payment_id' => $paymentId,
+                        'refund_amount' => $refundAmount,
+                    ]);
+                }
+
+                DB::commit();
+
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error('Razorpay webhook: Refund processing failed', [
                     'payment_id' => $paymentId,
-                    'refund_amount' => $refundAmount,
-                    'plan_id' => $payment->plan_id,
+                    'error' => $e->getMessage(),
                 ]);
-
-                Log::info('Razorpay webhook: Refund processed, user downgraded', [
-                    'user_id' => $user->id,
-                    'payment_id' => $paymentId,
-                    'refund_amount' => $refundAmount,
-                ]);
+                return response()->json(['error' => 'Refund processing failed'], 500);
             }
         }
 

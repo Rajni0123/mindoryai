@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Which of the following is NOT a component of the lac operon?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Structural genes"
+      },
+      {
+        "label": "B",
+        "text": "Promoter"
+      },
+      {
+        "label": "C",
+        "text": "Enhancer"
+      },
+      {
+        "label": "D",
+        "text": "Operator"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The lac operon consists of structural genes, a promoter, an operator, and a regulator gene. Enhancers are not part of the lac operon.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of DNA ligase in DNA replication?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "To unwind the DNA double helix"
+      },
+      {
+        "label": "B",
+        "text": "To synthesize RNA primers"
+      },
+      {
+        "label": "C",
+        "text": "To join Okazaki fragments"
+      },
+      {
+        "label": "D",
+        "text": "To proofread the newly synthesized DNA"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "DNA ligase joins the Okazaki fragments on the lagging strand during DNA replication by catalyzing the formation of phosphodiester bonds.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of ex-situ conservation?",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "National Park"
+      },
+      {
+        "label": "B",
+        "text": "Wildlife Sanctuary"
+      },
+      {
+        "label": "C",
+        "text": "Botanical Garden"
+      },
+      {
+        "label": "D",
+        "text": "Biosphere Reserve"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Ex-situ conservation involves conserving organisms outside their natural habitat. Botanical gardens are an example of this.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the function of the enzyme reverse transcriptase?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "To synthesize DNA from RNA"
+      },
+      {
+        "label": "B",
+        "text": "To synthesize RNA from DNA"
+      },
+      {
+        "label": "C",
+        "text": "To degrade RNA"
+      },
+      {
+        "label": "D",
+        "text": "To degrade DNA"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Reverse transcriptase is an enzyme that synthesizes DNA from an RNA template.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of the Ti plasmid in biotechnology?",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To clone animal genes"
+      },
+      {
+        "label": "B",
+        "text": "To clone plant genes"
+      },
+      {
+        "label": "C",
+        "text": "To produce antibiotics"
+      },
+      {
+        "label": "D",
+        "text": "To produce vaccines"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Ti plasmid, found in Agrobacterium tumefaciens, is used to transfer genes into plant cells.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the significance of biodiversity hotspots.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Areas with low species richness and high endemism"
+      },
+      {
+        "label": "B",
+        "text": "Areas with high species richness and high endemism"
+      },
+      {
+        "label": "C",
+        "text": "Areas with low species richness and low endemism"
+      },
+      {
+        "label": "D",
+        "text": "Areas with high species richness and low endemism"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Biodiversity hotspots are regions with exceptionally high species richness and a high degree of endemism, making them crucial for conservation efforts.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of transcription in eukaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Initiation, elongation, and termination occurring in the cytoplasm."
+      },
+      {
+        "label": "B",
+        "text": "Initiation, splicing, elongation, and termination occurring in the nucleus."
+      },
+      {
+        "label": "C",
+        "text": "Initiation, elongation, and termination occurring in the nucleus, followed by translation in the cytoplasm."
+      },
+      {
+        "label": "D",
+        "text": "Initiation, splicing, elongation, termination occurring in the nucleus, followed by translation in the cytoplasm."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Eukaryotic transcription involves initiation, splicing to remove introns, elongation, and termination in the nucleus. The resulting mRNA is then translated in the cytoplasm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the advantages of using genetically modified crops?",
+    "topic": "Biotechnology and its Applications",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increased yield, reduced reliance on chemical pesticides, and enhanced nutritional value."
+      },
+      {
+        "label": "B",
+        "text": "Decreased yield, increased reliance on chemical pesticides, and reduced nutritional value."
+      },
+      {
+        "label": "C",
+        "text": "Increased yield, increased reliance on chemical pesticides, and enhanced nutritional value."
+      },
+      {
+        "label": "D",
+        "text": "Decreased yield, reduced reliance on chemical pesticides, and reduced nutritional value."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Genetically modified crops can offer advantages such as increased yield, reduced pesticide use (e.g., Bt cotton), and improved nutritional content (e.g., golden rice).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of PCR (Polymerase Chain Reaction).",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Denaturation, annealing, and extension using DNA polymerase to amplify DNA."
+      },
+      {
+        "label": "B",
+        "text": "Transcription, translation, and replication using RNA polymerase to amplify RNA."
+      },
+      {
+        "label": "C",
+        "text": "Denaturation, translation, and extension using RNA polymerase to amplify DNA."
+      },
+      {
+        "label": "D",
+        "text": "Transcription, annealing, and extension using DNA polymerase to amplify RNA."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "PCR involves denaturation of DNA, annealing of primers, and extension by DNA polymerase to amplify specific DNA sequences.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the different types of RNA and their functions.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "mRNA (carries genetic code), tRNA (transfers amino acids), rRNA (forms ribosomes)."
+      },
+      {
+        "label": "B",
+        "text": "mRNA (forms ribosomes), tRNA (carries genetic code), rRNA (transfers amino acids)."
+      },
+      {
+        "label": "C",
+        "text": "mRNA (transfers amino acids), tRNA (forms ribosomes), rRNA (carries genetic code)."
+      },
+      {
+        "label": "D",
+        "text": "mRNA (carries genetic code), tRNA (forms ribosomes), rRNA (transfers amino acids)."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "mRNA carries the genetic code from DNA to ribosomes, tRNA transfers amino acids to the ribosome during protein synthesis, and rRNA forms the structural and functional components of ribosomes.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of gel electrophoresis and its application in biotechnology.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Separation of DNA fragments based on size using an electric field; used for DNA fingerprinting and gene cloning."
+      },
+      {
+        "label": "B",
+        "text": "Separation of RNA fragments based on size using a magnetic field; used for RNA sequencing and gene expression analysis."
+      },
+      {
+        "label": "C",
+        "text": "Separation of protein fragments based on charge using an electric field; used for protein purification and enzyme assays."
+      },
+      {
+        "label": "D",
+        "text": "Separation of lipid fragments based on density using a centrifuge; used for lipid profiling and membrane studies."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Gel electrophoresis separates DNA fragments based on size using an electric field. Smaller fragments migrate faster. It's used in DNA fingerprinting, gene cloning, and other applications.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the different strategies for biodiversity conservation.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "In-situ conservation (national parks, biosphere reserves) and ex-situ conservation (zoos, botanical gardens)."
+      },
+      {
+        "label": "B",
+        "text": "In-vitro conservation (tissue culture, cryopreservation) and ex-vivo conservation (gene banks, seed banks)."
+      },
+      {
+        "label": "C",
+        "text": "In-situ conservation (zoos, botanical gardens) and ex-situ conservation (national parks, biosphere reserves)."
+      },
+      {
+        "label": "D",
+        "text": "In-vitro conservation (gene banks, seed banks) and ex-vivo conservation (tissue culture, cryopreservation)."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "In-situ conservation protects species in their natural habitats (e.g., national parks), while ex-situ conservation involves protecting species outside their natural habitats (e.g., zoos).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of translation in prokaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Initiation, elongation, and termination occurring simultaneously in the nucleus."
+      },
+      {
+        "label": "B",
+        "text": "Initiation, elongation, and termination occurring simultaneously in the cytoplasm."
+      },
+      {
+        "label": "C",
+        "text": "Transcription, elongation, and termination occurring simultaneously in the nucleus."
+      },
+      {
+        "label": "D",
+        "text": "Transcription, elongation, and termination occurring simultaneously in the cytoplasm."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Prokaryotic translation involves initiation, elongation, and termination occurring simultaneously in the cytoplasm. There is no separation of transcription and translation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the principles and applications of recombinant DNA technology.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Combining DNA from different sources to create new genetic combinations; used in gene therapy, diagnostics, and agriculture."
+      },
+      {
+        "label": "B",
+        "text": "Separating DNA from different sources to create new genetic combinations; used in gene therapy, diagnostics, and agriculture."
+      },
+      {
+        "label": "C",
+        "text": "Combining RNA from different sources to create new genetic combinations; used in gene therapy, diagnostics, and agriculture."
+      },
+      {
+        "label": "D",
+        "text": "Separating RNA from different sources to create new genetic combinations; used in gene therapy, diagnostics, and agriculture."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Recombinant DNA technology involves combining DNA from different sources to create new genetic combinations. Applications include gene therapy, diagnostics, and agriculture.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the causes and consequences of biodiversity loss.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Habitat loss, overexploitation, invasive species, climate change; leads to ecosystem instability and loss of ecosystem services."
+      },
+      {
+        "label": "B",
+        "text": "Habitat gain, underexploitation, native species, climate stability; leads to ecosystem stability and gain of ecosystem services."
+      },
+      {
+        "label": "C",
+        "text": "Habitat loss, underexploitation, invasive species, climate stability; leads to ecosystem instability and loss of ecosystem services."
+      },
+      {
+        "label": "D",
+        "text": "Habitat gain, overexploitation, native species, climate change; leads to ecosystem stability and gain of ecosystem services."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Causes of biodiversity loss include habitat loss, overexploitation, invasive species, and climate change. Consequences include ecosystem instability and loss of ecosystem services.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the Hershey-Chase experiment and its significance in determining the genetic material.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Using radioactive sulfur to label proteins and radioactive phosphorus to label DNA, demonstrating that DNA is the genetic material."
+      },
+      {
+        "label": "B",
+        "text": "Using radioactive nitrogen to label proteins and radioactive carbon to label DNA, demonstrating that DNA is the genetic material."
+      },
+      {
+        "label": "C",
+        "text": "Using radioactive sulfur to label DNA and radioactive phosphorus to label proteins, demonstrating that protein is the genetic material."
+      },
+      {
+        "label": "D",
+        "text": "Using radioactive nitrogen to label DNA and radioactive carbon to label proteins, demonstrating that protein is the genetic material."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The Hershey-Chase experiment used radioactive sulfur to label proteins and radioactive phosphorus to label DNA. They showed that DNA, not protein, entered bacterial cells during viral infection, proving DNA is the genetic material.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the process of DNA replication in detail, including the enzymes involved and the roles of the leading and lagging strands.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA replication is semi-conservative, involving DNA polymerase, helicase, ligase, and primase. The leading strand is synthesized continuously, while the lagging strand is synthesized in Okazaki fragments."
+      },
+      {
+        "label": "B",
+        "text": "DNA replication is conservative, involving RNA polymerase, helicase, ligase, and primase. The leading strand is synthesized in Okazaki fragments, while the lagging strand is synthesized continuously."
+      },
+      {
+        "label": "C",
+        "text": "DNA replication is semi-conservative, involving RNA polymerase, ligase, and primase. Both strands are synthesized continuously."
+      },
+      {
+        "label": "D",
+        "text": "DNA replication is conservative, involving DNA polymerase, ligase, and primase. Both strands are synthesized in Okazaki fragments."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "DNA replication is semi-conservative. Enzymes involved include DNA polymerase, helicase, ligase, and primase. The leading strand is synthesized continuously, while the lagging strand is synthesized in Okazaki fragments due to the 5' to 3' directionality of DNA polymerase.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the principles and applications of gene therapy.",
+    "topic": "Biotechnology and its Applications",
+    "options": [
+      {
+        "label": "A",
+        "text": "Introducing normal genes into cells to correct genetic disorders; used for treating diseases like SCID and cystic fibrosis."
+      },
+      {
+        "label": "B",
+        "text": "Introducing abnormal genes into cells to correct genetic disorders; used for treating diseases like cancer and diabetes."
+      },
+      {
+        "label": "C",
+        "text": "Introducing normal genes into cells to prevent genetic disorders; used for treating diseases like Alzheimer's and Parkinson's."
+      },
+      {
+        "label": "D",
+        "text": "Introducing abnormal genes into cells to prevent genetic disorders; used for treating diseases like HIV and AIDS."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Gene therapy involves introducing normal genes into cells to correct genetic disorders. It's used for treating diseases like Severe Combined Immunodeficiency (SCID) and cystic fibrosis.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the role of restriction enzymes and vectors in recombinant DNA technology.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Restriction enzymes cut DNA at specific sites, and vectors carry the DNA fragment into a host cell for replication."
+      },
+      {
+        "label": "B",
+        "text": "Restriction enzymes join DNA at specific sites, and vectors degrade the DNA fragment in a host cell."
+      },
+      {
+        "label": "C",
+        "text": "Restriction enzymes cut RNA at specific sites, and vectors carry the RNA fragment into a host cell for translation."
+      },
+      {
+        "label": "D",
+        "text": "Restriction enzymes join RNA at specific sites, and vectors degrade the RNA fragment in a host cell."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Restriction enzymes cut DNA at specific recognition sequences, creating fragments that can be inserted into vectors. Vectors (e.g., plasmids) carry the DNA fragment into a host cell for replication and expression.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the structure of DNA and the significance of its double helix structure.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA is a double helix composed of two polynucleotide chains held together by hydrogen bonds between complementary base pairs. The double helix structure provides stability and facilitates accurate replication and transcription."
+      },
+      {
+        "label": "B",
+        "text": "DNA is a single helix composed of one polynucleotide chain held together by covalent bonds between complementary base pairs. The single helix structure provides flexibility and facilitates accurate replication and transcription."
+      },
+      {
+        "label": "C",
+        "text": "DNA is a triple helix composed of three polynucleotide chains held together by ionic bonds between complementary base pairs. The triple helix structure provides rigidity and facilitates accurate replication and transcription."
+      },
+      {
+        "label": "D",
+        "text": "DNA is a quadruple helix composed of four polynucleotide chains held together by hydrophobic interactions between complementary base pairs. The quadruple helix structure provides stability and facilitates accurate replication and transcription."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "DNA is a double helix composed of two polynucleotide chains held together by hydrogen bonds between complementary base pairs (A-T and G-C). The double helix structure provides stability and facilitates accurate replication and transcription by providing a template for each strand.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the process of RNA interference (RNAi) and its applications in biotechnology.",
+    "topic": "Biotechnology and its Applications",
+    "options": [
+      {
+        "label": "A",
+        "text": "RNAi is a process where small RNA molecules inhibit gene expression by targeting mRNA for degradation or blocking translation; used in gene silencing and therapeutic applications."
+      },
+      {
+        "label": "B",
+        "text": "RNAi is a process where small DNA molecules inhibit gene expression by targeting mRNA for degradation or blocking translation; used in gene silencing and therapeutic applications."
+      },
+      {
+        "label": "C",
+        "text": "RNAi is a process where small RNA molecules enhance gene expression by targeting mRNA for degradation or blocking translation; used in gene silencing and therapeutic applications."
+      },
+      {
+        "label": "D",
+        "text": "RNAi is a process where small DNA molecules enhance gene expression by targeting mRNA for degradation or blocking translation; used in gene silencing and therapeutic applications."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "RNA interference (RNAi) is a process where small RNA molecules (siRNA or miRNA) inhibit gene expression by targeting mRNA for degradation or blocking translation. It's used in gene silencing, functional genomics, and therapeutic applications.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the full form of VNTR and how is it useful in DNA fingerprinting?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Variable Number of Tandem Repeats; VNTRs are highly variable regions of DNA that can be used to create a unique DNA fingerprint for identification."
+      },
+      {
+        "label": "B",
+        "text": "Volatile Number of Terminal Regions; VNTRs are highly conserved regions of DNA that can be used to create a unique DNA fingerprint for identification."
+      },
+      {
+        "label": "C",
+        "text": "Variable Number of Terminal Regions; VNTRs are highly variable regions of DNA that can be used to create a unique DNA fingerprint for identification."
+      },
+      {
+        "label": "D",
+        "text": "Volatile Number of Tandem Repeats; VNTRs are highly conserved regions of DNA that can be used to create a unique DNA fingerprint for identification."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "VNTR stands for Variable Number of Tandem Repeats. These are short nucleotide sequences that are repeated in tandem and are highly variable between individuals. This variability makes them useful in DNA fingerprinting for identification purposes.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the concept of 'ecological succession'. Differentiate between primary and secondary succession.",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ecological succession is the gradual process of change in an ecosystem over time. Primary succession starts in barren areas, while secondary succession starts in areas where a previous community existed."
+      },
+      {
+        "label": "B",
+        "text": "Ecological succession is the rapid process of change in an ecosystem over time. Primary succession starts in areas where a previous community existed, while secondary succession starts in barren areas."
+      },
+      {
+        "label": "C",
+        "text": "Ecological succession is the gradual process of change in an ecosystem over time. Primary succession starts in areas where a previous community existed, while secondary succession starts in barren areas."
+      },
+      {
+        "label": "D",
+        "text": "Ecological succession is the rapid process of change in an ecosystem over time. Primary succession starts in barren areas, while secondary succession starts in areas where a previous community existed."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Ecological succession is the gradual and predictable process of change in the species structure of an ecological community over time. Primary succession begins in lifeless areas where soil is not yet formed (e.g., after a volcanic eruption), while secondary succession occurs in areas where a previous community has been disturbed or destroyed but the soil remains (e.g., after a forest fire).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are the key features of 'biomagnification' and how does it affect the ecosystem?",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Biomagnification is the increase in concentration of toxins in organisms at successively higher trophic levels. It leads to harmful effects on top predators."
+      },
+      {
+        "label": "B",
+        "text": "Biomagnification is the decrease in concentration of toxins in organisms at successively higher trophic levels. It leads to beneficial effects on top predators."
+      },
+      {
+        "label": "C",
+        "text": "Biomagnification is the increase in concentration of nutrients in organisms at successively higher trophic levels. It leads to harmful effects on top predators."
+      },
+      {
+        "label": "D",
+        "text": "Biomagnification is the decrease in concentration of nutrients in organisms at successively higher trophic levels. It leads to beneficial effects on top predators."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biomagnification refers to the increasing concentration of persistent, toxic substances in organisms at each successively higher trophic level in a food chain. This occurs because these substances are not metabolized or excreted by the organisms and accumulate in their tissues. Top predators are most severely affected, leading to reproductive failure and other health problems.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the Greenhouse Effect and its impact on global climate.",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "The greenhouse effect is the trapping of heat by gases in the Earth's atmosphere, leading to global warming and climate change."
+      },
+      {
+        "label": "B",
+        "text": "The greenhouse effect is the release of heat by gases in the Earth's atmosphere, leading to global cooling and climate change."
+      },
+      {
+        "label": "C",
+        "text": "The greenhouse effect is the trapping of cold by gases in the Earth's atmosphere, leading to global warming and climate change."
+      },
+      {
+        "label": "D",
+        "text": "The greenhouse effect is the release of cold by gases in the Earth's atmosphere, leading to global cooling and climate change."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The greenhouse effect is a natural process where certain gases in the Earth's atmosphere (e.g., carbon dioxide, methane) trap heat from the sun, preventing it from escaping back into space. This process keeps the Earth warm enough to support life. However, increased concentrations of these gases due to human activities enhance the greenhouse effect, leading to global warming and climate change, with consequences such as rising sea levels, altered weather patterns, and disruptions to ecosystems.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\DB;
 class PricingPlansSeeder extends Seeder
 {
     /**
-     * Seed pricing plans with credit-based features
+     * OFFICIAL PRICING - DO NOT CHANGE WITHOUT APPROVAL
+     * Free: ₹0 | Lite: ₹79/mo, ₹649/yr | Pro: ₹249/mo, ₹1999/yr | Ultimate: ₹799/mo, ₹6499/yr
+     *
+     * NOTE: This is a LEGACY seeder. Use UserPlanSeeder or SubscriptionPlansSeeder instead.
      */
     public function run(): void
     {
@@ -16,24 +19,46 @@ class PricingPlansSeeder extends Seeder
             [
                 'name' => 'Free',
                 'slug' => 'free',
-                'description' => 'Perfect for trying out our AI assistant',
+                'description' => 'Padhai Shuru Karo',
                 'price' => 0.00,
                 'yearly_price' => 0.00,
                 'period' => 'monthly',
                 'credits_per_month' => 50,
                 'unlimited_credits' => false,
-                'max_messages_per_day' => 20,
-                'max_images_per_day' => 5,
+                'max_messages_per_day' => 10,
+                'max_images_per_day' => 3,
                 'is_active' => true,
                 'order' => 1,
                 'features' => json_encode([
                     'features' => [
-                        '50 credits per month',
-                        '20 messages per day',
-                        '5 image generations per day',
-                        'Access to GPT-4o Mini',
-                        'Email support',
-                        'Basic features',
+                        '10 AI Chat Messages / Day',
+                        '3 Scan & Solve / Day',
+                        '2 Whiteboard Videos / Month',
+                        'Ad-Supported',
+                    ],
+                ]),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Lite',
+                'slug' => 'lite',
+                'description' => 'Regular Padhai',
+                'price' => 79.00,
+                'yearly_price' => 649.00,
+                'period' => 'monthly',
+                'credits_per_month' => 500,
+                'unlimited_credits' => false,
+                'max_messages_per_day' => null, // Unlimited
+                'max_images_per_day' => 10,
+                'is_active' => true,
+                'order' => 2,
+                'features' => json_encode([
+                    'features' => [
+                        'Unlimited AI Chat',
+                        '10 Scan & Solve / Day',
+                        '5 Whiteboard Videos / Month',
+                        'No Ads',
                     ],
                 ]),
                 'created_at' => now(),
@@ -42,58 +67,23 @@ class PricingPlansSeeder extends Seeder
             [
                 'name' => 'Pro',
                 'slug' => 'pro',
-                'description' => 'For regular users who need more',
-                'price' => 199.00,
-                'yearly_price' => 1999.00, // ~17% discount
+                'description' => 'Serious Padhai',
+                'price' => 249.00,
+                'yearly_price' => 1999.00,
                 'period' => 'monthly',
-                'credits_per_month' => 500,
+                'credits_per_month' => 0,
                 'unlimited_credits' => false,
-                'max_messages_per_day' => 200,
-                'max_images_per_day' => 50,
-                'is_active' => true,
-                'order' => 2,
-                'features' => json_encode([
-                    'features' => [
-                        '500 credits per month',
-                        '200 messages per day',
-                        '50 image generations per day',
-                        'Access to all AI models',
-                        'Priority support',
-                        'Voice input',
-                        'File upload',
-                        'Chat history export',
-                    ],
-                    'popular' => true,
-                ]),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'name' => 'Premium',
-                'slug' => 'premium',
-                'description' => 'Unlimited access for power users',
-                'price' => 499.00,
-                'yearly_price' => 4999.00, // ~17% discount
-                'period' => 'monthly',
-                'credits_per_month' => 0, // Unlimited
-                'unlimited_credits' => true,
                 'max_messages_per_day' => null, // Unlimited
-                'max_images_per_day' => null, // Unlimited
+                'max_images_per_day' => 30,
                 'is_active' => true,
                 'order' => 3,
                 'features' => json_encode([
                     'features' => [
-                        '✨ Unlimited credits',
-                        '✨ Unlimited messages',
-                        '✨ Unlimited image generations',
-                        'Access to all AI models',
-                        'Priority support (24/7)',
-                        'Voice input',
-                        'File upload',
-                        'Chat history export',
-                        'API access',
-                        'Custom AI instructions',
-                        'Early access to new features',
+                        'Unlimited AI Chat',
+                        '30 Scan & Solve / Day',
+                        '15 Whiteboard Videos / Month',
+                        'Priority Processing',
+                        'HD Video Quality',
                     ],
                     'recommended' => true,
                 ]),
@@ -101,13 +91,13 @@ class PricingPlansSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Enterprise',
-                'slug' => 'enterprise',
-                'description' => 'Custom solutions for teams and businesses',
-                'price' => 2999.00,
-                'yearly_price' => 29999.00,
+                'name' => 'Ultimate',
+                'slug' => 'ultimate',
+                'description' => 'Topper Mode',
+                'price' => 799.00,
+                'yearly_price' => 6499.00,
                 'period' => 'monthly',
-                'credits_per_month' => 0, // Unlimited
+                'credits_per_month' => 0,
                 'unlimited_credits' => true,
                 'max_messages_per_day' => null, // Unlimited
                 'max_images_per_day' => null, // Unlimited
@@ -115,17 +105,14 @@ class PricingPlansSeeder extends Seeder
                 'order' => 4,
                 'features' => json_encode([
                     'features' => [
-                        'Everything in Premium',
-                        'Multi-user support (up to 50 users)',
-                        'Team collaboration features',
-                        'Custom AI model fine-tuning',
-                        'Dedicated account manager',
-                        'SLA guarantee',
-                        'Custom integrations',
-                        'Advanced analytics',
-                        'White-label option',
+                        'Everything Unlimited',
+                        '100 Scan & Solve / Day',
+                        '30 Whiteboard Videos / Month',
+                        'Priority Processing',
+                        'HD Video Quality',
+                        '5 Devices',
+                        'Advanced Analytics',
                     ],
-                    'contact' => true,
                 ]),
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -140,9 +127,9 @@ class PricingPlansSeeder extends Seeder
         }
 
         $this->command->info('✅ Pricing plans seeded successfully!');
-        $this->command->info('   - Free: 50 credits/month (₹0)');
-        $this->command->info('   - Pro: 500 credits/month (₹199/month, ₹1999/year)');
-        $this->command->info('   - Premium: Unlimited (₹499/month, ₹4999/year)');
-        $this->command->info('   - Enterprise: Unlimited (₹2999/month, ₹29999/year)');
+        $this->command->info('   - Free: ₹0');
+        $this->command->info('   - Lite: ₹79/month, ₹649/year');
+        $this->command->info('   - Pro: ₹249/month, ₹1999/year');
+        $this->command->info('   - Ultimate: ₹799/month, ₹6499/year');
     }
 }

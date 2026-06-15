@@ -65,14 +65,17 @@ class SmartCacheMiddleware
 
         // ═══════════════════════════════════════════════════════════════
         // LAYER 2: Message Classification
-        // Block continuations, greetings, context-dependent messages
+        // Block continuations, greetings, context-dependent, and SHORT messages
+        // Messages under 20 chars are NEVER cached as standalone
         // ═══════════════════════════════════════════════════════════════
         $msgType = $this->classifier->classify($question);
 
         if ($msgType !== 'standalone') {
             Log::info("[SmartCache] BLOCKED - Layer2: {$msgType}", [
                 'message' => $question,
+                'message_length' => mb_strlen($question),
                 'chat_id' => $chatId,
+                'reason' => $msgType === 'short_message' ? 'Message too short (< 20 chars)' : $msgType,
             ]);
             return $next($request); // Skip cache, go to AI
         }
@@ -199,6 +202,16 @@ class SmartCacheMiddleware
         $isFirstMessage = $request->attributes->get('_smart_cache_is_first');
 
         if (empty($question)) {
+            return;
+        }
+
+        // CRITICAL: Never store short questions (< 20 chars) in cache
+        // These are context-dependent and should always get fresh AI responses
+        if (mb_strlen($question) < 20) {
+            Log::debug("[SmartCache] NOT STORED: Question too short", [
+                'length' => mb_strlen($question),
+                'question' => $question,
+            ]);
             return;
         }
 

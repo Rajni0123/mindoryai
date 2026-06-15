@@ -2,35 +2,34 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\UsageLimitService;
+use App\Services\FeatureLimitService;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckFeatureLimit
 {
-    protected UsageLimitService $usageService;
-
-    public function __construct(UsageLimitService $usageService)
-    {
-        $this->usageService = $usageService;
-    }
+    public function __construct(
+        protected FeatureLimitService $featureLimitService
+    ) {}
 
     /**
      * Handle an incoming request.
      *
-     * Usage: ->middleware('check.feature:video_quiz')
-     * Usage: ->middleware('check.feature:whiteboard_video')
-     * Usage: ->middleware('check.feature:topic_quiz')
-     * Usage: ->middleware('check.feature:exam_prep')
+     * Usage: ->middleware('check.feature:ai_doubt')
      * Usage: ->middleware('check.feature:scan_solve')
-     * Usage: ->middleware('check.feature:pdf_upload')
+     * Usage: ->middleware('check.feature:whiteboard_video')
+     * Usage: ->middleware('check.feature:quiz')
+     * Usage: ->middleware('check.feature:topic_quiz_gen')
+     * Usage: ->middleware('check.feature:reasoning')
+     * Usage: ->middleware('check.feature:student_chat')
+     * Usage: ->middleware('check.feature:notes_diagrams')
      *
-     * @param string|null $featureType The feature key
+     * @param string|null $featureSlug The feature slug to check
      */
-    public function handle(Request $request, Closure $next, ?string $featureType = null): Response
+    public function handle(Request $request, Closure $next, ?string $featureSlug = null): Response
     {
-        if (!$featureType) {
+        if (!$featureSlug) {
             return $next($request);
         }
 
@@ -39,7 +38,8 @@ class CheckFeatureLimit
         if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Authentication required.',
+                'error' => 'unauthenticated',
+                'message' => 'Please login to access this feature.',
             ], 401);
         }
 
@@ -48,20 +48,20 @@ class CheckFeatureLimit
             return $next($request);
         }
 
-        // checkAndRecord: checks limit AND records usage in one call
-        $check = $this->usageService->checkAndRecord($user, $featureType);
-
-        if (!$check['allowed']) {
-            return response()->json([
-                'success' => false,
-                'message' => $check['reason'],
-                'limit' => $check['limit'],
-                'used' => $check['used'],
-                'remaining' => $check['remaining'],
-                'upgrade_required' => true,
-            ], 429);
+        // Check if user can use this feature
+        if (!$this->featureLimitService->canUse($user, $featureSlug)) {
+            $response = $this->featureLimitService->getLimitExceededResponse($user, $featureSlug);
+            return response()->json($response, 403);
         }
 
-        return $next($request);
+        // Process the request
+        $response = $next($request);
+
+        // If request was successful, track the usage
+        if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+            $this->featureLimitService->trackUsage($user, $featureSlug);
+        }
+
+        return $response;
     }
 }

@@ -67,10 +67,42 @@ class Setting extends Model
     }
 
     /**
-     * Clear all settings cache
+     * Clear settings cache - Only clear settings-related keys, not entire cache!
      */
     public static function clearCache()
     {
-        Cache::flush();
+        // Clear all settings cache keys we know about
+        $keys = self::pluck('key')->toArray();
+        foreach ($keys as $key) {
+            Cache::forget("setting_{$key}");
+        }
+
+        // Clear group caches
+        $groups = self::distinct('group')->pluck('group')->toArray();
+        foreach ($groups as $group) {
+            Cache::forget("settings_group_{$group}");
+        }
+    }
+
+    /**
+     * Boot method to clear cache on save/delete
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            Cache::forget("setting_{$model->key}");
+            if ($model->group) {
+                Cache::forget("settings_group_{$model->group}");
+            }
+        });
+
+        static::deleted(function ($model) {
+            Cache::forget("setting_{$model->key}");
+            if ($model->group) {
+                Cache::forget("settings_group_{$model->group}");
+            }
+        });
     }
 }

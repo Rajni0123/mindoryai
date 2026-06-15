@@ -2685,13 +2685,32 @@
 
                 if (data.success) {
                     removeTypingIndicator();
+
+                    // CRITICAL: Validate response is not empty
+                    const responseContent = data.response || '';
+                    if (!responseContent || responseContent.trim().length < 10) {
+                        console.error('Empty or invalid response received:', data);
+                        showError('Response was empty. Please try again.');
+                        // Restore image if failed
+                        if (tempImage) {
+                            selectedImage = tempImage;
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                document.getElementById('imagePreview').src = e.target.result;
+                                document.getElementById('imagePreviewContainer').classList.remove('hidden');
+                            };
+                            reader.readAsDataURL(tempImage);
+                        }
+                        return;
+                    }
+
                     addMessage({
                         role: 'assistant',
-                        content: data.response
+                        content: responseContent
                     });
 
                     // Check if this is a quiz response
-                    checkAndStartQuiz(data.response);
+                    checkAndStartQuiz(responseContent);
 
                     if (data.chat_id) {
                         currentChatId = data.chat_id;
@@ -2703,7 +2722,7 @@
                 } else {
                     console.error('Server returned error:', data);
                     removeTypingIndicator();
-                    showError(data.message || 'Failed to send message');
+                    showError(data.message || data.error || 'Failed to send message');
 
                     // Restore image if failed
                     if (tempImage) {

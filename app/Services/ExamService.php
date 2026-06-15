@@ -64,7 +64,7 @@ class ExamService
         $difficulty = $options['difficulty'] ?? 'mixed';
         $isBoardExam = in_array($exam->category, ['board']);
 
-        // Check how many questions we have
+        // Check how many UNIQUE questions user hasn't attempted
         $existingQuery = ExamQuestion::where('exam_id', $examId)->where('is_active', true);
         if ($subject !== 'all') {
             $existingQuery->where('subject', $subject);
@@ -78,22 +78,51 @@ class ExamService
 
         $existingCount = $existingQuery->count();
 
-        // For board exams (CBSE), prefer real PYQ questions - do NOT auto-generate
-        // For competitive exams (JEE, NEET etc.), auto-generate if needed
-        if ($existingCount < $questionCount && !$isBoardExam) {
-            $needed = $questionCount - $existingCount;
+        // Get questions user has already attempted
+        $attemptedQuestionIds = MockTest::where('user_id', $user->id)
+            ->where('exam_id', $examId)
+            ->pluck('question_ids')
+            ->flatten()
+            ->unique()
+            ->toArray();
+
+        // Count available fresh questions
+        $freshQuestionCount = (clone $existingQuery)
+            ->whereNotIn('id', $attemptedQuestionIds)
+            ->count();
+
+        // AUTO-GENERATE: If fresh questions < needed AND auto_generate is enabled
+        $autoGenerate = $exam->config['auto_generate'] ?? true;
+        $shouldGenerate = !$isBoardExam && $autoGenerate && ($freshQuestionCount < $questionCount);
+
+        if ($shouldGenerate) {
+            $needed = min(30, $questionCount - $freshQuestionCount + 5); // Generate extra buffer
             Log::info("ExamService: auto-generating {$needed} questions for {$exam->name}", [
                 'subject' => $subject,
                 'year' => $year,
                 'existing' => $existingCount,
+                'fresh_available' => $freshQuestionCount,
+                'user_attempted' => count($attemptedQuestionIds),
                 'needed' => $needed,
             ]);
 
             try {
                 $this->questionGenerator->generate($exam, $subject, $year, $needed, $difficulty);
+                // Refresh count after generation
+                $existingCount = ExamQuestion::where('exam_id', $examId)->where('is_active', true)->count();
             } catch (\Exception $e) {
                 Log::error("ExamService: auto-generation failed", ['error' => $e->getMessage()]);
+                // Continue with existing questions instead of failing
             }
+        }
+
+        // Adjust question count to available questions to prevent empty tests
+        if ($existingCount < $questionCount) {
+            Log::info("ExamService: adjusting question count from {$questionCount} to {$existingCount}", [
+                'exam' => $exam->name,
+                'available' => $existingCount,
+            ]);
+            $questionCount = max(5, $existingCount); // Minimum 5 questions
         }
 
         // For board exams: fetch all available real PYQ questions (across years if needed)
@@ -128,7 +157,11 @@ class ExamService
 
         $questions = $query->inRandomOrder()->limit($questionCount)->get();
 
-        $duration = $options['duration_minutes'] ?? $exam->config['duration_minutes'] ?? 60;
+        // DYNAMIC TIME CALCULATION based on question count
+        // Priority: 1) Custom option, 2) Calculate from questions, 3) Exam default
+        $timePerQuestion = $exam->config['time_per_question'] ?? 2; // default 2 mins per question
+        $calculatedDuration = $questions->count() * $timePerQuestion;
+        $duration = $options['duration_minutes'] ?? $calculatedDuration ?? $exam->config['duration_minutes'] ?? 60;
 
         $title = $exam->name . ' Mock Test';
         if (!empty($options['subject'])) {

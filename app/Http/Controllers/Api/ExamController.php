@@ -10,6 +10,7 @@ use App\Services\ExamService;
 use App\Services\UsageLimitService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ExamController extends Controller
 {
@@ -25,7 +26,12 @@ class ExamController extends Controller
     public function index(Request $request): JsonResponse
     {
         $category = $request->query('category');
-        $exams = $this->examService->getAvailableExams($category);
+
+        // Cache exam list for 5 minutes for faster response
+        $cacheKey = 'exams_list_' . ($category ?? 'all');
+        $exams = Cache::remember($cacheKey, 300, function () use ($category) {
+            return $this->examService->getAvailableExams($category);
+        });
 
         return response()->json([
             'success' => true,
@@ -36,24 +42,52 @@ class ExamController extends Controller
     public function show(int $examId): JsonResponse
     {
         try {
-            $detail = $this->examService->getExamDetail($examId);
+            // Cache exam details for 5 minutes
+            $cacheKey = "exam_detail_{$examId}";
+            $detail = Cache::remember($cacheKey, 300, function () use ($examId) {
+                $detail = $this->examService->getExamDetail($examId);
 
-            // Add PYQ availability info for board exams
-            $exam = \App\Models\Exam::find($examId);
-            if ($exam && $exam->category === 'board') {
-                $realPYQCount = \App\Models\ExamQuestion::where('exam_id', $examId)
+                // Get actual available question count from database
+                $exam = \App\Models\Exam::find($examId);
+                $actualQuestionCount = \App\Models\ExamQuestion::where('exam_id', $examId)
                     ->where('is_active', true)
-                    ->where('tags', 'like', '%real-paper%')
                     ->count();
 
-                $detail['pyq_info'] = [
-                    'has_real_pyq' => $realPYQCount > 0,
-                    'real_question_count' => $realPYQCount,
-                    'pyq_available' => $exam->config['pyq_available'] ?? false,
-                    'pyq_years' => $exam->config['pyq_years'] ?? [],
-                    'source' => $realPYQCount > 0 ? 'Real CBSE Board Papers' : 'AI Generated',
+                // Add dynamic values based on actual available questions
+                $configQuestions = $exam->config['total_questions'] ?? 50;
+                $configDuration = $exam->config['duration_minutes'] ?? 60;
+
+                // Calculate dynamic duration based on available questions
+                // Assume ~2-3 minutes per question for MCQ tests
+                $minutesPerQuestion = $exam->category === 'board' ? 3 : 2;
+                $dynamicDuration = min($configDuration, $actualQuestionCount * $minutesPerQuestion);
+                $dynamicDuration = max(15, $dynamicDuration); // Minimum 15 minutes
+
+                $detail['dynamic_info'] = [
+                    'available_questions' => $actualQuestionCount,
+                    'suggested_duration' => $dynamicDuration,
+                    'config_questions' => $configQuestions,
+                    'config_duration' => $configDuration,
                 ];
-            }
+
+                // Add PYQ availability info for board exams
+                if ($exam && $exam->category === 'board') {
+                    $realPYQCount = \App\Models\ExamQuestion::where('exam_id', $examId)
+                        ->where('is_active', true)
+                        ->where('tags', 'like', '%real-paper%')
+                        ->count();
+
+                    $detail['pyq_info'] = [
+                        'has_real_pyq' => $realPYQCount > 0,
+                        'real_question_count' => $realPYQCount,
+                        'pyq_available' => $exam->config['pyq_available'] ?? false,
+                        'pyq_years' => $exam->config['pyq_years'] ?? [],
+                        'source' => $realPYQCount > 0 ? 'Real CBSE Board Papers' : 'AI Generated',
+                    ];
+                }
+
+                return $detail;
+            });
 
             return response()->json([
                 'success' => true,
@@ -116,14 +150,14 @@ class ExamController extends Controller
         if (!$check['allowed']) {
             return response()->json([
                 'success' => false,
-                'message' => $check['message'],
+                'message' => $check['reason'],
                 'upgrade_required' => true,
             ], 429);
         }
 
         try {
-            // Extend execution time for AI question generation
-            set_time_limit(300);
+            // Extend execution time for AI question generation (reduced from 300)
+            set_time_limit(120);
 
             $mockTest = $this->examService->generateMockTest($user, $request->exam_id, [
                 'subject' => $request->subject,
@@ -169,17 +203,71 @@ class ExamController extends Controller
             ->get()
             ->map(function ($q) {
                 $isRealPYQ = is_array($q->tags) && in_array('real-paper', $q->tags);
+
+                // Normalize options format to [{label: "A", text: "..."}, ...]
+                $options = $q->options ?? [];
+                $normalizedOptions = [];
+
+                // Check if options is in old format {A: "...", B: "..."} vs new [{label, text}]
+                if (is_array($options) && !empty($options)) {
+                    // Check first element to determine format
+                    $first = reset($options);
+                    $firstKey = key($options);
+
+                    if (is_string($first) && is_string($firstKey) && strlen($firstKey) === 1) {
+                        // Old format: {A: "text", B: "text", ...}
+                        foreach ($options as $label => $text) {
+                            $normalizedOptions[] = [
+                                'label' => (string) $label,
+                                'text' => (string) $text,
+                            ];
+                        }
+                    } elseif (isset($first['label']) && isset($first['text'])) {
+                        // Already in new format - but ensure strings
+                        foreach ($options as $opt) {
+                            $normalizedOptions[] = [
+                                'label' => (string) ($opt['label'] ?? ''),
+                                'text' => (string) ($opt['text'] ?? ''),
+                            ];
+                        }
+                    } elseif (is_string($first)) {
+                        // Plain array of strings format: ["Option 1", "Option 2", ...]
+                        $labels = ['A', 'B', 'C', 'D', 'E', 'F'];
+                        foreach (array_values($options) as $i => $text) {
+                            $normalizedOptions[] = [
+                                'label' => $labels[$i] ?? chr(65 + $i),
+                                'text' => (string) $text,
+                            ];
+                        }
+                    } else {
+                        // Unknown format, try to extract
+                        foreach ($options as $key => $value) {
+                            if (is_array($value)) {
+                                $normalizedOptions[] = [
+                                    'label' => (string) ($value['label'] ?? $key),
+                                    'text' => (string) ($value['text'] ?? $value['option'] ?? ''),
+                                ];
+                            } else {
+                                $normalizedOptions[] = [
+                                    'label' => is_numeric($key) ? chr(65 + $key) : (string) $key,
+                                    'text' => (string) $value,
+                                ];
+                            }
+                        }
+                    }
+                }
+
                 return [
-                    'id' => $q->id,
-                    'question_text' => $q->question_text,
-                    'type' => $q->type,
-                    'options' => $q->options,
-                    'subject' => $q->subject,
-                    'topic' => $q->topic,
-                    'difficulty' => $q->difficulty,
-                    'year' => $q->year,
-                    'is_real_pyq' => $isRealPYQ,
-                    'source' => $isRealPYQ ? 'CBSE Board Paper' : 'AI Generated',
+                    'id' => (int) $q->id,
+                    'question_text' => (string) ($q->question_text ?? ''),
+                    'type' => (string) ($q->type ?? 'mcq'),
+                    'options' => $normalizedOptions,
+                    'subject' => (string) ($q->subject ?? ''),
+                    'topic' => (string) ($q->topic ?? ''),
+                    'difficulty' => (string) ($q->difficulty ?? 'medium'),
+                    'year' => $q->year ? (int) $q->year : null,
+                    'is_real_pyq' => (bool) $isRealPYQ,
+                    'source' => (string) ($isRealPYQ ? 'CBSE Board Paper' : 'AI Generated'),
                 ];
             });
 
@@ -265,7 +353,11 @@ class ExamController extends Controller
     public function getAvailablePYQYears(int $examId): JsonResponse
     {
         try {
-            $years = $this->examService->getAvailablePYQYears($examId);
+            // Cache PYQ years for 10 minutes
+            $cacheKey = "pyq_years_{$examId}";
+            $years = Cache::remember($cacheKey, 600, function () use ($examId) {
+                return $this->examService->getAvailablePYQYears($examId);
+            });
 
             return response()->json([
                 'success' => true,
@@ -323,7 +415,7 @@ class ExamController extends Controller
         if (!$check['allowed']) {
             return response()->json([
                 'success' => false,
-                'message' => $check['message'],
+                'message' => $check['reason'],
                 'upgrade_required' => true,
             ], 429);
         }
@@ -374,14 +466,14 @@ class ExamController extends Controller
         if (!$check['allowed']) {
             return response()->json([
                 'success' => false,
-                'message' => $check['message'],
+                'message' => $check['reason'],
                 'upgrade_required' => true,
             ], 429);
         }
 
         try {
-            // Extend execution time for AI question generation
-            set_time_limit(300);
+            // Extend execution time for AI question generation (reduced from 300)
+            set_time_limit(120);
 
             $exam = Exam::findOrFail($examId);
             $generator = app(ExamQuestionGenerator::class);

@@ -35,4 +35,9 @@ class DailyChallengeAttempt extends Model
     {
         return $this->belongsTo(DailyChallenge::class, 'daily_challenge_id');
     }
+
+    public function dailyChallenge()
+    {
+        return $this->belongsTo(DailyChallenge::class, 'daily_challenge_id');
+    }
 }

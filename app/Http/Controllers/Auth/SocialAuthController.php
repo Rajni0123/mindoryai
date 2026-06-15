@@ -59,12 +59,16 @@ class SocialAuthController extends Controller
                 }
             } else {
                 // New user - create account with 150 free tokens
+                // Get FREE plan by slug (not by ID - IDs can vary across environments)
+                $freePlan = \DB::table('user_plans')->where('slug', 'free')->first();
+                $freePlanId = $freePlan ? $freePlan->id : null;
+
                 $user = User::create([
                     'name' => $googleUser->getName(),
                     'email' => $googleUser->getEmail(),
                     'password' => Hash::make(Str::random(32)), // Random password for OAuth users
                     'role' => 'user',
-                    'plan_id' => 1, // Default free plan
+                    'plan_id' => $freePlanId, // Free plan by slug lookup
                     'is_active' => true, // Activate user immediately with free subscription
                     'token_limit' => 150, // 150 free tokens for new users
                     'tokens_used' => 0, // Start with 0 tokens used

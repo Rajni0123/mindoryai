@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\DailyChallenge;
 use App\Models\DynamicAppConfig;
-use App\Services\PythonAIService;
+use App\Services\GeminiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -206,23 +206,18 @@ Generate exactly {$count} questions. Return ONLY the JSON array, nothing else.
 PROMPT;
 
         try {
-            $aiService = new PythonAIService();
-            $result = $aiService->ask(
-                text: $prompt,
-                systemPrompt: 'You are an expert quiz question generator for Indian school students. Always respond with ONLY valid JSON arrays. No markdown, no code blocks, no explanations outside JSON.',
-                temperature: 0.8,
-                maxTokens: 4096,
-                timeout: 45
+            $aiService = new GeminiService(feature: 'quiz');
+            $aiService->setSystemPrompt(
+                'You are an expert quiz question generator for Indian school students. Always respond with ONLY valid JSON arrays. No markdown, no code blocks, no explanations outside JSON.'
             );
+            $result = $aiService->generateContent($prompt, [
+                'temperature' => 0.8,
+                'maxOutputTokens' => 4096,
+                'timeout' => 45,
+                'jsonMode' => true,
+            ]);
 
-            if (!$result['success']) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'AI service error: ' . ($result['error'] ?? 'Unknown error'),
-                ], 500);
-            }
-
-            $answer = $result['answer'] ?? '';
+            $answer = $result['content'] ?? '';
 
             // Clean the response - extract JSON from possible markdown wrapping
             $answer = trim($answer);

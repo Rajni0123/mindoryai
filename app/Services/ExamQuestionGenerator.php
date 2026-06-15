@@ -104,6 +104,8 @@ PROMPT;
             'temperature' => 0.8,
             'maxOutputTokens' => max(4096, $count * 500),
             'jsonMode' => true,
+            'timeout' => 45,  // Faster timeout for question generation
+            'connect_timeout' => 8,
         ]);
 
         $content = $response['content'] ?? '';

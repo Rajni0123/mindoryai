@@ -113,7 +113,7 @@ class AuthConfigSeeder extends Seeder
             ],
             [
                 'config_key' => 'auth.login.primary_color',
-                'config_value' => '#0df259',
+                'config_value' => '#0D9488',
                 'value_type' => 'string',
                 'description' => 'Login screen primary button color',
                 'is_active' => true

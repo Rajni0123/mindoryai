@@ -1,342 +1,262 @@
 @extends('layouts.app')
 
-@section('title', config('app.name', 'BlinkStudy') . ' | AI Study Companion')
+@section('title', config('app.name', 'BlinkStudy') . ' — AI Study Companion for Indian Students')
 
 @push('styles')
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-    .glow-text { text-shadow: 0 0 20px rgba(13, 148, 136, 0.3); }
-    .glow-border { box-shadow: 0 0 15px rgba(13, 148, 136, 0.15); }
-    .glow-hover:hover { box-shadow: 0 0 25px rgba(13, 148, 136, 0.4); }
-    .bg-gradient-blur {
-        position: absolute; filter: blur(80px); z-index: 0; opacity: 0.3;
+    .landing-page { font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif; }
+    .landing-page * { font-family: inherit; }
+    .hero-glow {
+        position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none;
     }
-    .glass-panel {
-        background: rgba(13, 17, 23, 0.7);
-        backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+    .glass-card {
+        background: rgba(255,255,255,0.88);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255,255,255,0.9);
+        box-shadow: 0 8px 32px rgba(15,23,42,0.06);
     }
-    .neon-border { position: relative; }
-    .neon-border::before {
-        content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
-        background: linear-gradient(135deg, rgba(13,148,136,0.5), rgba(245,158,11,0.3));
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    .phone-frame {
+        border: 10px solid #1e1b4b;
+        border-radius: 36px;
+        box-shadow: 0 32px 64px rgba(112,92,246,0.18), inset 0 0 0 2px rgba(255,255,255,0.08);
     }
-    .grid-bg {
-        background-size: 40px 40px;
-        background-image:
-            linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.16,1,.3,1); }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .08s; }
+    .reveal-delay-2 { transition-delay: .16s; }
+    .reveal-delay-3 { transition-delay: .24s; }
+    .reveal-delay-4 { transition-delay: .32s; }
+    .float { animation: float 6s ease-in-out infinite; }
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
     }
-    .scanline {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(to bottom, transparent 50%, rgba(13,148,136,0.02) 50%);
-        background-size: 100% 4px; pointer-events: none; z-index: 10;
-    }
-    /* Light mode overrides */
-    html:not(.dark) .glass-panel {
-        background: rgba(255,255,255,0.85);
-        border: 1px solid rgba(0,0,0,0.06);
-    }
-    html:not(.dark) .grid-bg {
-        background-image:
-            linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
-    }
-
-    /* Scroll reveal animations */
-    .reveal {
-        opacity: 0;
-        transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        will-change: opacity, transform;
-    }
-    .reveal-left {
-        transform: translateX(-60px);
-    }
-    .reveal-right {
-        transform: translateX(60px);
-    }
-    .reveal-up {
-        transform: translateY(40px);
-    }
-    .reveal.revealed {
-        opacity: 1;
-        transform: translateX(0) translateY(0);
-    }
-    /* Stagger delays for grid items */
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
-    .reveal-delay-5 { transition-delay: 0.5s; }
-    .reveal-delay-6 { transition-delay: 0.6s; }
 </style>
 @endpush
 
 @php
-    // Helper to get homepage setting with fallback
     $hs = function($key, $default = '') use ($allHomepageSettings) {
         return $allHomepageSettings[$key] ?? $default;
     };
 @endphp
 
 @section('content')
-{{-- Background effects --}}
-<div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
-<div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="bg-gradient-blur w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full bg-primary/5 -top-20 -left-20 animate-pulse"></div>
-    <div class="bg-gradient-blur w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] rounded-full bg-cyan-500/10 bottom-0 right-0"></div>
-    <div class="bg-gradient-blur w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] rounded-full bg-primary/10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-</div>
+<div class="landing-page bg-[#F8FAFF] text-slate-800 overflow-x-hidden">
+    {{-- Background orbs --}}
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="hero-glow w-[420px] h-[420px] bg-brand/20 -top-32 -left-20"></div>
+        <div class="hero-glow w-[360px] h-[360px] bg-secondary/15 top-1/3 -right-24"></div>
+        <div class="hero-glow w-[280px] h-[280px] bg-brand-100/60 bottom-20 left-1/4"></div>
+    </div>
 
-<div class="relative z-10">
-    {{-- ═══════════════════════ HERO ═══════════════════════ --}}
-    <section class="relative py-12 sm:py-16 lg:py-32 px-4 sm:px-6 overflow-hidden min-h-[85vh] sm:min-h-0 flex items-center">
-        <div class="absolute top-1/4 left-10 w-32 h-[1px] bg-gradient-to-r from-transparent to-primary/30 hidden lg:block"></div>
-        <div class="absolute top-1/4 right-10 w-32 h-[1px] bg-gradient-to-l from-transparent to-primary/30 hidden lg:block"></div>
-        <div class="absolute bottom-20 left-20 w-[1px] h-32 bg-gradient-to-b from-transparent to-primary/30 hidden lg:block"></div>
-
-        <div class="max-w-7xl mx-auto relative z-20 w-full">
-            <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-
-                {{-- ══ LEFT SIDE: Text Content ══ --}}
-                <div class="text-center sm:text-left reveal reveal-left">
-                    {{-- Badge --}}
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full dark:bg-[#1a1f2e] bg-white border border-primary/20 mb-6 backdrop-blur-sm shadow-lg">
-                        <div class="flex items-center gap-2">
-                            <span class="relative flex h-2.5 w-2.5">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
-                            </span>
-                            <span class="text-xs sm:text-sm font-semibold text-primary">{{ $hs('hero_badge_left', 'Made in India') }}</span>
-                        </div>
-                        <span class="w-[1px] h-4 dark:bg-white/20 bg-gray-300 hidden sm:block"></span>
-                        <span class="text-xs dark:text-gray-400 text-gray-500 hidden sm:block">{{ $hs('hero_badge_right', 'Proudly Built for Indian Students') }}</span>
+    {{-- ═══════════════ HERO ═══════════════ --}}
+    <section class="relative z-10 pt-8 pb-16 lg:pt-14 lg:pb-24 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <div class="reveal">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-brand/15 shadow-sm mb-6">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="text-xs font-bold text-brand">{{ $hs('hero_badge_left', 'Made in India') }}</span>
+                        <span class="text-slate-300">·</span>
+                        <span class="text-xs font-semibold text-slate-500">{{ $hs('hero_badge_right', 'Built for CBSE, ICSE & JEE') }}</span>
                     </div>
 
-                    <h1 class="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-black dark:text-white text-slate-800 leading-[1.1] tracking-tight mb-4 sm:mb-6">
-                        {{ $hs('hero_title_line1', 'Your AI Study') }} <br class="hidden sm:block"/>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary glow-text sm:hidden"> </span>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-secondary to-primary glow-text">{{ $hs('hero_title_highlight', 'Companion') }}</span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-[3.4rem] font-extrabold text-slate-900 leading-[1.08] tracking-tight mb-5">
+                        {{ $hs('hero_title_line1', 'Your AI Study') }}
+                        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-brand via-brand-light to-secondary">
+                            {{ $hs('hero_title_highlight', 'Companion') }}
+                        </span>
                     </h1>
 
-                    <p class="text-base sm:text-lg md:text-xl dark:text-gray-400 text-gray-500 mb-6 sm:mb-8 max-w-lg leading-relaxed mx-auto sm:mx-0">
-                        {{ $hs('hero_description', 'Stuck on a problem? Get instant, step-by-step explanations for Math, Science, and more. Scan, ask, learn — anytime.') }}
+                    <p class="text-base sm:text-lg text-slate-500 leading-relaxed mb-8 max-w-lg">
+                        {{ $hs('hero_description', 'Stuck on a doubt? Scan it, ask AI, practice quizzes, battle friends, and prepare for exams — all in one beautiful app.') }}
                     </p>
 
-                    {{-- Search Bar - Hidden on very small screens, show CTA instead --}}
-                    <div class="relative max-w-lg group hidden sm:block mx-auto sm:mx-0">
-                        <div class="flex justify-between px-4 mb-2 opacity-60 text-[10px] font-mono text-primary">
-                            <span>{{ $hs('hero_search_label', 'DOUBT_SOLVER') }}</span>
-                            <span>{{ $hs('hero_search_model', 'MODEL: GEMINI-2.0') }}</span>
-                        </div>
-                        <div class="absolute -inset-[1px] bg-gradient-to-r from-primary/50 via-secondary/50 to-primary/50 rounded-xl opacity-30 blur-sm group-hover:opacity-60 transition duration-500"></div>
-                        <div class="relative flex items-center dark:bg-[#0d1117]/90 bg-white border dark:border-white/10 border-gray-200 rounded-xl p-2 pl-4 shadow-2xl focus-within:border-primary/60 transition-colors backdrop-blur-md">
-                            <span class="material-symbols-outlined text-primary mr-3 text-2xl">psychology_alt</span>
-                            <input class="flex-1 bg-transparent border-none dark:text-white text-slate-800 dark:placeholder-gray-500 placeholder-gray-400 focus:ring-0 text-base h-12 font-mono min-w-0" placeholder="Ask any doubt..." type="text"/>
-                            <div class="flex items-center gap-2 pr-1">
-                                <button class="p-2 rounded-lg hover:bg-white/5 transition-colors text-primary/70" title="Upload Image">
-                                    <span class="material-symbols-outlined text-xl">add_a_photo</span>
-                                </button>
-                                <button class="p-2 rounded-lg hover:bg-white/5 transition-colors text-primary/70" title="Voice Input">
-                                    <span class="material-symbols-outlined text-xl">mic</span>
-                                </button>
-                                <a href="{{ route('login') }}" class="flex items-center justify-center gap-1.5 h-10 px-5 rounded-full bg-gradient-to-r from-primary to-teal-500 text-white font-semibold hover:shadow-[0_0_20px_rgba(13,148,136,0.5)] hover:scale-105 transition-all duration-300 text-sm tracking-wide">
-                                    {{ $hs('hero_cta_text', 'Solve') }}
-                                    <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-1 mt-2 px-1">
-                            <div class="h-1 w-full dark:bg-[#1a1f2e] bg-gray-100 border dark:border-white/5 border-gray-200 rounded-full overflow-hidden">
-                                <div class="h-full bg-primary/50 w-1/3 animate-pulse"></div>
-                            </div>
-                            <span class="text-[10px] font-mono dark:text-gray-500 text-gray-400">READY</span>
-                        </div>
-                    </div>
-
-                    {{-- Mobile CTA Buttons --}}
-                    <div class="sm:hidden space-y-3">
-                        <a href="{{ route('login') }}" class="flex items-center justify-center gap-2 w-full h-14 rounded-2xl bg-gradient-to-r from-primary to-teal-500 text-white font-bold text-lg shadow-xl shadow-primary/30 active:scale-[0.98] transition-all">
-                            <span class="material-symbols-outlined text-2xl">rocket_launch</span>
-                            Start Learning Free
+                    <div class="flex flex-col sm:flex-row gap-3 mb-10">
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center gap-2 h-14 px-7 rounded-2xl bg-gradient-to-r from-brand to-secondary text-white font-bold text-base shadow-blinkstudy-lg hover:-translate-y-0.5 hover:shadow-[0_20px_40px_rgba(112,92,246,0.3)] transition-all">
+                            <span class="material-symbols-outlined text-xl">rocket_launch</span>
+                            {{ $hs('hero_cta_text', 'Start Learning Free') }}
                         </a>
-                        <div class="flex items-center justify-center gap-4 text-sm dark:text-gray-400 text-gray-500">
-                            <span class="flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Free Plan Available
-                            </span>
-                            <span class="flex items-center gap-1.5">
-                                <span class="material-symbols-outlined text-primary text-lg">check_circle</span>
-                                Instant Access
-                            </span>
-                        </div>
+                        <a href="{{ route('plans') }}" class="inline-flex items-center justify-center gap-2 h-14 px-7 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-base hover:border-brand/30 hover:bg-brand-50/50 transition-all">
+                            <span class="material-symbols-outlined text-xl text-brand">payments</span>
+                            View Plans
+                        </a>
                     </div>
 
-                    {{-- Stats Row --}}
-                    <div class="flex justify-center sm:justify-start gap-6 sm:gap-8 mt-8">
-                        <div class="text-center sm:text-left">
-                            <div class="text-2xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat1_value', '10K+') }}</div>
-                            <div class="text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat1_label', 'Students') }}</div>
+                    <div class="flex flex-wrap gap-6 sm:gap-10">
+                        <div>
+                            <div class="text-2xl font-extrabold text-slate-900">{{ $hs('stat1_value', '10K+') }}</div>
+                            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">{{ $hs('stat1_label', 'Students') }}</div>
                         </div>
-                        <div class="w-[1px] dark:bg-white/10 bg-gray-200"></div>
-                        <div class="text-center sm:text-left">
-                            <div class="text-2xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat2_value', '50K+') }}</div>
-                            <div class="text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat2_label', 'Solved') }}</div>
+                        <div class="w-px bg-slate-200"></div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-slate-900">{{ $hs('stat2_value', '50K+') }}</div>
+                            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">{{ $hs('stat2_label', 'Doubts Solved') }}</div>
                         </div>
-                        <div class="w-[1px] dark:bg-white/10 bg-gray-200"></div>
-                        <div class="text-center sm:text-left">
-                            <div class="text-2xl sm:text-2xl font-bold dark:text-white text-slate-800">{{ $hs('stat3_value', '4.9') }}</div>
-                            <div class="text-xs dark:text-gray-500 text-gray-400 font-mono">{{ $hs('stat3_label', 'Rating') }}</div>
+                        <div class="w-px bg-slate-200"></div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-slate-900">{{ $hs('stat3_value', '4.9★') }}</div>
+                            <div class="text-xs font-semibold text-slate-400 uppercase tracking-wide">{{ $hs('stat3_label', 'App Rating') }}</div>
                         </div>
                     </div>
                 </div>
 
-                {{-- ══ RIGHT SIDE: Demo Preview Panel ══ --}}
-                <div class="relative reveal reveal-right hidden lg:block">
-                    {{-- Glow blobs behind the card --}}
-                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-primary/15 rounded-full blur-3xl pointer-events-none"></div>
-                    <div class="absolute -bottom-10 -left-10 w-48 h-48 bg-secondary/15 rounded-full blur-3xl pointer-events-none"></div>
+                {{-- Phone mockup --}}
+                <div class="relative reveal reveal-delay-2 hidden sm:block">
+                    <div class="absolute -top-6 -right-4 w-24 h-24 rounded-2xl bg-white shadow-card border border-slate-100 p-3 float" style="animation-delay: 1s">
+                        <div class="w-full h-full rounded-xl bg-emerald-50 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-emerald-500 text-3xl">check_circle</span>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-4 -left-4 z-20 glass-card rounded-2xl px-4 py-3 flex items-center gap-3 shadow-card">
+                        <div class="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-brand">psychology</span>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">AI Tutor Online</div>
+                            <div class="text-[11px] text-slate-400">Instant step-by-step help</div>
+                        </div>
+                    </div>
 
-                    <div class="relative rounded-xl overflow-hidden glass-panel neon-border">
-                        <div class="absolute inset-0 bg-gradient-to-b from-transparent dark:to-[#0d1117]/80 to-white/50"></div>
-                        <div class="scanline"></div>
-                        <div class="relative z-10 w-full p-5 md:p-6 flex flex-col gap-5">
-                            {{-- Terminal header --}}
-                            <div class="flex justify-between items-center border-b dark:border-white/10 border-gray-200 pb-3">
-                                <div class="flex items-center gap-2 text-xs font-mono text-primary">
-                                    <span class="material-symbols-outlined text-sm">auto_stories</span>
-                                    KNOWLEDGE_ANALYSIS_MODE
+                    <div class="phone-frame mx-auto max-w-[280px] bg-slate-900 overflow-hidden float">
+                        <div class="bg-gradient-to-br from-brand to-secondary px-5 pt-8 pb-6">
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-white text-base">auto_stories</span>
                                 </div>
-                                <div class="flex gap-1">
-                                    <div class="w-2 h-2 rounded-full bg-red-500/50"></div>
-                                    <div class="w-2 h-2 rounded-full bg-yellow-500/50"></div>
-                                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                </div>
+                                <span class="text-white font-bold text-sm">BlinkStudy</span>
                             </div>
-
-                            {{-- Animated Code block --}}
-                            <div id="hero-code-block" class="dark:bg-black/40 bg-gray-50 p-4 rounded-lg border-l-2 border-primary font-mono text-xs dark:text-gray-300 text-gray-600 leading-relaxed min-h-[120px]">
-                                <div id="code-cursor" class="inline text-primary animate-pulse">_</div>
+                            <p class="text-white/90 text-lg font-bold leading-tight">Good evening,<br/>Ready to learn?</p>
+                        </div>
+                        <div class="bg-[#F8FAFF] p-4 space-y-3 -mt-2 rounded-t-3xl">
+                            <div class="grid grid-cols-2 gap-2">
+                                @foreach([['psychology','AI Tutor','#705CF6'],['document_scanner','Scan & Solve','#5B8CFF'],['quiz','Quiz','#22C55E'],['sports_esports','Battles','#F59E0B']] as $item)
+                                <div class="bg-white rounded-xl p-3 border border-slate-100 shadow-sm">
+                                    <span class="material-symbols-outlined text-lg" style="color:{{ $item[2] }}">{{ $item[0] }}</span>
+                                    <div class="text-[10px] font-bold text-slate-700 mt-1">{{ $item[1] }}</div>
+                                </div>
+                                @endforeach
                             </div>
-
-                            {{-- Progress bars --}}
-                            <div class="flex flex-col gap-3">
-                                <div class="flex justify-between text-xs font-mono dark:text-gray-400 text-gray-500">
-                                    <span>CONFIDENCE</span>
-                                    <span class="text-primary">99.8%</span>
+                            <div class="bg-white rounded-xl p-3 border border-slate-100">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-[10px] font-bold text-slate-500">DAILY STREAK</span>
+                                    <span class="text-[10px] font-bold text-brand">🔥 7 days</span>
                                 </div>
-                                <div class="h-1.5 w-full dark:bg-white/10 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-primary w-[99%]"></div>
-                                </div>
-                                <div class="flex justify-between text-xs font-mono dark:text-gray-400 text-gray-500 mt-1">
-                                    <span>TOPICS</span>
-                                    <span class="text-secondary">Calculus, Trigonometry</span>
-                                </div>
-                                <div class="h-1.5 w-full dark:bg-white/10 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-secondary w-[78%]"></div>
-                                </div>
-                                <div class="flex justify-between text-xs font-mono dark:text-gray-400 text-gray-500 mt-1">
-                                    <span>SIMILAR_QUESTIONS</span>
-                                    <span class="text-purple-500 dark:text-purple-400">12,403 Found</span>
-                                </div>
-                                <div class="h-1.5 w-full dark:bg-white/10 bg-gray-200 rounded-full overflow-hidden">
-                                    <div class="h-full bg-purple-500 w-[65%] animate-pulse"></div>
-                                </div>
-                            </div>
-
-                            {{-- Insight footer --}}
-                            <div class="flex items-start gap-3 pt-3 border-t dark:border-white/5 border-gray-200">
-                                <div class="h-6 w-6 rounded bg-primary flex items-center justify-center text-white font-bold shrink-0">
-                                    <span class="material-symbols-outlined text-xs">lightbulb</span>
-                                </div>
-                                <div class="text-sm dark:text-gray-300 text-gray-600 font-mono">
-                                    <span class="text-primary">&gt;</span> Concept Mastery: Product Rule applied successfully.
+                                <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="h-full w-3/4 bg-gradient-to-r from-brand to-secondary rounded-full"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    {{-- ═══════════════════════ FEATURES ═══════════════════════ --}}
-    <section id="features" class="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 relative">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8 mb-10 sm:mb-16 border-b dark:border-white/5 border-gray-200 pb-6 sm:pb-8">
-                <div class="max-w-2xl reveal reveal-left">
-                    <div class="text-primary font-mono text-[10px] sm:text-xs tracking-widest mb-2 uppercase">{{ $hs('features_badge', 'Learning Modules') }}</div>
-                    <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold dark:text-white text-slate-800 mb-3 sm:mb-4 tracking-tight">{{ $hs('features_title', 'Academic Capabilities') }}</h2>
-                    <p class="dark:text-gray-400 text-gray-500 text-sm sm:text-base lg:text-lg">{{ $hs('features_description', 'Everything you need to ace your exams and understand concepts deeply.') }}</p>
-                </div>
-                <a class="text-primary hover:text-secondary flex items-center gap-2 font-mono text-xs sm:text-sm transition-colors group border border-primary/20 px-3 sm:px-4 py-2 rounded bg-primary/5 hover:bg-primary/10 reveal reveal-right w-fit" href="#subjects">
-                    VIEW_SUBJECTS
-                    <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </a>
+    {{-- ═══════════════ TRUST STRIP ═══════════════ --}}
+    <section class="relative z-10 py-6 px-4 border-y border-slate-200/60 bg-white/60 backdrop-blur-sm">
+        <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm font-semibold text-slate-500">
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-brand text-lg">verified</span> OTP Login — No Password</span>
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-brand text-lg">shield</span> Safe for Students</span>
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-brand text-lg">translate</span> Hindi + English</span>
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-brand text-lg">android</span> Android App Available</span>
+        </div>
+    </section>
+
+    {{-- ═══════════════ FEATURES ═══════════════ --}}
+    <section id="features" class="relative z-10 py-16 lg:py-24 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-12 reveal">
+                <span class="text-xs font-bold uppercase tracking-widest text-brand">{{ $hs('features_badge', 'Everything you need') }}</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 mb-4 tracking-tight">{{ $hs('features_title', 'One app. Complete exam prep.') }}</h2>
+                <p class="text-slate-500 text-base sm:text-lg">{{ $hs('features_description', 'From doubt solving to mock tests — BlinkStudy is your all-in-one study OS.') }}</p>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 relative">
-                <div class="absolute top-1/2 left-0 w-full h-[1px] dark:bg-white/5 bg-gray-100 -z-10 hidden lg:block"></div>
-
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 @php
-                    $featureColors = [
-                        $hs('feature1_color', 'primary'),
-                        $hs('feature2_color', 'secondary'),
-                        $hs('feature3_color', 'cyan-500'),
-                        $hs('feature4_color', 'pink-500'),
+                    $cards = [
+                        [1, $hs('feature1_icon','psychology'), $hs('feature1_title','AI Tutor'), $hs('feature1_description','Chat with your personal AI teacher. Get step-by-step explanations in Hindi or English.'), 'from-brand to-brand-light'],
+                        [2, $hs('feature2_icon','document_scanner'), $hs('feature2_title','Scan & Solve'), $hs('feature2_description','Snap a photo of any question — math, science, or textbook — and get instant answers.'), 'from-secondary to-blue-400'],
+                        [3, $hs('feature3_icon','quiz'), $hs('feature3_title','Smart Quiz'), $hs('feature3_description','AI-generated quizzes tailored to your class, subject, and weak topics.'), 'from-emerald-500 to-teal-400'],
+                        [4, $hs('feature4_icon','sports_esports'), $hs('feature4_title','Study Battles'), $hs('feature4_description','Challenge friends in real-time quiz battles. Learn while you compete.'), 'from-amber-500 to-orange-400'],
+                        [5, 'school', 'Exam Prep', 'CBSE, ICSE, JEE & NEET prep with mock tests and previous year questions.', 'from-violet-500 to-brand'],
+                        [6, 'menu_book', 'Revision Hub', 'Flashcards, saved notes, and daily challenges to keep your streak alive.', 'from-pink-500 to-rose-400'],
                     ];
                 @endphp
-
-                @for($i = 1; $i <= 4; $i++)
-                @php
-                    $fIcon = $hs("feature{$i}_icon", 'star');
-                    $fTitle = $hs("feature{$i}_title", "Feature {$i}");
-                    $fDesc = $hs("feature{$i}_description", '');
-                    $fColor = $featureColors[$i - 1];
-                @endphp
-                <div class="bg-white dark:bg-[#111827] p-4 sm:p-5 lg:p-6 rounded-lg dark:hover:bg-white/5 hover:shadow-xl transition-all duration-300 group hover:-translate-y-2 border dark:border-white/10 border-gray-100 relative overflow-hidden shadow-sm reveal reveal-up reveal-delay-{{ $i }}">
-                    <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-{{ $fColor }}/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="h-10 w-10 sm:h-12 sm:w-12 rounded-lg dark:bg-{{ $fColor }}/10 bg-{{ $fColor }}/5 border dark:border-{{ $fColor }}/20 border-{{ $fColor }}/10 flex items-center justify-center mb-3 sm:mb-5 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-{{ $fColor }} text-xl sm:text-2xl">{{ $fIcon }}</span>
+                @foreach($cards as $card)
+                <div class="reveal reveal-delay-{{ min($card[0], 4) }} group bg-white rounded-2xl p-6 border border-slate-100 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br {{ $card[4] }} flex items-center justify-center mb-4 shadow-blinkstudy group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-white text-2xl">{{ $card[1] }}</span>
                     </div>
-                    <h3 class="text-sm sm:text-base lg:text-lg font-bold dark:text-white text-slate-800 mb-1 sm:mb-2">{{ $fTitle }}</h3>
-                    <p class="text-xs sm:text-sm dark:text-gray-400 text-gray-500 leading-relaxed line-clamp-3">{{ $fDesc }}</p>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">{{ $card[2] }}</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">{{ $card[3] }}</p>
                 </div>
-                @endfor
+                @endforeach
             </div>
         </div>
     </section>
 
-    {{-- ═══════════════════════ SUBJECTS ═══════════════════════ --}}
-    <section id="subjects" class="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 relative border-t dark:border-white/5 border-gray-200">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-4 sm:gap-6 mb-6 sm:mb-8">
-                <div class="reveal reveal-left">
-                    <div class="text-secondary font-mono text-[10px] sm:text-xs tracking-widest mb-2 uppercase">{{ $hs('subjects_badge', 'Subject Coverage') }}</div>
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold dark:text-white text-slate-800 tracking-tight">{{ $hs('subjects_title', 'Explore Topics') }}</h2>
+    {{-- ═══════════════ HOW IT WORKS ═══════════════ --}}
+    <section class="relative z-10 py-16 lg:py-20 px-4 sm:px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">How it works</h2>
+                <p class="text-slate-500 mt-2">Start learning in under 60 seconds</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                @foreach([
+                    ['1', 'login', 'Login with OTP', 'Enter your mobile number. No password, no hassle.'],
+                    ['2', 'document_scanner', 'Ask or Scan', 'Type your doubt or scan a question from your book.'],
+                    ['3', 'emoji_events', 'Learn & Grow', 'Get answers, take quizzes, track progress, ace exams.'],
+                ] as $idx => $step)
+                <div class="reveal reveal-delay-{{ $idx + 1 }} relative text-center p-8 rounded-2xl bg-[#F8FAFF] border border-slate-100">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand to-secondary text-white font-extrabold text-sm flex items-center justify-center mx-auto mb-4">{{ $step[0] }}</div>
+                    <span class="material-symbols-outlined text-brand text-3xl mb-3">{{ $step[1] }}</span>
+                    <h3 class="font-bold text-slate-900 text-lg mb-2">{{ $step[2] }}</h3>
+                    <p class="text-sm text-slate-500">{{ $step[3] }}</p>
                 </div>
-                <p class="dark:text-gray-400 text-gray-500 font-mono text-xs sm:text-sm max-w-md text-left md:text-right hidden md:block reveal reveal-right">
-                    {{ $hs('subjects_description', 'From STEM to Humanities, our AI models are trained for every major discipline.') }}
-                </p>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ═══════════════ SUBJECTS ═══════════════ --}}
+    <section id="subjects" class="relative z-10 py-16 lg:py-20 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 reveal">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-secondary">{{ $hs('subjects_badge', 'Subject Coverage') }}</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">{{ $hs('subjects_title', 'Every subject. Every class.') }}</h2>
+                </div>
+                <p class="text-slate-500 text-sm max-w-md">{{ $hs('subjects_description', 'From Class 6 to JEE — our AI understands your syllabus.') }}</p>
             </div>
 
-            <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 sm:gap-3 lg:gap-4">
+            <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                @php
+                    $subjectStyles = [
+                        ['bg' => 'bg-brand/10', 'text' => 'text-brand', 'border' => 'hover:border-brand/30'],
+                        ['bg' => 'bg-secondary/10', 'text' => 'text-secondary', 'border' => 'hover:border-secondary/30'],
+                        ['bg' => 'bg-emerald-500/10', 'text' => 'text-emerald-500', 'border' => 'hover:border-emerald-500/30'],
+                        ['bg' => 'bg-amber-500/10', 'text' => 'text-amber-500', 'border' => 'hover:border-amber-500/30'],
+                        ['bg' => 'bg-pink-500/10', 'text' => 'text-pink-500', 'border' => 'hover:border-pink-500/30'],
+                        ['bg' => 'bg-violet-500/10', 'text' => 'text-violet-500', 'border' => 'hover:border-violet-500/30'],
+                    ];
+                    $defaultSubjects = ['Mathematics','Science','English','Social','Physics','Chemistry'];
+                    $defaultIcons = ['calculate','science','menu_book','public','bolt','biotech'];
+                @endphp
                 @for($i = 1; $i <= 6; $i++)
                 @php
-                    $sName = $hs("subject{$i}_name", '');
-                    $sIcon = $hs("subject{$i}_icon", 'school');
-                    $sColor = $hs("subject{$i}_color", 'primary');
+                    $sName = $hs("subject{$i}_name", $defaultSubjects[$i-1] ?? '');
+                    $sIcon = $hs("subject{$i}_icon", $defaultIcons[$i-1] ?? 'school');
+                    $style = $subjectStyles[$i-1];
                 @endphp
                 @if($sName)
-                <a class="group bg-white dark:bg-[#111827] p-3 sm:p-4 lg:p-6 rounded-lg sm:rounded-xl flex flex-col items-center justify-center gap-2 sm:gap-3 lg:gap-4 dark:hover:bg-white/5 transition-all duration-300 border dark:border-white/10 border-gray-100 hover:border-{{ $sColor }}/50 relative overflow-hidden shadow-sm dark:shadow-none reveal reveal-up reveal-delay-{{ $i }}" href="{{ route('login') }}">
-                    <div class="absolute inset-0 bg-gradient-to-br from-{{ $sColor }}/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-9 h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg dark:bg-[#1a1f2e] bg-{{ $sColor }}/5 border dark:border-white/10 border-{{ $sColor }}/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                        <span class="material-symbols-outlined text-{{ $sColor }} text-lg sm:text-xl lg:text-2xl">{{ $sIcon }}</span>
+                <a href="{{ route('login') }}" class="reveal reveal-delay-{{ $i }} group flex flex-col items-center gap-3 p-4 sm:p-5 rounded-2xl bg-white border border-slate-100 shadow-sm hover:shadow-card {{ $style['border'] }} hover:-translate-y-1 transition-all">
+                    <div class="w-11 h-11 rounded-xl {{ $style['bg'] }} flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined {{ $style['text'] }} text-xl">{{ $sIcon }}</span>
                     </div>
-                    <span class="text-[9px] sm:text-[10px] lg:text-xs font-mono font-bold dark:text-gray-300 text-gray-600 group-hover:text-{{ $sColor }} tracking-wider sm:tracking-widest uppercase relative z-10 text-center leading-tight">{{ $sName }}</span>
+                    <span class="text-[11px] sm:text-xs font-bold text-slate-600 text-center leading-tight">{{ $sName }}</span>
                 </a>
                 @endif
                 @endfor
@@ -344,43 +264,52 @@
         </div>
     </section>
 
-    {{-- ═══════════════════════ CTA ═══════════════════════ --}}
-    <section class="py-10 sm:py-16 lg:py-24 px-4 sm:px-6 relative overflow-hidden">
-        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div class="w-full max-w-3xl h-[400px] bg-gradient-radial from-primary/10 to-transparent opacity-50 blur-3xl"></div>
-            <div class="absolute inset-0 grid-bg opacity-30"></div>
-        </div>
-
-        <div class="max-w-4xl mx-auto relative z-10 text-center bg-white dark:bg-[#111827] p-5 sm:p-10 lg:p-20 rounded-2xl sm:rounded-[2rem] border dark:border-white/10 border-gray-100 shadow-[0_0_50px_rgba(0,0,0,0.1)] dark:shadow-[0_0_50px_rgba(0,0,0,0.5)] reveal reveal-up">
-            <div class="absolute top-3 left-3 sm:top-6 sm:left-6 w-5 h-5 sm:w-8 sm:h-8 border-t-2 border-l-2 border-primary/30"></div>
-            <div class="absolute top-3 right-3 sm:top-6 sm:right-6 w-5 h-5 sm:w-8 sm:h-8 border-t-2 border-r-2 border-primary/30"></div>
-            <div class="absolute bottom-3 left-3 sm:bottom-6 sm:left-6 w-5 h-5 sm:w-8 sm:h-8 border-b-2 border-l-2 border-primary/30"></div>
-            <div class="absolute bottom-3 right-3 sm:bottom-6 sm:right-6 w-5 h-5 sm:w-8 sm:h-8 border-b-2 border-r-2 border-primary/30"></div>
-
-            <div class="inline-block px-2 sm:px-3 py-1 bg-primary/10 rounded-full border border-primary/20 text-primary text-[8px] sm:text-[10px] font-mono tracking-widest mb-3 sm:mb-6">{{ $hs('cta_badge', 'STATUS: EXAM_READY') }}</div>
-            <h2 class="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-black dark:text-white text-slate-800 mb-3 sm:mb-6 tracking-tight leading-tight">{{ $hs('cta_title', 'Ace Your Exams Today') }}</h2>
-            <p class="text-xs sm:text-base lg:text-lg dark:text-gray-400 text-gray-500 mb-5 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
-                {{ $hs('cta_description', 'Join thousands of students boosting their grades with AI-powered doubt solving, quizzes, and whiteboard videos.') }}
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                <a href="{{ route('login') }}" class="w-full sm:w-auto px-6 sm:px-8 h-11 sm:h-14 rounded-xl bg-primary text-white font-bold text-sm sm:text-base lg:text-lg hover:bg-primary/90 hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(13,148,136,0.3)] uppercase tracking-wide flex items-center justify-center">
-                    {{ $hs('cta_button_primary', 'Start Free Trial') }}
-                </a>
-                <a href="#subjects" class="w-full sm:w-auto px-6 sm:px-8 h-11 sm:h-14 rounded-xl dark:bg-[#1a1f2e] bg-white border dark:border-white/10 border-gray-200 dark:text-white text-slate-700 font-medium text-sm sm:text-base lg:text-lg dark:hover:bg-white/5 hover:bg-gray-50 transition-all duration-300 flex items-center justify-center">
-                    {{ $hs('cta_button_secondary', 'Browse Subjects') }}
-                </a>
+    {{-- ═══════════════ PRICING TEASER ═══════════════ --}}
+    <section class="relative z-10 py-16 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto reveal">
+            <div class="rounded-3xl bg-gradient-to-br from-brand via-brand-light to-secondary p-8 sm:p-12 text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+                <div class="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-white/70">Flexible Plans</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold mt-2 mb-3">{{ $hs('pricing_title', 'Start free. Upgrade when ready.') }}</h2>
+                        <p class="text-white/80 text-base leading-relaxed">{{ $hs('pricing_description', 'Free plan with daily limits. Premium unlocks unlimited AI, quizzes, and exam prep.') }}</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 md:items-end">
+                        <a href="{{ route('plans') }}" class="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-white text-brand font-bold hover:bg-white/90 transition-all shadow-lg">
+                            See All Plans
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                        </a>
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center h-12 px-6 rounded-xl border-2 border-white/40 text-white font-bold hover:bg-white/10 transition-all">
+                            Try Free Now
+                        </a>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
 
-            <div class="mt-5 sm:mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:gap-6 dark:text-gray-500 text-gray-400 text-[10px] sm:text-sm font-mono">
-                <div class="flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm sm:text-lg text-primary">verified</span> {{ $hs('cta_badge1', '95% Better Grades') }}
+    {{-- ═══════════════ CTA ═══════════════ --}}
+    <section class="relative z-10 py-16 lg:py-24 px-4 sm:px-6">
+        <div class="max-w-3xl mx-auto text-center reveal">
+            <div class="glass-card rounded-3xl p-8 sm:p-14">
+                <span class="inline-block px-3 py-1 rounded-full bg-brand-50 text-brand text-xs font-bold mb-4">{{ $hs('cta_badge', 'Join 10,000+ students') }}</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">{{ $hs('cta_title', 'Ready to study smarter?') }}</h2>
+                <p class="text-slate-500 text-base sm:text-lg mb-8 leading-relaxed">{{ $hs('cta_description', 'Download BlinkStudy and turn every doubt into a learning moment.') }}</p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a href="{{ route('login') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-14 px-8 rounded-2xl bg-gradient-to-r from-brand to-secondary text-white font-bold text-base shadow-blinkstudy-lg hover:-translate-y-0.5 transition-all">
+                        {{ $hs('cta_button_primary', 'Get Started Free') }}
+                    </a>
+                    <a href="{{ route('support') }}" class="w-full sm:w-auto inline-flex items-center justify-center h-14 px-8 rounded-2xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-all">
+                        {{ $hs('cta_button_secondary', 'Contact Support') }}
+                    </a>
                 </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm sm:text-lg text-primary">verified</span> {{ $hs('cta_badge2', 'Millions of Solutions') }}
-                </div>
-                <div class="flex items-center gap-1.5 hidden sm:flex">
-                    <span class="material-symbols-outlined text-sm sm:text-lg text-primary">verified</span> {{ $hs('cta_badge3', 'Interactive Learning') }}
+
+                <div class="flex flex-wrap justify-center gap-6 mt-8 text-sm font-semibold text-slate-400">
+                    <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand text-base">check_circle</span> {{ $hs('cta_badge1', 'Free plan available') }}</span>
+                    <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand text-base">check_circle</span> {{ $hs('cta_badge2', 'Cancel anytime') }}</span>
+                    <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-brand text-base">check_circle</span> {{ $hs('cta_badge3', 'Made in India') }}</span>
                 </div>
             </div>
         </div>
@@ -391,147 +320,21 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // ── Scroll reveal ──
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(function(entries) {
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.add('light');
+    document.body.classList.remove('dark:bg-[#05080a]', 'dark:text-white');
+    document.body.classList.add('bg-[#F8FAFF]', 'text-slate-800');
+
+    var reveals = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
             if (entry.isIntersecting) {
                 entry.target.classList.add('revealed');
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
     reveals.forEach(function(el) { observer.observe(el); });
-
-    // ── Hero code block typewriter ──
-    var codeBlock = document.getElementById('hero-code-block');
-    if (!codeBlock) return;
-
-    var lines = [
-        { prefix: 'Q:', text: ' Find derivative of ', highlight: 'f(x) = x²sin(x)', hClass: 'text-secondary', prefixClass: 'dark:text-gray-500 text-gray-400' },
-        { prefix: 'A:', text: ' ', highlight: 'Step 1:', hClass: 'text-purple-500 dark:text-purple-400', after: ' Apply Product Rule', prefixClass: 'dark:text-gray-500 text-gray-400' },
-        { prefix: '  ', text: ' ', highlight: 'd/dx [uv]', hClass: 'text-primary', after: ' = u\'v + uv\'', prefixClass: 'dark:text-gray-500 text-gray-400' },
-        { prefix: '=', text: ' ', highlight: '2x·sin(x) + x²·cos(x)', hClass: 'text-primary', prefixClass: 'dark:text-gray-500 text-gray-400' }
-    ];
-
-    var cursor = document.getElementById('code-cursor');
-    var lineIdx = 0;
-    var charIdx = 0;
-    var currentPhase = 'prefix';
-    var currentLineEl = null;
-    var currentSpan = null;
-    var started = false;
-
-    function startTyping() {
-        if (started) return;
-        started = true;
-        codeBlock.innerHTML = '';
-        lineIdx = 0;
-        nextLine();
-    }
-
-    function nextLine() {
-        if (lineIdx >= lines.length) {
-            // Done — add blinking cursor
-            var cur = document.createElement('span');
-            cur.className = 'text-primary animate-pulse';
-            cur.textContent = '_';
-            var lastLine = codeBlock.lastElementChild;
-            if (lastLine) lastLine.appendChild(cur);
-            return;
-        }
-
-        var line = lines[lineIdx];
-        currentLineEl = document.createElement('div');
-        currentLineEl.className = 'flex gap-2 dark:text-gray-500 text-gray-400' + (lineIdx < lines.length - 1 ? ' mb-2' : '');
-        codeBlock.appendChild(currentLineEl);
-
-        // Prefix span
-        var prefSpan = document.createElement('span');
-        prefSpan.className = line.prefixClass || '';
-        currentLineEl.appendChild(prefSpan);
-
-        currentPhase = 'prefix';
-        charIdx = 0;
-        currentSpan = prefSpan;
-        typeChar();
-    }
-
-    function typeChar() {
-        var line = lines[lineIdx];
-        var speed = 30;
-
-        if (currentPhase === 'prefix') {
-            if (charIdx < line.prefix.length) {
-                currentSpan.textContent += line.prefix[charIdx];
-                charIdx++;
-                setTimeout(typeChar, speed);
-            } else {
-                // Move to text
-                currentPhase = 'text';
-                charIdx = 0;
-                if (line.text) {
-                    currentSpan = document.createElement('span');
-                    currentSpan.className = 'dark:text-white text-slate-800';
-                    currentLineEl.appendChild(currentSpan);
-                }
-                setTimeout(typeChar, speed);
-            }
-        } else if (currentPhase === 'text') {
-            if (line.text && charIdx < line.text.length) {
-                currentSpan.textContent += line.text[charIdx];
-                charIdx++;
-                setTimeout(typeChar, speed);
-            } else {
-                // Move to highlight
-                currentPhase = 'highlight';
-                charIdx = 0;
-                if (line.highlight) {
-                    currentSpan = document.createElement('span');
-                    currentSpan.className = line.hClass || 'text-primary';
-                    currentLineEl.appendChild(currentSpan);
-                }
-                setTimeout(typeChar, speed);
-            }
-        } else if (currentPhase === 'highlight') {
-            if (line.highlight && charIdx < line.highlight.length) {
-                currentSpan.textContent += line.highlight[charIdx];
-                charIdx++;
-                setTimeout(typeChar, 25);
-            } else {
-                // Move to after text
-                currentPhase = 'after';
-                charIdx = 0;
-                if (line.after) {
-                    currentSpan = document.createElement('span');
-                    currentSpan.className = 'dark:text-gray-300 text-gray-600';
-                    currentLineEl.appendChild(currentSpan);
-                }
-                setTimeout(typeChar, speed);
-            }
-        } else if (currentPhase === 'after') {
-            if (line.after && charIdx < line.after.length) {
-                currentSpan.textContent += line.after[charIdx];
-                charIdx++;
-                setTimeout(typeChar, speed);
-            } else {
-                // Line done — pause then next line
-                lineIdx++;
-                setTimeout(nextLine, 400);
-            }
-        }
-    }
-
-    // Start when the panel scrolls into view
-    var codeObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
-                setTimeout(startTyping, 600);
-                codeObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.3 });
-    codeObserver.observe(codeBlock);
 });
 </script>
 @endpush

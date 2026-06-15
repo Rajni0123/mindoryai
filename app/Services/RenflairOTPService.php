@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -14,14 +15,58 @@ class RenflairOTPService
     private int $otpExpiryMinutes;
     private int $maxAttempts;
 
+    // Cache settings to avoid repeated DB queries
+    private static ?array $cachedSettings = null;
+
     public function __construct()
     {
         $this->apiKey = config('services.renflair.api_key');
 
-        // Get OTP settings from database config (admin panel)
-        $this->otpLength = (int) \App\Models\FrontendConfig::getValue('auth.otp.length', 4);
-        $this->otpExpiryMinutes = (int) \App\Models\FrontendConfig::getValue('auth.otp.expiry_minutes', 5);
-        $this->maxAttempts = (int) \App\Models\FrontendConfig::getValue('auth.otp.max_attempts', 3);
+        // Get OTP settings from cache to avoid DB queries on every request
+        $settings = $this->getOTPSettings();
+        $this->otpLength = $settings['length'];
+        $this->otpExpiryMinutes = $settings['expiry_minutes'];
+        $this->maxAttempts = $settings['max_attempts'];
+    }
+
+    /**
+     * Get OTP settings from cache (avoids DB query on every instantiation)
+     */
+    private function getOTPSettings(): array
+    {
+        // Use static cache for same request
+        if (self::$cachedSettings !== null) {
+            return self::$cachedSettings;
+        }
+
+        try {
+            // Use Laravel cache for cross-request caching (5 minutes)
+            self::$cachedSettings = Cache::remember('otp_service_settings', 300, function () {
+                return [
+                    'length' => (int) \App\Models\FrontendConfig::getValue('auth.otp.length', 4),
+                    'expiry_minutes' => (int) \App\Models\FrontendConfig::getValue('auth.otp.expiry_minutes', 5),
+                    'max_attempts' => (int) \App\Models\FrontendConfig::getValue('auth.otp.max_attempts', 3),
+                ];
+            });
+        } catch (\Exception $e) {
+            Log::warning('OTP settings fallback to defaults', ['error' => $e->getMessage()]);
+            self::$cachedSettings = [
+                'length' => 4,
+                'expiry_minutes' => 5,
+                'max_attempts' => 3,
+            ];
+        }
+
+        return self::$cachedSettings;
+    }
+
+    /**
+     * Clear cached settings (call when admin updates OTP settings)
+     */
+    public static function clearSettingsCache(): void
+    {
+        self::$cachedSettings = null;
+        Cache::forget('otp_service_settings');
     }
 
     /**
@@ -45,6 +90,65 @@ class RenflairOTPService
                     'message' => 'Invalid mobile number format. Please enter 10 digit mobile number.'
                 ];
             }
+
+            // Permanent test accounts — skip SMS, OTP verified directly in verifyOTP
+            $permanentTestAccounts = [
+                '8888888888' => '5678',
+                '9999999999' => '1234',
+            ];
+
+            if (isset($permanentTestAccounts[$mobile])) {
+                Log::info('Permanent test account OTP request (no SMS)', [
+                    'mobile' => $this->maskMobile($mobile),
+                    'ip' => $ipAddress,
+                ]);
+
+                return [
+                    'success' => true,
+                    'message' => 'OTP sent successfully to ' . $this->maskMobile($mobile),
+                    'expires_in' => '60 minutes',
+                    'is_test_account' => true,
+                ];
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // Google Play Reviewer Test Account - Skip SMS, use fixed OTP
+            // ═══════════════════════════════════════════════════════════════
+            $testPhone = env('TEST_PHONE', '');
+            $testOTP = env('TEST_OTP', '');
+
+            if (!empty($testPhone) && $mobile === $testPhone) {
+                Log::info('🧪 Google Play Reviewer Test Account - OTP request (no SMS sent)', [
+                    'mobile' => $this->maskMobile($mobile),
+                    'ip' => $ipAddress
+                ]);
+
+                // Invalidate previous OTPs for test account
+                DB::table('otp_verifications')
+                    ->where('mobile', $mobile)
+                    ->where('verified', false)
+                    ->update(['verified' => true, 'updated_at' => Carbon::now()]);
+
+                // Store fixed test OTP in database
+                DB::table('otp_verifications')->insert([
+                    'mobile' => $mobile,
+                    'otp_code' => (string) $testOTP,
+                    'expires_at' => Carbon::now()->addMinutes(60), // Longer expiry for testing
+                    'verified' => false,
+                    'attempts' => 0,
+                    'ip_address' => $ipAddress,
+                    'user_agent' => $userAgent,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+                return [
+                    'success' => true,
+                    'message' => 'OTP sent successfully to ' . $this->maskMobile($mobile),
+                    'expires_in' => '60 minutes'
+                ];
+            }
+            // ═══════════════════════════════════════════════════════════════
 
             // Invalidate all previous unverified OTPs for this mobile
             DB::table('otp_verifications')
@@ -91,9 +195,8 @@ class RenflairOTPService
             ]);
 
             Log::info('OTP sent and stored in database', [
-                'mobile' => $mobile,
+                'mobile' => $this->maskMobile($mobile),
                 'ip' => $ipAddress,
-                'otp_code' => $otpCode,
                 'inserted' => $inserted,
                 'expires_at' => Carbon::now()->addMinutes($this->otpExpiryMinutes)->toDateTimeString()
             ]);
@@ -106,9 +209,8 @@ class RenflairOTPService
 
         } catch (\Exception $e) {
             Log::error('OTP send failed', [
-                'mobile' => $mobile,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'mobile' => $this->maskMobile($mobile),
+                'error' => $e->getMessage()
             ]);
 
             return [
@@ -140,45 +242,65 @@ class RenflairOTPService
                 ];
             }
 
-            Log::info('OTP Verification Attempt', [
-                'mobile' => $mobile,
-                'otp_entered' => $otpCode,
-                'otp_length' => strlen($otpCode)
-            ]);
+            // ═══════════════════════════════════════════════════════════════
+            // Permanent Test Accounts - Never mark as verified (for testing)
+            // ═══════════════════════════════════════════════════════════════
+            $permanentTestAccounts = [
+                '8888888888' => '5678',
+                '9999999999' => '1234',
+            ];
 
-            // Get latest OTP for this mobile (verified or unverified)
+            // Check if this is a permanent test account
+            if (isset($permanentTestAccounts[$mobile]) && $otpCode === $permanentTestAccounts[$mobile]) {
+                Log::info('🧪 Permanent Test Account - OTP verified (not marking as used)', [
+                    'mobile' => $this->maskMobile($mobile)
+                ]);
+
+                // DO NOT mark as verified - allow unlimited logins
+                return [
+                    'success' => true,
+                    'message' => 'OTP verified successfully!',
+                    'is_test_account' => true
+                ];
+            }
+
+            // Google Play Reviewer Test Account from .env
+            $testPhone = env('TEST_PHONE', '');
+            $testOTP = env('TEST_OTP', '');
+
+            if (!empty($testPhone) && !empty($testOTP) && $mobile === $testPhone && $otpCode === $testOTP) {
+                Log::info('🧪 Google Play Reviewer Test Account - OTP verified successfully', [
+                    'mobile' => $this->maskMobile($mobile)
+                ]);
+
+                // Mark any existing OTP as verified
+                DB::table('otp_verifications')
+                    ->where('mobile', $mobile)
+                    ->where('verified', false)
+                    ->update(['verified' => true, 'updated_at' => Carbon::now()]);
+
+                return [
+                    'success' => true,
+                    'message' => 'OTP verified successfully!',
+                    'is_test_account' => true  // Flag for controller to assign Ultimate plan
+                ];
+            }
+            // ═══════════════════════════════════════════════════════════════
+
+            // Get latest OTP for this mobile - single optimized query
             // This allows retry if user creation failed after OTP verification
             $otpRecord = DB::table('otp_verifications')
                 ->where('mobile', $mobile)
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            // Check all OTPs for this mobile for debugging
-            $allOTPs = DB::table('otp_verifications')
-                ->where('mobile', $mobile)
-                ->orderBy('created_at', 'desc')
-                ->limit(5)
-                ->get();
-
-            Log::info('All OTPs for mobile', [
-                'mobile' => $mobile,
-                'count' => $allOTPs->count(),
-                'otps' => $allOTPs->map(function($otp) {
-                    return [
-                        'id' => $otp->id,
-                        'otp_code' => $otp->otp_code,
-                        'verified' => $otp->verified,
-                        'attempts' => $otp->attempts,
-                        'created_at' => $otp->created_at,
-                        'expires_at' => $otp->expires_at
-                    ];
-                })
-            ]);
-
-            Log::info('Latest Unverified OTP Record', [
-                'found' => $otpRecord ? 'yes' : 'no',
-                'record' => $otpRecord
-            ]);
+            // Only log in debug mode to reduce overhead
+            if (config('app.debug')) {
+                Log::debug('OTP Verification Attempt', [
+                    'mobile' => $this->maskMobile($mobile),
+                    'found' => $otpRecord ? 'yes' : 'no',
+                ]);
+            }
 
             if (!$otpRecord) {
                 // Check if there's any OTP at all
@@ -230,11 +352,7 @@ class RenflairOTPService
             $storedOTP = trim((string) $otpRecord->otp_code);
             $enteredOTP = trim((string) $otpCode);
 
-            Log::info('Comparing OTPs', [
-                'stored_otp' => $storedOTP,
-                'entered_otp' => $enteredOTP,
-                'stored_type' => gettype($storedOTP),
-                'entered_type' => gettype($enteredOTP),
+            Log::debug('OTP comparison', [
                 'stored_length' => strlen($storedOTP),
                 'entered_length' => strlen($enteredOTP),
                 'match' => $storedOTP === $enteredOTP,
@@ -244,11 +362,9 @@ class RenflairOTPService
             if ($storedOTP !== $enteredOTP) {
                 $remainingAttempts = $this->maxAttempts - ($otpRecord->attempts + 1);
                 Log::warning('Invalid OTP entered', [
-                    'mobile' => $mobile,
+                    'mobile' => $this->maskMobile($mobile),
                     'attempts' => $otpRecord->attempts + 1,
-                    'remaining' => $remainingAttempts,
-                    'stored_otp' => $storedOTP,
-                    'entered_otp' => $enteredOTP
+                    'remaining' => $remainingAttempts
                 ]);
 
                 return [
@@ -267,7 +383,7 @@ class RenflairOTPService
                     'updated_at' => Carbon::now()
                 ]);
 
-            Log::info('OTP verified successfully', ['mobile' => $mobile]);
+            Log::info('OTP verified successfully', ['mobile' => $this->maskMobile($mobile)]);
 
             return [
                 'success' => true,
@@ -276,9 +392,8 @@ class RenflairOTPService
 
         } catch (\Exception $e) {
             Log::error('OTP verification failed', [
-                'mobile' => $mobile,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'mobile' => $this->maskMobile($mobile),
+                'error' => $e->getMessage()
             ]);
 
             return [
@@ -289,7 +404,7 @@ class RenflairOTPService
     }
 
     /**
-     * Call Renflair API to send OTP
+     * Call Renflair API to send OTP with retry mechanism
      *
      * @param string $mobile
      * @param string $otpCode
@@ -303,88 +418,117 @@ class RenflairOTPService
             $smsEnabled = env('OTP_SMS_ENABLED', true);
 
             if (!$smsEnabled) {
-                Log::info('🔐 SMS DISABLED - OTP Code (for testing)', [
-                    'mobile' => $mobile,
-                    'OTP' => $otpCode,
-                    'message' => 'SMS is disabled. Set OTP_SMS_ENABLED=true in .env to enable actual SMS'
-                ]);
+                // In local dev only, log OTP for testing. NEVER log in production.
+                if (config('app.env') === 'local') {
+                    Log::info('🔐 LOCAL DEV ONLY - OTP for testing', [
+                        'mobile' => $this->maskMobile($mobile),
+                        'otp' => $otpCode
+                    ]);
+                } else {
+                    Log::info('SMS disabled mode - OTP sent to masked mobile', [
+                        'mobile' => $this->maskMobile($mobile)
+                    ]);
+                }
 
                 // Simulate successful API response for testing
                 return [
                     'success' => true,
-                    'message' => 'OTP logged in console (SMS disabled for testing)'
+                    'message' => 'OTP sent (SMS disabled for testing)'
                 ];
             }
 
-            // PRODUCTION MODE: Send via Renflair API using cURL
-            // Renflair V1 API - GET request with query parameters
+            // PRODUCTION MODE: Send via Renflair API using cURL with retry
             $API = $this->apiKey;
             $PHONE = $mobile;
             $OTP = $otpCode;
             $URL = "https://sms.renflair.in/V1.php?API=$API&PHONE=$PHONE&OTP=$OTP";
 
-            // 🔍 DEBUG MODE: Always log OTP when APP_DEBUG=true (helps with testing SMS delivery issues)
-            if (config('app.debug')) {
-                Log::warning('🔐 DEBUG MODE - OTP Code for Testing', [
-                    'mobile' => $mobile,
-                    'OTP' => $otpCode,
-                    'API_URL' => $URL,
-                    'message' => 'Use this OTP if SMS is not delivered. Set APP_DEBUG=false in production!'
+            // DEBUG MODE: Only log OTP in local development, never in production
+            if (config('app.env') === 'local' && config('app.debug')) {
+                Log::warning('🔐 LOCAL DEV ONLY - OTP for testing', [
+                    'mobile' => $this->maskMobile($mobile),
+                    'otp' => $otpCode
                 ]);
             }
 
-            Log::info('📤 Sending OTP via Renflair cURL API', [
-                'url' => $URL,
-                'mobile' => $mobile,
-                'otp' => $otpCode,
+            Log::info('📤 Sending OTP via Renflair SMS API', [
+                'mobile' => $this->maskMobile($mobile)
             ]);
 
-            // Initialize cURL
-            $curl = curl_init($URL);
-            curl_setopt($curl, CURLOPT_URL, $URL);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // Skip SSL verification (for Windows/local dev)
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+            // Retry configuration
+            $maxRetries = 2;
+            $retryDelay = 1; // seconds
+            $lastError = null;
 
-            $resp = curl_exec($curl);
-            $curlError = curl_error($curl);
-            $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            curl_close($curl);
+            for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+                // Initialize cURL with optimized timeout
+                $curl = curl_init($URL);
+                curl_setopt($curl, CURLOPT_URL, $URL);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                // SSL verification - enabled in production, disabled only in local dev
+                $sslVerify = config('app.env') !== 'local';
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $sslVerify);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $sslVerify ? 2 : 0);
+                // Increased timeout for better reliability (15s total, 8s connect)
+                curl_setopt($curl, CURLOPT_TIMEOUT, 15);
+                curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 8);
+                // DNS cache to speed up subsequent requests
+                curl_setopt($curl, CURLOPT_DNS_CACHE_TIMEOUT, 300);
 
-            // Check for cURL errors
-            if ($curlError) {
-                Log::error('❌ cURL Error', [
-                    'error' => $curlError,
-                    'mobile' => $mobile
+                $resp = curl_exec($curl);
+                $curlError = curl_error($curl);
+                $curlErrno = curl_errno($curl);
+                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                curl_close($curl);
+
+                // Check for timeout errors specifically
+                $isTimeout = in_array($curlErrno, [CURLE_OPERATION_TIMEDOUT, CURLE_COULDNT_CONNECT, 28, 7]);
+
+                // Check for cURL errors
+                if ($curlError) {
+                    $lastError = $curlError;
+                    Log::warning("⚠️ SMS API attempt $attempt failed", [
+                        'error' => $curlError,
+                        'errno' => $curlErrno,
+                        'is_timeout' => $isTimeout
+                    ]);
+
+                    // Retry on timeout or connection errors
+                    if ($isTimeout && $attempt < $maxRetries) {
+                        sleep($retryDelay);
+                        continue;
+                    }
+
+                    return [
+                        'success' => false,
+                        'message' => $isTimeout
+                            ? 'SMS service is slow. Please try again.'
+                            : 'Failed to connect to SMS gateway'
+                    ];
+                }
+
+                // Log the response for debugging (no sensitive data)
+                Log::info('📥 Renflair SMS API Response', [
+                    'http_code' => $httpCode,
+                    'status' => json_decode($resp, true)['status'] ?? 'unknown',
+                    'attempt' => $attempt
                 ]);
-                return [
-                    'success' => false,
-                    'message' => 'Failed to connect to SMS gateway'
-                ];
-            }
 
-            // Log the response for debugging
-            Log::info('📥 Renflair API Response', [
-                'http_code' => $httpCode,
-                'response' => $resp,
-                'mobile' => $mobile
-            ]);
+                // Decode JSON response
+                $data = json_decode($resp, true);
 
-            // Decode JSON response
-            $data = json_decode($resp, true);
+                // Check if request was successful (HTTP 200 AND status is SUCCESS)
+                if ($httpCode == 200 && isset($data['status']) && $data['status'] === 'SUCCESS') {
+                    Log::info('✅ Renflair SMS API Success', ['attempt' => $attempt]);
 
-            // Check if request was successful (HTTP 200 AND status is SUCCESS)
-            if ($httpCode == 200 && isset($data['status']) && $data['status'] === 'SUCCESS') {
-                Log::info('✅ Renflair API Success', [
-                    'response' => $data,
-                    'mobile' => $mobile
-                ]);
+                    return [
+                        'success' => true,
+                        'message' => 'OTP sent successfully via SMS'
+                    ];
+                }
 
-                return [
-                    'success' => true,
-                    'message' => 'OTP sent successfully via SMS'
-                ];
+                // If API returned error, don't retry (it's not a timeout issue)
+                break;
             }
 
             // If API call failed - check for specific error messages
@@ -397,11 +541,10 @@ class RenflairOTPService
                 }
             }
 
-            Log::error('❌ Renflair API Failed', [
-                'http_code' => $httpCode,
-                'response' => $resp,
-                'mobile' => $mobile,
-                'error_message' => $errorMessage
+            Log::error('❌ Renflair SMS API Failed', [
+                'http_code' => $httpCode ?? 0,
+                'error_message' => $errorMessage,
+                'last_curl_error' => $lastError
             ]);
 
             return [
@@ -515,6 +658,45 @@ class RenflairOTPService
                 ];
             }
 
+            // ═══════════════════════════════════════════════════════════════
+            // Google Play Reviewer Test Account - Skip WhatsApp, use fixed OTP
+            // ═══════════════════════════════════════════════════════════════
+            $testPhone = env('TEST_PHONE', '');
+            $testOTP = env('TEST_OTP', '');
+
+            if (!empty($testPhone) && $mobile === $testPhone) {
+                Log::info('🧪 Google Play Reviewer Test Account - WhatsApp OTP request (no message sent)', [
+                    'mobile' => $this->maskMobile($mobile),
+                    'ip' => $ipAddress
+                ]);
+
+                // Invalidate previous OTPs for test account
+                DB::table('otp_verifications')
+                    ->where('mobile', $mobile)
+                    ->where('verified', false)
+                    ->update(['verified' => true, 'updated_at' => Carbon::now()]);
+
+                // Store fixed test OTP in database
+                DB::table('otp_verifications')->insert([
+                    'mobile' => $mobile,
+                    'otp_code' => (string) $testOTP,
+                    'expires_at' => Carbon::now()->addMinutes(60),
+                    'verified' => false,
+                    'attempts' => 0,
+                    'ip_address' => $ipAddress,
+                    'user_agent' => $userAgent,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+                return [
+                    'success' => true,
+                    'message' => 'OTP sent to your WhatsApp',
+                    'expires_in' => 3600 // 60 minutes in seconds
+                ];
+            }
+            // ═══════════════════════════════════════════════════════════════
+
             // Invalidate all previous unverified OTPs for this mobile
             DB::table('otp_verifications')
                 ->where('mobile', $mobile)
@@ -569,9 +751,8 @@ class RenflairOTPService
             ];
         } catch (\Exception $e) {
             Log::error('WhatsApp OTP sending failed', [
-                'mobile' => $mobile,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+                'mobile' => $this->maskMobile($mobile),
+                'error' => $e->getMessage()
             ]);
 
             return [
@@ -582,7 +763,7 @@ class RenflairOTPService
     }
 
     /**
-     * Call Renflair WhatsApp API
+     * Call Renflair WhatsApp API with retry mechanism
      *
      * @param string $mobile
      * @param string $otpCode
@@ -610,70 +791,92 @@ class RenflairOTPService
             $SENDER = urlencode('BlinkStudy'); // Business name
             $URL = "https://whatsapp.renflair.in/V1.php?API=$API&PHONE=$PHONE&OTP=$OTP&COUNTRY=$COUNTRY&SENDER=$SENDER";
 
-            // 🔍 DEBUG MODE: Always log OTP when APP_DEBUG=true
-            if (config('app.debug')) {
-                Log::warning('🔐 DEBUG MODE - WhatsApp OTP Code for Testing', [
-                    'mobile' => $mobile,
-                    'OTP' => $otpCode,
-                    'API_URL' => $URL,
-                    'message' => 'Use this OTP if WhatsApp is not delivered. Set APP_DEBUG=false in production!'
+            // DEBUG MODE: Only log OTP in local development, never in production
+            if (config('app.env') === 'local' && config('app.debug')) {
+                Log::warning('🔐 LOCAL DEV ONLY - WhatsApp OTP for testing', [
+                    'mobile' => $this->maskMobile($mobile),
+                    'otp' => $otpCode
                 ]);
             }
 
-            Log::info('📤 Sending WhatsApp OTP via Renflair cURL API', [
-                'url' => $URL,
-                'mobile' => $mobile,
-                'otp' => $otpCode,
-                'country' => $COUNTRY
+            Log::info('📤 Sending OTP via Renflair WhatsApp API', [
+                'mobile' => $this->maskMobile($mobile)
             ]);
 
-            // Initialize cURL
-            $curl = curl_init($URL);
-            curl_setopt($curl, CURLOPT_URL, $URL);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); // Skip SSL verification
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+            // Retry configuration
+            $maxRetries = 2;
+            $retryDelay = 1; // seconds
+            $lastError = null;
 
-            $resp = curl_exec($curl);
-            $curlError = curl_error($curl);
-            $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            curl_close($curl);
+            for ($attempt = 1; $attempt <= $maxRetries; $attempt++) {
+                // Initialize cURL with optimized timeout
+                $curl = curl_init($URL);
+                curl_setopt($curl, CURLOPT_URL, $URL);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                // SSL verification - enabled in production, disabled only in local dev
+                $sslVerify = config('app.env') !== 'local';
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $sslVerify);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $sslVerify ? 2 : 0);
+                // Increased timeout for better reliability (15s total, 8s connect)
+                curl_setopt($curl, CURLOPT_TIMEOUT, 15);
+                curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 8);
+                // DNS cache to speed up subsequent requests
+                curl_setopt($curl, CURLOPT_DNS_CACHE_TIMEOUT, 300);
 
-            // Check for cURL errors
-            if ($curlError) {
-                Log::error('❌ cURL Error', [
-                    'error' => $curlError,
-                    'mobile' => $mobile,
-                    'type' => 'whatsapp'
+                $resp = curl_exec($curl);
+                $curlError = curl_error($curl);
+                $curlErrno = curl_errno($curl);
+                $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                curl_close($curl);
+
+                // Check for timeout errors specifically
+                $isTimeout = in_array($curlErrno, [CURLE_OPERATION_TIMEDOUT, CURLE_COULDNT_CONNECT, 28, 7]);
+
+                // Check for cURL errors
+                if ($curlError) {
+                    $lastError = $curlError;
+                    Log::warning("⚠️ WhatsApp API attempt $attempt failed", [
+                        'error' => $curlError,
+                        'errno' => $curlErrno,
+                        'is_timeout' => $isTimeout
+                    ]);
+
+                    // Retry on timeout or connection errors
+                    if ($isTimeout && $attempt < $maxRetries) {
+                        sleep($retryDelay);
+                        continue;
+                    }
+
+                    return [
+                        'success' => false,
+                        'message' => $isTimeout
+                            ? 'WhatsApp service is slow. Please try again.'
+                            : 'Failed to connect to WhatsApp gateway'
+                    ];
+                }
+
+                // Log the response for debugging (no sensitive data)
+                Log::info('📥 Renflair WhatsApp API Response', [
+                    'http_code' => $httpCode,
+                    'status' => json_decode($resp, true)['status'] ?? 'unknown',
+                    'attempt' => $attempt
                 ]);
-                return [
-                    'success' => false,
-                    'message' => 'Failed to connect to WhatsApp gateway'
-                ];
-            }
 
-            // Log the response for debugging
-            Log::info('📥 Renflair WhatsApp API Response', [
-                'http_code' => $httpCode,
-                'response' => $resp,
-                'mobile' => $mobile
-            ]);
+                // Decode JSON response
+                $data = json_decode($resp, true);
 
-            // Decode JSON response
-            $data = json_decode($resp, true);
+                // Check if request was successful (HTTP 200 AND status is SUCCESS)
+                if ($httpCode == 200 && isset($data['status']) && $data['status'] === 'SUCCESS') {
+                    Log::info('✅ Renflair WhatsApp API Success', ['attempt' => $attempt]);
 
-            // Check if request was successful (HTTP 200 AND status is SUCCESS)
-            if ($httpCode == 200 && isset($data['status']) && $data['status'] === 'SUCCESS') {
-                Log::info('✅ Renflair WhatsApp API Success', [
-                    'response' => $data,
-                    'mobile' => $mobile
-                ]);
+                    return [
+                        'success' => true,
+                        'message' => 'OTP sent successfully via WhatsApp'
+                    ];
+                }
 
-                return [
-                    'success' => true,
-                    'message' => 'OTP sent successfully via WhatsApp'
-                ];
+                // If API returned error, don't retry (it's not a timeout issue)
+                break;
             }
 
             // If API call failed - check for specific error messages
@@ -687,10 +890,9 @@ class RenflairOTPService
             }
 
             Log::error('❌ Renflair WhatsApp API Failed', [
-                'http_code' => $httpCode,
-                'response' => $resp,
-                'mobile' => $mobile,
-                'error_message' => $errorMessage
+                'http_code' => $httpCode ?? 0,
+                'error_message' => $errorMessage,
+                'last_curl_error' => $lastError
             ]);
 
             return [
@@ -700,9 +902,7 @@ class RenflairOTPService
 
         } catch (\Exception $e) {
             Log::error('Renflair WhatsApp API exception', [
-                'error' => $e->getMessage(),
-                'mobile' => $mobile,
-                'trace' => $e->getTraceAsString()
+                'error' => $e->getMessage()
             ]);
 
             return [

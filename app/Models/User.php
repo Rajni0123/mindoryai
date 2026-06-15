@@ -60,6 +60,35 @@ class User extends Authenticatable
         'referral_applied_at',
         'referral_reward_given',
         'referral_count',
+        // AI Personality & Study tracking
+        'current_streak',
+        'last_study_date',
+        'questions_answered',
+        'favorite_subject',
+        'target_exam',
+        'exam_date',
+        'gender',
+        'session_started_at',
+        'session_message_count',
+        // Education level
+        'education_level',
+        'is_profile_complete',
+        'login_count',
+        // Notification preferences
+        'notification_preferences',
+        'last_active_at',
+        // Topper Connect fields
+        'is_topper',
+        'is_verified_topper',
+        'topper_exam',
+        'topper_rank',
+        'topper_rating',
+        'topper_total_chats',
+        'topper_available',
+        'topper_last_active',
+        'topper_bio',
+        'topper_specialization',
+        'topper_subjects',
     ];
 
     /**
@@ -117,6 +146,16 @@ class User extends Authenticatable
             'referral_applied_at' => 'datetime',
             'referral_reward_given' => 'boolean',
             'referral_count' => 'integer',
+            // Notification casts
+            'notification_preferences' => 'array',
+            'last_active_at' => 'datetime',
+            // Topper Connect casts
+            'is_topper' => 'boolean',
+            'is_verified_topper' => 'boolean',
+            'topper_available' => 'boolean',
+            'topper_rating' => 'float',
+            'topper_last_active' => 'datetime',
+            'topper_subjects' => 'array',
         ];
     }
 
@@ -134,6 +173,7 @@ class User extends Authenticatable
     public function markProfileCompleted(): void
     {
         $this->update([
+            'is_profile_complete' => true,
             'profile_completed' => true,
             'profile_completed_at' => now(),
         ]);
@@ -205,6 +245,22 @@ class User extends Authenticatable
     public function plan()
     {
         return $this->belongsTo(UserPlan::class, 'plan_id');
+    }
+
+    /**
+     * Get push tokens for the user
+     */
+    public function pushTokens()
+    {
+        return $this->hasMany(PushToken::class);
+    }
+
+    /**
+     * Get active push tokens
+     */
+    public function activePushTokens()
+    {
+        return $this->pushTokens()->where('is_active', true);
     }
 
     /**
@@ -410,6 +466,94 @@ class User extends Authenticatable
     public function subscription()
     {
         return $this->hasOne(UserSubscription::class)->latest();
+    }
+
+    /**
+     * Get student wallet for topper connect
+     */
+    public function studentWallet()
+    {
+        return $this->hasOne(StudentWallet::class);
+    }
+
+    /**
+     * Get topper wallet (for toppers only)
+     */
+    public function topperWallet()
+    {
+        return $this->hasOne(TopperWallet::class);
+    }
+
+    /**
+     * Get chat requests as student
+     */
+    public function chatRequestsAsStudent()
+    {
+        return $this->hasMany(ChatRequest::class, 'student_id');
+    }
+
+    /**
+     * Get chat requests as topper
+     */
+    public function chatRequestsAsTopper()
+    {
+        return $this->hasMany(ChatRequest::class, 'topper_id');
+    }
+
+    /**
+     * Get chat conversations as student
+     */
+    public function chatConversationsAsStudent()
+    {
+        return $this->hasMany(ChatConversation::class, 'student_id');
+    }
+
+    /**
+     * Get chat conversations as topper
+     */
+    public function chatConversationsAsTopper()
+    {
+        return $this->hasMany(ChatConversation::class, 'topper_id');
+    }
+
+    /**
+     * Get topper earnings
+     */
+    public function topperEarnings()
+    {
+        return $this->hasMany(TopperEarning::class, 'topper_id');
+    }
+
+    /**
+     * Check if user is a verified topper
+     */
+    public function isVerifiedTopper(): bool
+    {
+        return $this->is_topper && $this->is_verified_topper;
+    }
+
+    /**
+     * Check if topper is currently available
+     */
+    public function isTopperAvailable(): bool
+    {
+        return $this->isVerifiedTopper() && $this->topper_available;
+    }
+
+    /**
+     * Get or create student wallet
+     */
+    public function getOrCreateStudentWallet(): StudentWallet
+    {
+        return $this->studentWallet ?? StudentWallet::create(['user_id' => $this->id]);
+    }
+
+    /**
+     * Get or create topper wallet
+     */
+    public function getOrCreateTopperWallet(): TopperWallet
+    {
+        return $this->topperWallet ?? TopperWallet::create(['user_id' => $this->id]);
     }
 
     /**
