@@ -34,6 +34,9 @@ database/database.sqlite
 
 # Flutter app build artifacts
 /updated App/build/
+/updated App/android/.gradle/
+/updated App/android/key.properties
+/updated App/android/local.properties
 /updated App/.dart_tool/
 /updated App/.flutter-plugins
 /updated App/.flutter-plugins-dependencies
