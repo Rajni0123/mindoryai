@@ -7,7 +7,7 @@
         return $allHomepageSettings[$key] ?? $default;
     };
     $playStore = 'https://play.google.com/store/apps/details?id=com.blinkstudy.app';
-    $heroImage = asset('splash-student.png');
+    $heroImage = asset('images/hero-dashboard.png');
 @endphp
 
 @section('content')
@@ -45,37 +45,37 @@
 
 <main class="pt-16">
     {{-- Hero --}}
-    <section class="relative py-14 sm:py-16 lg:py-20 px-6 md:px-margin-desktop">
+    <section class="relative py-14 sm:py-16 lg:py-24 px-6 md:px-margin-desktop">
         <div class="absolute inset-0 z-0 pointer-events-none">
             <div class="absolute top-1/4 left-1/4 w-72 h-72 sm:w-96 sm:h-96 bg-primary/10 rounded-full blur-[100px]"></div>
             <div class="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-secondary/10 rounded-full blur-[100px]"></div>
         </div>
-        <div class="max-w-[1280px] mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-            <div class="flex flex-col gap-5 sm:gap-6 lg:gap-8 order-2 lg:order-1">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/10 w-fit backdrop-blur-sm max-w-full">
+        <div class="max-w-[1280px] mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div class="flex flex-col gap-5 sm:gap-6 lg:pr-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/10 w-fit backdrop-blur-sm">
                     <span class="material-symbols-outlined text-primary text-[16px] shrink-0">bolt</span>
-                    <span class="text-label-sm text-primary leading-snug">{{ $hs('hero_badge_left', 'Made in India') }} · {{ $hs('hero_badge_right', 'CBSE, ICSE, JEE & NEET') }}</span>
+                    <span class="text-label-sm text-primary">{{ $hs('hero_badge', 'Performance Engineered AI') }}</span>
                 </div>
-                <h1 class="text-[2rem] sm:text-4xl lg:text-5xl font-extrabold text-on-surface leading-[1.12] tracking-tight">
-                    {{ $hs('hero_title_line1', 'Your AI Study') }}<br/>
-                    <span class="text-gradient inline-block">{{ $hs('hero_title_highlight', 'Companion') }}</span>
+                <h1 class="text-[2rem] sm:text-4xl lg:text-[3rem] xl:text-display-lg font-extrabold text-on-surface leading-[1.1] tracking-tight">
+                    {{ $hs('hero_title_line1', 'Train Smarter.') }}<br/>
+                    <span class="text-gradient inline-block">{{ $hs('hero_title_highlight', 'Crack Exams Faster.') }}</span>
                 </h1>
                 <p class="text-base sm:text-lg text-on-surface-variant max-w-xl leading-relaxed">
-                    {{ $hs('hero_description', 'Stuck on a doubt? Scan it, ask AI, practice quizzes, battle friends, and prepare for exams — all in one beautiful app.') }}
+                    {{ $hs('hero_description', 'AI-powered daily tests, instant weakness analysis, and competitive battles designed for absolute focus and mastery. Used by top 0.1% achievers.') }}
                 </p>
                 <div class="flex flex-wrap gap-3 sm:gap-4 pt-1">
-                    <a href="{{ $playStore }}" target="_blank" rel="noopener" class="bg-primary hover:bg-primary/90 text-on-primary text-label-md px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all inline-flex items-center gap-2">
+                    <a href="{{ $playStore }}" target="_blank" rel="noopener" class="bg-primary hover:bg-primary/90 text-on-primary text-label-md px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all inline-flex items-center gap-2 hover:shadow-[0_0_20px_rgba(175,198,255,0.35)]">
                         Download Now <span class="material-symbols-outlined text-xl">arrow_forward</span>
                     </a>
-                    <a href="{{ route('login') }}" class="glass-panel hover:bg-white/10 text-on-surface text-label-md px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all inline-flex items-center gap-2">
-                        Try Web App <span class="material-symbols-outlined text-xl">login</span>
+                    <a href="#features" class="glass-panel hover:bg-white/10 text-on-surface text-label-md px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all inline-flex items-center gap-2">
+                        Watch Demo <span class="material-symbols-outlined text-xl">play_circle</span>
                     </a>
                 </div>
             </div>
-            <div class="relative group order-1 lg:order-2 w-full flex justify-center lg:justify-end">
-                <div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-700 max-w-[392px] w-full mx-auto lg:mx-0"></div>
-                <div class="relative hero-visual-shell glass-card">
-                    <img alt="BlinkStudy student" class="hero-visual-img" src="{{ $heroImage }}" loading="eager"/>
+            <div class="relative group w-full flex justify-center lg:justify-end">
+                <div class="hero-glow-ring group-hover:opacity-55 transition-opacity duration-700"></div>
+                <div class="relative hero-dashboard-shell glass-card border border-white/10 shadow-2xl shadow-primary/10">
+                    <img alt="BlinkStudy AI dashboard preview" class="hero-dashboard-img" src="{{ $heroImage }}" loading="eager"/>
                 </div>
             </div>
         </div>

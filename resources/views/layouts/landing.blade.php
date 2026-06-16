@@ -139,6 +139,31 @@
             object-position: center 12%;
             display: block;
         }
+        .hero-dashboard-shell {
+            width: 100%;
+            max-width: 640px;
+            margin-left: auto;
+            margin-right: auto;
+            aspect-ratio: 16 / 10;
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+        .hero-dashboard-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .hero-glow-ring {
+            position: absolute;
+            inset: -4px;
+            border-radius: 1.35rem;
+            background: linear-gradient(135deg, rgba(175, 198, 255, 0.45), rgba(221, 184, 255, 0.35));
+            opacity: 0.35;
+            filter: blur(8px);
+            z-index: 0;
+        }
         .preview-visual-shell {
             width: 100%;
             max-height: 420px;
