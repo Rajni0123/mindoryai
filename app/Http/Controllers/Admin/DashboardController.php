@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Feature;
+use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class DashboardController extends Controller
 {
@@ -15,158 +17,66 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        // User Statistics
         $userStats = [
             'total_users' => User::count(),
             'active_users' => User::where('is_active', true)->count(),
             'inactive_users' => User::where('is_active', false)->count(),
-            'admin_users' => User::where('role', 'admin')->count(),
             'new_users_today' => User::whereDate('created_at', today())->count(),
             'new_users_week' => User::where('created_at', '>=', now()->subDays(7))->count(),
             'new_users_month' => User::where('created_at', '>=', now()->subMonth())->count(),
         ];
 
-        // Credit Statistics
-        $creditStats = [
-            'total_credits_earned' => DB::table('user_credits')->sum('total_earned'),
-            'total_credits_spent' => DB::table('user_credits')->sum('total_spent'),
-            'total_credits_available' => DB::table('user_credits')->sum('available_credits'),
-            'credits_used_today' => DB::table('credit_transactions')
-                ->where('type', 'spend')
-                ->whereDate('created_at', today())
-                ->sum(DB::raw('ABS(amount)')),
-            'credits_used_week' => DB::table('credit_transactions')
-                ->where('type', 'spend')
-                ->where('created_at', '>=', now()->subDays(7))
-                ->sum(DB::raw('ABS(amount)')),
+        $planStats = [
+            'total_plans' => 0,
+            'active_plans' => 0,
         ];
 
-        // Plan Distribution
-        $planDistribution = DB::table('user_subscriptions')
-            ->where('status', 'active')
-            ->select('plan_id', DB::raw('COUNT(*) as count'))
-            ->groupBy('plan_id')
-            ->pluck('count', 'plan_id')
-            ->toArray();
-
-        $plans = DB::table('user_plans')
-            ->whereIn('id', array_keys($planDistribution))
-            ->get()
-            ->map(function ($plan) use ($planDistribution) {
-                $plan->users_count = $planDistribution[$plan->id] ?? 0;
-                return $plan;
-            });
-
-        // Chat Activity
-        $chatStats = [
-            'total_chats' => DB::table('mobile_chats')->count(),
-            'chats_today' => DB::table('mobile_chats')->whereDate('created_at', today())->count(),
-            'chats_week' => DB::table('mobile_chats')->where('created_at', '>=', now()->subDays(7))->count(),
-            'messages_sent_today' => DB::table('mobile_chat_messages')->whereDate('created_at', today())->count(),
-        ];
-
-        // Recent Activity (Last 10 actions) - Fixed N+1 by using JOIN
-        $recentActivities = DB::table('credit_transactions')
-            ->leftJoin('users', 'credit_transactions.user_id', '=', 'users.id')
-            ->select(
-                'credit_transactions.id',
-                'credit_transactions.type',
-                'credit_transactions.amount',
-                'credit_transactions.reason',
-                'credit_transactions.created_at',
-                'users.name as user_name',
-                'users.mobile as user_mobile'
-            )
-            ->orderBy('credit_transactions.created_at', 'desc')
-            ->limit(10)
-            ->get()
-            ->map(function ($transaction) {
-                return [
-                    'id' => $transaction->id,
-                    'type' => $transaction->type,
-                    'amount' => $transaction->amount,
-                    'reason' => $transaction->reason,
-                    'user_name' => $transaction->user_name ?? 'Unknown',
-                    'user_mobile' => $transaction->user_mobile ?? 'N/A',
-                    'created_at' => $transaction->created_at,
-                ];
-            });
-
-        // User Growth Chart Data (Last 30 days) - Fixed N+1 by using single GROUP BY query
-        $startDate = now()->subDays(29)->startOfDay();
-        $growthData = User::where('created_at', '>=', $startDate)
-            ->selectRaw('DATE(created_at) as date, COUNT(*) as count')
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->pluck('count', 'date')
-            ->toArray();
-
-        $userGrowth = [];
-        for ($i = 29; $i >= 0; $i--) {
-            $date = now()->subDays($i)->format('Y-m-d');
-            $userGrowth[] = [
-                'date' => $date,
-                'count' => $growthData[$date] ?? 0,
-            ];
+        if ($this->hasTable('user_plans')) {
+            try {
+                $planStats['total_plans'] = Plan::count();
+                $planStats['active_plans'] = Plan::where('is_active', true)->count();
+            } catch (\Throwable $e) {
+                $planStats['total_plans'] = DB::table('user_plans')->count();
+                $planStats['active_plans'] = DB::table('user_plans')->where('is_active', true)->count();
+            }
         }
 
-        // Credit Usage Chart Data (Last 7 days)
-        $creditUsage = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i)->format('Y-m-d');
-            $spent = DB::table('credit_transactions')
-                ->where('type', 'spend')
-                ->whereDate('created_at', $date)
-                ->sum(DB::raw('ABS(amount)'));
-            $creditUsage[] = [
-                'date' => $date,
-                'amount' => $spent,
-            ];
+        $activeSubscriptions = 0;
+        if ($this->hasTable('user_subscriptions')) {
+            $activeSubscriptions = (int) DB::table('user_subscriptions')
+                ->where('status', 'active')
+                ->count();
         }
 
-        // Top Active Users (Last 7 days) - Fixed N+1 by using JOIN
-        $topActiveUsers = DB::table('credit_transactions')
-            ->join('users', 'credit_transactions.user_id', '=', 'users.id')
-            ->select(
-                'users.id',
-                'users.name',
-                'users.mobile',
-                DB::raw('COUNT(*) as activity_count'),
-                DB::raw('SUM(ABS(credit_transactions.amount)) as total_spent')
-            )
-            ->where('credit_transactions.created_at', '>=', now()->subDays(7))
-            ->groupBy('users.id', 'users.name', 'users.mobile')
-            ->orderByDesc('activity_count')
-            ->limit(10)
-            ->get()
-            ->map(function ($data) {
-                return [
-                    'id' => $data->id,
-                    'name' => $data->name,
-                    'mobile' => $data->mobile,
-                    'activity_count' => $data->activity_count,
-                    'total_spent' => $data->total_spent,
-                ];
-            });
+        $paidUsers = User::whereNotNull('plan_id')->count();
 
-        // Combine stats for the view
-        $stats = array_merge($userStats, [
-            'total_plans' => \App\Models\PricingPlan::count(),
-            'active_plans' => \App\Models\PricingPlan::where('is_active', true)->count(),
-            'total_features' => \App\Models\Feature::count(),
-            'active_features' => \App\Models\Feature::where('is_active', true)->count(),
+        $stats = array_merge($userStats, $planStats, [
+            'total_features' => $this->hasTable('features')
+                ? Feature::count()
+                : 0,
+            'active_features' => $this->hasTable('features')
+                ? Feature::where('is_active', true)->count()
+                : 0,
+            'active_subscriptions' => $activeSubscriptions,
+            'paid_users' => $paidUsers,
         ]);
 
-        return view('admin.dashboard', compact(
-            'stats',
-            'userStats',
-            'creditStats',
-            'plans',
-            'chatStats',
-            'recentActivities',
-            'userGrowth',
-            'creditUsage',
-            'topActiveUsers'
-        ));
+        $recentUsers = User::query()
+            ->when($this->hasTable('user_plans'), fn ($q) => $q->with('plan'))
+            ->orderByDesc('created_at')
+            ->limit(10)
+            ->get();
+
+        return view('admin.dashboard', compact('stats', 'userStats', 'recentUsers'));
+    }
+
+    private function hasTable(string $table): bool
+    {
+        try {
+            return Schema::hasTable($table);
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 
     /**
