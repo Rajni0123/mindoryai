@@ -31,14 +31,18 @@ class DashboardController extends Controller
             'active_plans' => 0,
         ];
 
-        if ($this->hasTable('user_plans')) {
+        if ($this->hasTable('plans')) {
             try {
                 $planStats['total_plans'] = Plan::count();
                 $planStats['active_plans'] = Plan::where('is_active', true)->count();
             } catch (\Throwable $e) {
-                $planStats['total_plans'] = DB::table('user_plans')->count();
-                $planStats['active_plans'] = DB::table('user_plans')->where('is_active', true)->count();
+                // Fall through to legacy table lookup below.
             }
+        }
+
+        if ($planStats['total_plans'] === 0 && $this->hasTable('user_plans')) {
+            $planStats['total_plans'] = DB::table('user_plans')->count();
+            $planStats['active_plans'] = DB::table('user_plans')->where('is_active', true)->count();
         }
 
         $activeSubscriptions = 0;
