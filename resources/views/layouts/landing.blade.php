@@ -153,6 +153,20 @@
             object-position: center top;
             display: block;
         }
+        .feature-bento-card {
+            height: 100%;
+            min-height: 168px;
+        }
+        @media (min-width: 768px) {
+            .feature-bento-row {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 1.25rem;
+                align-items: stretch;
+            }
+            .feature-bento-wide { grid-column: span 2 / span 2; }
+            .feature-bento-narrow { grid-column: span 1 / span 1; }
+        }
     </style>
     @stack('styles')
 </head>

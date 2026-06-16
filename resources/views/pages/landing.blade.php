@@ -104,55 +104,56 @@
     </section>
 
     {{-- Features --}}
-    <section class="py-2xl px-6 md:px-margin-desktop relative" id="features">
-        <div class="max-w-[1280px] mx-auto flex flex-col gap-xl">
-            <div class="text-center max-w-2xl mx-auto flex flex-col gap-md">
-                <h2 class="text-headline-lg text-on-surface">{{ $hs('features_title', 'Precision Tools for Top Percentiles') }}</h2>
-                <p class="text-body-md text-on-surface-variant">{{ $hs('features_description', 'Eliminate guesswork with AI-driven analysis built for competitive exam prep.') }}</p>
+    <section class="py-16 sm:py-20 lg:py-24 px-6 md:px-margin-desktop relative" id="features">
+        <div class="max-w-[1280px] mx-auto flex flex-col gap-10 lg:gap-12">
+            <div class="text-center max-w-2xl mx-auto flex flex-col gap-3 sm:gap-4">
+                <h2 class="text-2xl sm:text-headline-lg text-on-surface font-bold">{{ $hs('features_title', 'Precision Tools for Top Percentiles') }}</h2>
+                <p class="text-sm sm:text-body-md text-on-surface-variant leading-relaxed">{{ $hs('features_description', 'Everything you need to ace your exams and understand concepts deeply.') }}</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-card p-lg rounded-xl flex flex-col gap-md hover-lift col-span-1 md:col-span-2">
-                    <div class="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined">quiz</span>
-                    </div>
-                    <h3 class="text-headline-md text-on-surface">Daily AI Tests</h3>
-                    <p class="text-body-md text-on-surface-variant">Adaptive questioning that evolves with your capability. The system finds your threshold and pushes it every single day.</p>
+
+            @php
+                $featureRows = [
+                    [
+                        ['wide', 'quiz', 'primary', 'Daily AI Tests', 'Adaptive questioning that evolves with your capability. The system finds your threshold and pushes it every single day.'],
+                        ['narrow', 'radar', 'secondary', 'Weakness Analysis', 'Smart weakness mapping isolates sub-topics where you lose marks most often.'],
+                    ],
+                    [
+                        ['narrow', 'swords', 'tertiary', 'Study Battles', 'Challenge friends in real-time quiz duels. Share a room code and compete on the leaderboard.'],
+                        ['wide', 'event_note', 'primary', 'Your Comeback Plan', 'A day-by-day revision path shaped around your weak topics — not generic AI fluff.'],
+                    ],
+                    [
+                        ['narrow', 'local_fire_department', 'secondary', 'Daily Streak', 'Build momentum with streak tracking and daily challenges.'],
+                        ['wide', 'document_scanner', 'tertiary', 'Scan Doubts Instantly', 'Upload any question from your book. AI breaks down solutions step-by-step in Hindi or English.'],
+                    ],
+                ];
+                $toneMap = [
+                    'primary' => ['box' => 'bg-primary/10 border-primary/20 text-primary'],
+                    'secondary' => ['box' => 'bg-secondary/10 border-secondary/20 text-secondary'],
+                    'tertiary' => ['box' => 'bg-tertiary/10 border-tertiary/20 text-tertiary'],
+                ];
+            @endphp
+
+            <div class="flex flex-col gap-5">
+                @foreach($featureRows as $row)
+                <div class="feature-bento-row grid grid-cols-1 gap-5">
+                    @foreach($row as $card)
+                    @php
+                        $size = $card[0];
+                        $icon = $card[1];
+                        $tone = $toneMap[$card[2]];
+                    @endphp
+                    <article class="feature-bento-card feature-bento-{{ $size }} glass-card rounded-xl p-6 sm:p-8 flex flex-col gap-4 hover-lift">
+                        <div class="w-12 h-12 rounded-lg border flex items-center justify-center shrink-0 {{ $tone['box'] }}">
+                            <span class="material-symbols-outlined">{{ $icon }}</span>
+                        </div>
+                        <div class="flex flex-col gap-2 flex-1">
+                            <h3 class="text-lg sm:text-headline-md text-on-surface font-semibold">{{ $card[3] }}</h3>
+                            <p class="text-sm sm:text-body-md text-on-surface-variant leading-relaxed">{{ $card[4] }}</p>
+                        </div>
+                    </article>
+                    @endforeach
                 </div>
-                <div class="glass-card p-lg rounded-xl flex flex-col gap-md hover-lift">
-                    <div class="w-12 h-12 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary">
-                        <span class="material-symbols-outlined">radar</span>
-                    </div>
-                    <h3 class="text-headline-md text-on-surface">Weakness Analysis</h3>
-                    <p class="text-body-md text-on-surface-variant">Smart weakness mapping isolates sub-topics where you lose marks most often.</p>
-                </div>
-                <div class="glass-card p-lg rounded-xl flex flex-col gap-md hover-lift">
-                    <div class="w-12 h-12 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center text-tertiary">
-                        <span class="material-symbols-outlined">swords</span>
-                    </div>
-                    <h3 class="text-headline-md text-on-surface">Study Battles</h3>
-                    <p class="text-body-md text-on-surface-variant">Challenge friends in real-time quiz duels. Share a room code and compete on the leaderboard.</p>
-                </div>
-                <div class="glass-card p-lg rounded-xl flex flex-col gap-md hover-lift col-span-1 md:col-span-2">
-                    <div class="w-12 h-12 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined">event_note</span>
-                    </div>
-                    <h3 class="text-headline-md text-on-surface">Your Comeback Plan</h3>
-                    <p class="text-body-md text-on-surface-variant">A day-by-day revision path shaped around your weak topics — not generic AI fluff.</p>
-                </div>
-                <div class="glass-card p-lg rounded-xl flex flex-col gap-md hover-lift">
-                    <div class="w-12 h-12 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary">
-                        <span class="material-symbols-outlined">local_fire_department</span>
-                    </div>
-                    <h3 class="text-headline-md text-on-surface">Daily Streak</h3>
-                    <p class="text-body-md text-on-surface-variant">Build momentum with streak tracking and daily challenges.</p>
-                </div>
-                <div class="glass-card p-lg rounded-xl flex flex-col gap-md hover-lift md:col-span-2">
-                    <div class="w-12 h-12 rounded-lg bg-tertiary/10 border border-tertiary/20 flex items-center justify-center text-tertiary">
-                        <span class="material-symbols-outlined">document_scanner</span>
-                    </div>
-                    <h3 class="text-headline-md text-on-surface">Scan Doubts Instantly</h3>
-                    <p class="text-body-md text-on-surface-variant">Upload any question from your book. AI breaks down solutions step-by-step in Hindi or English.</p>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
