@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'dart:io' show Platform;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/utils/study_profile_utils.dart';
 import '../models/models.dart';
@@ -199,21 +201,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
         return false;
       }
-      final payload = (data['data'] as Map<String, dynamic>?) ?? data;
-      final token = payload['token'] ?? data['token'] ?? data['access_token'];
-      if (token != null) await _api.saveToken(token.toString());
-      final userData = (payload['user'] ?? data['user']) as Map<String, dynamic>;
-      final user = UserModel.fromJson(userData);
-      await _syncStudyPrefs(user);
-      final needsSetup = payload['needs_profile_completion'] == true ||
-          await _resolveNeedsStudySetup(user);
-      state = AuthState(
-        isAuthenticated: true,
-        isCheckingAuth: false,
-        needsStudySetup: needsSetup,
-        user: user,
-      );
-      return true;
+      return _completeLogin(data);
     } on DioException catch (e) {
       state = state.copyWith(isLoading: false, error: _extractMessage(e));
       return false;
@@ -221,6 +209,87 @@ class AuthNotifier extends StateNotifier<AuthState> {
       state = state.copyWith(isLoading: false, error: e.toString());
       return false;
     }
+  }
+
+  Future<bool> signInWithGoogle({required String webClientId}) async {
+    if (webClientId.trim().isEmpty) {
+      state = state.copyWith(error: 'Google login is not configured yet.');
+      return false;
+    }
+
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      final googleSignIn = GoogleSignIn(
+        scopes: const ['email', 'profile'],
+        serverClientId: webClientId,
+      );
+
+      final account = await googleSignIn.signIn();
+      if (account == null) {
+        state = state.copyWith(isLoading: false);
+        return false;
+      }
+
+      final auth = await account.authentication;
+      final idToken = auth.idToken;
+      if (idToken == null || idToken.isEmpty) {
+        state = state.copyWith(
+          isLoading: false,
+          error: 'Could not get Google credentials. Try again.',
+        );
+        return false;
+      }
+
+      final platform = Platform.isIOS ? 'ios' : 'android';
+      final data = await _api.loginWithGoogle(
+        idToken: idToken,
+        platform: platform,
+      );
+
+      if (data['success'] == false) {
+        state = state.copyWith(
+          isLoading: false,
+          error: data['message']?.toString() ?? 'Google sign-in failed',
+        );
+        return false;
+      }
+
+      return _completeLogin(data);
+    } on DioException catch (e) {
+      state = state.copyWith(isLoading: false, error: _extractMessage(e));
+      return false;
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> _completeLogin(Map<String, dynamic> data) async {
+    final payload = (data['data'] as Map<String, dynamic>?) ?? data;
+    final token = payload['token'] ?? data['token'] ?? data['access_token'];
+    if (token != null) await _api.saveToken(token.toString());
+
+    final userRaw = payload['user'] ?? data['user'];
+    if (userRaw is! Map<String, dynamic>) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Login response was invalid.',
+      );
+      return false;
+    }
+
+    final user = UserModel.fromJson(userRaw);
+    await _syncStudyPrefs(user);
+    final needsSetup = payload['needs_profile_completion'] == true ||
+        data['needs_profile_completion'] == true ||
+        await _resolveNeedsStudySetup(user);
+    state = AuthState(
+      isAuthenticated: true,
+      isCheckingAuth: false,
+      needsStudySetup: needsSetup,
+      user: user,
+    );
+    return true;
   }
 
   String _extractMessage(DioException e) {

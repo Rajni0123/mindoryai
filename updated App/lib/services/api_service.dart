@@ -54,6 +54,17 @@ class ApiService {
     return Map<String, dynamic>.from(res.data as Map);
   }
 
+  Future<Map<String, dynamic>> loginWithGoogle({
+    required String idToken,
+    required String platform,
+  }) async {
+    final res = await _dio.post('/login/google', data: {
+      'id_token': idToken,
+      'platform': platform,
+    });
+    return Map<String, dynamic>.from(res.data as Map);
+  }
+
   Future<Map<String, dynamic>> getUser() async {
     final res = await _dio.get('/user');
     return Map<String, dynamic>.from(res.data as Map);

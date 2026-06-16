@@ -28,6 +28,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   LoginStep _step = LoginStep.phone;
   int _resendSeconds = 0;
   String _otpValue = '';
+  bool _googleEnabled = false;
+  String? _googleWebClientId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadGoogleConfig();
+  }
 
   @override
   void dispose() {
@@ -37,6 +45,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   bool _isValidMobile(String mobile) =>
       RegExp(r'^[6-9]\d{9}$').hasMatch(mobile);
+
+  Future<void> _loadGoogleConfig() async {
+    try {
+      final config = await ref.read(apiServiceProvider).getAppConfig();
+      final auth = config['auth'] as Map<String, dynamic>?;
+      final social = auth?['social'] as Map<String, dynamic>?;
+      if (!mounted) return;
+      setState(() {
+        _googleEnabled = social?['googleEnabled'] == true;
+        _googleWebClientId = (social?['googleWebClientId'] ??
+                social?['googleClientId'])
+            ?.toString();
+      });
+    } catch (_) {}
+  }
+
+  Future<void> _signInWithGoogle() async {
+    final clientId = _googleWebClientId?.trim() ?? '';
+    final ok = await ref.read(authProvider.notifier).signInWithGoogle(
+          webClientId: clientId,
+        );
+    if (!mounted) return;
+
+    if (ok) {
+      final needsSetup = ref.read(authProvider).needsStudySetup;
+      AppRouter.goReplace(
+        context,
+        needsSetup ? AppRoutes.profileSetup : AppRoutes.main,
+      );
+    } else {
+      final err = ref.read(authProvider).error;
+      if (err != null && err.isNotEmpty) _toast(err);
+    }
+  }
 
   Future<void> _sendOtp({bool resend = false}) async {
     final mobile = _mobileController.text.trim();
@@ -251,6 +293,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           loading: auth.isLoading,
           onPressed: auth.isLoading ? null : _sendOtp,
         ),
+        if (_googleEnabled) ...[
+          const SizedBox(height: 20),
+          _OrDivider(),
+          const SizedBox(height: 20),
+          _GoogleButton(
+            loading: auth.isLoading,
+            onPressed: auth.isLoading ? null : _signInWithGoogle,
+          ),
+        ],
       ],
     )
         .animate()
@@ -628,4 +679,163 @@ class _DemoCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class _OrDivider extends StatelessWidget {
+  const _OrDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.dash;
+    return Row(
+      children: [
+        Expanded(child: Divider(color: c.cardBorder)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text('OR', style: context.labelSmall.copyWith(color: c.textMuted)),
+        ),
+        Expanded(child: Divider(color: c.cardBorder)),
+      ],
+    );
+  }
+}
+
+class _GoogleButton extends StatelessWidget {
+  final bool loading;
+  final VoidCallback? onPressed;
+
+  const _GoogleButton({
+    required this.loading,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.dash;
+    final enabled = onPressed != null && !loading;
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: enabled ? onPressed : null,
+        borderRadius: BorderRadius.circular(16),
+        child: Ink(
+          width: double.infinity,
+          height: 56,
+          decoration: BoxDecoration(
+            color: c.card,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: c.cardBorder),
+          ),
+          child: Center(
+            child: loading
+                ? SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      color: c.textPrimary,
+                    ),
+                  )
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const _GoogleLogo(),
+                      const SizedBox(width: 12),
+                      Text(
+                        'Continue with Google',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: enabled ? c.textPrimary : c.textMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GoogleLogo extends StatelessWidget {
+  const _GoogleLogo();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 20,
+      height: 20,
+      child: CustomPaint(painter: _GoogleLogoPainter()),
+    );
+  }
+}
+
+class _GoogleLogoPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    final paint = Paint()..style = PaintingStyle.fill;
+
+    paint.color = const Color(0xFF4285F4);
+    canvas.drawPath(
+      Path()
+        ..moveTo(w * 0.94, h * 0.51)
+        ..cubicTo(w * 0.94, h * 0.47, w * 0.93, h * 0.44, w * 0.92, h * 0.41)
+        ..lineTo(w * 0.5, h * 0.41)
+        ..lineTo(w * 0.5, h * 0.59)
+        ..lineTo(w * 0.75, h * 0.59)
+        ..cubicTo(w * 0.74, h * 0.66, w * 0.69, h * 0.72, w * 0.63, h * 0.76)
+        ..lineTo(w * 0.78, h * 0.88)
+        ..cubicTo(w * 0.87, h * 0.8, w * 0.94, h * 0.67, w * 0.94, h * 0.51)
+        ..close(),
+      paint,
+    );
+
+    paint.color = const Color(0xFF34A853);
+    canvas.drawPath(
+      Path()
+        ..moveTo(w * 0.5, h)
+        ..cubicTo(w * 0.64, h, w * 0.76, h * 0.95, w * 0.84, h * 0.88)
+        ..lineTo(w * 0.69, h * 0.76)
+        ..cubicTo(w * 0.65, h * 0.79, w * 0.59, h * 0.81, w * 0.5, h * 0.81)
+        ..cubicTo(w * 0.36, h * 0.81, w * 0.24, h * 0.72, w * 0.2, h * 0.59)
+        ..lineTo(w * 0.04, h * 0.71)
+        ..cubicTo(w * 0.12, h * 0.86, w * 0.3, h, w * 0.5, h)
+        ..close(),
+      paint,
+    );
+
+    paint.color = const Color(0xFFFBBC05);
+    canvas.drawPath(
+      Path()
+        ..moveTo(w * 0.2, h * 0.59)
+        ..cubicTo(w * 0.19, h * 0.56, w * 0.18, h * 0.53, w * 0.18, h * 0.5)
+        ..cubicTo(w * 0.18, h * 0.47, w * 0.19, h * 0.44, w * 0.2, h * 0.41)
+        ..lineTo(w * 0.04, h * 0.29)
+        ..cubicTo(w * 0.01, h * 0.36, 0, h * 0.43, 0, h * 0.5)
+        ..cubicTo(0, h * 0.57, w * 0.01, h * 0.64, w * 0.04, h * 0.71)
+        ..lineTo(w * 0.2, h * 0.59)
+        ..close(),
+      paint,
+    );
+
+    paint.color = const Color(0xFFEA4335);
+    canvas.drawPath(
+      Path()
+        ..moveTo(w * 0.5, h * 0.19)
+        ..cubicTo(w * 0.6, h * 0.19, w * 0.68, h * 0.22, w * 0.75, h * 0.29)
+        ..lineTo(w * 0.88, h * 0.16)
+        ..cubicTo(w * 0.79, h * 0.08, w * 0.65, h * 0.02, w * 0.5, h * 0.02)
+        ..cubicTo(w * 0.3, h * 0.02, w * 0.12, h * 0.16, w * 0.04, h * 0.29)
+        ..lineTo(w * 0.2, h * 0.41)
+        ..cubicTo(w * 0.24, h * 0.28, w * 0.36, h * 0.19, w * 0.5, h * 0.19)
+        ..close(),
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

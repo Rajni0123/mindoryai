@@ -624,6 +624,14 @@ Route::get('/app-config', function () {
         $splashScreen = \App\Models\FrontendConfig::getValue('mobile.splash_screen');
 
         // Get authentication settings
+        $googleWebClientId = config('services.google.client_id');
+        $googleAndroidClientId = config('services.google.android_client_id');
+        $googleIosClientId = config('services.google.ios_client_id');
+        $googleEnabledInAdmin = (bool) \App\Models\FrontendConfig::getValue('auth.social.google.enabled', false);
+        $googleEnabledOnWeb = (bool) \App\Models\SystemSetting::get('auth.google_login_enabled', true);
+        $googleClientId = \App\Models\FrontendConfig::getValue('auth.social.google.client_id') ?: $googleWebClientId;
+        $googleEnabled = $googleEnabledInAdmin || ($googleEnabledOnWeb && !empty($googleWebClientId));
+
         $authConfig = [
             'otp' => [
                 'enabled' => (bool) \App\Models\FrontendConfig::getValue('auth.otp.enabled', true),
@@ -656,8 +664,11 @@ Route::get('/app-config', function () {
                 'otpLoginEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.otp_login_enabled', true),
                 'emailOtpLoginEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.email_otp_login_enabled', true),
                 'whatsappOtpEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.social.whatsapp_otp_enabled', false),
-                'googleEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.social.google.enabled', false),
-                'googleClientId' => \App\Models\FrontendConfig::getValue('auth.social.google.client_id'),
+                'googleEnabled' => $googleEnabled,
+                'googleClientId' => $googleClientId,
+                'googleWebClientId' => $googleWebClientId,
+                'googleAndroidClientId' => $googleAndroidClientId,
+                'googleIosClientId' => $googleIosClientId,
                 'googleRedirectUrl' => \App\Models\FrontendConfig::getValue('auth.social.google.redirect_url', url('/auth/google/callback')),
                 'appleEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.social.apple.enabled', false),
                 'facebookEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.social.facebook.enabled', false),
