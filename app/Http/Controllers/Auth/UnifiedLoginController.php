@@ -26,12 +26,28 @@ class UnifiedLoginController extends Controller
     }
 
     /**
+     * Accept both mobile/otp and phone_number/otp_code payloads (app + API).
+     */
+    private function normalizeMobileAuthRequest(Request $request): void
+    {
+        if (!$request->filled('mobile') && $request->filled('phone_number')) {
+            $request->merge(['mobile' => $request->input('phone_number')]);
+        }
+        if (!$request->filled('otp') && $request->filled('otp_code')) {
+            $request->merge(['otp' => $request->input('otp_code')]);
+        }
+    }
+
+    /**
      * Show unified login form (single URL for both admin and users)
      */
     public function showLoginForm()
     {
-        // Check if Google login is enabled in system settings
-        $googleLoginEnabled = \App\Models\SystemSetting::get('auth.google_login_enabled', true);
+        try {
+            $googleLoginEnabled = \App\Models\SystemSetting::get('auth.google_login_enabled', true);
+        } catch (\Throwable $e) {
+            $googleLoginEnabled = !empty(config('services.google.client_id'));
+        }
 
         return view('auth.unified-login', compact('googleLoginEnabled'));
     }
@@ -47,6 +63,8 @@ class UnifiedLoginController extends Controller
     public function sendOTP(Request $request)
     {
         try {
+            $this->normalizeMobileAuthRequest($request);
+
             // Rate limiting: 5 attempts per 10 minutes
             $key = 'unified-otp-send:' . $request->ip();
 
@@ -158,6 +176,8 @@ class UnifiedLoginController extends Controller
      */
     public function verifyOTP(Request $request)
     {
+        $this->normalizeMobileAuthRequest($request);
+
         // Rate limiting: 10 attempts per 10 minutes
         $key = 'unified-otp-verify:' . $request->ip();
 
@@ -355,8 +375,19 @@ class UnifiedLoginController extends Controller
         $isApiRequest = $request->is('api/*');
 
         if ($isApiRequest) {
-            // Mobile App: Return token-based authentication
-            $token = $user->createToken('mobile-app')->plainTextToken;
+            try {
+                $token = $user->createToken('mobile-app')->plainTextToken;
+            } catch (\Throwable $e) {
+                Log::error('Mobile token creation failed', [
+                    'user_id' => $user->id,
+                    'error' => $e->getMessage(),
+                ]);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Login succeeded but token could not be created. Run migrations on server.',
+                ], 500);
+            }
 
             Log::info('Mobile app login successful', [
                 'user_id' => $user->id,

@@ -49,5 +49,15 @@ return Application::configure(basePath: dirname(__DIR__))
         \App\Providers\SmartCacheServiceProvider::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->reportable(function (\Throwable $e) {
+            try {
+                \Illuminate\Support\Facades\Log::error('Application exception', [
+                    'message' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ]);
+            } catch (\Throwable $logError) {
+                // Never break the app if logging fails (permissions, missing disk, etc.).
+            }
+        });
     })->create();

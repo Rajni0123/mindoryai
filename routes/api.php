@@ -469,9 +469,13 @@ Route::middleware('auth:sanctum')->get('/payments', function (Request $request) 
 // ========================================
 // MOBILE APP AUTHENTICATION (OTP-based)
 // ========================================
-// Mobile OTP Login Routes (lightweight — no web session)
-Route::post('/login/send-otp', [\App\Http\Controllers\Api\AuthController::class, 'sendOTP']);
-Route::post('/login/verify-otp', [\App\Http\Controllers\Api\AuthController::class, 'verifyOTP']);
+// Mobile OTP Login Routes — UnifiedLoginController (handles web + API)
+Route::post('/login/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP']);
+Route::post('/login/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP']);
+
+// Legacy aliases kept for older app builds
+Route::post('/auth/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP']);
+Route::post('/auth/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP']);
 
 // Email OTP Login Routes
 Route::post('/login/send-email-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendEmailOTP']);
