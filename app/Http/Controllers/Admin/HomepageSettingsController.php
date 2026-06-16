@@ -15,9 +15,18 @@ class HomepageSettingsController extends Controller
      */
     public function index()
     {
-        $settings = HomepageSetting::getAllGrouped();
+        try {
+            $settings = HomepageSetting::getAllGrouped();
 
-        return view('admin.homepage-settings', compact('settings'));
+            return view('admin.homepage-settings', compact('settings'));
+        } catch (\Throwable $e) {
+            \Log::error('Homepage settings page failed', ['error' => $e->getMessage()]);
+
+            return view('admin.homepage-settings', [
+                'settings' => collect(),
+                'loadError' => 'Could not load homepage settings. Please clear cache and try again.',
+            ]);
+        }
     }
 
     /**

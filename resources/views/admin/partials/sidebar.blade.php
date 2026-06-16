@@ -1,11 +1,5 @@
 @php
-    $siteName = \App\Models\Setting::get('site_name', 'BlinkStudy');
-
-    $navLink = function (bool $active): string {
-        return $active
-            ? 'flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-blue-500/10 text-blue-300 border-l-2 border-blue-400'
-            : 'flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-gray-400 hover:text-gray-100 hover:bg-white/5 border-l-2 border-transparent transition-colors';
-    };
+    $siteName = config('app.name', 'BlinkStudy');
 
     $sections = [
         [
@@ -67,8 +61,8 @@
                 <p class="px-3 mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-600">{{ $section['label'] }}</p>
                 <div class="space-y-0.5">
                     @foreach($section['items'] as $item)
-                        @php $active = request()->routeIs($item['match']); @endphp
-                        <a href="{{ route($item['route']) }}" class="{{ $navLink($active) }} text-[13px] font-medium">
+                        <a href="{{ route($item['route']) }}"
+                           class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium border-l-2 transition-colors {{ request()->routeIs($item['match']) ? 'bg-blue-500/10 text-blue-300 border-blue-400' : 'text-gray-400 hover:text-gray-100 hover:bg-white/5 border-transparent' }}">
                             <span class="material-icons-outlined text-[18px]">{{ $item['icon'] }}</span>
                             <span>{{ $item['label'] }}</span>
                         </a>
@@ -79,11 +73,13 @@
     </nav>
 
     <div class="px-3 py-4 border-t border-gray-800/60 space-y-0.5">
-        <a href="{{ route('admin.profile.edit') }}" class="{{ $navLink(request()->routeIs('admin.profile.*')) }} text-[13px] font-medium">
+        <a href="{{ route('admin.profile.edit') }}"
+           class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium border-l-2 transition-colors {{ request()->routeIs('admin.profile.*') ? 'bg-blue-500/10 text-blue-300 border-blue-400' : 'text-gray-400 hover:text-gray-100 hover:bg-white/5 border-transparent' }}">
             <span class="material-icons-outlined text-[18px]">person</span>
             <span>Profile</span>
         </a>
-        <a href="{{ route('home') }}" target="_blank" class="{{ $navLink(false) }} text-[13px] font-medium">
+        <a href="{{ route('home') }}" target="_blank"
+           class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium border-l-2 text-gray-400 hover:text-gray-100 hover:bg-white/5 border-transparent transition-colors">
             <span class="material-icons-outlined text-[18px]">open_in_new</span>
             <span>View Site</span>
         </a>

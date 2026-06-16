@@ -36,6 +36,12 @@
 
             <!-- Content -->
             <div class="p-6 space-y-6">
+                @if(!empty($dashboardError))
+                <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-sm text-amber-200">
+                    {{ $dashboardError }}
+                </div>
+                @endif
+
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                     <!-- Total Users -->

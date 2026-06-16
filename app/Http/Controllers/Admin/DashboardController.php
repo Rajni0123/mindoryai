@@ -17,6 +17,35 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        try {
+            return $this->buildDashboardView();
+        } catch (\Throwable $e) {
+            \Log::error('Admin dashboard failed', [
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+
+            return view('admin.dashboard', [
+                'stats' => [
+                    'total_users' => 0,
+                    'active_users' => 0,
+                    'new_users_today' => 0,
+                    'new_users_week' => 0,
+                    'total_plans' => 0,
+                    'active_plans' => 0,
+                    'active_subscriptions' => 0,
+                    'paid_users' => 0,
+                ],
+                'userStats' => [],
+                'recentUsers' => collect(),
+                'dashboardError' => 'Dashboard stats are temporarily unavailable. The page will still load.',
+            ]);
+        }
+    }
+
+    private function buildDashboardView()
+    {
         $userStats = [
             'total_users' => User::count(),
             'active_users' => User::where('is_active', true)->count(),
@@ -47,9 +76,13 @@ class DashboardController extends Controller
 
         $activeSubscriptions = 0;
         if ($this->hasTable('user_subscriptions')) {
-            $activeSubscriptions = (int) DB::table('user_subscriptions')
-                ->where('status', 'active')
-                ->count();
+            try {
+                $activeSubscriptions = (int) DB::table('user_subscriptions')
+                    ->where('status', 'active')
+                    ->count();
+            } catch (\Throwable $e) {
+                $activeSubscriptions = 0;
+            }
         }
 
         $paidUsers = User::whereNotNull('plan_id')->count();
@@ -97,7 +130,11 @@ class DashboardController extends Controller
      */
     public function settings()
     {
-        $settings = \App\Models\FrontendConfig::all()->pluck('config_value', 'config_key');
+        try {
+            $settings = \App\Models\FrontendConfig::all()->pluck('config_value', 'config_key');
+        } catch (\Throwable $e) {
+            $settings = collect();
+        }
 
         // Add homepage settings to avoid undefined key errors
         $homepageSettings = \App\Models\HomepageSetting::all()->pluck('value', 'key');
@@ -191,7 +228,11 @@ class DashboardController extends Controller
      */
     public function aiSettings()
     {
-        $settings = \App\Models\FrontendConfig::all()->pluck('config_value', 'config_key');
+        try {
+            $settings = \App\Models\FrontendConfig::all()->pluck('config_value', 'config_key');
+        } catch (\Throwable $e) {
+            $settings = collect();
+        }
 
         // Add homepage settings to avoid undefined key errors
         $homepageSettings = \App\Models\HomepageSetting::all()->pluck('value', 'key');

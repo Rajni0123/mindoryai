@@ -19,13 +19,21 @@ class SystemSetting extends Model
      */
     public static function get($key, $default = null)
     {
-        $setting = self::where('key', $key)->first();
+        try {
+            if (! \Illuminate\Support\Facades\Schema::hasTable('system_settings')) {
+                return $default;
+            }
 
-        if (!$setting) {
+            $setting = self::where('key', $key)->first();
+
+            if (!$setting) {
+                return $default;
+            }
+
+            return self::castValue($setting->value, $setting->type);
+        } catch (\Throwable $e) {
             return $default;
         }
-
-        return self::castValue($setting->value, $setting->type);
     }
 
     /**

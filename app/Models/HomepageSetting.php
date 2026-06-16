@@ -27,30 +27,51 @@ class HomepageSetting extends Model
     // Get all settings grouped
     public static function getAllGrouped()
     {
-        return Cache::remember('homepage_settings_grouped', 3600, function () {
-            return self::orderBy('group')->orderBy('order')->get()->groupBy('group');
-        });
+        try {
+            if (! \Illuminate\Support\Facades\Schema::hasTable('homepage_settings')) {
+                return collect();
+            }
+
+            return Cache::remember('homepage_settings_grouped', 3600, function () {
+                return self::orderBy('group')->orderBy('order')->get()->groupBy('group');
+            });
+        } catch (\Throwable $e) {
+            return collect();
+        }
     }
 
-    // Get all settings as key-value pairs (optimized for landing page)
     public static function getAllCached()
     {
-        return Cache::remember('homepage_settings_all', 3600, function () {
-            return self::all()->pluck('value', 'key')->toArray();
-        });
+        try {
+            if (! \Illuminate\Support\Facades\Schema::hasTable('homepage_settings')) {
+                return [];
+            }
+
+            return Cache::remember('homepage_settings_all', 3600, function () {
+                return self::all()->pluck('value', 'key')->toArray();
+            });
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 
     // Clear cache - ONLY clear homepage setting keys, not entire cache!
     public static function clearCache()
     {
-        // Clear specific cache keys instead of flushing everything
         Cache::forget('homepage_settings_grouped');
         Cache::forget('homepage_settings_all');
 
-        // Clear individual setting caches
-        $keys = self::pluck('key')->toArray();
-        foreach ($keys as $key) {
-            Cache::forget("homepage_setting_{$key}");
+        try {
+            if (! \Illuminate\Support\Facades\Schema::hasTable('homepage_settings')) {
+                return;
+            }
+
+            $keys = self::pluck('key')->toArray();
+            foreach ($keys as $key) {
+                Cache::forget("homepage_setting_{$key}");
+            }
+        } catch (\Throwable $e) {
+            // Ignore cache cleanup failures when table is unavailable.
         }
     }
 

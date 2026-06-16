@@ -51,6 +51,12 @@
                 </div>
                 @endif
 
+                @if(!empty($loadError))
+                <div class="mb-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-sm text-amber-200">
+                    {{ $loadError }}
+                </div>
+                @endif
+
                 @if(session('error'))
                 <div class="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg flex items-center gap-2 text-sm">
                     <span class="material-icons-outlined text-red-400" style="font-size: 16px;">error</span>
