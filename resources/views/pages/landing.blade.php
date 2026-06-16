@@ -45,38 +45,37 @@
 
 <main class="pt-16">
     {{-- Hero --}}
-    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-2xl px-6 md:px-margin-desktop">
-        <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-surface-container-lowest/60 backdrop-blur-[2px]"></div>
-            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[100px]"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary/10 rounded-full blur-[100px]"></div>
+    <section class="relative py-14 sm:py-16 lg:py-20 px-6 md:px-margin-desktop">
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-72 h-72 sm:w-96 sm:h-96 bg-primary/10 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-64 h-64 sm:w-80 sm:h-80 bg-secondary/10 rounded-full blur-[100px]"></div>
         </div>
-        <div class="max-w-[1280px] mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-xl items-center">
-            <div class="flex flex-col gap-lg">
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/10 w-fit backdrop-blur-sm">
-                    <span class="material-symbols-outlined text-primary text-[16px]">bolt</span>
-                    <span class="text-label-sm text-primary">{{ $hs('hero_badge_left', 'Made in India') }} · {{ $hs('hero_badge_right', 'CBSE, ICSE, JEE & NEET') }}</span>
+        <div class="max-w-[1280px] mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+            <div class="flex flex-col gap-5 sm:gap-6 lg:gap-8 order-2 lg:order-1">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/10 w-fit backdrop-blur-sm max-w-full">
+                    <span class="material-symbols-outlined text-primary text-[16px] shrink-0">bolt</span>
+                    <span class="text-label-sm text-primary leading-snug">{{ $hs('hero_badge_left', 'Made in India') }} · {{ $hs('hero_badge_right', 'CBSE, ICSE, JEE & NEET') }}</span>
                 </div>
-                <h1 class="text-4xl sm:text-display-lg font-display-lg text-on-surface leading-tight">
-                    {{ $hs('hero_title_line1', 'Train Smarter.') }}<br/>
-                    <span class="text-gradient">{{ $hs('hero_title_highlight', 'Crack Exams Faster.') }}</span>
+                <h1 class="text-[2rem] sm:text-4xl lg:text-5xl font-extrabold text-on-surface leading-[1.12] tracking-tight">
+                    {{ $hs('hero_title_line1', 'Your AI Study') }}<br/>
+                    <span class="text-gradient inline-block">{{ $hs('hero_title_highlight', 'Companion') }}</span>
                 </h1>
-                <p class="text-body-lg text-on-surface-variant max-w-xl">
-                    {{ $hs('hero_description', 'AI daily tests, instant weakness analysis, study battles, and your personal comeback revision plan — built for Indian students who want results.') }}
+                <p class="text-base sm:text-lg text-on-surface-variant max-w-xl leading-relaxed">
+                    {{ $hs('hero_description', 'Stuck on a doubt? Scan it, ask AI, practice quizzes, battle friends, and prepare for exams — all in one beautiful app.') }}
                 </p>
-                <div class="flex flex-wrap gap-md mt-sm">
-                    <a href="{{ $playStore }}" target="_blank" rel="noopener" class="bg-primary hover:bg-primary/90 text-on-primary text-label-md px-8 py-4 rounded-lg transition-all flex items-center gap-2">
-                        Download Now <span class="material-symbols-outlined">arrow_forward</span>
+                <div class="flex flex-wrap gap-3 sm:gap-4 pt-1">
+                    <a href="{{ $playStore }}" target="_blank" rel="noopener" class="bg-primary hover:bg-primary/90 text-on-primary text-label-md px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all inline-flex items-center gap-2">
+                        Download Now <span class="material-symbols-outlined text-xl">arrow_forward</span>
                     </a>
-                    <a href="{{ route('login') }}" class="glass-panel hover:bg-white/10 text-on-surface text-label-md px-8 py-4 rounded-lg transition-all flex items-center gap-2">
-                        Try Web App <span class="material-symbols-outlined">login</span>
+                    <a href="{{ route('login') }}" class="glass-panel hover:bg-white/10 text-on-surface text-label-md px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all inline-flex items-center gap-2">
+                        Try Web App <span class="material-symbols-outlined text-xl">login</span>
                     </a>
                 </div>
             </div>
-            <div class="relative group">
-                <div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-                <div class="relative rounded-2xl overflow-hidden glass-card">
-                    <img alt="BlinkStudy app preview" class="w-full h-auto object-cover" src="{{ $heroImage }}"/>
+            <div class="relative group order-1 lg:order-2 w-full flex justify-center lg:justify-end">
+                <div class="absolute -inset-1 bg-gradient-to-r from-primary to-secondary rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-700 max-w-[392px] w-full mx-auto lg:mx-0"></div>
+                <div class="relative hero-visual-shell glass-card">
+                    <img alt="BlinkStudy student" class="hero-visual-img" src="{{ $heroImage }}" loading="eager"/>
                 </div>
             </div>
         </div>
@@ -183,11 +182,13 @@
     </section>
 
     {{-- Dashboard preview --}}
-    <section class="py-2xl px-6 md:px-margin-desktop overflow-hidden">
+    <section class="py-2xl px-6 md:px-margin-desktop">
         <div class="max-w-[1280px] mx-auto text-center flex flex-col gap-lg">
             <h2 class="text-headline-lg text-on-surface">Your Command Center</h2>
-            <div class="relative inline-block mx-auto max-w-5xl w-full">
-                <img alt="BlinkStudy dashboard" class="rounded-2xl border border-white/10 shadow-2xl shadow-primary/20 w-full" src="{{ $heroImage }}"/>
+            <div class="relative mx-auto max-w-4xl w-full">
+                <div class="preview-visual-shell border border-white/10 shadow-2xl shadow-primary/20 mx-auto">
+                    <img alt="BlinkStudy dashboard" class="preview-visual-img" src="{{ $heroImage }}" loading="lazy"/>
+                </div>
                 <div class="absolute top-[20%] left-[2%] lg:left-[-8%] glass-panel p-3 rounded-lg hidden lg:block" style="animation: bounce 3s ease-in-out infinite">
                     <span class="text-label-sm text-primary">Weak Topic Radar</span>
                 </div>

@@ -98,6 +98,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            padding-bottom: 0.08em;
+            line-height: 1.15;
         }
         .hover-lift {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -120,6 +122,37 @@
             .step-connector::after { display: none; }
         }
         #mobile-nav:not(.hidden) { display: block; }
+        .hero-visual-shell {
+            width: 100%;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+            aspect-ratio: 4 / 5;
+            max-height: min(480px, 62vh);
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+        .hero-visual-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 12%;
+            display: block;
+        }
+        .preview-visual-shell {
+            width: 100%;
+            max-height: 420px;
+            border-radius: 1.25rem;
+            overflow: hidden;
+        }
+        .preview-visual-img {
+            width: 100%;
+            height: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
     </style>
     @stack('styles')
 </head>
