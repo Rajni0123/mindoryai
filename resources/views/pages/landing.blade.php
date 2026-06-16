@@ -108,51 +108,37 @@
         <div class="max-w-[1280px] mx-auto flex flex-col gap-10 lg:gap-12">
             <div class="text-center max-w-2xl mx-auto flex flex-col gap-3 sm:gap-4">
                 <h2 class="text-2xl sm:text-headline-lg text-on-surface font-bold">{{ $hs('features_title', 'Precision Tools for Top Percentiles') }}</h2>
-                <p class="text-sm sm:text-body-md text-on-surface-variant leading-relaxed">{{ $hs('features_description', 'Everything you need to ace your exams and understand concepts deeply.') }}</p>
+                <p class="text-sm sm:text-body-md text-on-surface-variant leading-relaxed max-w-2xl mx-auto">{{ $hs('features_description', 'Eliminate guesswork from your preparation with our suite of AI-driven cognitive analysis tools.') }}</p>
             </div>
 
             @php
-                $featureRows = [
-                    [
-                        ['wide', 'quiz', 'primary', 'Daily AI Tests', 'Adaptive questioning that evolves with your capability. The system finds your threshold and pushes it every single day.'],
-                        ['narrow', 'radar', 'secondary', 'Weakness Analysis', 'Smart weakness mapping isolates sub-topics where you lose marks most often.'],
-                    ],
-                    [
-                        ['narrow', 'swords', 'tertiary', 'Study Battles', 'Challenge friends in real-time quiz duels. Share a room code and compete on the leaderboard.'],
-                        ['wide', 'event_note', 'primary', 'Your Comeback Plan', 'A day-by-day revision path shaped around your weak topics — not generic AI fluff.'],
-                    ],
-                    [
-                        ['narrow', 'local_fire_department', 'secondary', 'Daily Streak', 'Build momentum with streak tracking and daily challenges.'],
-                        ['wide', 'document_scanner', 'tertiary', 'Scan Doubts Instantly', 'Upload any question from your book. AI breaks down solutions step-by-step in Hindi or English.'],
-                    ],
+                $features = [
+                    ['quiz', 'purple', 'Daily AI Tests', 'Adaptive questioning that evolves with your capability, keeping you constantly in the zone of proximal development.'],
+                    ['track_changes', 'purple', 'Instant Weakness Analysis', 'Neural weakness mapping isolates specific sub-topics causing point leakage across your entire syllabus.'],
+                    ['swords', 'orange', 'Battle Friends & Toppers', 'Engage in high-stakes, time-boxed asynchronous duels. Prove your mastery on the live leaderboard.'],
+                    ['event_note', 'blue', 'AI Revision Plan', 'Algorithmic spaced repetition schedules generated dynamically based on your latest test performance.'],
+                    ['local_fire_department', 'purple', 'Daily Streak & Ranking', 'Build momentum with streak tracking and regional percentile ranking to maintain extreme focus.'],
+                    ['document_scanner', 'orange', 'Scan Doubts Instantly', 'Upload complex problems. Our vision AI breaks down the solution step-by-step without breaking your flow state.'],
                 ];
                 $toneMap = [
-                    'primary' => ['box' => 'bg-primary/10 border-primary/20 text-primary'],
-                    'secondary' => ['box' => 'bg-secondary/10 border-secondary/20 text-secondary'],
-                    'tertiary' => ['box' => 'bg-tertiary/10 border-tertiary/20 text-tertiary'],
+                    'purple' => 'feature-icon-purple',
+                    'orange' => 'feature-icon-orange',
+                    'blue' => 'feature-icon-blue',
                 ];
             @endphp
 
-            <div class="flex flex-col gap-5">
-                @foreach($featureRows as $row)
-                <div class="feature-bento-row grid grid-cols-1 gap-5">
-                    @foreach($row as $card)
-                    @php
-                        $size = $card[0];
-                        $icon = $card[1];
-                        $tone = $toneMap[$card[2]];
-                    @endphp
-                    <article class="feature-bento-card feature-bento-{{ $size }} glass-card rounded-xl p-6 sm:p-8 flex flex-col gap-4 hover-lift">
-                        <div class="w-12 h-12 rounded-lg border flex items-center justify-center shrink-0 {{ $tone['box'] }}">
-                            <span class="material-symbols-outlined">{{ $icon }}</span>
-                        </div>
-                        <div class="flex flex-col gap-2 flex-1">
-                            <h3 class="text-lg sm:text-headline-md text-on-surface font-semibold">{{ $card[3] }}</h3>
-                            <p class="text-sm sm:text-body-md text-on-surface-variant leading-relaxed">{{ $card[4] }}</p>
-                        </div>
-                    </article>
-                    @endforeach
-                </div>
+            <div class="feature-grid">
+                @foreach($features as $card)
+                <article class="feature-card hover-lift">
+                    <div class="feature-card-glow" aria-hidden="true"></div>
+                    <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0 {{ $toneMap[$card[1]] }}">
+                        <span class="material-symbols-outlined text-[22px]">{{ $card[0] }}</span>
+                    </div>
+                    <div class="flex flex-col gap-2.5 flex-1 relative z-[1]">
+                        <h3 class="text-base sm:text-lg text-on-surface font-semibold leading-snug">{{ $card[2] }}</h3>
+                        <p class="text-sm text-on-surface-variant/90 leading-relaxed">{{ $card[3] }}</p>
+                    </div>
+                </article>
                 @endforeach
             </div>
         </div>

@@ -39,8 +39,8 @@ class HomepageSettingsSeeder extends Seeder
 
             // ── Features Section ──
             ['key' => 'features_badge', 'value' => 'Learning Modules', 'type' => 'text', 'group' => 'features', 'order' => 1],
-            ['key' => 'features_title', 'value' => 'Academic Capabilities', 'type' => 'text', 'group' => 'features', 'order' => 2],
-            ['key' => 'features_description', 'value' => 'Everything you need to ace your exams and understand concepts deeply.', 'type' => 'textarea', 'group' => 'features', 'order' => 3],
+            ['key' => 'features_title', 'value' => 'Precision Tools for Top Percentiles', 'type' => 'text', 'group' => 'features', 'order' => 2],
+            ['key' => 'features_description', 'value' => 'Eliminate guesswork from your preparation with our suite of AI-driven cognitive analysis tools.', 'type' => 'textarea', 'group' => 'features', 'order' => 3],
 
             ['key' => 'feature1_icon', 'value' => 'photo_camera', 'type' => 'text', 'group' => 'features', 'order' => 4],
             ['key' => 'feature1_title', 'value' => 'Scan & Solve', 'type' => 'text', 'group' => 'features', 'order' => 5],

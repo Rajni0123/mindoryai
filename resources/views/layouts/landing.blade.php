@@ -178,19 +178,51 @@
             object-position: center top;
             display: block;
         }
-        .feature-bento-card {
-            height: 100%;
-            min-height: 168px;
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
         }
-        @media (min-width: 768px) {
-            .feature-bento-row {
-                display: grid;
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 1.25rem;
-                align-items: stretch;
-            }
-            .feature-bento-wide { grid-column: span 2 / span 2; }
-            .feature-bento-narrow { grid-column: span 1 / span 1; }
+        @media (min-width: 640px) {
+            .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1024px) {
+            .feature-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        .feature-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            padding: 1.5rem 1.5rem 1.75rem;
+            min-height: 200px;
+            border-radius: 1rem;
+            background: #161b22;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+        .feature-card-glow {
+            position: absolute;
+            top: -3.5rem;
+            right: -3.5rem;
+            width: 9rem;
+            height: 9rem;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 68%);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            pointer-events: none;
+        }
+        .feature-icon-purple {
+            background: rgba(221, 184, 255, 0.12);
+            color: #ddb8ff;
+        }
+        .feature-icon-orange {
+            background: rgba(255, 183, 123, 0.12);
+            color: #ffb77b;
+        }
+        .feature-icon-blue {
+            background: rgba(175, 198, 255, 0.12);
+            color: #afc6ff;
         }
     </style>
     @stack('styles')
