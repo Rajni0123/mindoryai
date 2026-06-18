@@ -1,0 +1,272 @@
+[
+  {
+    "question_text": "Write the molecular formula of the first two members of the homologous series having functional group -Cl.",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH4Cl, C2H6Cl"
+      },
+      {
+        "label": "B",
+        "text": "CH3Cl, C2H5Cl"
+      },
+      {
+        "label": "C",
+        "text": "CH2Cl, C3H4Cl"
+      },
+      {
+        "label": "D",
+        "text": "CCl4, C2Cl6"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The general formula for the homologous series with -Cl is CnH2n+1Cl. For n=1, it's CH3Cl. For n=2, it's C2H5Cl.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Name the method by which Spirogyra reproduces under favorable conditions. Is this method sexual or asexual?",
+    "topic": "How do Organisms Reproduce?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Budding, Sexual"
+      },
+      {
+        "label": "B",
+        "text": "Fragmentation, Asexual"
+      },
+      {
+        "label": "C",
+        "text": "Regeneration, Sexual"
+      },
+      {
+        "label": "D",
+        "text": "Binary Fission, Asexual"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Under favorable conditions, Spirogyra reproduces by fragmentation, which is an asexual method of reproduction.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is an ecosystem?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "A group of similar organisms"
+      },
+      {
+        "label": "B",
+        "text": "A self-sustaining system where biotic and abiotic components interact"
+      },
+      {
+        "label": "C",
+        "text": "A collection of only living organisms"
+      },
+      {
+        "label": "D",
+        "text": "The non-living components of an environment"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "An ecosystem is a self-sustaining system where biotic (living) and abiotic (non-living) components interact with each other.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "An object is placed at a distance of 30 cm in front of a convex mirror of focal length 15 cm. Which of the following is a characteristic of the image formed?",
+    "topic": "Light: Reflection and Refraction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Real, Inverted, Enlarged"
+      },
+      {
+        "label": "B",
+        "text": "Virtual, Erect, Diminished"
+      },
+      {
+        "label": "C",
+        "text": "Real, Erect, Same Size"
+      },
+      {
+        "label": "D",
+        "text": "Virtual, Inverted, Enlarged"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For a convex mirror, the image is always virtual, erect, and diminished, regardless of the object distance.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Why is reuse considered better than recycle?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "Recycling consumes more energy."
+      },
+      {
+        "label": "B",
+        "text": "Reuse requires processing the material."
+      },
+      {
+        "label": "C",
+        "text": "Recycling creates no waste."
+      },
+      {
+        "label": "D",
+        "text": "Reuse is always more expensive."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Reuse is better because it saves energy by using the same material again without any changes, whereas recycling needs some processes to use the same material again, which consumes energy.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Why is the management of forest and wildlife resources a challenging task?",
+    "topic": "Management of Natural Resources",
+    "options": [
+      {
+        "label": "A",
+        "text": "Lack of funding for conservation efforts."
+      },
+      {
+        "label": "B",
+        "text": "Conflicting interests of various stakeholders."
+      },
+      {
+        "label": "C",
+        "text": "Abundance of resources making management unnecessary."
+      },
+      {
+        "label": "D",
+        "text": "Simple and straightforward management strategies."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Management is challenging because there are many stakeholders with conflicting interests, and industries lobby for access to raw materials at low rates.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Two carbon compounds X and Y have the molecular formula C4H8 and C5H12 respectively. Which one of these is most likely to show addition reaction?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "X (C4H8) because it is a saturated compound."
+      },
+      {
+        "label": "B",
+        "text": "Y (C5H12) because it is an unsaturated compound."
+      },
+      {
+        "label": "C",
+        "text": "X (C4H8) because it is an unsaturated compound."
+      },
+      {
+        "label": "D",
+        "text": "Y (C5H12) because it is a saturated compound."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "C4H8 is an alkene (unsaturated) and will show addition reactions because it has free electrons for bonding. C5H12 is an alkane (saturated).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are the vertical columns in the Modern Periodic Table called?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Periods"
+      },
+      {
+        "label": "B",
+        "text": "Families"
+      },
+      {
+        "label": "C",
+        "text": "Groups"
+      },
+      {
+        "label": "D",
+        "text": "Series"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The vertical columns in the Modern Periodic Table are called groups.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How does the metallic character of elements vary on moving down a vertical column in the Periodic Table?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Decreases"
+      },
+      {
+        "label": "B",
+        "text": "Remains the same"
+      },
+      {
+        "label": "C",
+        "text": "Increases"
+      },
+      {
+        "label": "D",
+        "text": "First increases, then decreases"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "As we move down the group, metallic character increases as the atomic size increases, and the tendency to lose electrons increases.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How does the size of the atomic radius vary on moving from left to right in a horizontal row in the Periodic Table?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increases"
+      },
+      {
+        "label": "B",
+        "text": "Decreases"
+      },
+      {
+        "label": "C",
+        "text": "Remains the same"
+      },
+      {
+        "label": "D",
+        "text": "First decreases, then increases"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "When we move left to right in a period, the atomic size decreases because the number of electrons in the same shell increases, leading to greater electrostatic attraction between the nucleus and outermost electron.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

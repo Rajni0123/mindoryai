@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindory Icon Export - Exact Logo</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #1e1e1e;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #fff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #2d2d2d;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .preview {
+            text-align: center;
+            margin: 40px 0;
+        }
+        canvas {
+            max-width: 300px;
+            height: auto;
+            border: 2px solid #cc785c;
+            border-radius: 12px;
+            background: white;
+            margin: 20px auto;
+            display: block;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            background: #cc785c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        button:hover {
+            background: #0df259;
+            transform: translateY(-2px);
+        }
+        .size-info {
+            text-align: center;
+            margin-top: 20px;
+            color: #9a9a9a;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💡 Mindory Icon Export</h1>
+        <p style="text-align: center; color: #9a9a9a;">
+            This is the EXACT icon used in your Mindory app
+        </p>
+
+        <div class="preview">
+            <canvas id="mindoryIcon" width="512" height="512"></canvas>
+        </div>
+
+        <div class="button-group">
+            <button onclick="downloadIcon(512, 'mindory-icon-512.png')">512x512 (App Icon)</button>
+            <button onclick="downloadIcon(256, 'mindory-icon-256.png')">256x256</button>
+            <button onclick="downloadIcon(128, 'mindory-icon-128.png')">128x128</button>
+            <button onclick="downloadIcon(64, 'mindory-icon-64.png')">64x64 (Favicon)</button>
+        </div>
+
+        <div class="size-info">
+            Different sizes for different use cases
+        </div>
+    </div>
+
+    <script>
+        function drawIcon(size) {
+            const canvas = document.getElementById('mindoryIcon');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            const scale = size / 24;
+
+            ctx.strokeStyle = '#cc785c';
+            ctx.lineWidth = 2 * scale;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Draw the exact path
+            ctx.beginPath();
+            ctx.moveTo(9.663 * scale, 17 * scale);
+            ctx.lineTo(14.336 * scale, 17 * scale);
+            ctx.moveTo(12 * scale, 3 * scale);
+            ctx.lineTo(12 * scale, 4 * scale);
+            ctx.moveTo(18.364 * scale, 4.636 * scale);
+            ctx.lineTo(17.657 * scale, 5.343 * scale);
+            ctx.moveTo(21 * scale, 12 * scale);
+            ctx.lineTo(20 * scale, 12 * scale);
+            ctx.moveTo(4 * scale, 12 * scale);
+            ctx.lineTo(3 * scale, 12 * scale);
+            ctx.moveTo(6.343 * scale, 6.343 * scale);
+            ctx.lineTo(5.636 * scale, 5.636 * scale);
+            ctx.moveTo(14.828 * scale, 11.9 * scale);
+            ctx.arc(12 * scale, 12 * scale, 5 * scale, 0.928, 5.213, false);
+            ctx.moveTo(15.452 * scale, 14.453 * scale);
+            ctx.bezierCurveTo(15.012 * scale, 15.898 * scale, 14 * scale, 17 * scale, 14 * scale, 18.469 * scale);
+            ctx.lineTo(14 * scale, 19 * scale);
+            ctx.arc(12 * scale, 19 * scale, 2 * scale, 0, Math.PI * 2, true);
+            ctx.moveTo(10 * scale, 19 * scale);
+            ctx.bezierCurveTo(10 * scale, 18.105 * scale, 10.356 * scale, 17.246 * scale, 10.988 * scale, 16.614 * scale);
+            ctx.moveTo(11.536 * scale, 16.067 * scale);
+            ctx.stroke();
+        }
+
+        function downloadIcon(size, filename) {
+            drawIcon(size);
+            const canvas = document.getElementById('mindoryIcon');
+            const url = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = url;
+            link.click();
+        }
+
+        // Draw default size on load
+        window.onload = () => drawIcon(512);
+    </script>
+</body>
+</html>

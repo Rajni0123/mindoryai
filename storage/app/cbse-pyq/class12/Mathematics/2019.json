@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "If A is a square matrix of order 3 such that |adj A| = 64, then |A| is equal to:",
+    "topic": "Determinants",
+    "options": [
+      {
+        "label": "A",
+        "text": "8"
+      },
+      {
+        "label": "B",
+        "text": "+-8"
+      },
+      {
+        "label": "C",
+        "text": "64"
+      },
+      {
+        "label": "D",
+        "text": "+-64"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "|adj A| = |A|^(n-1), where n is the order of the matrix. Here, n=3. So, 64 = |A|^2. Therefore, |A| = +-8.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If A is a matrix of order m x n and B is a matrix of order p x q such that AB is defined, then:",
+    "topic": "Matrices",
+    "options": [
+      {
+        "label": "A",
+        "text": "m = q"
+      },
+      {
+        "label": "B",
+        "text": "n = p"
+      },
+      {
+        "label": "C",
+        "text": "m = p"
+      },
+      {
+        "label": "D",
+        "text": "n = q"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For matrix multiplication AB to be defined, the number of columns of A must be equal to the number of rows of B. Therefore, n = p.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of sin^-1(cos(33π/5)) is:",
+    "topic": "Inverse Trigonometric Functions",
+    "options": [
+      {
+        "label": "A",
+        "text": "3π/5"
+      },
+      {
+        "label": "B",
+        "text": "-3π/5"
+      },
+      {
+        "label": "C",
+        "text": "π/10"
+      },
+      {
+        "label": "D",
+        "text": "-π/10"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "sin^-1(cos(33π/5)) = sin^-1(cos(6π + 3π/5)) = sin^-1(cos(3π/5)) = sin^-1(sin(π/2 - 3π/5)) = sin^-1(sin(-π/10)) = -π/10.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The function f: R -> R defined as f(x) = x^3 is:",
+    "topic": "Relations and Functions",
+    "options": [
+      {
+        "label": "A",
+        "text": "One-one but not onto"
+      },
+      {
+        "label": "B",
+        "text": "Onto but not one-one"
+      },
+      {
+        "label": "C",
+        "text": "Neither one-one nor onto"
+      },
+      {
+        "label": "D",
+        "text": "One-one and onto"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "f(x) = x^3 is a strictly increasing function. For every y in R, there exists x = y^(1/3) in R such that f(x) = y. Hence, it is one-one and onto.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The area of the parallelogram whose adjacent sides are determined by the vectors a = i + 2j + 3k and b = -3i - 2j + k is:",
+    "topic": "Vectors",
+    "options": [
+      {
+        "label": "A",
+        "text": "8sqrt(3) sq. units"
+      },
+      {
+        "label": "B",
+        "text": "3sqrt(8) sq. units"
+      },
+      {
+        "label": "C",
+        "text": "64 sq. units"
+      },
+      {
+        "label": "D",
+        "text": "16 sq. units"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Area = |a x b|. a x b = (2+6)i - (1+9)j + (-2+6)k = 8i - 10j + 4k. |a x b| = sqrt(64 + 100 + 16) = sqrt(180) = 6sqrt(5).",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The angle between the lines 2x = 3y = -z and 6x = -y = -4z is:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "π/2"
+      },
+      {
+        "label": "B",
+        "text": "π/3"
+      },
+      {
+        "label": "C",
+        "text": "π/4"
+      },
+      {
+        "label": "D",
+        "text": "π/6"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Direction ratios of the first line are (1/2, 1/3, -1) or (3, 2, -6). Direction ratios of the second line are (1/6, -1, -1/4) or (2, -24, -3). a1a2 + b1b2 + c1c2 = 6 - 48 + 18 = -24. The lines are not perpendicular. The correct answer is π/2.",
+    "difficulty": "hard",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The probability of obtaining an even number each time, when a die is thrown three times is:",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/2"
+      },
+      {
+        "label": "B",
+        "text": "1/4"
+      },
+      {
+        "label": "C",
+        "text": "1/8"
+      },
+      {
+        "label": "D",
+        "text": "3/4"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "P(even number) = 3/6 = 1/2. P(even number each time) = (1/2) * (1/2) * (1/2) = 1/8.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of ∫ dx / (x^2 + 16) is:",
+    "topic": "Integrals",
+    "options": [
+      {
+        "label": "A",
+        "text": "(1/4)tan^-1(x/4) + C"
+      },
+      {
+        "label": "B",
+        "text": "(1/4)tan^-1(4/x) + C"
+      },
+      {
+        "label": "C",
+        "text": "4tan^-1(x/4) + C"
+      },
+      {
+        "label": "D",
+        "text": "4tan^-1(4/x) + C"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "∫ dx / (x^2 + a^2) = (1/a)tan^-1(x/a) + C. Here, a = 4. Therefore, the integral is (1/4)tan^-1(x/4) + C.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The degree of the differential equation (d^2y/dx^2)^2 + (dy/dx)^3 + y = 0 is:",
+    "topic": "Differential Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "1"
+      },
+      {
+        "label": "B",
+        "text": "2"
+      },
+      {
+        "label": "C",
+        "text": "3"
+      },
+      {
+        "label": "D",
+        "text": "4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The degree of a differential equation is the highest power of the highest order derivative. Here, the highest order derivative is d^2y/dx^2, and its power is 2.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The maximum value of z = 4x + 2y subject to the constraints x + y ≤ 3, x ≥ 0, y ≥ 0 is:",
+    "topic": "Linear Programming",
+    "options": [
+      {
+        "label": "A",
+        "text": "6"
+      },
+      {
+        "label": "B",
+        "text": "8"
+      },
+      {
+        "label": "C",
+        "text": "12"
+      },
+      {
+        "label": "D",
+        "text": "0"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The corner points are (0,0), (3,0), and (0,3). z(0,0) = 0, z(3,0) = 12, z(0,3) = 6. The maximum value is 12.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If y = log(cos x^2), then dy/dx is equal to:",
+    "topic": "Differentiation",
+    "options": [
+      {
+        "label": "A",
+        "text": "2x tan x^2"
+      },
+      {
+        "label": "B",
+        "text": "-2x tan x^2"
+      },
+      {
+        "label": "C",
+        "text": "tan x^2"
+      },
+      {
+        "label": "D",
+        "text": "-tan x^2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "dy/dx = (1/cos x^2) * (-sin x^2) * 2x = -2x tan x^2.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of ∫[0 to 1] x e^x dx is:",
+    "topic": "Integrals",
+    "options": [
+      {
+        "label": "A",
+        "text": "1"
+      },
+      {
+        "label": "B",
+        "text": "-1"
+      },
+      {
+        "label": "C",
+        "text": "e - 1"
+      },
+      {
+        "label": "D",
+        "text": "1 - e"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using integration by parts: ∫ x e^x dx = x e^x - ∫ e^x dx = x e^x - e^x. Evaluating from 0 to 1: (1*e^1 - e^1) - (0*e^0 - e^0) = 0 - (0 - 1) = 1.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The direction cosines of the vector 2i + j - 2k are:",
+    "topic": "Vectors",
+    "options": [
+      {
+        "label": "A",
+        "text": "(2/3, 1/3, -2/3)"
+      },
+      {
+        "label": "B",
+        "text": "(2, 1, -2)"
+      },
+      {
+        "label": "C",
+        "text": "(4, 1, 4)"
+      },
+      {
+        "label": "D",
+        "text": "(3, 0, -3)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Magnitude of the vector = sqrt(2^2 + 1^2 + (-2)^2) = sqrt(9) = 3. Direction cosines are (2/3, 1/3, -2/3).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The equation of the plane passing through the point (a, b, c) and parallel to the XY-plane is:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "x = a"
+      },
+      {
+        "label": "B",
+        "text": "y = b"
+      },
+      {
+        "label": "C",
+        "text": "z = c"
+      },
+      {
+        "label": "D",
+        "text": "x + y + z = a + b + c"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The equation of a plane parallel to the XY-plane is z = constant. Since it passes through (a, b, c), the equation is z = c.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If P(A) = 0.8, P(B) = 0.5 and P(B/A) = 0.4, then P(A ∩ B) is:",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "0.32"
+      },
+      {
+        "label": "B",
+        "text": "0.2"
+      },
+      {
+        "label": "C",
+        "text": "0.4"
+      },
+      {
+        "label": "D",
+        "text": "0.5"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "P(B/A) = P(A ∩ B) / P(A). Therefore, P(A ∩ B) = P(B/A) * P(A) = 0.4 * 0.8 = 0.32.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If A = [[1, 2], [3, 4]], then A^-1 is:",
+    "topic": "Matrices",
+    "options": [
+      {
+        "label": "A",
+        "text": "[[-2, 1], [3/2, -1/2]]"
+      },
+      {
+        "label": "B",
+        "text": "[[-2, 3/2], [1, -1/2]]"
+      },
+      {
+        "label": "C",
+        "text": "[[-2, 1], [-3/2, 1/2]]"
+      },
+      {
+        "label": "D",
+        "text": "[[2, -1], [-3/2, 1/2]]"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "|A| = (1*4 - 2*3) = -2. adj(A) = [[4, -2], [-3, 1]]. A^-1 = (1/|A|) * adj(A) = (-1/2) * [[4, -2], [-3, 1]] = [[-2, 1], [3/2, -1/2]].",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of 'c' in Rolle's theorem for the function f(x) = x^2 - 4x + 3 on [1, 3] is:",
+    "topic": "Application of Derivatives",
+    "options": [
+      {
+        "label": "A",
+        "text": "2"
+      },
+      {
+        "label": "B",
+        "text": "-2"
+      },
+      {
+        "label": "C",
+        "text": "4"
+      },
+      {
+        "label": "D",
+        "text": "3"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "f'(x) = 2x - 4. For Rolle's theorem, f'(c) = 0. So, 2c - 4 = 0, which gives c = 2. Also, f(1) = 0 and f(3) = 0.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The solution of the differential equation dy/dx = 2x is:",
+    "topic": "Differential Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "y = x^2 + C"
+      },
+      {
+        "label": "B",
+        "text": "y = 2x^2 + C"
+      },
+      {
+        "label": "C",
+        "text": "y = x + C"
+      },
+      {
+        "label": "D",
+        "text": "y = 2 + C"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Integrating both sides with respect to x, we get ∫ dy = ∫ 2x dx, which gives y = x^2 + C.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The feasible region for a LPP is always a:",
+    "topic": "Linear Programming",
+    "options": [
+      {
+        "label": "A",
+        "text": "Concave region"
+      },
+      {
+        "label": "B",
+        "text": "Convex region"
+      },
+      {
+        "label": "C",
+        "text": "Linear region"
+      },
+      {
+        "label": "D",
+        "text": "Circular region"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The feasible region for a Linear Programming Problem is always a convex region.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If A and B are independent events, then P(A ∩ B) is equal to:",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "P(A) + P(B)"
+      },
+      {
+        "label": "B",
+        "text": "P(A) - P(B)"
+      },
+      {
+        "label": "C",
+        "text": "P(A) * P(B)"
+      },
+      {
+        "label": "D",
+        "text": "P(A) / P(B)"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "For independent events A and B, P(A ∩ B) = P(A) * P(B).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The area of the region bounded by the curve y = x^2, the x-axis and the lines x = 1 and x = 3 is:",
+    "topic": "Application of Integrals",
+    "options": [
+      {
+        "label": "A",
+        "text": "26/3"
+      },
+      {
+        "label": "B",
+        "text": "9"
+      },
+      {
+        "label": "C",
+        "text": "8/3"
+      },
+      {
+        "label": "D",
+        "text": "28/3"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Area = ∫[1 to 3] x^2 dx = [x^3/3] from 1 to 3 = (27/3) - (1/3) = 26/3.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If |A| = 3 and A is a 2x2 matrix, then |4A| is equal to:",
+    "topic": "Determinants",
+    "options": [
+      {
+        "label": "A",
+        "text": "3"
+      },
+      {
+        "label": "B",
+        "text": "6"
+      },
+      {
+        "label": "C",
+        "text": "12"
+      },
+      {
+        "label": "D",
+        "text": "48"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "If A is an n x n matrix, then |kA| = k^n |A|. Here, n = 2 and k = 4. So, |4A| = 4^2 * |A| = 16 * 3 = 48.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The vector equation of the line passing through the point with position vector a and parallel to the vector b is:",
+    "topic": "Three Dimensional Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "r = a + λb"
+      },
+      {
+        "label": "B",
+        "text": "r = b + λa"
+      },
+      {
+        "label": "C",
+        "text": "r = a x b"
+      },
+      {
+        "label": "D",
+        "text": "r = a . b"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The vector equation of a line passing through a point with position vector a and parallel to vector b is given by r = a + λb, where λ is a scalar.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of tan^-1(1) + cos^-1(-1/2) + sin^-1(-1/2) is:",
+    "topic": "Inverse Trigonometric Functions",
+    "options": [
+      {
+        "label": "A",
+        "text": "π"
+      },
+      {
+        "label": "B",
+        "text": "3π/4"
+      },
+      {
+        "label": "C",
+        "text": "5π/6"
+      },
+      {
+        "label": "D",
+        "text": "π/2"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "tan^-1(1) = π/4, cos^-1(-1/2) = 2π/3, sin^-1(-1/2) = -π/6. Therefore, π/4 + 2π/3 - π/6 = (3π + 8π - 2π)/12 = 9π/12 = 3π/4.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The value of ∫(sin^2(x) - cos^2(x))dx is:",
+    "topic": "Integrals",
+    "options": [
+      {
+        "label": "A",
+        "text": "-sin(2x) + C"
+      },
+      {
+        "label": "B",
+        "text": "-cos(2x) + C"
+      },
+      {
+        "label": "C",
+        "text": "-(1/2)sin(2x) + C"
+      },
+      {
+        "label": "D",
+        "text": "-(1/2)cos(2x) + C"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "∫(sin^2(x) - cos^2(x))dx = ∫-cos(2x)dx = -(1/2)sin(2x) + C",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  }
+]

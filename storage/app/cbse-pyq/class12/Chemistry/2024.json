@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Which of the following coordination compounds exhibits ionization isomerism?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "[Co(NH3)5Br]SO4"
+      },
+      {
+        "label": "B",
+        "text": "[Co(NH3)6]Cl3"
+      },
+      {
+        "label": "C",
+        "text": "[Co(en)3]Cl3"
+      },
+      {
+        "label": "D",
+        "text": "[Ni(CO)4]"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Ionization isomerism occurs when a counter ion in a complex salt exchanges with a ligand inside the coordination sphere. In [Co(NH3)5Br]SO4, the Br- and SO42- can exchange positions.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the IUPAC name of the complex [Pt(NH3)2Cl2]?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "Diamminedichloridoplatinum(II)"
+      },
+      {
+        "label": "B",
+        "text": "Diamminedichloroplatinate(II)"
+      },
+      {
+        "label": "C",
+        "text": "Dichlorodiammineplatinum(II)"
+      },
+      {
+        "label": "D",
+        "text": "Dichlorodiamminoplatinate(II)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The IUPAC name is Diamminedichloridoplatinum(II). The ligands are named alphabetically (ammine before chlorido), and the oxidation state of platinum is +2.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is NOT an ambidentate ligand?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "CN−"
+      },
+      {
+        "label": "B",
+        "text": "NO2−"
+      },
+      {
+        "label": "C",
+        "text": "SCN−"
+      },
+      {
+        "label": "D",
+        "text": "NH3"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Ambidentate ligands can coordinate through two different atoms. CN−, NO2−, and SCN− can coordinate through C/N, N/O, and S/N respectively. NH3 can only coordinate through N.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What type of isomerism is exhibited by [Co(en)3]Cl3?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "Geometrical isomerism"
+      },
+      {
+        "label": "B",
+        "text": "Optical isomerism"
+      },
+      {
+        "label": "C",
+        "text": "Linkage isomerism"
+      },
+      {
+        "label": "D",
+        "text": "Ionization isomerism"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "[Co(en)3]Cl3 exhibits optical isomerism because the complex ion [Co(en)3]3+ is chiral and exists as non-superimposable mirror images.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following complexes is expected to have the highest Δo (crystal field splitting energy)?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "[Co(NH3)6]3+"
+      },
+      {
+        "label": "B",
+        "text": "[CoCl6]3−"
+      },
+      {
+        "label": "C",
+        "text": "[Co(H2O)6]3+"
+      },
+      {
+        "label": "D",
+        "text": "[Co(en)3]3+"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Ethylenediamine (en) is a strong field ligand, leading to a higher crystal field splitting energy (Δo) compared to NH3, H2O, and Cl−.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the coordination number of cobalt in [Co(en)2Cl2]+?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "4"
+      },
+      {
+        "label": "B",
+        "text": "6"
+      },
+      {
+        "label": "C",
+        "text": "2"
+      },
+      {
+        "label": "D",
+        "text": "3"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Each ethylenediamine (en) is a bidentate ligand, contributing 2 to the coordination number. Two en ligands contribute 4, and two Cl ligands contribute 2, for a total of 6.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is the strongest reducing agent?",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Li"
+      },
+      {
+        "label": "B",
+        "text": "F2"
+      },
+      {
+        "label": "C",
+        "text": "Ag"
+      },
+      {
+        "label": "D",
+        "text": "Cu"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Lithium (Li) has the most negative standard reduction potential, making it the strongest reducing agent.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the cell potential for the reaction Zn(s) + Cu2+(aq) → Zn2+(aq) + Cu(s) if [Zn2+] = 0.1 M and [Cu2+] = 1.0 M at 25°C? (E°cell = 1.10 V)",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "1.13 V"
+      },
+      {
+        "label": "B",
+        "text": "1.07 V"
+      },
+      {
+        "label": "C",
+        "text": "1.10 V"
+      },
+      {
+        "label": "D",
+        "text": "1.04 V"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using the Nernst equation: Ecell = E°cell - (0.0591/n)log(Q). Here, n = 2 and Q = [Zn2+]/[Cu2+] = 0.1/1.0 = 0.1. Ecell = 1.10 - (0.0591/2)log(0.1) = 1.10 + 0.02955 = 1.12955 ≈ 1.13 V",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "The conductivity of a solution containing 1 g of NaCl in 100 mL of water is X S cm-1. What is its molar conductivity if the molar mass of NaCl is 58.5 g/mol?",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "58.5X S cm2 mol-1"
+      },
+      {
+        "label": "B",
+        "text": "5.85X S cm2 mol-1"
+      },
+      {
+        "label": "C",
+        "text": "0.585X S cm2 mol-1"
+      },
+      {
+        "label": "D",
+        "text": "585X S cm2 mol-1"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Molarity = (1 g / 58.5 g/mol) / (0.1 L) = 0.1709 mol/L = 1.709 mol/m3. Molar conductivity (Λm) = κ / C = (X S/cm) / (1 g / 58.5 g/mol / 100 mL) = (X * 1000) / (1/58.5 * 10) = X * 585.  So, Λm = 585X S cm2 mol-1",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the effect of temperature on the molar conductivity of an electrolyte solution?",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Decreases with increasing temperature"
+      },
+      {
+        "label": "B",
+        "text": "Increases with increasing temperature"
+      },
+      {
+        "label": "C",
+        "text": "Remains constant with increasing temperature"
+      },
+      {
+        "label": "D",
+        "text": "First increases then decreases"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "As temperature increases, the kinetic energy of ions increases, leading to higher mobility and thus increased molar conductivity.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the major product formed when phenol reacts with bromine water?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "o-Bromophenol"
+      },
+      {
+        "label": "B",
+        "text": "p-Bromophenol"
+      },
+      {
+        "label": "C",
+        "text": "2,4,6-Tribromophenol"
+      },
+      {
+        "label": "D",
+        "text": "Bromobenzene"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Phenol reacts with bromine water to give a white precipitate of 2,4,6-tribromophenol due to the activation of the benzene ring by the -OH group.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following reagents can be used to distinguish between ethanol and phenol?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "NaOH"
+      },
+      {
+        "label": "B",
+        "text": "FeCl3"
+      },
+      {
+        "label": "C",
+        "text": "Na"
+      },
+      {
+        "label": "D",
+        "text": "KMnO4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Ferric chloride (FeCl3) gives a violet color with phenol due to the formation of a complex, while ethanol does not react.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the product formed when anisole reacts with HI?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Phenol and CH3I"
+      },
+      {
+        "label": "B",
+        "text": "Iodobenzene and CH3OH"
+      },
+      {
+        "label": "C",
+        "text": "Benzene and CH3I"
+      },
+      {
+        "label": "D",
+        "text": "Iodobenzene and CH4"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Anisole (methoxybenzene) reacts with HI to form phenol and methyl iodide (CH3I) due to the cleavage of the C-O bond.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following ethers will produce ethanol upon cleavage with HI?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH3OCH3"
+      },
+      {
+        "label": "B",
+        "text": "CH3OC2H5"
+      },
+      {
+        "label": "C",
+        "text": "C2H5OC2H5"
+      },
+      {
+        "label": "D",
+        "text": "C6H5OCH3"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Diethyl ether (C2H5OC2H5) reacts with HI to produce two molecules of ethanol.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of pyridine in the acylation of alcohols or phenols?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "To act as a catalyst"
+      },
+      {
+        "label": "B",
+        "text": "To remove HCl formed during the reaction"
+      },
+      {
+        "label": "C",
+        "text": "To increase the rate of reaction"
+      },
+      {
+        "label": "D",
+        "text": "To prevent polymerization"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Pyridine is used to neutralize the HCl formed during acylation, preventing it from protonating the alcohol or phenol and hindering the reaction.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the major product formed when propan-2-ol is heated with concentrated H2SO4 at 443 K?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Propene"
+      },
+      {
+        "label": "B",
+        "text": "Propanone"
+      },
+      {
+        "label": "C",
+        "text": "Propanal"
+      },
+      {
+        "label": "D",
+        "text": "Propan-1-ol"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Propan-2-ol undergoes dehydration in the presence of concentrated H2SO4 at 443 K to form propene.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Arrange the following compounds in increasing order of their boiling points: Ethanol, Dimethyl ether, Methane, Water",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Methane < Dimethyl ether < Ethanol < Water"
+      },
+      {
+        "label": "B",
+        "text": "Dimethyl ether < Methane < Ethanol < Water"
+      },
+      {
+        "label": "C",
+        "text": "Methane < Dimethyl ether < Water < Ethanol"
+      },
+      {
+        "label": "D",
+        "text": "Water < Ethanol < Dimethyl ether < Methane"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Boiling points increase with increasing molecular weight and strength of intermolecular forces. Methane has weak van der Waals forces, dimethyl ether has dipole-dipole interactions, ethanol has hydrogen bonding, and water has stronger hydrogen bonding.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Which of the following is the strongest acid?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Phenol"
+      },
+      {
+        "label": "B",
+        "text": "o-Nitrophenol"
+      },
+      {
+        "label": "C",
+        "text": "o-Cresol"
+      },
+      {
+        "label": "D",
+        "text": "Ethanol"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The nitro group (-NO2) is an electron-withdrawing group, which stabilizes the phenoxide ion and increases the acidity of o-nitrophenol.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the product formed when benzaldehyde reacts with concentrated NaOH?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Benzoic acid and benzyl alcohol"
+      },
+      {
+        "label": "B",
+        "text": "Benzene and methanol"
+      },
+      {
+        "label": "C",
+        "text": "Toluene and water"
+      },
+      {
+        "label": "D",
+        "text": "Phenol and formic acid"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Benzaldehyde undergoes Cannizzaro reaction with concentrated NaOH to form benzoic acid and benzyl alcohol.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following reagents can be used to distinguish between acetaldehyde and acetone?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Tollens' reagent"
+      },
+      {
+        "label": "B",
+        "text": "Fehling's solution"
+      },
+      {
+        "label": "C",
+        "text": "Iodoform test"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Acetaldehyde responds to all three tests, while acetone only responds to the iodoform test. Tollens' and Fehling's reagents are used to distinguish aldehydes from ketones, and the iodoform test distinguishes methyl ketones from other ketones.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the product formed when a ketone reacts with hydrazine followed by heating with KOH in ethylene glycol?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Alkane"
+      },
+      {
+        "label": "B",
+        "text": "Alcohol"
+      },
+      {
+        "label": "C",
+        "text": "Alkene"
+      },
+      {
+        "label": "D",
+        "text": "Carboxylic acid"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "This is the Wolff-Kishner reduction, which converts a ketone to an alkane.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following carboxylic acids is the strongest acid?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Acetic acid"
+      },
+      {
+        "label": "B",
+        "text": "Formic acid"
+      },
+      {
+        "label": "C",
+        "text": "Benzoic acid"
+      },
+      {
+        "label": "D",
+        "text": "Propanoic acid"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Formic acid (HCOOH) is the strongest acid among the given options because it does not have any electron-donating alkyl groups, which would decrease acidity.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the product formed when an amine reacts with an acid chloride?",
+    "topic": "Amines",
+    "options": [
+      {
+        "label": "A",
+        "text": "Amide"
+      },
+      {
+        "label": "B",
+        "text": "Ester"
+      },
+      {
+        "label": "C",
+        "text": "Alcohol"
+      },
+      {
+        "label": "D",
+        "text": "Alkane"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Amines react with acid chlorides to form amides. This reaction is known as acylation.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following amines can be prepared by Gabriel phthalimide synthesis?",
+    "topic": "Amines",
+    "options": [
+      {
+        "label": "A",
+        "text": "Aniline"
+      },
+      {
+        "label": "B",
+        "text": "Benzylamine"
+      },
+      {
+        "label": "C",
+        "text": "Trimethylamine"
+      },
+      {
+        "label": "D",
+        "text": "N-methylaniline"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Gabriel phthalimide synthesis is used to prepare primary aliphatic amines. Benzylamine is a primary aliphatic amine.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the product formed when aniline reacts with bromine water?",
+    "topic": "Amines",
+    "options": [
+      {
+        "label": "A",
+        "text": "o-Bromoaniline"
+      },
+      {
+        "label": "B",
+        "text": "p-Bromoaniline"
+      },
+      {
+        "label": "C",
+        "text": "2,4,6-Tribromoaniline"
+      },
+      {
+        "label": "D",
+        "text": "Bromobenzene"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Aniline reacts with bromine water to give a white precipitate of 2,4,6-tribromoaniline due to the activation of the benzene ring by the -NH2 group.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

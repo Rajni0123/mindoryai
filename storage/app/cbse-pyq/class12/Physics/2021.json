@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "A charge q is placed at the center of a cube of side l. What is the electric flux through each face of the cube?",
+    "topic": "Electric Charges and Fields",
+    "options": [
+      {
+        "label": "A",
+        "text": "q / (6ε₀)"
+      },
+      {
+        "label": "B",
+        "text": "q / ε₀"
+      },
+      {
+        "label": "C",
+        "text": "q / (4πε₀l)"
+      },
+      {
+        "label": "D",
+        "text": "q / (2ε₀)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "According to Gauss's law, the total electric flux through a closed surface is equal to the charge enclosed divided by ε₀. Since the charge is at the center of the cube, the total flux through the cube is q/ε₀.  A cube has 6 faces, and the flux is equally distributed among them. Therefore, the flux through each face is (q/ε₀) / 6 = q / (6ε₀).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Two point charges +q and -q are placed at points A and B respectively, separated by a small distance. The electric field intensity is zero at:",
+    "topic": "Electric Charges and Fields",
+    "options": [
+      {
+        "label": "A",
+        "text": "a point on the line AB between A and B"
+      },
+      {
+        "label": "B",
+        "text": "a point on the line AB outside A and B and near A"
+      },
+      {
+        "label": "C",
+        "text": "a point on the line AB outside A and B and near B"
+      },
+      {
+        "label": "D",
+        "text": "a point on the perpendicular bisector of AB"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The electric field due to +q and -q will cancel each other at a point on the perpendicular bisector of AB, as the magnitudes of the electric fields will be equal and opposite in direction.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "A parallel plate capacitor is charged and then isolated. The effect of increasing the plate separation on the potential difference between the plates is:",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Decreases"
+      },
+      {
+        "label": "B",
+        "text": "Increases"
+      },
+      {
+        "label": "C",
+        "text": "Remains constant"
+      },
+      {
+        "label": "D",
+        "text": "Becomes zero"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "When the capacitor is isolated, the charge Q remains constant. The capacitance C is given by C = ε₀A/d, where d is the plate separation. Increasing d decreases C. Since V = Q/C, decreasing C increases V.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "The equivalent resistance between points A and B in the given circuit is:",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "R"
+      },
+      {
+        "label": "B",
+        "text": "2R"
+      },
+      {
+        "label": "C",
+        "text": "R/2"
+      },
+      {
+        "label": "D",
+        "text": "4R"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Assuming the circuit consists of two resistors R in parallel, and then the combination in series with another resistor R. The parallel combination has a resistance of R/2.  Adding the series resistor R gives a total resistance of R/2 + R = (3/2)R. If the circuit consists of 4 resistors connected in series, then the equivalent resistance is 4R. If the circuit consists of 2 resistors in series, then the equivalent resistance is 2R. If the circuit consists of 2 resistors in parallel, then the equivalent resistance is R/2. Without the circuit diagram, we assume the simplest case of a single resistor between A and B, hence the answer is R.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "State Kirchhoff's junction rule. Which conservation principle is it based on?",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "The sum of currents entering a junction equals the sum of currents leaving it; Conservation of energy"
+      },
+      {
+        "label": "B",
+        "text": "The sum of currents entering a junction equals the sum of currents leaving it; Conservation of charge"
+      },
+      {
+        "label": "C",
+        "text": "The sum of voltages around a closed loop is zero; Conservation of energy"
+      },
+      {
+        "label": "D",
+        "text": "The sum of voltages around a closed loop is zero; Conservation of charge"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Kirchhoff's junction rule states that the total current entering a junction is equal to the total current leaving the junction. This rule is based on the conservation of electric charge.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "A proton and an alpha particle enter a uniform magnetic field perpendicularly with the same speed. The ratio of the radii of their circular paths is:",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "1:1"
+      },
+      {
+        "label": "B",
+        "text": "1:2"
+      },
+      {
+        "label": "C",
+        "text": "2:1"
+      },
+      {
+        "label": "D",
+        "text": "4:1"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The radius of the circular path is given by r = mv/qB. For a proton, mass = m, charge = e. For an alpha particle, mass = 4m, charge = 2e. Therefore, r_proton = mv/eB and r_alpha = (4m)v/(2e)B = 2mv/eB. The ratio r_proton/r_alpha = (mv/eB) / (2mv/eB) = 1/2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Two long parallel wires are carrying currents I1 and I2 in the same direction. The force between them is:",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "Attractive and proportional to I1I2"
+      },
+      {
+        "label": "B",
+        "text": "Repulsive and proportional to I1I2"
+      },
+      {
+        "label": "C",
+        "text": "Attractive and proportional to (I1+I2)"
+      },
+      {
+        "label": "D",
+        "text": "Repulsive and proportional to (I1+I2)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "When two parallel wires carry currents in the same direction, the magnetic field produced by one wire exerts an attractive force on the other wire. The force per unit length is proportional to the product of the currents, I1I2.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A circular loop of area A is placed in a magnetic field B. The magnetic flux linked with the loop when the plane of the loop is perpendicular to the magnetic field is:",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "BA"
+      },
+      {
+        "label": "B",
+        "text": "BA/2"
+      },
+      {
+        "label": "C",
+        "text": "Zero"
+      },
+      {
+        "label": "D",
+        "text": "2BA"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Magnetic flux is given by Φ = B.A = BAcosθ. When the plane of the loop is perpendicular to the magnetic field, the angle θ between the area vector and the magnetic field is 0 degrees. Therefore, Φ = BAcos(0) = BA.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Lenz's law is a consequence of the law of conservation of:",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Charge"
+      },
+      {
+        "label": "B",
+        "text": "Momentum"
+      },
+      {
+        "label": "C",
+        "text": "Energy"
+      },
+      {
+        "label": "D",
+        "text": "Mass"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Lenz's law states that the direction of the induced current is such that it opposes the change that produces it. This opposition is a consequence of the conservation of energy; the induced current cannot create energy, but rather converts mechanical energy into electrical energy.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The RMS value of an alternating current is equal to:",
+    "topic": "Alternating Current",
+    "options": [
+      {
+        "label": "A",
+        "text": "The peak value"
+      },
+      {
+        "label": "B",
+        "text": "The peak value divided by √2"
+      },
+      {
+        "label": "C",
+        "text": "The peak value multiplied by √2"
+      },
+      {
+        "label": "D",
+        "text": "The average value"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The RMS (Root Mean Square) value of an alternating current is defined as Irms = I₀ / √2, where I₀ is the peak value of the current.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In a series LCR circuit, the voltage across the inductor is VL, the voltage across the capacitor is VC, and the voltage across the resistor is VR. The applied voltage V is:",
+    "topic": "Alternating Current",
+    "options": [
+      {
+        "label": "A",
+        "text": "VL + VC + VR"
+      },
+      {
+        "label": "B",
+        "text": "√(VL² + VC² + VR²)"
+      },
+      {
+        "label": "C",
+        "text": "√(VR² + (VL - VC)²)"
+      },
+      {
+        "label": "D",
+        "text": "√(VR² - (VL - VC)²)"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "In a series LCR circuit, the voltage across the inductor and capacitor are out of phase by 180 degrees. The total voltage is the phasor sum of VR, VL, and VC, which is given by V = √(VR² + (VL - VC)²).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the phase difference between the voltage and current in a purely inductive AC circuit?",
+    "topic": "Alternating Current",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "π/2"
+      },
+      {
+        "label": "C",
+        "text": "π"
+      },
+      {
+        "label": "D",
+        "text": "π/4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "In a purely inductive AC circuit, the current lags behind the voltage by a phase angle of π/2 (90 degrees).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Write the expression for the speed of electromagnetic waves in free space in terms of μ₀ and ε₀.",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "c = √(μ₀ε₀)"
+      },
+      {
+        "label": "B",
+        "text": "c = 1/√(μ₀ε₀)"
+      },
+      {
+        "label": "C",
+        "text": "c = μ₀ε₀"
+      },
+      {
+        "label": "D",
+        "text": "c = 1/(μ₀ε₀)"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The speed of electromagnetic waves in free space is given by c = 1/√(μ₀ε₀), where μ₀ is the permeability of free space and ε₀ is the permittivity of free space.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following electromagnetic radiations has the smallest wavelength?",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "Infrared waves"
+      },
+      {
+        "label": "B",
+        "text": "X-rays"
+      },
+      {
+        "label": "C",
+        "text": "Ultraviolet rays"
+      },
+      {
+        "label": "D",
+        "text": "Microwaves"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Among the given options, X-rays have the smallest wavelength. The order of wavelengths from smallest to largest is: Gamma rays, X-rays, Ultraviolet, Visible, Infrared, Microwaves, Radio waves.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the effect on the interference fringes in Young's double-slit experiment if the separation between the slits is increased?",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fringe width increases"
+      },
+      {
+        "label": "B",
+        "text": "Fringe width decreases"
+      },
+      {
+        "label": "C",
+        "text": "Fringe width remains the same"
+      },
+      {
+        "label": "D",
+        "text": "Fringes disappear"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The fringe width (β) in Young's double-slit experiment is given by β = λD/d, where λ is the wavelength of light, D is the distance between the slits and the screen, and d is the separation between the slits. If d increases, β decreases.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "State Huygens' principle.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Each point on a wavefront is a source of secondary wavelets, and the envelope of these wavelets determines the position of the new wavefront at a later time."
+      },
+      {
+        "label": "B",
+        "text": "Light travels in straight lines."
+      },
+      {
+        "label": "C",
+        "text": "The angle of incidence equals the angle of reflection."
+      },
+      {
+        "label": "D",
+        "text": "Light bends when it passes from one medium to another."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Huygens' principle states that each point on a wavefront serves as a source of secondary spherical wavelets. The new position of the wavefront after a time t is the envelope of these secondary wavelets.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the condition for constructive interference in terms of path difference?",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Path difference = (n + 1/2)λ, where n = 0, 1, 2, ..."
+      },
+      {
+        "label": "B",
+        "text": "Path difference = nλ, where n = 0, 1, 2, ..."
+      },
+      {
+        "label": "C",
+        "text": "Path difference = λ/4"
+      },
+      {
+        "label": "D",
+        "text": "Path difference = λ/2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For constructive interference, the path difference between the interfering waves must be an integral multiple of the wavelength (λ). Therefore, the condition is path difference = nλ, where n = 0, 1, 2, ...",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define the term 'stopping potential' in photoelectric effect.",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "The minimum positive potential required to stop the emission of photoelectrons."
+      },
+      {
+        "label": "B",
+        "text": "The minimum negative potential required to stop the emission of photoelectrons."
+      },
+      {
+        "label": "C",
+        "text": "The potential at which the photoelectric current is maximum."
+      },
+      {
+        "label": "D",
+        "text": "The potential at which the intensity of light is maximum."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The stopping potential is the minimum negative potential applied to the anode for which the photoelectric current becomes zero. It is the potential required to stop the most energetic photoelectrons from reaching the anode.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "The de Broglie wavelength of a particle of mass m and kinetic energy K is:",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "λ = h / √(2mK)"
+      },
+      {
+        "label": "B",
+        "text": "λ = √(2mK) / h"
+      },
+      {
+        "label": "C",
+        "text": "λ = h / (mK)"
+      },
+      {
+        "label": "D",
+        "text": "λ = mK / h"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The de Broglie wavelength is given by λ = h/p, where p is the momentum. Kinetic energy K = p²/2m, so p = √(2mK). Therefore, λ = h / √(2mK).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the effect of increasing the intensity of incident light on the photoelectric current?",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Photoelectric current increases"
+      },
+      {
+        "label": "B",
+        "text": "Photoelectric current decreases"
+      },
+      {
+        "label": "C",
+        "text": "Photoelectric current remains the same"
+      },
+      {
+        "label": "D",
+        "text": "Photoelectric current becomes zero"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Increasing the intensity of incident light increases the number of photons incident on the metal surface per unit time. This results in an increase in the number of photoelectrons emitted, and hence the photoelectric current increases.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The work function of a metal is 4 eV. What is the maximum kinetic energy of the photoelectrons emitted when light of energy 5 eV is incident on the metal?",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "1 eV"
+      },
+      {
+        "label": "B",
+        "text": "9 eV"
+      },
+      {
+        "label": "C",
+        "text": "5 eV"
+      },
+      {
+        "label": "D",
+        "text": "4 eV"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "According to Einstein's photoelectric equation, K.E.max = hν - φ, where hν is the energy of the incident photon and φ is the work function. In this case, K.E.max = 5 eV - 4 eV = 1 eV.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the working principle of a potentiometer. How can it be used to compare the emf of two cells?",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Potentiometer works on the principle that the potential drop across a uniform wire is directly proportional to the length of the wire when a constant current flows through it. To compare emfs, balance each cell individually and compare the balancing lengths."
+      },
+      {
+        "label": "B",
+        "text": "Potentiometer works on the principle of Wheatstone bridge. To compare emfs, connect the cells in series and find the balancing point."
+      },
+      {
+        "label": "C",
+        "text": "Potentiometer works on the principle of measuring resistance. To compare emfs, measure the internal resistance of each cell."
+      },
+      {
+        "label": "D",
+        "text": "Potentiometer works on the principle of measuring current. To compare emfs, measure the current drawn by each cell."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A potentiometer works on the principle that the potential drop across a uniform wire is directly proportional to the length of the wire when a constant current flows through it. To compare the emfs of two cells, each cell is balanced individually against the potential drop across the potentiometer wire. The ratio of the emfs is then equal to the ratio of the balancing lengths.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Derive an expression for the magnetic field at a point on the axis of a circular current loop.",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "The magnetic field is directly proportional to the current and inversely proportional to the distance from the loop."
+      },
+      {
+        "label": "B",
+        "text": "The magnetic field is zero at the center of the loop and increases linearly with distance."
+      },
+      {
+        "label": "C",
+        "text": "The magnetic field at a point on the axis is given by B = (μ₀IR²)/(2(R²+x²)^(3/2)), where R is the radius of the loop and x is the distance from the center of the loop."
+      },
+      {
+        "label": "D",
+        "text": "The magnetic field is uniform throughout the loop."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Using Biot-Savart law, one can derive the expression for the magnetic field at a point on the axis of a circular current loop. The expression is B = (μ₀IR²)/(2(R²+x²)^(3/2)), where R is the radius of the loop and x is the distance from the center of the loop.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the phenomenon of total internal reflection. What are the conditions necessary for total internal reflection to occur?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Total internal reflection occurs when light travels from a rarer to a denser medium. The angle of incidence must be less than the critical angle."
+      },
+      {
+        "label": "B",
+        "text": "Total internal reflection occurs when light travels from a denser to a rarer medium. The angle of incidence must be greater than the critical angle."
+      },
+      {
+        "label": "C",
+        "text": "Total internal reflection occurs when light travels from a denser to a rarer medium. The angle of incidence must be less than the critical angle."
+      },
+      {
+        "label": "D",
+        "text": "Total internal reflection occurs when light travels from a rarer to a denser medium. The angle of incidence must be greater than the critical angle."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Total internal reflection (TIR) is the phenomenon where light traveling from a denser medium to a rarer medium is completely reflected back into the denser medium at the interface. The conditions necessary for TIR are: (1) Light must travel from a denser to a rarer medium. (2) The angle of incidence must be greater than the critical angle.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Draw a ray diagram to show the formation of the image of an object placed between f and 2f of a convex lens. Write the characteristics of the image formed.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "The image is real, inverted, and diminished."
+      },
+      {
+        "label": "B",
+        "text": "The image is virtual, erect, and magnified."
+      },
+      {
+        "label": "C",
+        "text": "The image is real, inverted, and magnified."
+      },
+      {
+        "label": "D",
+        "text": "The image is virtual, inverted, and magnified."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "When an object is placed between f and 2f of a convex lens, the image formed is real, inverted, and magnified. The image is formed beyond 2f on the other side of the lens.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

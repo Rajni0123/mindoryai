@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "What is the purpose of the notices and advertisements in newspapers?",
+    "topic": "Notice Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "To entertain readers with fictional stories"
+      },
+      {
+        "label": "B",
+        "text": "To inform the public about events, sales, or announcements"
+      },
+      {
+        "label": "C",
+        "text": "To promote personal opinions and beliefs"
+      },
+      {
+        "label": "D",
+        "text": "To provide historical accounts of past events"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Notices and advertisements serve to convey information to a wide audience, including announcements, sales, and events.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the word limit for a formal letter?",
+    "topic": "Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "50 words"
+      },
+      {
+        "label": "B",
+        "text": "120-150 words"
+      },
+      {
+        "label": "C",
+        "text": "200-250 words"
+      },
+      {
+        "label": "D",
+        "text": "300-350 words"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A formal letter should be concise and to the point, typically falling within the 120-150 word range.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the main idea of the poem 'My Mother at Sixty-Six'?",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "The joy of traveling with one's mother"
+      },
+      {
+        "label": "B",
+        "text": "The poet's fear of losing her mother to old age and death"
+      },
+      {
+        "label": "C",
+        "text": "The beauty of nature during a car ride"
+      },
+      {
+        "label": "D",
+        "text": "The importance of family traditions"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem explores the poet's anxiety and fear associated with her mother's aging and the inevitable separation that death brings.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What does the story 'The Rattrap' highlight?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of wealth and status"
+      },
+      {
+        "label": "B",
+        "text": "The inherent goodness in human beings and the possibility of redemption"
+      },
+      {
+        "label": "C",
+        "text": "The dangers of traveling alone"
+      },
+      {
+        "label": "D",
+        "text": "The benefits of a capitalist society"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story emphasizes the potential for human transformation and the innate goodness that can be awakened through kindness and understanding.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the significance of the title 'Indigo'?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the color of the sky"
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the natural dye that the Indian peasants were forced to grow"
+      },
+      {
+        "label": "C",
+        "text": "It represents the British flag"
+      },
+      {
+        "label": "D",
+        "text": "It is the name of a village in India"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title 'Indigo' directly relates to the indigo crop, which was central to the exploitation of Indian peasants by British landlords.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "You are the Secretary of the Literary Club of your school. Draft a notice informing students about an inter-school debate competition.",
+    "topic": "Notice Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A notice announcing a school picnic."
+      },
+      {
+        "label": "B",
+        "text": "A notice about an inter-school debate competition, including date, time, venue, and topic."
+      },
+      {
+        "label": "C",
+        "text": "A notice requesting students to donate books to the library."
+      },
+      {
+        "label": "D",
+        "text": "A notice about a sports day event."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The notice must clearly state the event (inter-school debate), date, time, venue, and the topic of the debate to inform interested students.",
+    "difficulty": "medium",
+    "marks": 4,
+    "section": "B"
+  },
+  {
+    "question_text": "Write a letter to the editor of a newspaper about the increasing noise pollution in your city.",
+    "topic": "Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A letter complaining about the lack of parking spaces in the city."
+      },
+      {
+        "label": "B",
+        "text": "A letter to the editor expressing concern about increasing noise pollution, its sources, and suggesting solutions."
+      },
+      {
+        "label": "C",
+        "text": "A letter requesting better street lighting in the neighborhood."
+      },
+      {
+        "label": "D",
+        "text": "A letter praising the city's cleanliness drive."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The letter should address the specific issue of noise pollution, identify its causes (traffic, construction, etc.), and propose measures to mitigate it.",
+    "difficulty": "medium",
+    "marks": 6,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the significance of the line, 'Life is what it is all about' in the poem 'Keeping Quiet'.",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "Life is about constant activity and achievement."
+      },
+      {
+        "label": "B",
+        "text": "Life is about introspection, understanding, and appreciating the present moment."
+      },
+      {
+        "label": "C",
+        "text": "Life is about accumulating wealth and possessions."
+      },
+      {
+        "label": "D",
+        "text": "Life is about competing with others and being successful."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The line suggests that true understanding and meaning in life come from introspection and appreciating the present, rather than constant activity.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What was the 'peddler's' view about the world?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "The world is a beautiful and generous place."
+      },
+      {
+        "label": "B",
+        "text": "The world is a rattrap, offering baits to trap people."
+      },
+      {
+        "label": "C",
+        "text": "The world is a place of endless opportunities."
+      },
+      {
+        "label": "D",
+        "text": "The world is a place of justice and fairness."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The peddler viewed the world as a rattrap, offering temptations (baits) that ultimately lead to trouble and confinement.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the efforts made by Gandhi to improve the cultural and social backwardness in the villages of Champaran.",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gandhi focused solely on political activism and ignored social issues."
+      },
+      {
+        "label": "B",
+        "text": "Gandhi opened schools, assigned teachers, and appealed to doctors to improve health conditions in Champaran villages."
+      },
+      {
+        "label": "C",
+        "text": "Gandhi encouraged the villagers to migrate to cities for better opportunities."
+      },
+      {
+        "label": "D",
+        "text": "Gandhi provided financial aid to the villagers without addressing their social needs."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Gandhi addressed the cultural and social backwardness by establishing schools, assigning teachers, and seeking medical assistance to improve the overall well-being of the villagers.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What does Mr. Lamb teach Derry in 'On the Face of It'?",
+    "topic": "On the Face of It",
+    "options": [
+      {
+        "label": "A",
+        "text": "To hate everyone."
+      },
+      {
+        "label": "B",
+        "text": "To isolate himself from the world."
+      },
+      {
+        "label": "C",
+        "text": "To overcome his insecurities, embrace life, and not focus on his physical appearance."
+      },
+      {
+        "label": "D",
+        "text": "To seek revenge on those who hurt him."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Mr. Lamb teaches Derry to look beyond his physical appearance, overcome his insecurities, and embrace life with optimism and acceptance.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Discuss the theme of exploitation as depicted in the story 'The Rattrap'.",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "The story does not depict exploitation."
+      },
+      {
+        "label": "B",
+        "text": "The story shows how the peddler exploits others for his personal gain."
+      },
+      {
+        "label": "C",
+        "text": "The story highlights how society, like a rattrap, exploits individuals through temptations and false promises, leading them to despair."
+      },
+      {
+        "label": "D",
+        "text": "The story focuses solely on the peddler's redemption and ignores the theme of exploitation."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The story portrays society as a 'rattrap' that exploits individuals by offering them temptations and false promises, ultimately leading them to despair and confinement, as seen in the peddler's experiences.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Write a report on a blood donation camp organized by your school.",
+    "topic": "Report Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A report on a science exhibition organized by the school."
+      },
+      {
+        "label": "B",
+        "text": "A report detailing the blood donation camp, including the date, time, venue, number of donors, and the overall success of the event."
+      },
+      {
+        "label": "C",
+        "text": "A report on the annual sports day of the school."
+      },
+      {
+        "label": "D",
+        "text": "A report on a cultural program organized by the school."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The report should include essential details such as the date, time, venue, number of donors, and the overall success of the blood donation camp.",
+    "difficulty": "medium",
+    "marks": 6,
+    "section": "B"
+  },
+  {
+    "question_text": "How did the ironmaster try to reform the peddler?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "By threatening him with the police."
+      },
+      {
+        "label": "B",
+        "text": "By offering him a job at the mill and treating him like an old acquaintance."
+      },
+      {
+        "label": "C",
+        "text": "By ignoring him completely."
+      },
+      {
+        "label": "D",
+        "text": "By forcing him to attend church."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The ironmaster, mistaking the peddler for an old acquaintance, offered him a job at the mill and treated him with kindness, hoping to reform him.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the central theme of the poem 'Aunt Jennifer's Tigers'?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "The beauty of nature."
+      },
+      {
+        "label": "B",
+        "text": "The joy of embroidery."
+      },
+      {
+        "label": "C",
+        "text": "The constraints and oppression faced by women in a patriarchal society."
+      },
+      {
+        "label": "D",
+        "text": "The importance of family traditions."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The poem explores the themes of oppression, constraint, and the lack of freedom experienced by women within a patriarchal society.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the significance of the title 'Lost Spring'?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the season of spring."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the lost childhood and innocence of children forced into labor."
+      },
+      {
+        "label": "C",
+        "text": "It represents the beauty of nature."
+      },
+      {
+        "label": "D",
+        "text": "It is the name of a village in India."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title 'Lost Spring' symbolizes the lost childhood and innocence of children who are forced into labor and deprived of their right to education and play.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Write an article on 'The Importance of Reading Books'.",
+    "topic": "Article Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "An article on the benefits of playing sports."
+      },
+      {
+        "label": "B",
+        "text": "An article highlighting the importance of reading books, including its benefits for knowledge, vocabulary, and personal growth."
+      },
+      {
+        "label": "C",
+        "text": "An article on the dangers of social media."
+      },
+      {
+        "label": "D",
+        "text": "An article on the importance of environmental conservation."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The article should emphasize the importance of reading books for expanding knowledge, improving vocabulary, and fostering personal growth and critical thinking.",
+    "difficulty": "medium",
+    "marks": 6,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the reason for the sadness of the inhabitants of the district of Alsace?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "A natural disaster had struck the district."
+      },
+      {
+        "label": "B",
+        "text": "The district was being taken over by the Prussians, and they were losing their language and culture."
+      },
+      {
+        "label": "C",
+        "text": "The people were suffering from a severe economic crisis."
+      },
+      {
+        "label": "D",
+        "text": "A deadly disease had spread throughout the district."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The sadness stemmed from the Prussian takeover, which meant the loss of their language, culture, and identity.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How did Douglas overcome his fear of water?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "By completely avoiding water."
+      },
+      {
+        "label": "B",
+        "text": "By taking swimming lessons from a professional instructor and practicing diligently."
+      },
+      {
+        "label": "C",
+        "text": "By relying on his friends to protect him in the water."
+      },
+      {
+        "label": "D",
+        "text": "By simply ignoring his fear and hoping it would go away."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Douglas overcame his fear by seeking professional help, taking swimming lessons, and practicing consistently until he conquered his fear.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the character of Sophie in 'Going Places'.",
+    "topic": "Going Places",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sophie is a realistic and practical girl."
+      },
+      {
+        "label": "B",
+        "text": "Sophie is a daydreamer who lives in a world of fantasy and unrealistic aspirations."
+      },
+      {
+        "label": "C",
+        "text": "Sophie is a shy and introverted girl."
+      },
+      {
+        "label": "D",
+        "text": "Sophie is a confident and ambitious girl with clear goals."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Sophie is portrayed as a daydreamer who often escapes into a world of fantasy and unrealistic aspirations, contrasting with the reality of her circumstances.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the moral of the story 'The Last Lesson'?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of learning foreign languages."
+      },
+      {
+        "label": "B",
+        "text": "The importance of preserving one's language and culture and the regret of neglecting education."
+      },
+      {
+        "label": "C",
+        "text": "The benefits of military conquest."
+      },
+      {
+        "label": "D",
+        "text": "The futility of resisting change."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story emphasizes the importance of preserving one's language and culture and highlights the regret that comes from neglecting education and taking things for granted.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "You are the Head Boy/Head Girl of your school. Write a speech on the occasion of Teacher's Day.",
+    "topic": "Speech Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A speech on the importance of sports in school."
+      },
+      {
+        "label": "B",
+        "text": "A speech honoring teachers, expressing gratitude for their dedication, and highlighting their role in shaping students' lives."
+      },
+      {
+        "label": "C",
+        "text": "A speech on the benefits of technology in education."
+      },
+      {
+        "label": "D",
+        "text": "A speech on the importance of environmental awareness."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The speech should express gratitude to teachers, acknowledge their hard work and dedication, and emphasize their significant role in shaping the lives and futures of students.",
+    "difficulty": "medium",
+    "marks": 6,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the ending of 'The Third Level'?",
+    "topic": "The Third Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "It proves that time travel is possible."
+      },
+      {
+        "label": "B",
+        "text": "It shows that Charley has completely lost his mind."
+      },
+      {
+        "label": "C",
+        "text": "It suggests that even in the face of modern anxieties, people yearn for simpler, more peaceful times and may create illusions to escape reality."
+      },
+      {
+        "label": "D",
+        "text": "It indicates that Charley has found a way to become rich."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The ending suggests that the desire for a simpler, more peaceful past can lead people to create illusions as a form of escape from the anxieties of modern life.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the central idea of the poem 'A Roadside Stand'?",
+    "topic": "A Roadside Stand",
+    "options": [
+      {
+        "label": "A",
+        "text": "The beauty of the countryside."
+      },
+      {
+        "label": "B",
+        "text": "The importance of helping the poor."
+      },
+      {
+        "label": "C",
+        "text": "The poem explores the plight of poor rural people who seek financial assistance from city dwellers but are often disappointed and exploited."
+      },
+      {
+        "label": "D",
+        "text": "The benefits of modern technology."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The poem focuses on the struggles of rural people who hope to improve their lives by selling goods to city dwellers but often face disappointment and exploitation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the significance of the tigers in 'Aunt Jennifer's Tigers'?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "They represent the beauty of nature."
+      },
+      {
+        "label": "B",
+        "text": "They symbolize Aunt Jennifer's suppressed desires for freedom, strength, and independence."
+      },
+      {
+        "label": "C",
+        "text": "They are simply a decorative element in the embroidery."
+      },
+      {
+        "label": "D",
+        "text": "They represent the dangers of the jungle."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The tigers symbolize Aunt Jennifer's longing for freedom, strength, and independence, which she lacks in her own life due to the constraints of her marriage.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

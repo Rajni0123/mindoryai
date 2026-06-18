@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Two wires of A and B with circular cross-section are made up of the same material with equal lengths. If the resistance of wire A is four times that of B, then the ratio of their radii, rA/rB is:",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "2"
+      },
+      {
+        "label": "B",
+        "text": "1/2"
+      },
+      {
+        "label": "C",
+        "text": "4"
+      },
+      {
+        "label": "D",
+        "text": "1/4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Since R = ρl/A, and A = πr², R = ρl/πr². Given RA = 4RB, so ρl/πrA² = 4(ρl/πrB²). Thus, rB² = 4rA², and rA/rB = 1/2.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The electric potential V at any point (x, y, z) in space is given by V = 4x² Volt. The electric field at the point (1m, 0, 2m) in Volt/m is:",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "8 i"
+      },
+      {
+        "label": "B",
+        "text": "-8 i"
+      },
+      {
+        "label": "C",
+        "text": "8 j"
+      },
+      {
+        "label": "D",
+        "text": "-8 j"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "E = -∇V = -(∂V/∂x i + ∂V/∂y j + ∂V/∂z k).  Here, V = 4x², so E = -8x i. At (1, 0, 2), E = -8 i V/m.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A parallel plate capacitor is charged and then isolated. The effect of increasing the plate separation on charge, potential, capacitance respectively are:",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "constant, decreases, decreases"
+      },
+      {
+        "label": "B",
+        "text": "increases, decreases, decreases"
+      },
+      {
+        "label": "C",
+        "text": "constant, increases, decreases"
+      },
+      {
+        "label": "D",
+        "text": "constant, increases, increases"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Since the capacitor is isolated, the charge remains constant. As the separation increases, capacitance decreases (C = ε₀A/d). Since Q = CV, and Q is constant, V increases.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "A metallic wire is doubled on itself. What will be the ratio of its new resistance to the original resistance?",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "1:1"
+      },
+      {
+        "label": "B",
+        "text": "1:2"
+      },
+      {
+        "label": "C",
+        "text": "1:4"
+      },
+      {
+        "label": "D",
+        "text": "1:8"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "When the wire is doubled on itself, the length becomes half (l/2) and the area becomes double (2A). Therefore, the new resistance R' = ρ(l/2)/(2A) = (1/4)ρl/A = R/4. The ratio is 1:4.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Define the term 'drift velocity' of electrons in a conductor. Hence, obtain the expression for the current through a conductor in terms of drift velocity.",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Average velocity of electrons under electric field; I = neAVd"
+      },
+      {
+        "label": "B",
+        "text": "Random velocity of electrons; I = neAVd"
+      },
+      {
+        "label": "C",
+        "text": "Average velocity of electrons under electric field; I = neA/Vd"
+      },
+      {
+        "label": "D",
+        "text": "Random velocity of electrons; I = neA/Vd"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Drift velocity is the average velocity attained by charged particles (electrons) in a material due to an electric field. The current I = neAVd, where n is the number density of electrons, e is the charge of an electron, A is the area of cross-section, and Vd is the drift velocity.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "State the principle of working of a moving coil galvanometer. Explain why a radial magnetic field is used in a moving coil galvanometer.",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "Torque on a current loop in a magnetic field; to make torque independent of angle"
+      },
+      {
+        "label": "B",
+        "text": "Force on a moving charge in a magnetic field; to maximize the torque"
+      },
+      {
+        "label": "C",
+        "text": "Torque on a current loop in a magnetic field; to minimize the torque"
+      },
+      {
+        "label": "D",
+        "text": "Force on a moving charge in a magnetic field; to make torque independent of angle"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A moving coil galvanometer works on the principle that a current-carrying coil placed in a magnetic field experiences a torque. A radial magnetic field is used to make the torque independent of the angle between the magnetic field and the area vector of the coil, ensuring a linear relationship between current and deflection.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Derive an expression for the magnetic field at a point on the axis of a circular current loop.",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "B = (μ₀IR²)/(2(x²+R²)^(3/2))"
+      },
+      {
+        "label": "B",
+        "text": "B = (μ₀I)/(2R)"
+      },
+      {
+        "label": "C",
+        "text": "B = (μ₀IR)/(2(x²+R²)^(3/2))"
+      },
+      {
+        "label": "D",
+        "text": "B = (μ₀IR²)/(2(x²+R²)^(1/2))"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using Biot-Savart law, the magnetic field at a point on the axis of a circular loop is B = (μ₀IR²)/(2(x²+R²)^(3/2)), where I is the current, R is the radius of the loop, and x is the distance from the center of the loop to the point on the axis.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the term 'mutual inductance' between two coils. Obtain an expression for the mutual inductance of two long coaxial solenoids of the same length wound one over the other.",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Induction due to changing current in another coil; M = (μ₀n₁n₂A)"
+      },
+      {
+        "label": "B",
+        "text": "Induction due to changing current in same coil; M = (μ₀n₁n₂A)"
+      },
+      {
+        "label": "C",
+        "text": "Induction due to changing current in another coil; M = (μ₀n₁n₂Al)"
+      },
+      {
+        "label": "D",
+        "text": "Induction due to changing current in same coil; M = (μ₀n₁n₂Al)"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Mutual inductance is the phenomenon where a changing current in one coil induces an emf in a neighboring coil. For two long coaxial solenoids, M = (μ₀n₁n₂Al), where n₁ and n₂ are the number of turns per unit length, A is the area of cross-section, and l is the length.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the significance of displacement current?",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "It completes the current loop and ensures the consistency of Ampere's law."
+      },
+      {
+        "label": "B",
+        "text": "It decreases the magnetic field."
+      },
+      {
+        "label": "C",
+        "text": "It increases the electric field."
+      },
+      {
+        "label": "D",
+        "text": "It is not important."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Displacement current is important because it completes the current loop in situations where there is a changing electric field, such as in the charging of a capacitor. It ensures the consistency of Ampere's law and the existence of electromagnetic waves.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write two characteristic properties of electromagnetic waves.",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "Travel at speed of light, transverse nature"
+      },
+      {
+        "label": "B",
+        "text": "Travel at speed less than light, longitudinal nature"
+      },
+      {
+        "label": "C",
+        "text": "Travel at speed of sound, transverse nature"
+      },
+      {
+        "label": "D",
+        "text": "Travel at speed of sound, longitudinal nature"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Electromagnetic waves travel at the speed of light in vacuum and are transverse in nature, meaning the electric and magnetic fields are perpendicular to the direction of propagation.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define refractive index. How is it related to the speed of light in a medium?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ratio of speed of light in vacuum to speed in medium; n = c/v"
+      },
+      {
+        "label": "B",
+        "text": "Ratio of speed of light in medium to speed in vacuum; n = c/v"
+      },
+      {
+        "label": "C",
+        "text": "Ratio of speed of light in medium to speed in vacuum; n = v/c"
+      },
+      {
+        "label": "D",
+        "text": "Ratio of speed of light in vacuum to speed in medium; n = v/c"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Refractive index is the ratio of the speed of light in vacuum to the speed of light in a medium. It is given by n = c/v, where c is the speed of light in vacuum and v is the speed of light in the medium.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Draw a ray diagram to show the formation of image when the object is placed between f and 2f of a convex lens.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Real, inverted, and magnified image beyond 2f"
+      },
+      {
+        "label": "B",
+        "text": "Virtual, erect, and magnified image"
+      },
+      {
+        "label": "C",
+        "text": "Real, inverted, and diminished image"
+      },
+      {
+        "label": "D",
+        "text": "Virtual, inverted, and magnified image"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "When an object is placed between f and 2f of a convex lens, the image formed is real, inverted, and magnified, and it is located beyond 2f on the other side of the lens.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the effect on the interference fringes in Young’s double slit experiment due to each of the following: (i) Screen is moved closer to the plane of slits. (ii) Separation between two slits is increased.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Fringes get closer, (ii) Fringes get closer"
+      },
+      {
+        "label": "B",
+        "text": "(i) Fringes get farther, (ii) Fringes get farther"
+      },
+      {
+        "label": "C",
+        "text": "(i) No change, (ii) Fringes get closer"
+      },
+      {
+        "label": "D",
+        "text": "(i) Fringes get closer, (ii) No change"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The fringe width β = λD/d. (i) If the screen is moved closer (D decreases), the fringe width decreases, so fringes get closer. (ii) If the separation between the slits is increased (d increases), the fringe width decreases, so fringes get closer.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Define the term 'work function' of a metal. How is it related to the threshold frequency?",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Minimum energy to eject electron; W₀ = hν₀"
+      },
+      {
+        "label": "B",
+        "text": "Maximum energy to eject electron; W₀ = hν₀"
+      },
+      {
+        "label": "C",
+        "text": "Minimum energy to eject electron; W₀ = ν₀/h"
+      },
+      {
+        "label": "D",
+        "text": "Maximum energy to eject electron; W₀ = ν₀/h"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Work function is the minimum energy required to eject an electron from the surface of a metal. It is related to the threshold frequency (ν₀) by the equation W₀ = hν₀, where h is Planck's constant.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write Einstein’s photoelectric equation. State clearly the three salient features observed in photoelectric effect, which can be explained on the basis of this equation.",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "KE = hν - W₀; Instantaneous emission, threshold frequency, KE depends on frequency"
+      },
+      {
+        "label": "B",
+        "text": "KE = hν + W₀; Delayed emission, threshold frequency, KE depends on intensity"
+      },
+      {
+        "label": "C",
+        "text": "KE = hν - W₀; Delayed emission, no threshold frequency, KE depends on intensity"
+      },
+      {
+        "label": "D",
+        "text": "KE = hν + W₀; Instantaneous emission, no threshold frequency, KE depends on frequency"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Einstein's photoelectric equation is KE = hν - W₀, where KE is the kinetic energy of the emitted electron, h is Planck's constant, ν is the frequency of the incident light, and W₀ is the work function. The three salient features are: (i) Instantaneous emission, (ii) Existence of threshold frequency, (iii) Kinetic energy depends on frequency, not intensity.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the ratio of minimum wavelengths of Lyman and Balmer series?",
+    "topic": "Atoms",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/4"
+      },
+      {
+        "label": "B",
+        "text": "5/36"
+      },
+      {
+        "label": "C",
+        "text": "1/9"
+      },
+      {
+        "label": "D",
+        "text": "4"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "For Lyman series, 1/λ = R(1/1² - 1/∞²) = R. For Balmer series, 1/λ = R(1/2² - 1/∞²) = R/4. Therefore, λ_Lyman = 1/R and λ_Balmer = 4/R. The ratio is (1/R)/(4/R) = 1/4.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "State Bohr’s quantization condition for defining stationary orbits. How does de Broglie’s hypothesis explain the stationary orbits?",
+    "topic": "Atoms",
+    "options": [
+      {
+        "label": "A",
+        "text": "L = nh/2π; Stationary orbits are those where electron's wavelength is an integral multiple of the orbit's circumference"
+      },
+      {
+        "label": "B",
+        "text": "L = nh/2π; Stationary orbits are those where electron's wavelength is not an integral multiple of the orbit's circumference"
+      },
+      {
+        "label": "C",
+        "text": "L = nπ/2h; Stationary orbits are those where electron's wavelength is an integral multiple of the orbit's circumference"
+      },
+      {
+        "label": "D",
+        "text": "L = nπ/2h; Stationary orbits are those where electron's wavelength is not an integral multiple of the orbit's circumference"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Bohr's quantization condition states that the angular momentum (L) of an electron in a stationary orbit is quantized: L = nh/2π, where n is an integer. De Broglie's hypothesis explains this by stating that stationary orbits are those where the electron's wavelength is an integral multiple of the orbit's circumference (2πr = nλ).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the nuclear radius of 125Fe, if that of 27Al is 3.6 fermi?",
+    "topic": "Nuclei",
+    "options": [
+      {
+        "label": "A",
+        "text": "6 fermi"
+      },
+      {
+        "label": "B",
+        "text": "7.2 fermi"
+      },
+      {
+        "label": "C",
+        "text": "1.2 fermi"
+      },
+      {
+        "label": "D",
+        "text": "4.8 fermi"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The nuclear radius R = R₀A^(1/3). Thus, R_Fe/R_Al = (A_Fe/A_Al)^(1/3) = (125/27)^(1/3) = 5/3. R_Fe = (5/3) * 3.6 fermi = 6 fermi.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the processes of nuclear fission and nuclear fusion. Give one example of each.",
+    "topic": "Nuclei",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fission: splitting of heavy nucleus (e.g., U-235); Fusion: combining light nuclei (e.g., H + H)"
+      },
+      {
+        "label": "B",
+        "text": "Fission: combining light nuclei (e.g., H + H); Fusion: splitting of heavy nucleus (e.g., U-235)"
+      },
+      {
+        "label": "C",
+        "text": "Fission: radioactive decay; Fusion: chemical reaction"
+      },
+      {
+        "label": "D",
+        "text": "Fission: chemical reaction; Fusion: radioactive decay"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Nuclear fission is the process of splitting a heavy nucleus into smaller nuclei (e.g., U-235). Nuclear fusion is the process of combining light nuclei to form a heavier nucleus (e.g., fusion of hydrogen isotopes).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the function of a repeater in a communication system?",
+    "topic": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+    "options": [
+      {
+        "label": "A",
+        "text": "To amplify and retransmit the signal"
+      },
+      {
+        "label": "B",
+        "text": "To attenuate the signal"
+      },
+      {
+        "label": "C",
+        "text": "To filter the signal"
+      },
+      {
+        "label": "D",
+        "text": "To modulate the signal"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A repeater is used in a communication system to amplify the signal and retransmit it, compensating for signal loss over long distances.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain, with the help of a circuit diagram, the working of a full-wave rectifier using two junction diodes. Show the input and output waveforms.",
+    "topic": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+    "options": [
+      {
+        "label": "A",
+        "text": "Converts AC to pulsating DC using two diodes and a center-tapped transformer; output is positive for both half cycles"
+      },
+      {
+        "label": "B",
+        "text": "Converts AC to pulsating DC using one diode; output is positive for one half cycle only"
+      },
+      {
+        "label": "C",
+        "text": "Converts DC to AC using two diodes; output is AC"
+      },
+      {
+        "label": "D",
+        "text": "Converts DC to AC using one diode; output is AC"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A full-wave rectifier uses two diodes and a center-tapped transformer to convert AC voltage to pulsating DC voltage. The output is positive for both half cycles of the input AC signal.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the following terms: (i) Ground wave propagation (ii) Space wave propagation (iii) Sky wave propagation",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "Along earth's surface, line of sight, ionospheric reflection"
+      },
+      {
+        "label": "B",
+        "text": "Ionospheric reflection, line of sight, along earth's surface"
+      },
+      {
+        "label": "C",
+        "text": "Line of sight, along earth's surface, ionospheric reflection"
+      },
+      {
+        "label": "D",
+        "text": "Ionospheric reflection, along earth's surface, line of sight"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Ground wave propagation: Radio waves travel along the surface of the Earth. Space wave propagation: Radio waves travel in a straight line from the transmitting antenna to the receiving antenna (line of sight). Sky wave propagation: Radio waves are reflected by the ionosphere back to Earth.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A transmitting antenna at the top of a tower has a height of 32 m and the height of the receiving antenna is 50 m. What is the maximum distance upto which TV signals can be transmitted?",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "45.5 km"
+      },
+      {
+        "label": "B",
+        "text": "55.5 km"
+      },
+      {
+        "label": "C",
+        "text": "65.5 km"
+      },
+      {
+        "label": "D",
+        "text": "35.5 km"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "d_max = sqrt(2Rh_T) + sqrt(2Rh_R) = sqrt(2*6.4*10^6*32) + sqrt(2*6.4*10^6*50) = 45.5 km",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are eddy currents? How are they produced?",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Circulating currents induced in a conductor by a changing magnetic field; due to Faraday's Law"
+      },
+      {
+        "label": "B",
+        "text": "Constant currents induced in a conductor by a static magnetic field; due to Ohm's Law"
+      },
+      {
+        "label": "C",
+        "text": "Circulating currents induced in an insulator by a changing electric field; due to Coulomb's Law"
+      },
+      {
+        "label": "D",
+        "text": "Constant currents induced in an insulator by a static electric field; due to Gauss's Law"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Eddy currents are circulating currents induced within a conductor when the conductor is exposed to a changing magnetic field. They are produced due to Faraday's law of electromagnetic induction.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "A convex lens of focal length 20 cm and a concave lens of focal length 25 cm are placed in contact with each other. What is the power of this combination?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "-1 D"
+      },
+      {
+        "label": "B",
+        "text": "1 D"
+      },
+      {
+        "label": "C",
+        "text": "-0.2 D"
+      },
+      {
+        "label": "D",
+        "text": "0.2 D"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Power of lens 1, P1 = 1/f1 = 1/0.2 = 5 D. Power of lens 2, P2 = 1/f2 = 1/-0.25 = -4 D. Total power P = P1 + P2 = 5 - 4 = -0.2 D",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

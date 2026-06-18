@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Which of the following coordination entities is chiral?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "trans-[CrCl2(en)2]^+"
+      },
+      {
+        "label": "B",
+        "text": "cis-[CrCl2(en)2]^+"
+      },
+      {
+        "label": "C",
+        "text": "trans-[PtCl2(NH3)2]"
+      },
+      {
+        "label": "D",
+        "text": "[Co(NH3)4Cl2]^+"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "cis-[CrCl2(en)2]+ is chiral because the cis isomer does not have a plane of symmetry, making it non-superimposable on its mirror image.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following will give Cannizzaro reaction?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH3CHO"
+      },
+      {
+        "label": "B",
+        "text": "CH3CH2CHO"
+      },
+      {
+        "label": "C",
+        "text": "(CH3)2CHCHO"
+      },
+      {
+        "label": "D",
+        "text": "HCHO"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Formaldehyde (HCHO) does not have an alpha-hydrogen atom, and thus undergoes Cannizzaro reaction in the presence of a strong base.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the effect of Schottky defect on the density of a solid?",
+    "topic": "The Solid State",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increases the density"
+      },
+      {
+        "label": "B",
+        "text": "Decreases the density"
+      },
+      {
+        "label": "C",
+        "text": "No effect on the density"
+      },
+      {
+        "label": "D",
+        "text": "Density becomes zero"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Schottky defect involves missing of ions from their lattice sites, creating vacancies. This leads to a decrease in the mass of the solid without a significant change in volume, hence decreasing the density.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The rate constant of a reaction is 1.5 x 10^-2 s^-1 at 27°C and 4.5 x 10^-2 s^-1 at 47°C. Calculate the energy of activation for the reaction in kJ mol^-1. (R = 8.314 J K^-1 mol^-1)",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "41.5 kJ/mol"
+      },
+      {
+        "label": "B",
+        "text": "51.9 kJ/mol"
+      },
+      {
+        "label": "C",
+        "text": "62.3 kJ/mol"
+      },
+      {
+        "label": "D",
+        "text": "72.7 kJ/mol"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Using the Arrhenius equation: ln(k2/k1) = (Ea/R) * (1/T1 - 1/T2).  ln(4.5 x 10^-2 / 1.5 x 10^-2) = (Ea / 8.314) * (1/300 - 1/320). Solving for Ea gives approximately 51.9 kJ/mol.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the IUPAC name of the complex [Cr(NH3)4Cl2]Cl.",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "Tetraamminedichloridochromium(III) chloride"
+      },
+      {
+        "label": "B",
+        "text": "Tetraamminedichlorochromium(II) chloride"
+      },
+      {
+        "label": "C",
+        "text": "Diamminetetrachloridochromium(III) chloride"
+      },
+      {
+        "label": "D",
+        "text": "Diamminetetrachlorochromium(II) chloride"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The IUPAC name is Tetraamminedichloridochromium(III) chloride. 'Tetraammine' indicates four ammonia ligands, 'dichlorido' indicates two chloride ligands, 'chromium(III)' indicates the oxidation state of chromium is +3, and 'chloride' indicates the counter ion.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What happens when (i) methyl chloride is treated with KCN (ii) methyl chloride is treated with AgCN?",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) methyl isocyanide, (ii) methyl cyanide"
+      },
+      {
+        "label": "B",
+        "text": "(i) methyl cyanide, (ii) methyl isocyanide"
+      },
+      {
+        "label": "C",
+        "text": "(i) dimethyl cyanide, (ii) dimethyl isocyanide"
+      },
+      {
+        "label": "D",
+        "text": "(i) no reaction, (ii) no reaction"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "KCN is ionic and provides cyanide ions which attack through carbon, leading to methyl cyanide. AgCN is covalent and the attack occurs through nitrogen, leading to methyl isocyanide.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the mechanism of hydration of ethene to yield ethanol.",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Protonation of ethene -> Nucleophilic attack by water -> Deprotonation"
+      },
+      {
+        "label": "B",
+        "text": "Nucleophilic attack by water -> Protonation of ethene -> Deprotonation"
+      },
+      {
+        "label": "C",
+        "text": "Deprotonation -> Protonation of ethene -> Nucleophilic attack by water"
+      },
+      {
+        "label": "D",
+        "text": "Protonation of water -> Nucleophilic attack by ethene -> Deprotonation"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The mechanism involves protonation of ethene to form a carbocation, followed by nucleophilic attack of water on the carbocation, and finally deprotonation to yield ethanol.",
+    "difficulty": "hard",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Define the term 'Tyndall effect'.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Scattering of light by colloidal particles"
+      },
+      {
+        "label": "B",
+        "text": "Movement of colloidal particles in a zig-zag manner"
+      },
+      {
+        "label": "C",
+        "text": "Precipitation of a colloidal solution"
+      },
+      {
+        "label": "D",
+        "text": "Electrophoresis of colloidal particles"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Tyndall effect is the scattering of a beam of light by the particles in a colloidal solution. This effect makes the path of the light beam visible.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What are the differences between physisorption and chemisorption?",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Physisorption: weak van der Waals forces, Chemisorption: chemical bonds"
+      },
+      {
+        "label": "B",
+        "text": "Physisorption: chemical bonds, Chemisorption: weak van der Waals forces"
+      },
+      {
+        "label": "C",
+        "text": "Physisorption: irreversible, Chemisorption: reversible"
+      },
+      {
+        "label": "D",
+        "text": "Physisorption: high activation energy, Chemisorption: low activation energy"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Physisorption involves weak van der Waals forces, is reversible, and has low enthalpy of adsorption. Chemisorption involves chemical bond formation, is irreversible, and has high enthalpy of adsorption.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the following terms: (i) Rate constant (k) (ii) Activation energy (Ea)",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Rate constant: Proportionality constant in rate law, (ii) Activation energy: Minimum energy for reaction"
+      },
+      {
+        "label": "B",
+        "text": "(i) Rate constant: Temperature dependence of reaction, (ii) Activation energy: Maximum energy for reaction"
+      },
+      {
+        "label": "C",
+        "text": "(i) Rate constant: Equilibrium constant, (ii) Activation energy: Energy of reactants"
+      },
+      {
+        "label": "D",
+        "text": "(i) Rate constant: Order of reaction, (ii) Activation energy: Energy of products"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The rate constant (k) is the proportionality constant in the rate law expression. Activation energy (Ea) is the minimum energy required for the reactants to undergo a chemical reaction.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the Nernst equation for the cell reaction: 2Ag+ (aq) + Cu(s) → 2Ag(s) + Cu2+ (aq)",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ecell = E°cell - (0.0591/2) log [Cu2+]/[Ag+]^2"
+      },
+      {
+        "label": "B",
+        "text": "Ecell = E°cell - (0.0591/2) log [Ag+]^2/[Cu2+]"
+      },
+      {
+        "label": "C",
+        "text": "Ecell = E°cell - (0.0591/1) log [Cu2+]/[Ag+]"
+      },
+      {
+        "label": "D",
+        "text": "Ecell = E°cell - (0.0591/1) log [Ag+]/[Cu2+]"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The Nernst equation for the given cell reaction is Ecell = E°cell - (0.0591/n) log [Products]/[Reactants]. Here, n = 2, [Products] = [Cu2+], and [Reactants] = [Ag+]^2. Therefore, Ecell = E°cell - (0.0591/2) log [Cu2+]/[Ag+]^2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "How would you account for the following: (i) Transition metals exhibit variable oxidation states. (ii) Zr (Z = 40) and Hf (Z = 72) exhibit almost similar radii.",
+    "topic": "The d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Variable oxidation states due to involvement of (n-1)d and ns electrons, (ii) Lanthanoid contraction"
+      },
+      {
+        "label": "B",
+        "text": "(i) Fixed oxidation states due to stable electronic configuration, (ii) Increased nuclear charge"
+      },
+      {
+        "label": "C",
+        "text": "(i) Variable oxidation states due to involvement of only ns electrons, (ii) Increased shielding effect"
+      },
+      {
+        "label": "D",
+        "text": "(i) Fixed oxidation states due to stable nuclear configuration, (ii) Decreased nuclear charge"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Transition metals exhibit variable oxidation states because of the involvement of both (n-1)d and ns electrons in bonding. Zr and Hf exhibit similar radii due to lanthanoid contraction, which is the poor shielding of the nuclear charge by the 4f electrons.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the structures of the following: (i) XeF4 (ii) BrF3",
+    "topic": "The p-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Square planar, (ii) T-shaped"
+      },
+      {
+        "label": "B",
+        "text": "(i) Tetrahedral, (ii) Pyramidal"
+      },
+      {
+        "label": "C",
+        "text": "(i) Square pyramidal, (ii) Bent"
+      },
+      {
+        "label": "D",
+        "text": "(i) Octahedral, (ii) Linear"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "XeF4 has a square planar structure due to two lone pairs and four bond pairs around the central Xe atom. BrF3 has a T-shaped structure due to two lone pairs and three bond pairs around the central Br atom.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Give reasons for the following: (i) CCl4 does not have any dipole moment, but CHCl3 does. (ii) Alcohols are more soluble in water than ethers of comparable molecular masses.",
+    "topic": "Haloalkanes and Haloarenes, Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) CCl4 is symmetrical, CHCl3 is not. (ii) Alcohols form hydrogen bonds with water, ethers do not."
+      },
+      {
+        "label": "B",
+        "text": "(i) CCl4 is non-polar, CHCl3 is polar. (ii) Ethers form hydrogen bonds with water, alcohols do not."
+      },
+      {
+        "label": "C",
+        "text": "(i) CCl4 has polar bonds, CHCl3 does not. (ii) Both alcohols and ethers form hydrogen bonds with water."
+      },
+      {
+        "label": "D",
+        "text": "(i) CCl4 is tetrahedral, CHCl3 is planar. (ii) Neither alcohols nor ethers form hydrogen bonds with water."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "CCl4 has a symmetrical tetrahedral structure, so the bond dipoles cancel out, resulting in zero dipole moment. CHCl3 is not symmetrical, so it has a net dipole moment. Alcohols are more soluble in water because they can form hydrogen bonds with water molecules, while ethers cannot form strong hydrogen bonds with water.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the reactions involved in the following: (i) Reimer-Tiemann reaction (ii) Kolbe's reaction",
+    "topic": "Alcohols, Phenols and Ethers, Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Phenol + CHCl3 + NaOH -> Salicylaldehyde, (ii) Phenol + CO2 + NaOH -> Salicylic acid"
+      },
+      {
+        "label": "B",
+        "text": "(i) Phenol + CH3Cl + NaOH -> o-Cresol, (ii) Phenol + CO + NaOH -> Benzoic acid"
+      },
+      {
+        "label": "C",
+        "text": "(i) Benzene + CHCl3 + NaOH -> Benzaldehyde, (ii) Benzene + CO2 + NaOH -> Benzoic acid"
+      },
+      {
+        "label": "D",
+        "text": "(i) Toluene + CHCl3 + NaOH -> Salicylaldehyde, (ii) Toluene + CO2 + NaOH -> Salicylic acid"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Reimer-Tiemann reaction involves the treatment of phenol with chloroform in the presence of NaOH to give salicylaldehyde. Kolbe's reaction involves the treatment of phenol with CO2 in the presence of NaOH to give salicylic acid.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Define the following terms: (i) Anomers (ii) Invert sugar",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Cyclic diastereomers differing at C-1, (ii) Equimolar mixture of glucose and fructose"
+      },
+      {
+        "label": "B",
+        "text": "(i) Non-superimposable mirror images, (ii) Mixture of glucose and galactose"
+      },
+      {
+        "label": "C",
+        "text": "(i) Isomers differing in configuration at all chiral centers, (ii) Pure glucose"
+      },
+      {
+        "label": "D",
+        "text": "(i) Isomers differing in configuration at all carbon atoms, (ii) Pure fructose"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Anomers are cyclic diastereomers that differ only in the configuration at the anomeric carbon (C-1 in aldoses, C-2 in ketoses). Invert sugar is an equimolar mixture of glucose and fructose, obtained by the hydrolysis of sucrose.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is meant by (i) broad spectrum antibiotics? (ii) disinfectants?",
+    "topic": "Chemistry in Everyday Life",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Effective against wide range of bacteria, (ii) Applied to inanimate objects"
+      },
+      {
+        "label": "B",
+        "text": "(i) Effective against specific bacteria, (ii) Applied to living tissues"
+      },
+      {
+        "label": "C",
+        "text": "(i) Effective against viruses, (ii) Applied to inanimate objects"
+      },
+      {
+        "label": "D",
+        "text": "(i) Effective against fungi, (ii) Applied to living tissues"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Broad spectrum antibiotics are effective against a wide range of gram-positive and gram-negative bacteria. Disinfectants are chemical substances that are applied to inanimate objects to kill or prevent the growth of microorganisms.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Calculate the emf of the cell in which the following reaction occurs: Ni(s) + 2Ag+(aq) → Ni2+(aq) + 2Ag(s) [Given that E°cell = 1.05 V, [Ni2+] = 0.002 M, [Ag+] = 0.160 M]",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "1.05 V"
+      },
+      {
+        "label": "B",
+        "text": "1.01 V"
+      },
+      {
+        "label": "C",
+        "text": "0.91 V"
+      },
+      {
+        "label": "D",
+        "text": "1.15 V"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using the Nernst equation: Ecell = E°cell - (0.0591/n) log [Ni2+]/[Ag+]^2. Here, n = 2, E°cell = 1.05 V, [Ni2+] = 0.002 M, and [Ag+] = 0.160 M. Ecell = 1.05 - (0.0591/2) log (0.002/(0.160)^2) = 1.05 - (0.02955) log (0.002/0.0256) = 1.05 - (0.02955) log (0.078125) = 1.05 - (0.02955)(-1.107) = 1.05 + 0.0327 = 1.0827 V. Closest answer is 1.05V",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the preparation of potassium permanganate from pyrolusite ore.",
+    "topic": "The d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fusion with KOH, oxidation, acidification"
+      },
+      {
+        "label": "B",
+        "text": "Roasting, reduction, basification"
+      },
+      {
+        "label": "C",
+        "text": "Leaching, electrolysis, neutralization"
+      },
+      {
+        "label": "D",
+        "text": "Distillation, sublimation, titration"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The preparation of potassium permanganate from pyrolusite ore involves the following steps: (i) Fusion of pyrolusite (MnO2) with KOH in the presence of air or an oxidizing agent (KNO3) to form potassium manganate (K2MnO4). (ii) Oxidation of manganate to permanganate. (iii) Acidification of the permanganate solution.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How do you convert: (i) Phenol to Anisole (ii) Ethanol to Acetone (iii) Phenol to Salicylic acid",
+    "topic": "Alcohols, Phenols and Ethers, Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Phenol + CH3I/NaOH, (ii) Ethanol + Cu/573K, (iii) Phenol + CO2/NaOH"
+      },
+      {
+        "label": "B",
+        "text": "(i) Phenol + CH3Cl/HCl, (ii) Ethanol + KMnO4, (iii) Phenol + H2SO4"
+      },
+      {
+        "label": "C",
+        "text": "(i) Phenol + CH3OH/H+, (ii) Ethanol + CrO3, (iii) Phenol + HNO3"
+      },
+      {
+        "label": "D",
+        "text": "(i) Phenol + CH3COOH/H+, (ii) Ethanol + H2SO4/443K, (iii) Phenol + Cl2/NaOH"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Phenol reacts with CH3I in the presence of NaOH to form anisole (Williamson ether synthesis). (ii) Ethanol is oxidized to acetone by passing its vapors over heated copper at 573K. (iii) Phenol reacts with CO2 in the presence of NaOH (Kolbe-Schmitt reaction) to form salicylic acid.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "An aromatic compound 'A' on treatment with aqueous ammonia and heating forms compound 'B' which on heating with Br2 and KOH forms compound 'C' of molecular formula C6H7N. Write the structures and IUPAC names of compounds A, B and C.",
+    "topic": "Amines",
+    "options": [
+      {
+        "label": "A",
+        "text": "A: Benzoic acid, B: Benzamide, C: Aniline"
+      },
+      {
+        "label": "B",
+        "text": "A: Toluene, B: Benzylamine, C: Benzene"
+      },
+      {
+        "label": "C",
+        "text": "A: Benzaldehyde, B: Benzyl alcohol, C: Phenol"
+      },
+      {
+        "label": "D",
+        "text": "A: Phenol, B: Benzene, C: Cyclohexane"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Compound A is benzoic acid (C6H5COOH). It reacts with aqueous ammonia to form benzamide (C6H5CONH2) (compound B). Benzamide on treatment with Br2 and KOH undergoes Hoffmann bromamide degradation to form aniline (C6H5NH2) (compound C).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Give reasons for the following: (a) Transition metals and their compounds act as good catalysts. (b) E° value for (Mn2+/Mn) is negative whereas that of (Cu2+/Cu) is positive. (c) Transition metals form coloured compounds.",
+    "topic": "The d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "(a) Variable oxidation states and surface area, (b) Mn2+ stable, Cu2+ unstable, (c) d-d transitions"
+      },
+      {
+        "label": "B",
+        "text": "(a) Fixed oxidation states and volume, (b) Mn2+ unstable, Cu2+ stable, (c) p-p transitions"
+      },
+      {
+        "label": "C",
+        "text": "(a) High melting points and density, (b) Mn2+ stable, Cu2+ unstable, (c) s-s transitions"
+      },
+      {
+        "label": "D",
+        "text": "(a) Low ionization energies and reactivity, (b) Mn2+ unstable, Cu2+ stable, (c) f-f transitions"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(a) Transition metals act as good catalysts due to their ability to exhibit variable oxidation states and provide a large surface area for adsorption. (b) The E° value for (Mn2+/Mn) is negative because Mn2+ has a stable d5 configuration. The E° value for (Cu2+/Cu) is positive because of the high enthalpy of hydration to compensate for the second ionization enthalpy. (c) Transition metal compounds are coloured due to d-d transitions, where electrons absorb energy to move from one d-orbital to another.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Write the products of the following reactions: (i) CH3-CH=CH2 + HBr → (ii) C6H5-CHO + H2N-NH2 → (iii) CH3CH2OH + O2 →",
+    "topic": "Haloalkanes and Haloarenes, Aldehydes, Ketones and Carboxylic Acids, Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) CH3-CHBr-CH3, (ii) C6H5-CH=N-NH2, (iii) CH3COOH"
+      },
+      {
+        "label": "B",
+        "text": "(i) CH3-CH2-CH2Br, (ii) C6H5-CH2-NH2, (iii) CH3CHO"
+      },
+      {
+        "label": "C",
+        "text": "(i) CH3-CHBr-CH3, (ii) C6H5-CH2OH, (iii) CO2 + H2O"
+      },
+      {
+        "label": "D",
+        "text": "(i) CH3-CH2-CH2Br, (ii) C6H5-COOH, (iii) CH3COOH"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) CH3-CH=CH2 + HBr → CH3-CHBr-CH3 (Markovnikov's rule). (ii) C6H5-CHO + H2N-NH2 → C6H5-CH=N-NH2 (Benzaldehyde hydrazone). (iii) CH3CH2OH + O2 → CH3COOH (Oxidation of ethanol to ethanoic acid).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are the differences between DNA and RNA?",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA: Double-stranded, deoxyribose sugar, thymine; RNA: Single-stranded, ribose sugar, uracil"
+      },
+      {
+        "label": "B",
+        "text": "DNA: Single-stranded, ribose sugar, uracil; RNA: Double-stranded, deoxyribose sugar, thymine"
+      },
+      {
+        "label": "C",
+        "text": "DNA: Contains ribose, RNA: Contains deoxyribose"
+      },
+      {
+        "label": "D",
+        "text": "DNA: Contains uracil, RNA: Contains thymine"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "DNA is double-stranded, contains deoxyribose sugar, and has thymine as one of its bases. RNA is single-stranded, contains ribose sugar, and has uracil in place of thymine.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "The boiling point of benzene is 353.23 K. When 1.80 g of a non-volatile solute was dissolved in 90 g of benzene, the boiling point is raised to 354.11 K. Calculate the molar mass of the solute. Kb for benzene is 2.53 K kg mol-1.",
+    "topic": "Solutions",
+    "options": [
+      {
+        "label": "A",
+        "text": "58 g/mol"
+      },
+      {
+        "label": "B",
+        "text": "68 g/mol"
+      },
+      {
+        "label": "C",
+        "text": "78 g/mol"
+      },
+      {
+        "label": "D",
+        "text": "88 g/mol"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "ΔTb = Kb * m, where m is molality. ΔTb = 354.11 - 353.23 = 0.88 K. 0.88 = 2.53 * (n_solute / 0.090 kg). n_solute = (0.88 * 0.090) / 2.53 = 0.0312 mol. Molar mass = mass / moles = 1.80 g / 0.0312 mol = 57.69 g/mol ≈ 58 g/mol.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

@@ -1,0 +1,272 @@
+[
+  {
+    "question_text": "What was the primary purpose of the postal service in its early days?",
+    "topic": "The Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "To deliver parcels and packages"
+      },
+      {
+        "label": "B",
+        "text": "To maintain communication within an empire"
+      },
+      {
+        "label": "C",
+        "text": "To facilitate trade and commerce"
+      },
+      {
+        "label": "D",
+        "text": "To provide personal correspondence services"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that the postal service originated in the necessity of maintaining communications between different parts of an empire, enabling the emperor to keep track of events.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what was a significant advantage of the early postal service?",
+    "topic": "The Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "It allowed for faster delivery of goods."
+      },
+      {
+        "label": "B",
+        "text": "It enabled the emperor to monitor happenings within the empire."
+      },
+      {
+        "label": "C",
+        "text": "It provided employment opportunities for many people."
+      },
+      {
+        "label": "D",
+        "text": "It facilitated international relations."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that the postal service enabled the emperor to keep track of all that was happening, indicating its advantage in monitoring the empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How do modern means of communication differ from the early postal services?",
+    "topic": "The Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "They rely solely on human messengers."
+      },
+      {
+        "label": "B",
+        "text": "They are slower and less reliable."
+      },
+      {
+        "label": "C",
+        "text": "They involve air, railway, and motor services for speedier delivery."
+      },
+      {
+        "label": "D",
+        "text": "They are reserved for government use only."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that modern means of communication have improved greatly, with air, railway, and motor services playing an important role in carrying letters speedily to their destinations.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What challenges did mail runners face in the early postal system?",
+    "topic": "The Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "Lack of proper training and equipment"
+      },
+      {
+        "label": "B",
+        "text": "Navigating jungles, climbing hills, crossing rivers, and facing wild animals and dacoits"
+      },
+      {
+        "label": "C",
+        "text": "Dealing with bureaucratic red tape and corruption"
+      },
+      {
+        "label": "D",
+        "text": "Competition from rival postal services"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that mail runners had to pass through jungles, climb hills, cross rivers, and brave wild animals and dacoits to carry letters safely.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Who is mentioned as the first person to begin a postal organization in India?",
+    "topic": "The Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sher Shah"
+      },
+      {
+        "label": "B",
+        "text": "Akbar"
+      },
+      {
+        "label": "C",
+        "text": "Alauddin Khilji"
+      },
+      {
+        "label": "D",
+        "text": "Raja Chikka Deva"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that Alauddin Khilji had a horse-and-foot postal organization to receive regular news of his army.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How did Sher Shah contribute to the development of postal services?",
+    "topic": "The Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "By introducing the use of camels for postal transport"
+      },
+      {
+        "label": "B",
+        "text": "By building a 2,000-mile road and establishing horse despatches"
+      },
+      {
+        "label": "C",
+        "text": "By creating a postal service exclusively for government use"
+      },
+      {
+        "label": "D",
+        "text": "By standardizing postal rates and regulations"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that Sher Shah built a 2,000-mile road from Bengal to Sind and established horse despatches throughout the Empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Which two cities housed the first major post offices established by the East India Company?",
+    "topic": "The Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "Delhi and Agra"
+      },
+      {
+        "label": "B",
+        "text": "Bombay and Madras"
+      },
+      {
+        "label": "C",
+        "text": "Calcutta and Surat"
+      },
+      {
+        "label": "D",
+        "text": "Lucknow and Allahabad"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that the East India Company established major post offices at Bombay and Madras.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the purpose of the copper token introduced in the postal system?",
+    "topic": "The Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "To serve as identification for mail runners"
+      },
+      {
+        "label": "B",
+        "text": "To facilitate the payment of postage"
+      },
+      {
+        "label": "C",
+        "text": "To mark letters as urgent"
+      },
+      {
+        "label": "D",
+        "text": "To prevent theft of mail"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that a special copper token of the value of 2 annas was struck by the mint to facilitate the payment of postage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what is the primary role of fast foods historically?",
+    "topic": "Nutrition and Health",
+    "options": [
+      {
+        "label": "A",
+        "text": "To provide gourmet meals for the wealthy"
+      },
+      {
+        "label": "B",
+        "text": "To serve as a source of sustenance during crises and for soldiers"
+      },
+      {
+        "label": "C",
+        "text": "To promote aggressive advertising campaigns"
+      },
+      {
+        "label": "D",
+        "text": "To replace traditional diets"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that fast foods fed starving soldiers, those displaced by natural calamities, and silenced hunger pangs during economic crises.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the main concern raised by experts regarding instant foods like noodles?",
+    "topic": "Nutrition and Health",
+    "options": [
+      {
+        "label": "A",
+        "text": "Their high cost and limited availability"
+      },
+      {
+        "label": "B",
+        "text": "Their lack of nutritional value and potential health risks"
+      },
+      {
+        "label": "C",
+        "text": "Their complex preparation methods"
+      },
+      {
+        "label": "D",
+        "text": "Their impact on international trade"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Experts highlighted the lack of nutrition in these products and the potential health risks, such as high levels of lead.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  }
+]

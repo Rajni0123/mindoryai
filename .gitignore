@@ -1,0 +1,104 @@
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.env.production
+.env.mariadb
+.phpactor.json
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+/.idea
+/.vscode
+/.vagrant
+/.claude
+database/database.sqlite
+/storage/app/videos
+/storage/logs/*.log
+/storage/xml-samples
+/storage/app/uploads
+/storage/app/public/homepage
+/storage/app/public/icons
+/storage/app/public/logos
+
+# Mobile app source (separate repo folder - do not track)
+/mindory-app
+
+# Flutter app build artifacts
+/updated App/build/
+/updated App/android/.gradle/
+/updated App/android/key.properties
+/updated App/android/local.properties
+/updated App/.dart_tool/
+/updated App/.flutter-plugins
+/updated App/.flutter-plugins-dependencies
+
+# ============================================================
+# NEVER commit heavy binaries / build artifacts
+# ============================================================
+*.apk
+*.aab
+*.rar
+*.tar.gz
+*.zip
+*.7z
+*.keystore
+*.jks
+*.pem
+*.mp4
+*.lnk
+
+# Root-level debug/test media (frames, screenshots)
+/frame_*.jpg
+/frame_*.png
+/frame_*.jpeg
+/last_*.jpg
+/v5_frame_*.jpg
+/v6_last_*.jpg
+/photo_frame_*.png
+/*.jpg
+/*.jpeg
+/*.png
+!public/**/*.png
+!public/**/*.jpg
+!templates/**/*.png
+!playstore-graphics/**/*.png
+!updated App/**/*.png
+
+# Root-level ops scripts (keep app/ only)
+/*.py
+/*.sh
+/diagnose_*.php
+/test_*.php
+/debug_*.php
+/update_*.php
+/seed_*.php
+/setup_*.php
+/plan_*.php
+/roadmap_*.php
+/verify_*.php
+/temp_*.php
+/server_*.php
+/*_check_result.txt
+
+# Debug docs
+errdebug.md
+prd-chat-blinkstudy.md
+plan.md
+prd.txt
+
+# Junk / accidental folders
+/frames_check/
+/resourcesviewsadmin*/
+/backups/
+
+nul
+__pycache__/
+*.pyc

@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "What is the purpose of the notices displayed on the bulletin board in the story 'The Last Lesson'?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "To announce school holidays"
+      },
+      {
+        "label": "B",
+        "text": "To share information about upcoming events"
+      },
+      {
+        "label": "C",
+        "text": "To display important orders from Berlin"
+      },
+      {
+        "label": "D",
+        "text": "To showcase student artwork"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The bulletin board was used to display important orders and announcements, particularly those coming from Berlin which had a significant impact on the people of Alsace.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Lost Spring', what does Saheb look for in the garbage dumps?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gold"
+      },
+      {
+        "label": "B",
+        "text": "Silver"
+      },
+      {
+        "label": "C",
+        "text": "Precious stones"
+      },
+      {
+        "label": "D",
+        "text": "Anything of value"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Saheb scavenges through garbage dumps looking for anything of value that he can sell or use to survive.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What does the metaphor 'rattrap' signify in the story 'The Rattrap'?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "The physical rattrap sold by the peddler"
+      },
+      {
+        "label": "B",
+        "text": "The deceptive nature of the world and its temptations"
+      },
+      {
+        "label": "C",
+        "text": "The peddler's poverty and despair"
+      },
+      {
+        "label": "D",
+        "text": "The ironworks where the peddler finds shelter"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The rattrap serves as a metaphor for the world's temptations, which lure people into traps of greed and dishonesty.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Deep Water', what was the misadventure that William Douglas experienced at the YMCA pool?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "He slipped and fell into the pool."
+      },
+      {
+        "label": "B",
+        "text": "He was pushed into the deep end by a bully."
+      },
+      {
+        "label": "C",
+        "text": "He got his foot stuck in the pool drain."
+      },
+      {
+        "label": "D",
+        "text": "He witnessed someone else drowning."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Douglas was unexpectedly pushed into the deep end of the YMCA pool by a bully, triggering his fear of water.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Indigo', why did Rajkumar Shukla want to meet Gandhi?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "To invite him to a wedding"
+      },
+      {
+        "label": "B",
+        "text": "To seek help for the sharecroppers of Champaran"
+      },
+      {
+        "label": "C",
+        "text": "To discuss political strategies"
+      },
+      {
+        "label": "D",
+        "text": "To offer him a job"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Rajkumar Shukla wanted Gandhi to come to Champaran and help the sharecroppers who were being exploited by the British landlords.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'My Mother at Sixty-Six', what is the poet's childhood fear that resurfaces?",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fear of darkness"
+      },
+      {
+        "label": "B",
+        "text": "Fear of losing her mother"
+      },
+      {
+        "label": "C",
+        "text": "Fear of death"
+      },
+      {
+        "label": "D",
+        "text": "Fear of being alone"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poet's childhood fear of losing her mother resurfaces as she observes her aging mother's frail condition.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Keeping Quiet', what does the poet want us to do?",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "To engage in constant activity"
+      },
+      {
+        "label": "B",
+        "text": "To introspect and find inner peace"
+      },
+      {
+        "label": "C",
+        "text": "To wage wars and fight for justice"
+      },
+      {
+        "label": "D",
+        "text": "To remain silent and indifferent"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poet urges us to keep quiet and introspect, hoping to achieve a moment of peace and understanding.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'A Thing of Beauty', what does the poet say removes the pall from our dark spirits?",
+    "topic": "A Thing of Beauty",
+    "options": [
+      {
+        "label": "A",
+        "text": "Wealth and power"
+      },
+      {
+        "label": "B",
+        "text": "Beautiful things"
+      },
+      {
+        "label": "C",
+        "text": "Fame and recognition"
+      },
+      {
+        "label": "D",
+        "text": "Material possessions"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poet believes that beautiful things have the power to lift our spirits and remove the darkness from our lives.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Aunt Jennifer's Tigers', what do the tigers symbolize?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Aunt Jennifer's fear and oppression"
+      },
+      {
+        "label": "B",
+        "text": "Aunt Jennifer's artistic talent"
+      },
+      {
+        "label": "C",
+        "text": "Aunt Jennifer's rebellious spirit and desire for freedom"
+      },
+      {
+        "label": "D",
+        "text": "Aunt Jennifer's love for animals"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The tigers symbolize Aunt Jennifer's suppressed desires and her yearning for freedom and independence from her oppressive marriage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'The Third Level', what does Charley find at the third level that confirms its existence?",
+    "topic": "The Third Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "A modern train schedule"
+      },
+      {
+        "label": "B",
+        "text": "A newspaper from the future"
+      },
+      {
+        "label": "C",
+        "text": "A newspaper from 1894"
+      },
+      {
+        "label": "D",
+        "text": "A photograph of his grandfather"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Charley finds a newspaper dated June 11, 1894, which confirms the existence of the third level and its connection to the past.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'The Tiger King', what was the astrologer's prediction about the Tiger King's death?",
+    "topic": "The Tiger King",
+    "options": [
+      {
+        "label": "A",
+        "text": "He would die in a car accident."
+      },
+      {
+        "label": "B",
+        "text": "He would die from a snake bite."
+      },
+      {
+        "label": "C",
+        "text": "He would be killed by the hundredth tiger."
+      },
+      {
+        "label": "D",
+        "text": "He would die of old age."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The astrologer predicted that the Tiger King would be killed by the hundredth tiger he hunted.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Journey to the End of the Earth', what is the name of the Russian research vessel?",
+    "topic": "Journey to the End of the Earth",
+    "options": [
+      {
+        "label": "A",
+        "text": "Akademik Sergei Korolev"
+      },
+      {
+        "label": "B",
+        "text": "Akademik Shokalskiy"
+      },
+      {
+        "label": "C",
+        "text": "Akademik Vernadsky"
+      },
+      {
+        "label": "D",
+        "text": "Akademik Pavlov"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Russian research vessel that takes the students to Antarctica is named Akademik Shokalskiy.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'The Enemy', what dilemma does Dr. Sadao face?",
+    "topic": "The Enemy",
+    "options": [
+      {
+        "label": "A",
+        "text": "Whether to operate on a wounded American soldier or hand him over to the authorities"
+      },
+      {
+        "label": "B",
+        "text": "Whether to leave his country or stay and help his people"
+      },
+      {
+        "label": "C",
+        "text": "Whether to marry Hana or pursue his career"
+      },
+      {
+        "label": "D",
+        "text": "Whether to reveal a secret about his past or keep it hidden"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Dr. Sadao faces the moral dilemma of whether to save the life of a wounded American soldier, who is considered an enemy, or to hand him over to the authorities, which would be his duty as a citizen.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'On the Face of It', what is Derry's perception of himself?",
+    "topic": "On the Face of It",
+    "options": [
+      {
+        "label": "A",
+        "text": "He sees himself as handsome and charming."
+      },
+      {
+        "label": "B",
+        "text": "He sees himself as ugly and unwanted."
+      },
+      {
+        "label": "C",
+        "text": "He sees himself as intelligent and capable."
+      },
+      {
+        "label": "D",
+        "text": "He sees himself as lucky and privileged."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Derry has a negative self-image and sees himself as ugly and unwanted due to the burn on his face.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Evans Tries an O-Level', what is Evans's primary motivation for wanting to take the exam?",
+    "topic": "Evans Tries an O-Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "To impress the prison governor"
+      },
+      {
+        "label": "B",
+        "text": "To genuinely improve his education"
+      },
+      {
+        "label": "C",
+        "text": "To escape from prison"
+      },
+      {
+        "label": "D",
+        "text": "To prove his intelligence"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Evans's primary motivation for wanting to take the O-Level exam is to create a distraction and opportunity to escape from prison.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the significance of the title 'The Last Lesson'?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the last time M. Hamel taught French in Alsace."
+      },
+      {
+        "label": "B",
+        "text": "It refers to the last lesson Franz ever attended."
+      },
+      {
+        "label": "C",
+        "text": "It refers to the last lesson M. Hamel learned about his students."
+      },
+      {
+        "label": "D",
+        "text": "It refers to the last lesson the villagers learned about the importance of education."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The title signifies the end of French instruction in the Alsace region, marking a significant loss of cultural identity and freedom.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does the author of 'Lost Spring' portray the lives of the bangle makers of Firozabad?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "As a life of luxury and prosperity"
+      },
+      {
+        "label": "B",
+        "text": "As a life of contentment and fulfillment"
+      },
+      {
+        "label": "C",
+        "text": "As a life of poverty, exploitation, and despair"
+      },
+      {
+        "label": "D",
+        "text": "As a life of adventure and excitement"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The author depicts the bangle makers' lives as filled with poverty, exploitation by middlemen, and a lack of opportunities, leading to a cycle of despair.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the irony in the peddler's transformation in 'The Rattrap'.",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "He becomes a thief after being treated kindly."
+      },
+      {
+        "label": "B",
+        "text": "He becomes rich after selling rattraps."
+      },
+      {
+        "label": "C",
+        "text": "He is transformed by an act of kindness, despite his cynical worldview."
+      },
+      {
+        "label": "D",
+        "text": "He is punished for his crimes despite his good intentions."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The irony lies in the fact that a man who believes the world is a rattrap is redeemed by an act of kindness, proving that human goodness can exist even in a cynical world.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the title 'Deep Water' in the context of William Douglas's experience?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the depth of the YMCA pool."
+      },
+      {
+        "label": "B",
+        "text": "It refers to the depth of Douglas's fear and his struggle to overcome it."
+      },
+      {
+        "label": "C",
+        "text": "It refers to the depth of Douglas's love for swimming."
+      },
+      {
+        "label": "D",
+        "text": "It refers to the depth of the ocean."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title symbolizes the profound and deeply rooted fear that Douglas experiences and his arduous journey to conquer it.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How did Gandhi's methods influence the outcome of the Champaran movement in 'Indigo'?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "His violent protests forced the British to concede."
+      },
+      {
+        "label": "B",
+        "text": "His legal expertise won the case in court."
+      },
+      {
+        "label": "C",
+        "text": "His non-violent methods and persuasive arguments led to a fair settlement for the sharecroppers."
+      },
+      {
+        "label": "D",
+        "text": "His political connections secured the support of influential leaders."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Gandhi's use of non-violent resistance and his ability to negotiate effectively led to a settlement that benefited the sharecroppers and challenged the oppressive British system.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Analyze the use of imagery in Kamala Das's poem 'My Mother at Sixty-Six'.",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "The imagery focuses on vibrant colors and joyful scenes."
+      },
+      {
+        "label": "B",
+        "text": "The imagery focuses on the beauty of nature."
+      },
+      {
+        "label": "C",
+        "text": "The imagery focuses on the contrast between youth and old age, and the fear of loss."
+      },
+      {
+        "label": "D",
+        "text": "The imagery focuses on the poet's happy childhood memories."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The poem uses imagery to highlight the contrast between the poet's youthful energy and her mother's aging appearance, conveying a sense of anxiety and the fear of separation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the central theme of Pablo Neruda's poem 'Keeping Quiet'?",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of constant activity and progress"
+      },
+      {
+        "label": "B",
+        "text": "The need for global unity and introspection to achieve peace"
+      },
+      {
+        "label": "C",
+        "text": "The celebration of individual achievements"
+      },
+      {
+        "label": "D",
+        "text": "The futility of human effort"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem emphasizes the value of silence and introspection as a means to foster understanding, empathy, and global unity, leading to a more peaceful world.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does John Keats define 'a thing of beauty' in his poem?",
+    "topic": "A Thing of Beauty",
+    "options": [
+      {
+        "label": "A",
+        "text": "As something that is expensive and rare"
+      },
+      {
+        "label": "B",
+        "text": "As something that provides lasting joy and comfort"
+      },
+      {
+        "label": "C",
+        "text": "As something that is admired by everyone"
+      },
+      {
+        "label": "D",
+        "text": "As something that is temporary and fleeting"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Keats defines a thing of beauty as a source of constant joy and solace that transcends time and provides lasting comfort and inspiration.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does the poem 'Aunt Jennifer's Tigers' suggest about the role of women in society?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "It celebrates the freedom and independence of women."
+      },
+      {
+        "label": "B",
+        "text": "It highlights the limited roles and constraints placed on women in traditional societies."
+      },
+      {
+        "label": "C",
+        "text": "It encourages women to embrace domesticity."
+      },
+      {
+        "label": "D",
+        "text": "It promotes the idea that women are naturally submissive."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem suggests that women in traditional societies are often confined to limited roles and subjected to societal expectations and constraints, leading to a lack of personal freedom and self-expression.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does Jack's storytelling reflect his relationship with his daughter Jo in 'Should Wizard Hit Mommy'?",
+    "topic": "Should Wizard Hit Mommy?",
+    "options": [
+      {
+        "label": "A",
+        "text": "It shows his desire to control her thinking and impose his own moral views."
+      },
+      {
+        "label": "B",
+        "text": "It shows his willingness to let her make her own decisions."
+      },
+      {
+        "label": "C",
+        "text": "It shows his lack of interest in her opinions."
+      },
+      {
+        "label": "D",
+        "text": "It shows his complete understanding of her perspective."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Jack's storytelling reveals his attempt to control Jo's thinking and impose his own moral views, reflecting his patriarchal mindset and his difficulty in accepting her independent perspective.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "C"
+  }
+]

@@ -1,0 +1,671 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Plan;
+use App\Models\Payment;
+use App\Models\PaymentGateway;
+use App\Services\PaymentService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use App\Services\EmailService;
+
+class PaymentController extends Controller
+{
+    /**
+     * Show payment page for selected plan
+     */
+    public function showPayment($planId)
+    {
+        $user = Auth::user();
+
+        // Get the pricing plan
+        $plan = Plan::findOrFail($planId);
+
+        // Get enabled payment gateways
+        $paymentGateways = \App\Models\PaymentGateway::where('is_enabled', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        // Check if any payment gateway is enabled
+        if ($paymentGateways->isEmpty()) {
+            return back()->with('error', 'No payment methods available. Please contact administrator.');
+        }
+
+        // Create payment record
+        $payment = Payment::create([
+            'user_id' => $user->id,
+            'plan_id' => $plan->id,
+            'amount' => $plan->price_monthly,
+            'transaction_id' => 'TXN' . strtoupper(Str::random(16)),
+            'payment_method' => 'pending',
+            'status' => 'pending',
+        ]);
+
+        return view('payment.checkout', compact('plan', 'payment', 'paymentGateways'));
+    }
+
+    /**
+     * Verify payment manually (admin will verify)
+     */
+    public function verifyPayment(Request $request, $paymentId)
+    {
+        $validated = $request->validate([
+            'transaction_ref' => 'required|string',
+        ]);
+
+        $payment = Payment::findOrFail($paymentId);
+
+        // Check if payment belongs to authenticated user
+        if ($payment->user_id !== Auth::id()) {
+            return back()->with('error', 'Unauthorized access.');
+        }
+
+        // Update payment with user-provided transaction reference
+        $payment->update([
+            'upi_transaction_id' => $validated['transaction_ref'],
+            'status' => 'verifying',
+        ]);
+
+        return redirect()->route('payment.status', $payment->id)
+            ->with('success', 'Payment submitted for verification. Admin will verify and activate your account within 24 hours.');
+    }
+
+    /**
+     * Show payment status
+     */
+    public function paymentStatus($paymentId)
+    {
+        $payment = Payment::with('plan')->findOrFail($paymentId);
+
+        // Check if payment belongs to authenticated user
+        if ($payment->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        return view('payment.status', compact('payment'));
+    }
+
+    /**
+     * Admin: Confirm payment and activate user
+     */
+    public function confirmPayment($paymentId)
+    {
+        $payment = Payment::with('user', 'plan')->findOrFail($paymentId);
+
+        try {
+            // Wrap payment and user updates in transaction for atomicity
+            DB::beginTransaction();
+
+            // Update payment status
+            $payment->update([
+                'status' => 'completed',
+                'verified_at' => now(),
+            ]);
+
+            // Activate user with plan details
+            $plan = $payment->plan;
+            $user = $payment->user;
+
+            $expiryDate = now()->addDays($plan->validity_days ?? 30);
+
+            $user->update([
+                'plan_id' => $plan->id,
+                'plan_expires_at' => $expiryDate,
+                'is_active' => true,
+                'token_limit' => $plan->message_tokens ?? 10000,
+                'tokens_used' => 0,
+                'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
+                'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
+                'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
+                'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
+            ]);
+
+            DB::commit();
+
+            // Send email AFTER commit (email failures shouldn't rollback payment)
+            try {
+                EmailService::sendPaymentSuccess(
+                    $user,
+                    $plan->name ?? 'Premium',
+                    (string) $payment->amount,
+                    $payment->transaction_id,
+                    $payment->payment_method ?? 'manual',
+                    $expiryDate->format('d M Y')
+                );
+            } catch (\Exception $emailError) {
+                \Log::warning('Payment confirmation email failed', [
+                    'payment_id' => $paymentId,
+                    'error' => $emailError->getMessage(),
+                ]);
+            }
+
+            return back()->with('success', 'Payment confirmed and user activated successfully!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Payment confirmation failed', [
+                'payment_id' => $paymentId,
+                'error' => $e->getMessage(),
+            ]);
+            return back()->with('error', 'Failed to confirm payment: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Create Cashfree payment order
+     */
+    public function createCashfreeOrder(Request $request)
+    {
+        $request->validate([
+            'plan_id' => 'required|exists:plans,id',
+        ]);
+
+        $user = Auth::user();
+        $plan = Plan::findOrFail($request->plan_id);
+
+        try {
+            // Generate unique order ID
+            $orderId = 'ORDER_' . $user->id . '_' . time();
+
+            // Get Cashfree config from services
+            $appId = config('services.cashfree.app_id');
+            $secretKey = config('services.cashfree.secret_key');
+
+            if (!$appId || !$secretKey) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Payment gateway not configured',
+                ], 500);
+            }
+
+            // Store order details in database
+            $payment = Payment::create([
+                'user_id' => $user->id,
+                'plan_id' => $plan->id,
+                'amount' => $plan->price_monthly,
+                'transaction_id' => $orderId,
+                'payment_method' => 'cashfree',
+                'status' => 'pending',
+            ]);
+
+            // Create payment link using Cashfree
+            $callbackUrl = route('payment.cashfree.callback');
+
+            // For now, return a simplified response
+            // In production, you'll use Cashfree SDK to generate the payment link
+            $paymentUrl = "https://payments.cashfree.com/order/#{$orderId}";
+
+            return response()->json([
+                'success' => true,
+                'payment_url' => $paymentUrl,
+                'order_id' => $orderId,
+                'amount' => $plan->price_monthly,
+                'callback_url' => $callbackUrl,
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Cashfree order creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => $user->id,
+                'plan_id' => $plan->id,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create payment order. Please try again.',
+            ], 500);
+        }
+    }
+
+    /**
+     * Cashfree payment callback
+     */
+    public function cashfreeCallback(Request $request)
+    {
+        try {
+            // SECURITY: Verify Cashfree webhook signature
+            $signature = $request->header('x-webhook-signature');
+            $timestamp = $request->header('x-webhook-timestamp');
+
+            if ($signature && $timestamp) {
+                $secretKey = config('services.cashfree.secret_key');
+                if ($secretKey) {
+                    $rawBody = $request->getContent();
+                    $expectedSignature = base64_encode(hash_hmac('sha256', $timestamp . $rawBody, $secretKey, true));
+
+                    if (!hash_equals($expectedSignature, $signature)) {
+                        \Log::warning('Cashfree callback: Invalid signature', [
+                            'ip' => $request->ip(),
+                            'order_id' => $request->input('order_id'),
+                        ]);
+                        return response()->json(['error' => 'Invalid signature'], 403);
+                    }
+                }
+            } else {
+                // Log warning but allow for backward compatibility (legacy callbacks)
+                \Log::warning('Cashfree callback: No signature provided', [
+                    'ip' => $request->ip(),
+                    'order_id' => $request->input('order_id'),
+                ]);
+            }
+
+            $orderId = $request->input('order_id');
+            $txStatus = $request->input('txStatus');
+            $referenceId = $request->input('referenceId');
+
+            // Find payment
+            $payment = Payment::where('transaction_id', $orderId)->firstOrFail();
+
+            // SECURITY: Idempotency check - prevent replay attacks
+            if ($payment->status === 'completed') {
+                \Log::info('Cashfree callback: Payment already completed', ['order_id' => $orderId]);
+                return redirect()->route('home')->with('success', 'Payment already processed.');
+            }
+
+            if ($txStatus === 'SUCCESS') {
+                // Update payment status
+                $payment->update([
+                    'status' => 'completed',
+                    'upi_transaction_id' => $referenceId,
+                    'verified_at' => now(),
+                ]);
+
+                // Activate user subscription
+                $plan = $payment->plan;
+                $user = $payment->user;
+                $expiryDate = now()->addDays($plan->validity_days ?? 30);
+
+                $user->update([
+                    'plan_id' => $plan->id,
+                    'plan_expires_at' => $expiryDate,
+                    'is_active' => true,
+                    'token_limit' => $plan->message_tokens ?? 10000,
+                    'tokens_used' => 0,
+                    'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
+                    'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
+                    'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
+                    'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
+                ]);
+
+                // Send success email
+                EmailService::sendPaymentSuccess(
+                    $user,
+                    $plan->name ?? 'Premium',
+                    (string) $payment->amount,
+                    $referenceId ?? $orderId,
+                    'cashfree',
+                    $expiryDate->format('d M Y')
+                );
+
+                return redirect()->route('home')
+                    ->with('success', 'Payment successful! Your subscription is now active.');
+
+            } else {
+                // Payment failed
+                $payment->update(['status' => 'failed']);
+
+                // Send failure email to user + admin
+                $plan = $payment->plan;
+                $user = $payment->user;
+                if ($user && $plan) {
+                    EmailService::sendPaymentFailed(
+                        $user,
+                        $plan->name ?? 'Premium',
+                        (string) $payment->amount,
+                        $orderId,
+                        'Payment was declined by the payment gateway'
+                    );
+                }
+
+                return redirect()->route('home')
+                    ->with('error', 'Payment failed. Please try again.');
+            }
+
+        } catch (\Exception $e) {
+            \Log::error('Cashfree callback processing failed', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return redirect()->route('home')
+                ->with('error', 'Payment processing failed. Please contact support.');
+        }
+    }
+
+    /**
+     * API: Get enabled payment gateways
+     */
+    public function getEnabledGateways()
+    {
+        $gateways = PaymentGateway::where('is_enabled', true)
+            ->orderBy('sort_order')
+            ->get(['id', 'name', 'display_name', 'logo_url']);
+
+        return response()->json([
+            'success' => true,
+            'gateways' => $gateways,
+        ]);
+    }
+
+    /**
+     * API: Create payment order for any gateway
+     */
+    public function createPaymentOrder(Request $request)
+    {
+        $request->validate([
+            'plan_id' => 'required|exists:plans,id',
+            'gateway' => 'required|in:razorpay,cashfree,phonepe',
+        ]);
+
+        $user = Auth::user();
+        $plan = Plan::findOrFail($request->plan_id);
+
+        // Check if gateway is enabled
+        $gateway = PaymentGateway::where('name', $request->gateway)
+            ->where('is_enabled', true)
+            ->first();
+
+        if (!$gateway) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment gateway is not available',
+            ], 400);
+        }
+
+        // Create payment order using PaymentService
+        $paymentService = new PaymentService();
+        $result = $paymentService->createOrder(
+            $request->gateway,
+            $plan->price_monthly,
+            'plan_purchase_' . $plan->id,
+            $user->id,
+            ['plan_id' => $plan->id]
+        );
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'transaction_id' => $result['transaction_id'],
+            'gateway_order_id' => $result['gateway_order_id'],
+            'gateway_data' => $result['gateway_data'],
+            'amount' => $plan->price_monthly,
+        ]);
+    }
+
+    /**
+     * API: Verify payment
+     */
+    public function verifyPaymentOrder(Request $request)
+    {
+        $request->validate([
+            'transaction_id' => 'required|string',
+            'payment_data' => 'required|array',
+        ]);
+
+        $paymentService = new PaymentService();
+        $result = $paymentService->verifyPayment(
+            $request->transaction_id,
+            $request->payment_data
+        );
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 400);
+        }
+
+        // Find transaction and activate user plan
+        $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)->first();
+
+        if ($transaction && isset($transaction->metadata['plan_id'])) {
+            $plan = Plan::find($transaction->metadata['plan_id']);
+            $user = Auth::user();
+
+            if ($plan && $user) {
+                $user->update([
+                    'plan_id' => $plan->id,
+                    'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
+                    'is_active' => true,
+                    'token_limit' => $plan->message_tokens ?? 10000,
+                    'tokens_used' => 0,
+                    'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
+                    'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
+                    'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
+                    'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
+                ]);
+
+                // Send payment success email
+                EmailService::sendPaymentSuccess(
+                    $user,
+                    $plan->name ?? 'Premium',
+                    (string) $transaction->amount,
+                    $request->transaction_id,
+                    $transaction->payment_gateway ?? 'online',
+                    now()->addDays($plan->validity_days ?? 30)->format('d M Y')
+                );
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment verified successfully',
+        ]);
+    }
+
+    /**
+     * Web: Create Razorpay order (called via AJAX from pricing page)
+     */
+    public function createRazorpayOrder(Request $request)
+    {
+        $request->validate([
+            'plan_id' => 'required|exists:plans,id',
+        ]);
+
+        $user = Auth::user();
+        $plan = Plan::findOrFail($request->plan_id);
+
+        // Check Razorpay gateway is enabled
+        $gateway = PaymentGateway::where('name', 'razorpay')
+            ->where('is_enabled', true)
+            ->first();
+
+        if (!$gateway || !$gateway->isConfigured()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Razorpay payment gateway is not available. Please contact administrator.',
+            ], 400);
+        }
+
+        $paymentService = new PaymentService();
+        $result = $paymentService->createOrder(
+            'razorpay',
+            $plan->price_monthly,
+            'plan_purchase_' . $plan->id,
+            $user->id,
+            ['plan_id' => $plan->id]
+        );
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'order_id' => $result['gateway_order_id'],
+            'razorpay_key' => $result['gateway_data']['key'],
+            'amount' => $plan->price_monthly * 100,
+            'currency' => 'INR',
+            'transaction_id' => $result['transaction_id'],
+            'user_name' => $user->name,
+            'user_email' => $user->email ?? '',
+            'user_phone' => $user->mobile ?? '',
+        ]);
+    }
+
+    /**
+     * Web: Verify Razorpay payment (called via AJAX after popup success)
+     */
+    public function verifyRazorpayOrder(Request $request)
+    {
+        $request->validate([
+            'razorpay_payment_id' => 'required|string',
+            'razorpay_order_id' => 'required|string',
+            'razorpay_signature' => 'required|string',
+            'plan_id' => 'required|exists:plans,id',
+            'transaction_id' => 'required|string',
+        ]);
+
+        $user = Auth::user();
+        $plan = Plan::findOrFail($request->plan_id);
+
+        // Find the transaction
+        $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)->first();
+
+        if (!$transaction) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transaction not found.',
+            ], 400);
+        }
+
+        // Verify using PaymentService
+        $paymentService = new PaymentService();
+        $result = $paymentService->verifyPayment($request->transaction_id, [
+            'razorpay_payment_id' => $request->razorpay_payment_id,
+            'razorpay_signature' => $request->razorpay_signature,
+            'payment_id' => $request->razorpay_payment_id,
+        ]);
+
+        if (!$result['success']) {
+            // Send payment failed email
+            EmailService::sendPaymentFailed(
+                $user,
+                $plan->name ?? 'Premium',
+                (string) $plan->price_monthly,
+                $request->transaction_id,
+                $result['message'] ?? 'Payment verification failed'
+            );
+
+            return response()->json([
+                'success' => false,
+                'message' => $result['message'],
+            ], 400);
+        }
+
+        // Activate user plan
+        $user->update([
+            'plan_id' => $plan->id,
+            'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
+            'is_active' => true,
+            'token_limit' => $plan->message_tokens ?? 10000,
+            'tokens_used' => 0,
+            'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
+            'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
+            'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
+            'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
+        ]);
+
+        // Create Payment record for admin visibility
+        Payment::create([
+            'user_id' => $user->id,
+            'plan_id' => $plan->id,
+            'amount' => $plan->price_monthly,
+            'transaction_id' => $request->razorpay_payment_id,
+            'payment_method' => 'razorpay',
+            'status' => 'completed',
+            'upi_transaction_id' => $request->razorpay_order_id,
+            'verified_at' => now(),
+        ]);
+
+        // Send success email to user + admin
+        EmailService::sendPaymentSuccess(
+            $user,
+            $plan->name ?? 'Premium',
+            (string) $plan->price_monthly,
+            $request->razorpay_payment_id,
+            'razorpay',
+            now()->addDays($plan->validity_days ?? 30)->format('d M Y')
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment successful! Your plan has been activated.',
+            'redirect_url' => '/chat',
+        ]);
+    }
+
+    /**
+     * API: Gateway-specific payment callbacks
+     */
+    public function gatewayCallback(Request $request, $gateway)
+    {
+        try {
+            $transactionId = $request->input('transaction_id') ?? $request->input('order_id');
+
+            if (!$transactionId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Transaction ID not found',
+                ], 400);
+            }
+
+            $paymentService = new PaymentService();
+            $result = $paymentService->verifyPayment($transactionId, $request->all());
+
+            if ($result['success']) {
+                // Find transaction and activate user plan
+                $transaction = \App\Models\Transaction::where('transaction_id', $transactionId)->first();
+
+                if ($transaction && isset($transaction->metadata['plan_id'])) {
+                    $plan = Plan::find($transaction->metadata['plan_id']);
+                    $user = $transaction->user;
+
+                    if ($plan && $user) {
+                        $user->update([
+                            'plan_id' => $plan->id,
+                            'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
+                            'is_active' => true,
+                            'token_limit' => $plan->message_tokens ?? 10000,
+                            'tokens_used' => 0,
+                            'can_use_gpt4' => (bool) ($plan->can_use_gpt4 ?? false),
+                            'can_use_claude' => (bool) ($plan->can_use_claude ?? false),
+                            'can_use_deepseek' => (bool) ($plan->can_use_deepseek ?? false),
+                            'can_use_grok' => (bool) ($plan->can_use_grok ?? false),
+                        ]);
+                    }
+                }
+            }
+
+            // For web callbacks, redirect back
+            if ($request->has('redirect')) {
+                return redirect()->route('home')
+                    ->with($result['success'] ? 'success' : 'error', $result['message']);
+            }
+
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            \Log::error('Payment callback processing failed', [
+                'gateway' => $gateway,
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment processing failed',
+            ], 500);
+        }
+    }
+}

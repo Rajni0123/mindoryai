@@ -1,0 +1,650 @@
+[
+  {
+    "question_text": "Which of the following is a colligative property?",
+    "topic": "Solutions",
+    "options": [
+      {
+        "label": "A",
+        "text": "Boiling point"
+      },
+      {
+        "label": "B",
+        "text": "Freezing point"
+      },
+      {
+        "label": "C",
+        "text": "Osmotic pressure"
+      },
+      {
+        "label": "D",
+        "text": "Surface tension"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Colligative properties are properties of solutions that depend on the ratio of the number of solute particles to the number of solvent particles in a solution, and not on the nature of the chemical species present. Osmotic pressure is one such property.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the IUPAC name of the complex [Co(NH3)5Cl]Cl2?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "Pentamminechloridocobalt(II) chloride"
+      },
+      {
+        "label": "B",
+        "text": "Pentamminechloridocobalt(III) chloride"
+      },
+      {
+        "label": "C",
+        "text": "Pentamminechlorocobalt(II) chloride"
+      },
+      {
+        "label": "D",
+        "text": "Pentamminechlorocobalt(III) chloride"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The oxidation state of Co is +3. The ligands are five ammine (NH3) and one chloro (Cl). The IUPAC name is Pentamminechlorocobalt(III) chloride.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following compounds will give a positive iodoform test?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ethanol"
+      },
+      {
+        "label": "B",
+        "text": "Methanol"
+      },
+      {
+        "label": "C",
+        "text": "Propanal"
+      },
+      {
+        "label": "D",
+        "text": "Benzaldehyde"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Iodoform test is given by compounds containing the CH3CO- group or CH3CH(OH)- group. Ethanol (CH3CH2OH) contains the CH3CH(OH)- group and will give a positive iodoform test.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the effect of Schottky defect on the density of the crystal?",
+    "topic": "The Solid State",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increases"
+      },
+      {
+        "label": "B",
+        "text": "Decreases"
+      },
+      {
+        "label": "C",
+        "text": "Remains the same"
+      },
+      {
+        "label": "D",
+        "text": "Cannot be predicted"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Schottky defect involves missing of ions from the lattice site. Thus, the mass decreases while the volume remains the same, hence the density decreases.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Write the IUPAC name of the following compound: CH3CH(CH3)CH2CHO",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "2-methylbutanal"
+      },
+      {
+        "label": "B",
+        "text": "3-methylbutanal"
+      },
+      {
+        "label": "C",
+        "text": "2-methylpentanal"
+      },
+      {
+        "label": "D",
+        "text": "3-methylpentanal"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The longest carbon chain containing the aldehyde group has 4 carbons. The methyl group is at the 3rd position. Hence, the IUPAC name is 3-methylbutanal.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define the term 'rate constant' of a reaction.",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "The rate of reaction when the concentration of each reactant is unity."
+      },
+      {
+        "label": "B",
+        "text": "The rate of reaction when the concentration of each reactant is zero."
+      },
+      {
+        "label": "C",
+        "text": "The rate of reaction at equilibrium."
+      },
+      {
+        "label": "D",
+        "text": "The rate of reaction at standard temperature and pressure."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The rate constant (k) is the proportionality constant in the rate law expression. It is equal to the rate of the reaction when the concentration of each reactant is unity.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What are lyophilic colloids? Give one example.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Colloids that are water-hating; Gold sol"
+      },
+      {
+        "label": "B",
+        "text": "Colloids that are solvent-loving; Starch sol"
+      },
+      {
+        "label": "C",
+        "text": "Colloids that are easily coagulated; Fe(OH)3 sol"
+      },
+      {
+        "label": "D",
+        "text": "Colloids that are formed by physical methods; As2S3 sol"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Lyophilic colloids are solvent-loving colloids. They are directly formed by mixing with the solvent. Example: Starch sol.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the mechanism of hydration of ethene to yield ethanol.",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Electrophilic addition followed by nucleophilic attack"
+      },
+      {
+        "label": "B",
+        "text": "Nucleophilic addition followed by electrophilic attack"
+      },
+      {
+        "label": "C",
+        "text": "Electrophilic addition followed by protonation"
+      },
+      {
+        "label": "D",
+        "text": "Electrophilic addition followed by deprotonation"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The mechanism involves protonation of ethene to form carbocation, followed by nucleophilic attack of water and finally deprotonation to form ethanol.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the following terms: (i) Inversion of sugar (ii) Mutarotation",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "Both involve change in optical rotation; Inversion is specific to sucrose"
+      },
+      {
+        "label": "B",
+        "text": "Both involve change in optical rotation; Mutarotation is specific to sucrose"
+      },
+      {
+        "label": "C",
+        "text": "Inversion involves hydrolysis; Mutarotation involves change in pH"
+      },
+      {
+        "label": "D",
+        "text": "Inversion involves change in pH; Mutarotation involves hydrolysis"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Inversion of sugar refers to the change in sign of optical rotation from dextro (+) to levo (-) upon hydrolysis of sucrose. Mutarotation is the change in optical rotation because of the change in the equilibrium between two anomers, when the corresponding stereocenters interconvert.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the preparation of potassium permanganate from pyrolusite ore.",
+    "topic": "The d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Reduction of MnO2 with KOH, followed by oxidation"
+      },
+      {
+        "label": "B",
+        "text": "Oxidation of MnO2 with KOH, followed by electrolysis"
+      },
+      {
+        "label": "C",
+        "text": "Oxidation of MnO2 with KOH, followed by acidification"
+      },
+      {
+        "label": "D",
+        "text": "Oxidation of MnO2 with KOH, followed by oxidation"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Pyrolusite ore (MnO2) is fused with KOH in the presence of air or an oxidizing agent like KNO3 to form potassium manganate (K2MnO4). This manganate is then electrolytically or by oxidation converted to potassium permanganate (KMnO4).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Account for the following: (i) Transition metals form complex compounds. (ii) Zn, Cd and Hg are not regarded as transition elements.",
+    "topic": "The d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Variable oxidation states, incomplete d-orbitals; Complete d-orbitals"
+      },
+      {
+        "label": "B",
+        "text": "Fixed oxidation states, incomplete d-orbitals; Incomplete d-orbitals"
+      },
+      {
+        "label": "C",
+        "text": "Variable oxidation states, complete d-orbitals; Complete d-orbitals"
+      },
+      {
+        "label": "D",
+        "text": "Fixed oxidation states, complete d-orbitals; Incomplete d-orbitals"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Transition metals form complexes due to small size, high charge, availability of vacant d-orbitals and variable oxidation states. Zn, Cd, and Hg have completely filled d-orbitals in their ground state and common oxidation states, hence not considered transition elements.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Write the Nernst equation for the cell reaction: Zn(s) + Cu2+(aq) → Zn2+(aq) + Cu(s)",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ecell = E°cell - (0.0591/2) log([Zn2+]/[Cu2+])"
+      },
+      {
+        "label": "B",
+        "text": "Ecell = E°cell + (0.0591/2) log([Zn2+]/[Cu2+])"
+      },
+      {
+        "label": "C",
+        "text": "Ecell = E°cell - (0.0591/1) log([Zn2+]/[Cu2+])"
+      },
+      {
+        "label": "D",
+        "text": "Ecell = E°cell + (0.0591/1) log([Zn2+]/[Cu2+])"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The Nernst equation for the given cell reaction is Ecell = E°cell - (RT/nF) ln([Zn2+]/[Cu2+]). At 298K, this simplifies to Ecell = E°cell - (0.0591/2) log([Zn2+]/[Cu2+]), where n=2 is the number of electrons transferred.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is meant by 'rate of a reaction'? What are the factors that affect the rate of a reaction?",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Change in concentration per unit time; Temperature, pressure, catalyst"
+      },
+      {
+        "label": "B",
+        "text": "Change in concentration per unit time; Temperature, concentration, catalyst"
+      },
+      {
+        "label": "C",
+        "text": "Change in volume per unit time; Temperature, concentration, catalyst"
+      },
+      {
+        "label": "D",
+        "text": "Change in volume per unit time; Temperature, pressure, catalyst"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Rate of reaction is the change in concentration of a reactant or product per unit time. Factors affecting the rate include temperature, concentration of reactants, catalyst, and surface area.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Differentiate between physisorption and chemisorption.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Weak forces, reversible; Strong forces, irreversible"
+      },
+      {
+        "label": "B",
+        "text": "Strong forces, reversible; Weak forces, irreversible"
+      },
+      {
+        "label": "C",
+        "text": "High enthalpy, reversible; Low enthalpy, irreversible"
+      },
+      {
+        "label": "D",
+        "text": "High enthalpy, irreversible; Low enthalpy, reversible"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Physisorption involves weak van der Waals forces, is reversible, and has low enthalpy of adsorption. Chemisorption involves strong chemical bonds, is irreversible, and has high enthalpy of adsorption.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the structures of the monomers of the following polymers: (i) Buna-S (ii) Nylon-6",
+    "topic": "Polymers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Styrene, Caprolactam"
+      },
+      {
+        "label": "B",
+        "text": "Butadiene, Caprolactam"
+      },
+      {
+        "label": "C",
+        "text": "Styrene and Butadiene, Caprolactam"
+      },
+      {
+        "label": "D",
+        "text": "Styrene and Butadiene, Adipic acid"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Buna-S is a copolymer of styrene and butadiene. Nylon-6 is a polymer of caprolactam.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are antiseptic and disinfectant? Give one example of each.",
+    "topic": "Chemistry in Everyday Life",
+    "options": [
+      {
+        "label": "A",
+        "text": "Applied to living tissues, applied to inanimate objects; Phenol, Dettol"
+      },
+      {
+        "label": "B",
+        "text": "Applied to living tissues, applied to inanimate objects; Dettol, Phenol"
+      },
+      {
+        "label": "C",
+        "text": "Applied to inanimate objects, applied to living tissues; Phenol, Dettol"
+      },
+      {
+        "label": "D",
+        "text": "Applied to inanimate objects, applied to living tissues; Dettol, Phenol"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Antiseptics are applied to living tissues to inhibit the growth of microorganisms (e.g., Dettol). Disinfectants are applied to inanimate objects (e.g., Phenol).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the following reactions: (i) Wolff-Kishner Reduction (ii) Cannizzaro Reaction",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Reduction to alkane, disproportionation of aldehydes"
+      },
+      {
+        "label": "B",
+        "text": "Oxidation to alcohol, reduction to alkane"
+      },
+      {
+        "label": "C",
+        "text": "Reduction to alcohol, oxidation to acid"
+      },
+      {
+        "label": "D",
+        "text": "Oxidation to acid, reduction to alcohol"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Wolff-Kishner reduction converts carbonyl group to CH2 group using hydrazine and strong base. Cannizzaro reaction is a disproportionation reaction of aldehydes lacking α-hydrogen in the presence of a strong base.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How do you convert: (i) Phenol to Anisole (ii) Ethanol to Propan-2-ol",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Williamson synthesis, Hydration"
+      },
+      {
+        "label": "B",
+        "text": "Williamson synthesis, Dehydration followed by hydration"
+      },
+      {
+        "label": "C",
+        "text": "Wurtz reaction, Hydration"
+      },
+      {
+        "label": "D",
+        "text": "Wurtz reaction, Dehydration followed by hydration"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Phenol to Anisole involves Williamson ether synthesis (reacting sodium phenoxide with methyl halide). Ethanol to Propan-2-ol involves dehydration to ethene followed by hydration to propan-2-ol.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Give reasons for the following: (i) Haloarenes are less reactive than haloalkanes towards nucleophilic substitution reactions. (ii) Although chlorine is an electron withdrawing group, yet it is ortho-para directing in electrophilic aromatic substitution reactions.",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Resonance stabilization, Resonance effect"
+      },
+      {
+        "label": "B",
+        "text": "Inductive effect, Resonance effect"
+      },
+      {
+        "label": "C",
+        "text": "Resonance stabilization, Inductive effect"
+      },
+      {
+        "label": "D",
+        "text": "Inductive effect, Inductive effect"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Haloarenes are less reactive due to resonance stabilization. Chlorine is ortho-para directing due to resonance effect, which increases electron density at ortho and para positions.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Define the following terms: (i) Order of a reaction (ii) Activation energy",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sum of powers of conc., energy required for reaction"
+      },
+      {
+        "label": "B",
+        "text": "Sum of powers of conc., minimum energy for reaction"
+      },
+      {
+        "label": "C",
+        "text": "Number of molecules reacting, energy required for reaction"
+      },
+      {
+        "label": "D",
+        "text": "Number of molecules reacting, minimum energy for reaction"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Order of a reaction is the sum of the powers of the concentration terms in the rate law expression. Activation energy is the minimum energy required for a reaction to occur.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Calculate the emf of the cell in which the following reaction takes place: Ni(s) + 2Ag+(0.002 M) → Ni2+(0.160 M) + 2Ag(s) Given E°cell = 1.05 V",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "0.91 V"
+      },
+      {
+        "label": "B",
+        "text": "1.00 V"
+      },
+      {
+        "label": "C",
+        "text": "1.14 V"
+      },
+      {
+        "label": "D",
+        "text": "1.20 V"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using the Nernst equation: Ecell = E°cell - (0.0591/n) log([Ni2+]/[Ag+]^2). Here, n=2, E°cell = 1.05 V, [Ni2+] = 0.160 M, [Ag+] = 0.002 M. Substituting these values, Ecell = 1.05 - (0.0591/2) log(0.160/(0.002)^2) = 1.05 - (0.02955) log(40000) = 1.05 - (0.02955 * 4.602) = 1.05 - 0.136 = 0.914 V ≈ 0.91 V",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the role of the following: (i) NaCN in the extraction of gold. (ii) Cryolite in the metallurgy of aluminium. (iii) CO in the Mond's process for refining nickel.",
+    "topic": "General Principles and Processes of Isolation of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Leaching agent, lowers melting point, forms volatile complex"
+      },
+      {
+        "label": "B",
+        "text": "Reducing agent, lowers melting point, forms volatile complex"
+      },
+      {
+        "label": "C",
+        "text": "Leaching agent, oxidizing agent, reducing agent"
+      },
+      {
+        "label": "D",
+        "text": "Reducing agent, oxidizing agent, forms volatile complex"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "NaCN acts as a leaching agent to form a soluble complex with gold. Cryolite lowers the melting point of alumina in the metallurgy of aluminium. CO forms a volatile complex with nickel in Mond's process.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Give reasons for the following: (i) NH3 is more basic than PH3. (ii) H2S is more acidic than H2O.",
+    "topic": "The p-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Smaller size, larger size"
+      },
+      {
+        "label": "B",
+        "text": "Higher electronegativity, lower bond dissociation enthalpy"
+      },
+      {
+        "label": "C",
+        "text": "Smaller size, higher bond dissociation enthalpy"
+      },
+      {
+        "label": "D",
+        "text": "Higher electronegativity, larger size"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "NH3 is more basic due to higher electronegativity of N and smaller size, leading to higher electron density. H2S is more acidic due to lower bond dissociation enthalpy of H-S bond compared to H-O bond.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "a) Account for the following: (i) Although F is more electronegative than Cl, HF has a lower dissociation enthalpy than HCl. (ii) Dioxygen is a gas while Sulphur is a solid. (iii) R3P=O exists but R3N=O does not (where R = alkyl group).",
+    "topic": "The p-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "H-bonding, intermolecular forces, d-orbital availability"
+      },
+      {
+        "label": "B",
+        "text": "Van der Waals forces, intermolecular forces, d-orbital availability"
+      },
+      {
+        "label": "C",
+        "text": "H-bonding, catenation, d-orbital availability"
+      },
+      {
+        "label": "D",
+        "text": "Van der Waals forces, catenation, d-orbital availability"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "HF has lower dissociation enthalpy due to strong H-bonding. Dioxygen is a gas due to weak intermolecular forces, while Sulphur is a solid due to catenation and stronger intermolecular forces. R3P=O exists due to availability of d-orbitals in P, allowing multiple bonding, while N lacks d-orbitals.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  }
+]

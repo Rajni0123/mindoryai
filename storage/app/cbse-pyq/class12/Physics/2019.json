@@ -1,0 +1,704 @@
+[
+  {
+    "question_text": "Two point charges having equal magnitudes and opposite signs are placed at a certain distance apart. The electric potential at any point on the right bisector of the line joining the two charges is:",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Positive"
+      },
+      {
+        "label": "B",
+        "text": "Negative"
+      },
+      {
+        "label": "C",
+        "text": "Zero"
+      },
+      {
+        "label": "D",
+        "text": "Depends on the distance"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The electric potential due to a positive charge is positive, and due to a negative charge is negative. On the right bisector, the distance from both charges is equal. Therefore, the magnitudes of the potentials are equal, but their signs are opposite, resulting in a net potential of zero.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The temperature coefficient of resistance for semiconductors is:",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Positive"
+      },
+      {
+        "label": "B",
+        "text": "Negative"
+      },
+      {
+        "label": "C",
+        "text": "Zero"
+      },
+      {
+        "label": "D",
+        "text": "Independent of temperature"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Semiconductors have a negative temperature coefficient of resistance. As temperature increases, the resistance of a semiconductor decreases due to increased carrier concentration.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A circular coil of radius R carries a current I. The magnetic field at its center is B. The magnetic field at a point on its axis at a distance R from the center is:",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "B/2"
+      },
+      {
+        "label": "B",
+        "text": "B/(2√2)"
+      },
+      {
+        "label": "C",
+        "text": "B/√2"
+      },
+      {
+        "label": "D",
+        "text": "2B"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The magnetic field at the center of the coil is B = (μ₀I)/(2R). The magnetic field on the axis at a distance R is B' = (μ₀IR²)/(2(R²+R²)^(3/2)) = (μ₀I)/(2R * 2√2) = B/(2√2).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "The angle of dip at a place is 45°. If the horizontal component of the earth’s magnetic field is H, then the total intensity of the earth’s magnetic field at that place will be:",
+    "topic": "Magnetism and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "H"
+      },
+      {
+        "label": "B",
+        "text": "H/√2"
+      },
+      {
+        "label": "C",
+        "text": "H√2"
+      },
+      {
+        "label": "D",
+        "text": "2H"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The horizontal component H = B cos δ, where B is the total intensity and δ is the angle of dip. Given δ = 45°, H = B cos 45° = B/√2. Therefore, B = H√2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "A convex lens of focal length 20 cm is placed in contact with a concave lens of focal length 30 cm. The focal length of the combination is:",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "60 cm"
+      },
+      {
+        "label": "B",
+        "text": "12 cm"
+      },
+      {
+        "label": "C",
+        "text": "30 cm"
+      },
+      {
+        "label": "D",
+        "text": "-60 cm"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The effective focal length of the combination is given by 1/F = 1/f₁ + 1/f₂. Here, f₁ = 20 cm and f₂ = -30 cm. So, 1/F = 1/20 - 1/30 = (3-2)/60 = 1/60. Therefore, F = 60 cm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "The de Broglie wavelength of an electron accelerated through a potential difference of V volts is:",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "λ ∝ V"
+      },
+      {
+        "label": "B",
+        "text": "λ ∝ 1/V"
+      },
+      {
+        "label": "C",
+        "text": "λ ∝ √V"
+      },
+      {
+        "label": "D",
+        "text": "λ ∝ 1/√V"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The de Broglie wavelength λ = h/p = h/√(2mK), where K is the kinetic energy. The kinetic energy K = eV. Therefore, λ = h/√(2meV), which implies λ ∝ 1/√V.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "In a nuclear reaction, if the Q-value is positive, then the reaction is:",
+    "topic": "Nuclear Physics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Endothermic"
+      },
+      {
+        "label": "B",
+        "text": "Exothermic"
+      },
+      {
+        "label": "C",
+        "text": "Neither exothermic nor endothermic"
+      },
+      {
+        "label": "D",
+        "text": "Sometimes exothermic and sometimes endothermic"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A positive Q-value indicates that energy is released in the reaction, meaning the reaction is exothermic.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The width of the depletion region in a p-n junction diode is of the order of:",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "10⁻⁶ m"
+      },
+      {
+        "label": "B",
+        "text": "10⁻³ m"
+      },
+      {
+        "label": "C",
+        "text": "10⁻⁸ m"
+      },
+      {
+        "label": "D",
+        "text": "10⁻⁴ m"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The width of the depletion region in a p-n junction diode is typically of the order of 10⁻⁶ m (or 1 micrometer).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define electric flux. Write its S.I. units. Choose the correct option that represents the electric flux through a closed surface enclosing an electric dipole.",
+    "topic": "Electric Charges and Fields",
+    "options": [
+      {
+        "label": "A",
+        "text": "The total number of electric field lines passing through a surface; Nm²/C; Zero"
+      },
+      {
+        "label": "B",
+        "text": "The total number of electric field lines passing through a surface; Nm/C²; Non-zero"
+      },
+      {
+        "label": "C",
+        "text": "The electric field intensity at a point; Nm²/C; Zero"
+      },
+      {
+        "label": "D",
+        "text": "The electric field intensity at a point; Nm/C²; Non-zero"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Electric flux is the total number of electric field lines passing through a surface. Its S.I. unit is Nm²/C. According to Gauss's law, the electric flux through a closed surface is proportional to the enclosed charge. An electric dipole has equal and opposite charges, so the net enclosed charge is zero, and hence the electric flux is zero.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "State Kirchhoff’s rules. On what principle are these rules based? Which of the following statements is true?",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Junction rule: conservation of charge; Loop rule: conservation of energy; Both rules are always applicable to any electrical network."
+      },
+      {
+        "label": "B",
+        "text": "Junction rule: conservation of energy; Loop rule: conservation of charge; Both rules are always applicable to any electrical network."
+      },
+      {
+        "label": "C",
+        "text": "Junction rule: conservation of charge; Loop rule: conservation of energy; Rules are only applicable to linear circuits."
+      },
+      {
+        "label": "D",
+        "text": "Junction rule: conservation of energy; Loop rule: conservation of charge; Rules are only applicable to linear circuits."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Kirchhoff's junction rule is based on the conservation of charge, and the loop rule is based on the conservation of energy. Both rules are fundamental and applicable to any electrical network.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Derive an expression for the magnetic field at a point on the axis of a current carrying circular loop. Choose the correct expression for the magnetic field at the center of the loop.",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "B = (μ₀IR²)/(2(R²+x²)^(3/2)); B = (μ₀I)/(2R)"
+      },
+      {
+        "label": "B",
+        "text": "B = (μ₀IR)/(2(R²+x²)^(3/2)); B = (μ₀I)/(4πR)"
+      },
+      {
+        "label": "C",
+        "text": "B = (μ₀IR²)/(4π(R²+x²)^(3/2)); B = (μ₀I)/(2R)"
+      },
+      {
+        "label": "D",
+        "text": "B = (μ₀IR²)/(2(R²+x²)^(3/2)); B = (μ₀I)/(4πR)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The magnetic field at a point on the axis of a current-carrying loop is B = (μ₀IR²)/(2(R²+x²)^(3/2)), where x is the distance from the center of the loop. At the center (x=0), B = (μ₀I)/(2R).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the phenomenon of total internal reflection. State two conditions necessary for total internal reflection to occur. Which of the following applications is based on total internal reflection?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Light travels from denser to rarer medium; Angle of incidence > critical angle; Optical fibers"
+      },
+      {
+        "label": "B",
+        "text": "Light travels from rarer to denser medium; Angle of incidence > critical angle; Optical fibers"
+      },
+      {
+        "label": "C",
+        "text": "Light travels from denser to rarer medium; Angle of incidence < critical angle; Rainbow formation"
+      },
+      {
+        "label": "D",
+        "text": "Light travels from rarer to denser medium; Angle of incidence < critical angle; Rainbow formation"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Total internal reflection occurs when light travels from a denser to a rarer medium and the angle of incidence is greater than the critical angle. Optical fibers are a common application of TIR.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is meant by 'interference of light'? State two conditions for sustained interference of light. Which of the following is a necessary condition for observing interference?",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Superposition of two light waves; Same frequency and constant phase difference; Two independent sources"
+      },
+      {
+        "label": "B",
+        "text": "Superposition of two light waves; Different frequencies and constant phase difference; Two coherent sources"
+      },
+      {
+        "label": "C",
+        "text": "Superposition of two light waves; Same frequency and constant phase difference; Two coherent sources"
+      },
+      {
+        "label": "D",
+        "text": "Superposition of two light waves; Different frequencies and constant phase difference; Two independent sources"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Interference of light is the superposition of two light waves. For sustained interference, the waves must have the same frequency and a constant phase difference. The sources must be coherent.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Define the term 'work function' of a metal. How does the photoelectric current vary with the intensity of incident radiation? Which of the following statements is true regarding the stopping potential?",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Minimum energy to eject an electron; Increases linearly; Independent of frequency"
+      },
+      {
+        "label": "B",
+        "text": "Minimum energy to eject an electron; Increases linearly; Dependent on frequency"
+      },
+      {
+        "label": "C",
+        "text": "Maximum energy to eject an electron; Decreases linearly; Independent of frequency"
+      },
+      {
+        "label": "D",
+        "text": "Maximum energy to eject an electron; Decreases linearly; Dependent on frequency"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The work function is the minimum energy required to eject an electron from a metal surface. The photoelectric current increases linearly with the intensity of incident radiation. The stopping potential depends on the frequency of the incident radiation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "State Bohr's postulates for the hydrogen atom model. Which of the following statements is true regarding the energy levels in the Bohr model?",
+    "topic": "Atoms",
+    "options": [
+      {
+        "label": "A",
+        "text": "Electrons revolve in specific orbits without radiating energy; Energy levels are equally spaced; Energy is quantized"
+      },
+      {
+        "label": "B",
+        "text": "Electrons revolve in specific orbits without radiating energy; Energy levels are not equally spaced; Energy is quantized"
+      },
+      {
+        "label": "C",
+        "text": "Electrons revolve in any orbit; Energy levels are equally spaced; Energy is continuous"
+      },
+      {
+        "label": "D",
+        "text": "Electrons revolve in any orbit; Energy levels are not equally spaced; Energy is continuous"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Bohr's postulates include that electrons revolve in specific orbits without radiating energy, and energy is quantized. The energy levels are not equally spaced in the Bohr model.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is nuclear fission? Explain with an example. Which of the following is a characteristic of nuclear fission?",
+    "topic": "Nuclear Physics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Splitting of a heavy nucleus into lighter nuclei; ₂₃₅U + n → ₁₄₁Ba + ₉₂Kr + 3n + Q; Energy is absorbed"
+      },
+      {
+        "label": "B",
+        "text": "Splitting of a heavy nucleus into lighter nuclei; ₂₃₅U + n → ₁₄₁Ba + ₉₂Kr + 3n + Q; Energy is released"
+      },
+      {
+        "label": "C",
+        "text": "Combining of lighter nuclei into a heavy nucleus; ₂₃₅U + n → ₁₄₁Ba + ₉₂Kr + 3n + Q; Energy is absorbed"
+      },
+      {
+        "label": "D",
+        "text": "Combining of lighter nuclei into a heavy nucleus; ₂₃₅U + n → ₁₄₁Ba + ₉₂Kr + 3n + Q; Energy is released"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Nuclear fission is the splitting of a heavy nucleus into lighter nuclei, typically accompanied by the release of a large amount of energy. An example is the fission of uranium-235.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Draw a circuit diagram of a full-wave rectifier using p-n junction diodes. Explain its working. Which of the following is an advantage of a full-wave rectifier over a half-wave rectifier?",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Diagram with two diodes and center-tapped transformer; Conduction during both half cycles; Higher efficiency"
+      },
+      {
+        "label": "B",
+        "text": "Diagram with one diode; Conduction during one half cycle; Lower efficiency"
+      },
+      {
+        "label": "C",
+        "text": "Diagram with two diodes and center-tapped transformer; Conduction during one half cycle; Higher efficiency"
+      },
+      {
+        "label": "D",
+        "text": "Diagram with one diode; Conduction during both half cycles; Lower efficiency"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A full-wave rectifier uses two diodes and a center-tapped transformer to conduct during both half cycles of the input AC signal, resulting in higher efficiency compared to a half-wave rectifier.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain, with the help of a labelled diagram, the principle and working of a moving coil galvanometer. What is the function of a radial magnetic field? Choose the correct statement about the sensitivity of a galvanometer.",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "Torque on a coil in a magnetic field; Radial field makes torque independent of angle; Sensitivity increases with number of turns"
+      },
+      {
+        "label": "B",
+        "text": "Torque on a coil in a magnetic field; Radial field makes torque dependent on angle; Sensitivity decreases with number of turns"
+      },
+      {
+        "label": "C",
+        "text": "Force on a current carrying wire; Radial field makes torque independent of angle; Sensitivity increases with number of turns"
+      },
+      {
+        "label": "D",
+        "text": "Force on a current carrying wire; Radial field makes torque dependent on angle; Sensitivity decreases with number of turns"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A moving coil galvanometer works on the principle of torque on a coil in a magnetic field. A radial magnetic field makes the torque independent of the angle. The sensitivity of a galvanometer increases with the number of turns.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Derive the lens maker's formula for a thin lens. What is the significance of the lens maker's formula? Which of the following parameters does the focal length of a lens depend on?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/f = (n-1)(1/R₁ - 1/R₂); Relates focal length to refractive index and radii of curvature; Refractive index of lens material"
+      },
+      {
+        "label": "B",
+        "text": "1/f = (n+1)(1/R₁ - 1/R₂); Relates focal length to refractive index and radii of curvature; Object distance"
+      },
+      {
+        "label": "C",
+        "text": "1/f = (n-1)(1/R₁ + 1/R₂); Relates focal length to object distance and image distance; Refractive index of lens material"
+      },
+      {
+        "label": "D",
+        "text": "1/f = (n+1)(1/R₁ + 1/R₂); Relates focal length to object distance and image distance; Object distance"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The lens maker's formula is 1/f = (n-1)(1/R₁ - 1/R₂), which relates the focal length of a lens to its refractive index and the radii of curvature of its surfaces. The focal length depends on the refractive index of the lens material.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the working of a common emitter transistor amplifier with a circuit diagram. What is the role of the emitter resistor? Choose the correct statement about the voltage gain of the amplifier.",
+    "topic": "Semiconductor Electronics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Circuit with biasing resistors and coupling capacitors; Stabilizes the operating point; Voltage gain is high"
+      },
+      {
+        "label": "B",
+        "text": "Circuit without biasing resistors; Stabilizes the operating point; Voltage gain is low"
+      },
+      {
+        "label": "C",
+        "text": "Circuit with biasing resistors and coupling capacitors; Provides negative feedback; Voltage gain is low"
+      },
+      {
+        "label": "D",
+        "text": "Circuit without biasing resistors; Provides negative feedback; Voltage gain is high"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A common emitter transistor amplifier uses biasing resistors and coupling capacitors. The emitter resistor stabilizes the operating point. The voltage gain of the amplifier is high.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are coherent sources of light? Explain Young's double slit experiment to demonstrate interference of light. Which of the following is true about the fringe width in Young's experiment?",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sources with constant phase difference; Superposition of waves from two slits; Fringe width is directly proportional to wavelength"
+      },
+      {
+        "label": "B",
+        "text": "Sources with varying phase difference; Superposition of waves from two slits; Fringe width is inversely proportional to wavelength"
+      },
+      {
+        "label": "C",
+        "text": "Sources with constant phase difference; Diffraction of waves from a single slit; Fringe width is directly proportional to wavelength"
+      },
+      {
+        "label": "D",
+        "text": "Sources with varying phase difference; Diffraction of waves from a single slit; Fringe width is inversely proportional to wavelength"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Coherent sources have a constant phase difference. Young's double-slit experiment demonstrates interference through the superposition of waves from two slits. The fringe width is directly proportional to the wavelength of light.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Define the term 'modulation' in communication systems. Why is modulation necessary? Which of the following is a type of modulation?",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "Superimposing a low-frequency signal on a high-frequency carrier; To increase the range of the signal; Amplitude Modulation (AM)"
+      },
+      {
+        "label": "B",
+        "text": "Superimposing a high-frequency signal on a low-frequency carrier; To decrease the range of the signal; Frequency Modulation (FM)"
+      },
+      {
+        "label": "C",
+        "text": "Superimposing a low-frequency signal on a high-frequency carrier; To decrease the range of the signal; Pulse Code Modulation (PCM)"
+      },
+      {
+        "label": "D",
+        "text": "Superimposing a high-frequency signal on a low-frequency carrier; To increase the range of the signal; Phase Modulation (PM)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Modulation is the process of superimposing a low-frequency signal (message signal) on a high-frequency carrier wave. It is necessary to increase the range of the signal. Amplitude Modulation (AM) is a type of modulation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Two wires A and B of the same material and having same length have radii r and 2r respectively. Compare (i) their resistances and (ii) their resistivities. Choose the correct option.",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Rᴀ/Rʙ = 4; ρᴀ/ρʙ = 1"
+      },
+      {
+        "label": "B",
+        "text": "Rᴀ/Rʙ = 1/4; ρᴀ/ρʙ = 1"
+      },
+      {
+        "label": "C",
+        "text": "Rᴀ/Rʙ = 4; ρᴀ/ρʙ = 2"
+      },
+      {
+        "label": "D",
+        "text": "Rᴀ/Rʙ = 1/4; ρᴀ/ρʙ = 2"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Resistance R = ρL/A = ρL/(πr²). Since the material and length are the same, the ratio of resistances is inversely proportional to the square of the radii. Rᴀ/Rʙ = (2r)²/r² = 4. Resistivity is a material property and is independent of dimensions, so ρᴀ/ρʙ = 1.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "State the principle of a potentiometer. Draw a circuit diagram to compare the emf of two cells using a potentiometer. Choose the correct statement.",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Potential drop across a wire is proportional to length; Circuit with two cells and galvanometer; Emf ratio = length ratio"
+      },
+      {
+        "label": "B",
+        "text": "Potential drop across a wire is inversely proportional to length; Circuit with one cell and ammeter; Emf ratio = length ratio"
+      },
+      {
+        "label": "C",
+        "text": "Potential drop across a wire is proportional to length; Circuit with two cells and galvanometer; Emf ratio = inverse of length ratio"
+      },
+      {
+        "label": "D",
+        "text": "Potential drop across a wire is inversely proportional to length; Circuit with one cell and ammeter; Emf ratio = inverse of length ratio"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The principle of a potentiometer is that the potential drop across a wire is proportional to its length. The circuit diagram includes two cells and a galvanometer. The ratio of emfs is equal to the ratio of the balancing lengths.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Define the term 'self-inductance' of a coil. Obtain the expression for the energy stored in an inductor L connected across a source of emf. Which of the following is the correct expression for the energy stored?",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Inductance due to its own magnetic flux; U = (1/2)LI²; Energy is proportional to the square of the current"
+      },
+      {
+        "label": "B",
+        "text": "Inductance due to external magnetic flux; U = LI²; Energy is proportional to the current"
+      },
+      {
+        "label": "C",
+        "text": "Inductance due to its own magnetic flux; U = LI²; Energy is proportional to the current"
+      },
+      {
+        "label": "D",
+        "text": "Inductance due to external magnetic flux; U = (1/2)LI²; Energy is proportional to the square of the current"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Self-inductance is the inductance of a coil due to its own magnetic flux. The energy stored in an inductor is given by U = (1/2)LI², where L is the inductance and I is the current. The energy is proportional to the square of the current.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the concept of displacement current. What is the significance of displacement current? Which of the following equations shows the relationship between conduction and displacement current in a capacitor?",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "Current due to changing electric field; Completes Ampere's law; Conduction current = Displacement current"
+      },
+      {
+        "label": "B",
+        "text": "Current due to changing magnetic field; Completes Faraday's law; Conduction current > Displacement current"
+      },
+      {
+        "label": "C",
+        "text": "Current due to changing electric field; Completes Ampere's law; Conduction current < Displacement current"
+      },
+      {
+        "label": "D",
+        "text": "Current due to changing magnetic field; Completes Faraday's law; Conduction current = Displacement current"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Displacement current is the current due to a changing electric field. It completes Ampere's law and is essential for the consistency of Maxwell's equations. In a capacitor, the conduction current is equal to the displacement current.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

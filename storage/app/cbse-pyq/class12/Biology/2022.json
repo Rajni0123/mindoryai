@@ -1,0 +1,704 @@
+[
+  {
+    "question_text": "What is the role of the enzyme DNA ligase in DNA replication?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "To unwind the DNA double helix"
+      },
+      {
+        "label": "B",
+        "text": "To join Okazaki fragments"
+      },
+      {
+        "label": "C",
+        "text": "To add nucleotides to the 3' end of the DNA strand"
+      },
+      {
+        "label": "D",
+        "text": "To proofread the newly synthesized DNA strand"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "DNA ligase joins the Okazaki fragments on the lagging strand during DNA replication by catalyzing the formation of phosphodiester bonds between the fragments.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is NOT a component of the lac operon?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Promoter"
+      },
+      {
+        "label": "B",
+        "text": "Operator"
+      },
+      {
+        "label": "C",
+        "text": "Enhancer"
+      },
+      {
+        "label": "D",
+        "text": "Structural genes"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The lac operon consists of a promoter, operator, regulator gene, and structural genes. Enhancers are not part of the lac operon but are involved in eukaryotic gene regulation.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the primary function of the enzyme reverse transcriptase?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "To synthesize DNA from an RNA template"
+      },
+      {
+        "label": "B",
+        "text": "To synthesize RNA from a DNA template"
+      },
+      {
+        "label": "C",
+        "text": "To degrade RNA"
+      },
+      {
+        "label": "D",
+        "text": "To repair damaged DNA"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Reverse transcriptase is an enzyme that synthesizes DNA from an RNA template. It is commonly found in retroviruses like HIV.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of a vestigial organ in humans?",
+    "topic": "Evolution",
+    "options": [
+      {
+        "label": "A",
+        "text": "Heart"
+      },
+      {
+        "label": "B",
+        "text": "Appendix"
+      },
+      {
+        "label": "C",
+        "text": "Brain"
+      },
+      {
+        "label": "D",
+        "text": "Kidney"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The appendix is considered a vestigial organ in humans, meaning it has lost its original function through evolution.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of mycorrhizae in plant nutrition?",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "To fix nitrogen in the soil"
+      },
+      {
+        "label": "B",
+        "text": "To enhance the absorption of nutrients and water by plant roots"
+      },
+      {
+        "label": "C",
+        "text": "To protect plants from herbivores"
+      },
+      {
+        "label": "D",
+        "text": "To provide structural support to plants"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Mycorrhizae are symbiotic associations between fungi and plant roots that enhance the absorption of nutrients and water by the plant.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define the term 'biopiracy' and provide an example.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Using traditional knowledge of indigenous people to exploit biological resources without proper authorization."
+      },
+      {
+        "label": "B",
+        "text": "The act of illegally hunting endangered species."
+      },
+      {
+        "label": "C",
+        "text": "Introducing invasive species into a new environment."
+      },
+      {
+        "label": "D",
+        "text": "The process of genetically modifying organisms."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biopiracy refers to the use of biological resources by multinational companies and other organizations without proper authorization from the countries and people concerned. An example is the patenting of basmati rice varieties by foreign companies.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the significance of 'hotspots' in biodiversity conservation.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Areas with high species richness and high degree of endemism, requiring urgent conservation efforts."
+      },
+      {
+        "label": "B",
+        "text": "Areas with low species diversity but high economic value."
+      },
+      {
+        "label": "C",
+        "text": "Areas with high pollution levels and degraded ecosystems."
+      },
+      {
+        "label": "D",
+        "text": "Areas with high population density and low resource availability."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biodiversity hotspots are regions with exceptionally high species richness and endemism, facing significant threats of habitat loss. They are prioritized for conservation efforts to prevent species extinction.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of transcription in eukaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "RNA polymerase binds to the promoter, synthesizes mRNA, and the mRNA undergoes splicing and capping."
+      },
+      {
+        "label": "B",
+        "text": "Ribosomes translate mRNA into proteins."
+      },
+      {
+        "label": "C",
+        "text": "DNA polymerase replicates the DNA."
+      },
+      {
+        "label": "D",
+        "text": "tRNA carries amino acids to the ribosome."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Transcription in eukaryotes involves RNA polymerase binding to the promoter region of a gene, synthesizing a pre-mRNA molecule, which then undergoes processing steps like splicing, capping, and tailing to produce mature mRNA.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the concept of 'ecological succession' and differentiate between primary and secondary succession.",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ecological succession is the gradual process of change in species composition in an area. Primary succession starts in barren areas, while secondary succession starts in areas where soil is present."
+      },
+      {
+        "label": "B",
+        "text": "Ecological succession is the sudden change in species composition due to natural disasters."
+      },
+      {
+        "label": "C",
+        "text": "Ecological succession is the process of introducing new species into an ecosystem."
+      },
+      {
+        "label": "D",
+        "text": "Ecological succession is the process of removing invasive species from an ecosystem."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Ecological succession is the gradual and predictable change in species composition in an area over time. Primary succession begins in lifeless areas where soil has not yet formed, while secondary succession occurs in areas where soil is already present but the existing community has been disturbed.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the structure of a typical antibody molecule and explain its function in the immune response.",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "Antibodies are Y-shaped proteins composed of heavy and light chains, which bind to antigens and neutralize or eliminate them."
+      },
+      {
+        "label": "B",
+        "text": "Antibodies are lipids that engulf pathogens."
+      },
+      {
+        "label": "C",
+        "text": "Antibodies are carbohydrates that stimulate inflammation."
+      },
+      {
+        "label": "D",
+        "text": "Antibodies are nucleic acids that directly kill infected cells."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Antibodies are Y-shaped proteins composed of two heavy chains and two light chains. They bind to specific antigens, marking them for destruction or neutralizing their effects. This is a crucial part of the humoral immune response.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of translation in prokaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "mRNA binds to the ribosome, tRNA brings amino acids, and peptide bonds form to create a polypeptide chain."
+      },
+      {
+        "label": "B",
+        "text": "DNA is replicated to form new DNA strands."
+      },
+      {
+        "label": "C",
+        "text": "RNA is transcribed from DNA."
+      },
+      {
+        "label": "D",
+        "text": "Proteins are broken down into amino acids."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Translation in prokaryotes involves the binding of mRNA to the ribosome, the recruitment of tRNA molecules carrying specific amino acids, and the formation of peptide bonds between the amino acids to create a polypeptide chain. This process occurs in the cytoplasm.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the different types of interactions that occur within a community, giving one example of each.",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Mutualism (e.g., mycorrhizae), competition (e.g., two plant species competing for resources), predation (e.g., lion hunting zebra), parasitism (e.g., ticks on a dog), commensalism (e.g., epiphytes on a tree)."
+      },
+      {
+        "label": "B",
+        "text": "Only competition and predation occur in a community."
+      },
+      {
+        "label": "C",
+        "text": "Only mutualism and parasitism occur in a community."
+      },
+      {
+        "label": "D",
+        "text": "Only commensalism occurs in a community."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Interactions within a community include mutualism (both benefit), competition (both are harmed), predation (one benefits, one is harmed), parasitism (one benefits, one is harmed), and commensalism (one benefits, the other is unaffected).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the greenhouse effect and its impact on global climate.",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Greenhouse gases trap heat in the atmosphere, leading to global warming and climate change."
+      },
+      {
+        "label": "B",
+        "text": "Greenhouse gases cool the atmosphere, leading to global cooling."
+      },
+      {
+        "label": "C",
+        "text": "Greenhouse gases have no impact on global climate."
+      },
+      {
+        "label": "D",
+        "text": "Greenhouse gases only affect local weather patterns."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The greenhouse effect is the process by which certain gases in the atmosphere trap heat, leading to an increase in global temperatures and significant changes in climate patterns.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the process of recombinant DNA technology and its applications.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Recombinant DNA technology involves cutting and pasting DNA fragments from different sources to create new combinations, used in medicine, agriculture, and industry."
+      },
+      {
+        "label": "B",
+        "text": "Recombinant DNA technology is the process of cloning entire organisms."
+      },
+      {
+        "label": "C",
+        "text": "Recombinant DNA technology is the process of sequencing DNA."
+      },
+      {
+        "label": "D",
+        "text": "Recombinant DNA technology is the process of creating mutations in DNA."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Recombinant DNA technology involves the manipulation of DNA to create new combinations of genetic material. This technology has diverse applications in medicine (e.g., insulin production), agriculture (e.g., genetically modified crops), and industry (e.g., enzyme production).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the principles of natural selection and its role in evolution.",
+    "topic": "Evolution",
+    "options": [
+      {
+        "label": "A",
+        "text": "Natural selection is the process by which organisms with traits better suited to their environment survive and reproduce, leading to evolutionary change."
+      },
+      {
+        "label": "B",
+        "text": "Natural selection is the process by which organisms acquire traits during their lifetime and pass them on to their offspring."
+      },
+      {
+        "label": "C",
+        "text": "Natural selection is the process by which all organisms evolve at the same rate."
+      },
+      {
+        "label": "D",
+        "text": "Natural selection is the process by which organisms become extinct."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Natural selection is a fundamental mechanism of evolution. It favors individuals with traits that enhance their survival and reproduction in a particular environment. Over time, this leads to changes in the genetic makeup of populations and the evolution of new species.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the different types of ecological pyramids and their significance in understanding energy flow in an ecosystem.",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Pyramids of number, biomass, and energy represent the number of individuals, total biomass, and energy at each trophic level, respectively. They illustrate energy flow and trophic relationships."
+      },
+      {
+        "label": "B",
+        "text": "Ecological pyramids only represent the number of individuals at each trophic level."
+      },
+      {
+        "label": "C",
+        "text": "Ecological pyramids only represent the biomass at each trophic level."
+      },
+      {
+        "label": "D",
+        "text": "Ecological pyramids only represent the energy at each trophic level."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Ecological pyramids are graphical representations of the trophic structure and function of an ecosystem. Pyramids of number, biomass, and energy depict the number of individuals, total biomass, and energy content at each trophic level, respectively. They provide insights into energy flow, trophic relationships, and ecosystem stability.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the causes, effects, and control measures for air pollution.",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Air pollution is caused by pollutants from industries, vehicles, and burning fossil fuels, leading to respiratory problems and climate change. Control measures include reducing emissions and using cleaner energy sources."
+      },
+      {
+        "label": "B",
+        "text": "Air pollution is only caused by natural disasters."
+      },
+      {
+        "label": "C",
+        "text": "Air pollution has no effect on human health or the environment."
+      },
+      {
+        "label": "D",
+        "text": "Air pollution can be controlled by increasing industrial activity."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Air pollution is caused by the release of harmful substances into the atmosphere from various sources, including industries, vehicles, and burning fossil fuels. It leads to respiratory problems, cardiovascular diseases, and contributes to climate change. Control measures include reducing emissions, using cleaner energy sources, and implementing stricter environmental regulations.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the role of restriction enzymes in recombinant DNA technology?",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To cut DNA at specific sequences"
+      },
+      {
+        "label": "B",
+        "text": "To join DNA fragments together"
+      },
+      {
+        "label": "C",
+        "text": "To replicate DNA"
+      },
+      {
+        "label": "D",
+        "text": "To translate mRNA into protein"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Restriction enzymes are used to cut DNA at specific recognition sequences, allowing for the precise excision of DNA fragments for cloning and other recombinant DNA techniques.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is a characteristic of cancer cells?",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "Uncontrolled cell division"
+      },
+      {
+        "label": "B",
+        "text": "Normal cell growth"
+      },
+      {
+        "label": "C",
+        "text": "Apoptosis"
+      },
+      {
+        "label": "D",
+        "text": "Contact inhibition"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Cancer cells are characterized by uncontrolled cell division, leading to the formation of tumors. They lose normal regulatory mechanisms that control cell growth and division.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the function of the ozone layer?",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "To absorb harmful UV radiation from the sun"
+      },
+      {
+        "label": "B",
+        "text": "To trap heat in the atmosphere"
+      },
+      {
+        "label": "C",
+        "text": "To produce oxygen"
+      },
+      {
+        "label": "D",
+        "text": "To reflect sunlight back into space"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The ozone layer absorbs harmful ultraviolet (UV) radiation from the sun, protecting life on Earth from its damaging effects.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define the term 'mutation'.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "A sudden heritable change in genetic material"
+      },
+      {
+        "label": "B",
+        "text": "The process of DNA replication"
+      },
+      {
+        "label": "C",
+        "text": "The process of protein synthesis"
+      },
+      {
+        "label": "D",
+        "text": "The process of cell division"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A mutation is a sudden, heritable change in the genetic material of an organism. It can occur spontaneously or be induced by mutagens.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of vaccines in preventing infectious diseases?",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "To stimulate the immune system to produce antibodies and memory cells"
+      },
+      {
+        "label": "B",
+        "text": "To directly kill pathogens"
+      },
+      {
+        "label": "C",
+        "text": "To provide temporary immunity"
+      },
+      {
+        "label": "D",
+        "text": "To cure existing infections"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Vaccines stimulate the immune system to produce antibodies and memory cells, providing long-term protection against specific infectious diseases.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the concept of 'carrying capacity' in population ecology.",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "The maximum population size that an environment can sustain indefinitely"
+      },
+      {
+        "label": "B",
+        "text": "The rate at which a population grows"
+      },
+      {
+        "label": "C",
+        "text": "The number of individuals in a population"
+      },
+      {
+        "label": "D",
+        "text": "The distribution of individuals in a population"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Carrying capacity is the maximum population size of a species that an environment can sustain indefinitely, given the available resources.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Differentiate between active and passive immunity.",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "Active immunity is acquired through exposure to antigens, while passive immunity is acquired through the transfer of antibodies."
+      },
+      {
+        "label": "B",
+        "text": "Active immunity is immediate, while passive immunity takes time to develop."
+      },
+      {
+        "label": "C",
+        "text": "Active immunity is temporary, while passive immunity is long-lasting."
+      },
+      {
+        "label": "D",
+        "text": "Active immunity involves the use of antibiotics, while passive immunity does not."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Active immunity is developed when the body produces its own antibodies in response to an antigen, while passive immunity is acquired through the transfer of antibodies from another source.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of 'splicing' in eukaryotic mRNA processing.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "The removal of introns from pre-mRNA and joining of exons"
+      },
+      {
+        "label": "B",
+        "text": "The addition of a poly-A tail to mRNA"
+      },
+      {
+        "label": "C",
+        "text": "The addition of a 5' cap to mRNA"
+      },
+      {
+        "label": "D",
+        "text": "The process of mRNA translation"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Splicing is the process of removing non-coding regions (introns) from pre-mRNA and joining the coding regions (exons) to form mature mRNA.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the different types of biodiversity and their importance.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Genetic, species, and ecosystem diversity are essential for ecosystem stability, human well-being, and evolutionary potential."
+      },
+      {
+        "label": "B",
+        "text": "Only species diversity is important."
+      },
+      {
+        "label": "C",
+        "text": "Biodiversity has no impact on ecosystem stability."
+      },
+      {
+        "label": "D",
+        "text": "Biodiversity is only important for aesthetic reasons."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biodiversity encompasses genetic diversity (variation within species), species diversity (variety of species), and ecosystem diversity (variety of habitats and ecological processes). These different types of biodiversity are crucial for ecosystem stability, human well-being, and the long-term evolutionary potential of life on Earth.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

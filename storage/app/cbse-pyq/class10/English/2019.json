@@ -1,0 +1,245 @@
+[
+  {
+    "question_text": "How did the postal service begin?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Due to the need for faster communication between businesses."
+      },
+      {
+        "label": "B",
+        "text": "Out of the necessity of maintaining communications between different parts of an empire."
+      },
+      {
+        "label": "C",
+        "text": "As a means to send personal letters between families."
+      },
+      {
+        "label": "D",
+        "text": "To facilitate trade and commerce across countries."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that postal service originated from the necessity of maintaining communications between different parts of an empire, enabling the emperor to keep track of happenings.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the primary advantage of the postal service for rulers?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "It allowed them to collect taxes more efficiently."
+      },
+      {
+        "label": "B",
+        "text": "It enabled them to keep track of events and the progress of their army."
+      },
+      {
+        "label": "C",
+        "text": "It facilitated diplomatic relations with other kingdoms."
+      },
+      {
+        "label": "D",
+        "text": "It helped them spread propaganda among the masses."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that the postal service enabled the emperor to keep a track of all that was happening, including the condition and progress of his army.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How are postal services different today compared to their early forms?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are slower and less reliable."
+      },
+      {
+        "label": "B",
+        "text": "They are primarily used for government communication."
+      },
+      {
+        "label": "C",
+        "text": "They rely heavily on air, railway, and motor services for speedier delivery."
+      },
+      {
+        "label": "D",
+        "text": "They are only available to the elite and wealthy citizens."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage indicates that modern postal services have improved greatly with air, railway, and motor services playing an important role in carrying letters speedily to their destinations.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What were some of the difficulties faced by mail runners in the early postal system?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Lack of proper training and equipment."
+      },
+      {
+        "label": "B",
+        "text": "Navigating through jungles, climbing hills, crossing rivers, and facing wild animals and dacoits."
+      },
+      {
+        "label": "C",
+        "text": "Dealing with bureaucratic delays and corruption."
+      },
+      {
+        "label": "D",
+        "text": "Competition from rival postal services."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that mail runners had to pass through jungles, climb hills, cross rivers, and brave wild animals and dacoits to carry letters safely.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Who is mentioned as the first person to begin a postal organization in the passage?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sher Shah"
+      },
+      {
+        "label": "B",
+        "text": "Akbar"
+      },
+      {
+        "label": "C",
+        "text": "Alauddin Khilji"
+      },
+      {
+        "label": "D",
+        "text": "Lord Clive"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that the Pathan ruler, Alauddin Khilji, had a horse-and-foot postal organization to receive regular news of his army.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How did Sher Shah contribute to the promotion of postal services?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "By introducing the use of camels for postal transport."
+      },
+      {
+        "label": "B",
+        "text": "By building a 2,000-mile road with sarais and establishing horse despatches."
+      },
+      {
+        "label": "C",
+        "text": "By establishing major post offices in Bombay and Madras."
+      },
+      {
+        "label": "D",
+        "text": "By opening the postal service to the public."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that Sher Shah built a 2,000-mile road from Bengal to Sind, constructed sarais along the roads, and established horse despatches throughout the Empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, where were the first major post offices established by the East India Company?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Delhi and Agra"
+      },
+      {
+        "label": "B",
+        "text": "Bombay and Madras"
+      },
+      {
+        "label": "C",
+        "text": "Calcutta and Surat"
+      },
+      {
+        "label": "D",
+        "text": "Bengal and Sind"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that the East India Company established major post offices at Bombay and Madras.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the purpose of the special copper token mentioned in the passage?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "To serve as identification for mail runners."
+      },
+      {
+        "label": "B",
+        "text": "To facilitate the payment of postage."
+      },
+      {
+        "label": "C",
+        "text": "To be used as currency in post offices."
+      },
+      {
+        "label": "D",
+        "text": "To commemorate the establishment of the postal service."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that a special copper token of the value of 2 annas was struck by the mint to facilitate the payment of postage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what is a major concern regarding instant foods like noodles?",
+    "topic": "Health and Medicine",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are too expensive for the average consumer."
+      },
+      {
+        "label": "B",
+        "text": "They lack sufficient nutrition and are high in calories and taste enhancers."
+      },
+      {
+        "label": "C",
+        "text": "They are difficult to prepare and require special equipment."
+      },
+      {
+        "label": "D",
+        "text": "They are only available in limited flavors and varieties."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage highlights that instant foods are calorie-packed, contain more taste enhancers, little nutrition, and lack fiber.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

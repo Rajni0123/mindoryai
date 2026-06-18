@@ -1,0 +1,245 @@
+[
+  {
+    "question_text": "How did the postal service begin?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Due to the need for faster communication between businesses."
+      },
+      {
+        "label": "B",
+        "text": "Due to the necessity of maintaining communications between different parts of an empire."
+      },
+      {
+        "label": "C",
+        "text": "As a hobby for kings and emperors."
+      },
+      {
+        "label": "D",
+        "text": "To send gifts to family members."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that postal service originated in the necessity of maintaining communications between different parts of an empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the advantage of postal service?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "It allowed emperors to collect taxes more efficiently."
+      },
+      {
+        "label": "B",
+        "text": "It enabled the king to keep track of the happenings in his empire and the progress of his army."
+      },
+      {
+        "label": "C",
+        "text": "It helped in organizing social events."
+      },
+      {
+        "label": "D",
+        "text": "It facilitated trade with neighboring countries."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage indicates that the postal service enabled the emperor to keep track of all that was happening.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How are postal services different today?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are slower and less reliable."
+      },
+      {
+        "label": "B",
+        "text": "Means of communication have improved greatly, and air, railway, and motor services play an important role."
+      },
+      {
+        "label": "C",
+        "text": "They are only available to government officials."
+      },
+      {
+        "label": "D",
+        "text": "They are primarily used for sending packages."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that modern means of communication like air, railway, and motor services have greatly improved the speed and efficiency of postal services.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What difficulties did the mail runners face?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Lack of proper training and equipment."
+      },
+      {
+        "label": "B",
+        "text": "The mail-runners used to pass through jungles, climb hills, cross rivers, brave wild animals and dacoits."
+      },
+      {
+        "label": "C",
+        "text": "Competition from other postal services."
+      },
+      {
+        "label": "D",
+        "text": "Bad weather conditions only."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage describes the mail runners facing dangers such as jungles, hills, rivers, wild animals, and dacoits.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Who was the first person to begin a postal organization?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sher Shah."
+      },
+      {
+        "label": "B",
+        "text": "Akbar."
+      },
+      {
+        "label": "C",
+        "text": "Alauddin Khilji."
+      },
+      {
+        "label": "D",
+        "text": "Lord Clive."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that Alauddin Khilji had a horse-and-foot postal organization.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How did Sher Shah promote postal services?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "By introducing airmail services."
+      },
+      {
+        "label": "B",
+        "text": "By building a 2000-mile road from Bengal to Sind and constructing sarais along the roads. He also established horse despatches throughout the Empire."
+      },
+      {
+        "label": "C",
+        "text": "By using camels for postal transport."
+      },
+      {
+        "label": "D",
+        "text": "By hiring more mail runners."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that Sher Shah built a road and constructed sarais, and established horse despatches.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Name the two places where the first post offices were built?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Delhi and Agra."
+      },
+      {
+        "label": "B",
+        "text": "Bombay and Madras."
+      },
+      {
+        "label": "C",
+        "text": "Calcutta and Bombay."
+      },
+      {
+        "label": "D",
+        "text": "Madras and Calcutta."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that the East India Company established major post offices at Bombay and Madras.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the use of copper token?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "To identify mail runners."
+      },
+      {
+        "label": "B",
+        "text": "To seal letters."
+      },
+      {
+        "label": "C",
+        "text": "It facilitated the payment of postage."
+      },
+      {
+        "label": "D",
+        "text": "To reward postal employees."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage indicates that a copper token was struck to facilitate the payment of postage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what is the main issue with instant food?",
+    "topic": "Health and Medicine",
+    "options": [
+      {
+        "label": "A",
+        "text": "It is too expensive for the average consumer."
+      },
+      {
+        "label": "B",
+        "text": "It lacks nutrition and contains more taste enhancers."
+      },
+      {
+        "label": "C",
+        "text": "It is difficult to prepare."
+      },
+      {
+        "label": "D",
+        "text": "It is only available in limited quantities."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage highlights that instant foods are calorie-packed, contain more taste enhancers, little nutrition, and lack fibre.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

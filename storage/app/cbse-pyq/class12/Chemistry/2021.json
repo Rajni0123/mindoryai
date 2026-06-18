@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Which of the following is a colligative property?",
+    "topic": "Solutions",
+    "options": [
+      {
+        "label": "A",
+        "text": "Boiling point"
+      },
+      {
+        "label": "B",
+        "text": "Osmotic pressure"
+      },
+      {
+        "label": "C",
+        "text": "Freezing point"
+      },
+      {
+        "label": "D",
+        "text": "Vapour pressure"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Colligative properties are properties of solutions that depend on the ratio of the number of solute particles to the number of solvent particles in a solution, and not on the nature of the chemical species present. Osmotic pressure is a colligative property, while boiling point, freezing point, and vapor pressure are affected by colligative properties but are not themselves colligative properties.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The rate constant of a reaction is found to be doubled when the temperature is increased from 27°C to 37°C. Calculate the activation energy of the reaction.",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "53.6 kJ/mol"
+      },
+      {
+        "label": "B",
+        "text": "43.6 kJ/mol"
+      },
+      {
+        "label": "C",
+        "text": "63.6 kJ/mol"
+      },
+      {
+        "label": "D",
+        "text": "33.6 kJ/mol"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Using the Arrhenius equation: ln(k2/k1) = (Ea/R) * (1/T1 - 1/T2). Given k2/k1 = 2, T1 = 300 K, T2 = 310 K, and R = 8.314 J/mol·K. Solving for Ea, we get Ea ≈ 53.6 kJ/mol.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following coordination compounds exhibits geometrical isomerism?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "[Cr(NH3)6]Cl3"
+      },
+      {
+        "label": "B",
+        "text": "[Co(en)3]Cl3"
+      },
+      {
+        "label": "C",
+        "text": "[Pt(NH3)2Cl2]"
+      },
+      {
+        "label": "D",
+        "text": "[Ni(CO)4]"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "[Pt(NH3)2Cl2] exhibits geometrical isomerism (cis and trans isomers) because the ligands can be arranged differently around the central platinum atom. The other options do not exhibit geometrical isomerism due to their tetrahedral or octahedral geometries and the nature of their ligands.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the IUPAC name of the compound CH3CH(OH)CH2CHO?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "3-Hydroxybutanal"
+      },
+      {
+        "label": "B",
+        "text": "2-Hydroxybutanal"
+      },
+      {
+        "label": "C",
+        "text": "Butan-3-ol-1-al"
+      },
+      {
+        "label": "D",
+        "text": "Butan-2-ol-1-al"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The IUPAC name is 3-Hydroxybutanal. The longest carbon chain containing the aldehyde group is butane. The hydroxyl group is on the 3rd carbon atom.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following haloalkanes undergoes SN1 reaction fastest?",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH3Cl"
+      },
+      {
+        "label": "B",
+        "text": "(CH3)2CHCl"
+      },
+      {
+        "label": "C",
+        "text": "(CH3)3CCl"
+      },
+      {
+        "label": "D",
+        "text": "CH3CH2Cl"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "SN1 reactions proceed fastest with tertiary haloalkanes because they form the most stable carbocations. (CH3)3CCl is a tertiary haloalkane.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the product(s) formed when ethyl bromide reacts with aqueous KOH.",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ethene"
+      },
+      {
+        "label": "B",
+        "text": "Ethanol"
+      },
+      {
+        "label": "C",
+        "text": "Ethanal"
+      },
+      {
+        "label": "D",
+        "text": "Ethane"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Ethyl bromide (CH3CH2Br) reacts with aqueous KOH to form ethanol (CH3CH2OH) via a substitution reaction.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the effect of temperature on the rate of a reaction?",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Rate decreases with increase in temperature"
+      },
+      {
+        "label": "B",
+        "text": "Rate increases with increase in temperature"
+      },
+      {
+        "label": "C",
+        "text": "Rate remains constant with increase in temperature"
+      },
+      {
+        "label": "D",
+        "text": "Rate is independent of temperature"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Generally, the rate of a reaction increases with an increase in temperature. This is because higher temperatures provide more energy for the reactant molecules to overcome the activation energy barrier.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define the term 'Tyndall effect'.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Scattering of light by colloidal particles"
+      },
+      {
+        "label": "B",
+        "text": "Movement of colloidal particles in a zig-zag manner"
+      },
+      {
+        "label": "C",
+        "text": "Precipitation of colloidal particles"
+      },
+      {
+        "label": "D",
+        "text": "Adsorption of ions on the surface of colloidal particles"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The Tyndall effect is the scattering of light by colloidal particles, which makes the path of a light beam visible through the colloid.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of a lyophilic colloid?",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gold sol"
+      },
+      {
+        "label": "B",
+        "text": "Starch sol"
+      },
+      {
+        "label": "C",
+        "text": "Fe(OH)3 sol"
+      },
+      {
+        "label": "D",
+        "text": "As2S3 sol"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Lyophilic colloids are solvent-loving colloids. Starch sol is an example of a lyophilic colloid because starch has a strong affinity for water.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the role of cryolite in the metallurgy of aluminium?",
+    "topic": "General Principles and Processes of Isolation of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "To lower the melting point of alumina"
+      },
+      {
+        "label": "B",
+        "text": "To increase the electrical conductivity of alumina"
+      },
+      {
+        "label": "C",
+        "text": "Both A and B"
+      },
+      {
+        "label": "D",
+        "text": "To remove impurities from alumina"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Cryolite (Na3AlF6) is used in the metallurgy of aluminium to lower the melting point of alumina (Al2O3) and to increase its electrical conductivity, making the electrolysis process more efficient.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the structure of the major product formed in the following reaction:  C6H5NH2 + Br2(aq) →",
+    "topic": "Amines",
+    "options": [
+      {
+        "label": "A",
+        "text": "o-Bromoaniline"
+      },
+      {
+        "label": "B",
+        "text": "p-Bromoaniline"
+      },
+      {
+        "label": "C",
+        "text": "2,4,6-Tribromoaniline"
+      },
+      {
+        "label": "D",
+        "text": "m-Bromoaniline"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Aniline (C6H5NH2) reacts with bromine water (Br2(aq)) to give 2,4,6-tribromoaniline as the major product due to the high reactivity of aniline.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the differences between thermoplastic and thermosetting polymers?",
+    "topic": "Polymers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Thermoplastics soften on heating, thermosettings do not"
+      },
+      {
+        "label": "B",
+        "text": "Thermosettings soften on heating, thermoplastics do not"
+      },
+      {
+        "label": "C",
+        "text": "Thermoplastics are cross-linked, thermosettings are not"
+      },
+      {
+        "label": "D",
+        "text": "Thermoplastics are brittle, thermosettings are flexible"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Thermoplastics soften on heating and can be remolded, while thermosetting polymers undergo irreversible changes on heating and cannot be remolded. Thermosetting polymers are generally cross-linked.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are reducing sugars? Give one example.",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sugars that reduce Fehling's solution; Sucrose"
+      },
+      {
+        "label": "B",
+        "text": "Sugars that reduce Tollen's reagent; Glucose"
+      },
+      {
+        "label": "C",
+        "text": "Sugars that do not reduce Fehling's solution; Fructose"
+      },
+      {
+        "label": "D",
+        "text": "Sugars that do not reduce Tollen's reagent; Maltose"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Reducing sugars are carbohydrates that can reduce Tollen's reagent or Fehling's solution due to the presence of a free aldehyde or ketone group. Glucose is an example of a reducing sugar.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the term 'broad-spectrum antibiotics'.",
+    "topic": "Chemistry in Everyday Life",
+    "options": [
+      {
+        "label": "A",
+        "text": "Antibiotics effective against a wide range of gram-positive and gram-negative bacteria"
+      },
+      {
+        "label": "B",
+        "text": "Antibiotics effective against only gram-positive bacteria"
+      },
+      {
+        "label": "C",
+        "text": "Antibiotics effective against only gram-negative bacteria"
+      },
+      {
+        "label": "D",
+        "text": "Antibiotics effective against viruses"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Broad-spectrum antibiotics are effective against a wide range of bacteria, including both gram-positive and gram-negative types.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of depressant in froth floatation process?",
+    "topic": "General Principles and Processes of Isolation of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "To selectively prevent one ore from forming froth"
+      },
+      {
+        "label": "B",
+        "text": "To increase the froth formation"
+      },
+      {
+        "label": "C",
+        "text": "To decrease the froth formation"
+      },
+      {
+        "label": "D",
+        "text": "To remove impurities"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Depressants are used in the froth floatation process to selectively prevent one type of ore from forming froth, allowing another ore to be concentrated.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What happens when D-glucose is treated with Tollen's reagent?",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gluconic acid is formed and silver mirror is observed"
+      },
+      {
+        "label": "B",
+        "text": "Sorbitol is formed"
+      },
+      {
+        "label": "C",
+        "text": "No reaction occurs"
+      },
+      {
+        "label": "D",
+        "text": "Fructose is formed"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "D-glucose, being a reducing sugar, reduces Tollen's reagent to form gluconic acid, and a silver mirror is observed due to the deposition of metallic silver.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the mechanism of acid catalyzed dehydration of ethanol to ethene.",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Protonation, carbocation formation, elimination"
+      },
+      {
+        "label": "B",
+        "text": "Carbocation formation, protonation, elimination"
+      },
+      {
+        "label": "C",
+        "text": "Elimination, protonation, carbocation formation"
+      },
+      {
+        "label": "D",
+        "text": "Protonation, elimination, carbocation formation"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The mechanism involves protonation of the alcohol, followed by the formation of a carbocation, and finally elimination of a proton to form ethene.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the preparation of potassium permanganate (KMnO4) from pyrolusite ore.",
+    "topic": "The d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Oxidation, disproportionation, acidification"
+      },
+      {
+        "label": "B",
+        "text": "Reduction, oxidation, alkalization"
+      },
+      {
+        "label": "C",
+        "text": "Fusion, oxidation, acidification"
+      },
+      {
+        "label": "D",
+        "text": "Fusion, reduction, acidification"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The preparation involves fusion of pyrolusite ore with KOH in the presence of air or KNO3, followed by oxidation of manganate to permanganate, and then acidification.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the difference between Schottky and Frenkel defects.",
+    "topic": "The Solid State",
+    "options": [
+      {
+        "label": "A",
+        "text": "Schottky: ions missing; Frenkel: ions displaced"
+      },
+      {
+        "label": "B",
+        "text": "Schottky: ions displaced; Frenkel: ions missing"
+      },
+      {
+        "label": "C",
+        "text": "Schottky: only in ionic compounds; Frenkel: only in covalent compounds"
+      },
+      {
+        "label": "D",
+        "text": "Schottky: no change in density; Frenkel: density decreases"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Schottky defects involve missing ions from the lattice, while Frenkel defects involve ions being displaced from their lattice sites to interstitial positions.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are the factors affecting the rate of a chemical reaction?",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Concentration, temperature, catalyst"
+      },
+      {
+        "label": "B",
+        "text": "Pressure, volume, temperature"
+      },
+      {
+        "label": "C",
+        "text": "Concentration, volume, catalyst"
+      },
+      {
+        "label": "D",
+        "text": "Pressure, temperature, catalyst"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The rate of a chemical reaction is affected by factors such as concentration of reactants, temperature, and the presence of a catalyst.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the cleansing action of soaps.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Soap forms micelles that dissolve grease and dirt"
+      },
+      {
+        "label": "B",
+        "text": "Soap neutralizes acids and bases"
+      },
+      {
+        "label": "C",
+        "text": "Soap precipitates dirt"
+      },
+      {
+        "label": "D",
+        "text": "Soap emulsifies water and oil"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Soaps form micelles, which are spherical aggregates of soap molecules in water. The hydrophobic tails of the soap molecules dissolve grease and dirt, while the hydrophilic heads interact with water, allowing the dirt to be washed away.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Write the mechanism of nucleophilic addition reaction of aldehydes with Grignard reagent.",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Addition, protonation"
+      },
+      {
+        "label": "B",
+        "text": "Protonation, addition"
+      },
+      {
+        "label": "C",
+        "text": "Elimination, addition"
+      },
+      {
+        "label": "D",
+        "text": "Addition, elimination"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The mechanism involves the nucleophilic addition of the Grignard reagent to the carbonyl carbon of the aldehyde, followed by protonation of the alkoxide intermediate to form an alcohol.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the preparation of nylon-6,6.",
+    "topic": "Polymers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Polymerization of hexamethylenediamine and adipic acid"
+      },
+      {
+        "label": "B",
+        "text": "Polymerization of caprolactam"
+      },
+      {
+        "label": "C",
+        "text": "Polymerization of ethylene glycol and terephthalic acid"
+      },
+      {
+        "label": "D",
+        "text": "Polymerization of styrene"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Nylon-6,6 is prepared by the condensation polymerization of hexamethylenediamine and adipic acid, leading to the formation of amide linkages.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are vitamins? Name two water-soluble vitamins.",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "Organic compounds required in small amounts; Vitamin A and Vitamin D"
+      },
+      {
+        "label": "B",
+        "text": "Inorganic compounds required in large amounts; Vitamin B and Vitamin C"
+      },
+      {
+        "label": "C",
+        "text": "Organic compounds required in small amounts; Vitamin B and Vitamin C"
+      },
+      {
+        "label": "D",
+        "text": "Inorganic compounds required in small amounts; Vitamin A and Vitamin D"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Vitamins are organic compounds required in small amounts for various biological functions. Vitamin B and Vitamin C are water-soluble vitamins.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the term 'antacids' with one example.",
+    "topic": "Chemistry in Everyday Life",
+    "options": [
+      {
+        "label": "A",
+        "text": "Drugs that neutralize excess acid in the stomach; Ranitidine"
+      },
+      {
+        "label": "B",
+        "text": "Drugs that reduce fever; Aspirin"
+      },
+      {
+        "label": "C",
+        "text": "Drugs that kill bacteria; Penicillin"
+      },
+      {
+        "label": "D",
+        "text": "Drugs that relieve pain; Morphine"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Antacids are drugs that neutralize excess acid in the stomach, providing relief from heartburn and indigestion. Ranitidine is an example of an antacid.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

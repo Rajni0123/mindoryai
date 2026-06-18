@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BlinkStudy Feature Graphic - 1024x500</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 1024px;
+            height: 500px;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            width: 1024px;
+            height: 500px;
+            background: linear-gradient(135deg, #0D9488 0%, #0F766E 50%, #115E59 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 40px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative elements */
+        .circle1 {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            top: -100px;
+            right: -50px;
+        }
+        .circle2 {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+            bottom: -80px;
+            left: 100px;
+        }
+        .circle3 {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 50%;
+            top: 50px;
+            left: 400px;
+        }
+
+        .left-content {
+            flex: 1;
+            z-index: 10;
+            padding-right: 40px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .logo-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .logo-icon span:first-child {
+            color: white;
+        }
+        .logo-icon span:last-child {
+            color: #F59E0B;
+        }
+
+        .app-name {
+            font-size: 42px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -1px;
+        }
+        .app-name span {
+            color: #F59E0B;
+        }
+
+        .tagline {
+            font-size: 28px;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .feature-badge {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .feature-badge .icon {
+            font-size: 18px;
+        }
+
+        .right-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .phone-mockup {
+            width: 220px;
+            height: 420px;
+            background: #1a1a1a;
+            border-radius: 35px;
+            padding: 8px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            transform: rotate(5deg);
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #f0fdf4;
+            border-radius: 28px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-header {
+            background: linear-gradient(135deg, #0D9488, #14B8A6);
+            padding: 15px;
+            color: white;
+        }
+        .phone-header .greeting {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+        .phone-header .user {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .phone-hero {
+            background: linear-gradient(135deg, #0D9488, #14B8A6);
+            margin: 10px;
+            border-radius: 12px;
+            padding: 15px;
+            color: white;
+        }
+        .phone-hero h3 {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .phone-hero p {
+            font-size: 9px;
+            opacity: 0.9;
+        }
+        .phone-hero .btn {
+            background: white;
+            color: #0D9488;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 9px;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .phone-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            padding: 10px;
+        }
+        .feature-card {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .feature-card .icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        .feature-card .icon.teal { background: #CCFBF1; }
+        .feature-card .icon.yellow { background: #FEF3C7; }
+        .feature-card .icon.blue { background: #DBEAFE; }
+        .feature-card .icon.green { background: #D1FAE5; }
+        .feature-card .name {
+            font-size: 10px;
+            font-weight: 700;
+            color: #1F2937;
+        }
+
+        .rating-badge {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1F2937;
+        }
+        .rating-badge .stars {
+            color: #F59E0B;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="circle3"></div>
+
+        <div class="left-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <span>B</span><span>S</span>
+                </div>
+                <div class="app-name">Blink<span>Study</span></div>
+            </div>
+
+            <div class="tagline">Your AI-Powered<br>Study Companion</div>
+
+            <div class="subtitle">
+                Scan problems, get instant solutions.<br>
+                Learn smarter with AI quizzes & whiteboard videos.
+            </div>
+
+            <div class="features">
+                <div class="feature-badge">
+                    <span class="icon">📷</span>
+                    Scan & Solve
+                </div>
+                <div class="feature-badge">
+                    <span class="icon">🧠</span>
+                    AI Quiz
+                </div>
+                <div class="feature-badge">
+                    <span class="icon">🎬</span>
+                    Whiteboard Video
+                </div>
+                <div class="feature-badge">
+                    <span class="icon">💬</span>
+                    AI Chat
+                </div>
+            </div>
+        </div>
+
+        <div class="right-content">
+            <div class="phone-mockup">
+                <div class="phone-screen">
+                    <div class="phone-header">
+                        <div class="greeting">Good Evening</div>
+                        <div class="user">Hi, User! 👋</div>
+                    </div>
+
+                    <div class="phone-hero">
+                        <h3>Stuck on a problem?</h3>
+                        <p>Get instant step-by-step solutions with our AI tutor.</p>
+                        <div class="btn">Scan & Solve</div>
+                    </div>
+
+                    <div class="phone-features">
+                        <div class="feature-card">
+                            <div class="icon teal">❓</div>
+                            <div class="name">Quiz</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon yellow">💡</div>
+                            <div class="name">Reasoning</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon blue">🔢</div>
+                            <div class="name">Mathematics</div>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon green">▶️</div>
+                            <div class="name">Whiteboard</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rating-badge">
+                <span class="stars">★★★★★</span>
+                <span>4.8</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

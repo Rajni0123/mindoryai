@@ -1,0 +1,596 @@
+[
+  {
+    "question_text": "What does the phrase 'rats that ate my dreams' suggest in the poem 'My Mother at Sixty-Six'?",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "The poet's fear of losing her mother to old age and death."
+      },
+      {
+        "label": "B",
+        "text": "The poet's frustration with her mother's deteriorating health."
+      },
+      {
+        "label": "C",
+        "text": "The poet's regret for not spending enough time with her mother."
+      },
+      {
+        "label": "D",
+        "text": "The poet's anger at the inevitability of aging."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The phrase symbolizes the poet's suppressed fears and anxieties about her mother's mortality, which gnaw at her peace of mind.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'The Last Lesson', what did Franz regret not learning?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "German grammar"
+      },
+      {
+        "label": "B",
+        "text": "French grammar"
+      },
+      {
+        "label": "C",
+        "text": "History"
+      },
+      {
+        "label": "D",
+        "text": "Mathematics"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Franz regrets not taking his French lessons seriously and procrastinating, leading to his inability to learn the language before it was banned.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the significance of the title 'Lost Spring'?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the loss of the season of spring due to environmental degradation."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the loss of childhood and innocence experienced by children forced into labor."
+      },
+      {
+        "label": "C",
+        "text": "It represents the loss of hope for a better future."
+      },
+      {
+        "label": "D",
+        "text": "It signifies the loss of cultural traditions."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title is a metaphor for the stolen childhoods of children like Saheb and Mukesh, who are forced to work instead of enjoying their youth and education.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Deep Water', what was the misadventure that Douglas experienced at the YMCA pool?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "He slipped and fell into the pool."
+      },
+      {
+        "label": "B",
+        "text": "He was pushed into the deep end of the pool by a bully."
+      },
+      {
+        "label": "C",
+        "text": "He got a cramp while swimming."
+      },
+      {
+        "label": "D",
+        "text": "He witnessed someone else drowning."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Douglas was unexpectedly pushed into the deep end of the pool by a larger boy, triggering a terrifying experience that instilled a deep fear of water.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What does the rattrap peddler sell in 'The Rattrap'?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "Wooden toys"
+      },
+      {
+        "label": "B",
+        "text": "Rattraps made of wire"
+      },
+      {
+        "label": "C",
+        "text": "Matches"
+      },
+      {
+        "label": "D",
+        "text": "Newspapers"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The peddler makes and sells rattraps made from wire, which he obtains by begging or stealing.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "How does the poet use imagery in 'Aunt Jennifer's Tigers' to contrast Aunt Jennifer's life with the tigers she creates?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "By depicting the tigers as vibrant and fearless, while Aunt Jennifer is timid and oppressed."
+      },
+      {
+        "label": "B",
+        "text": "By showing the tigers as trapped and confined, mirroring Aunt Jennifer's situation."
+      },
+      {
+        "label": "C",
+        "text": "By portraying both the tigers and Aunt Jennifer as symbols of strength and independence."
+      },
+      {
+        "label": "D",
+        "text": "By highlighting the similarities in their physical appearance."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The poem contrasts the vibrant, fearless tigers with Aunt Jennifer's oppressed and timid existence, highlighting the difference between her inner desires and her reality.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'The Last Lesson', how does M. Hamel convey the importance of the French language to his students?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "He emphasizes its beauty, clarity, and logical structure."
+      },
+      {
+        "label": "B",
+        "text": "He warns them about the consequences of forgetting their language."
+      },
+      {
+        "label": "C",
+        "text": "He tells them it is the key to their freedom."
+      },
+      {
+        "label": "D",
+        "text": "All of the above."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "M. Hamel emphasizes all these aspects to convey the importance of preserving their language as a symbol of their identity and freedom.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the different kinds of fears that Douglas experiences in 'Deep Water'?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fear of drowning, fear of the unknown, and fear of helplessness."
+      },
+      {
+        "label": "B",
+        "text": "Fear of heights, fear of darkness, and fear of being alone."
+      },
+      {
+        "label": "C",
+        "text": "Fear of failure, fear of rejection, and fear of public speaking."
+      },
+      {
+        "label": "D",
+        "text": "Fear of animals, fear of insects, and fear of germs."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Douglas experiences the immediate fear of drowning, the underlying fear of the unknown depths of the water, and the overwhelming fear of being helpless in the face of danger.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does the peddler in 'The Rattrap' transform after his encounter with Edla Willmansson?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "He becomes more cunning and deceitful."
+      },
+      {
+        "label": "B",
+        "text": "He remains unchanged and continues his thieving ways."
+      },
+      {
+        "label": "C",
+        "text": "He experiences a change of heart and resolves to live an honest life."
+      },
+      {
+        "label": "D",
+        "text": "He becomes wealthy and forgets his past."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Edla's kindness and trust awaken the peddler's conscience, leading him to return the stolen money and resolve to change his ways.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Discuss the theme of exploitation of child labor as depicted in 'Lost Spring'.",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "The story highlights the socio-economic conditions that force children into hazardous jobs, robbing them of their childhood and education."
+      },
+      {
+        "label": "B",
+        "text": "The story focuses on the children's resilience and determination to overcome their circumstances."
+      },
+      {
+        "label": "C",
+        "text": "The story criticizes the government's failure to protect children's rights."
+      },
+      {
+        "label": "D",
+        "text": "All of the above."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The story encompasses all these aspects, exposing the harsh realities of child labor and its devastating impact on children's lives.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "C"
+  },
+  {
+    "question_text": "How did Douglas overcome his fear of water?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "He avoided water completely."
+      },
+      {
+        "label": "B",
+        "text": "He gradually confronted his fear by practicing in a pool with an instructor."
+      },
+      {
+        "label": "C",
+        "text": "He relied on medication to calm his nerves."
+      },
+      {
+        "label": "D",
+        "text": "He sought help from a therapist."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Douglas systematically overcame his fear by working with an instructor, gradually building his confidence and skills in the water.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the central idea of the poem 'My Mother at Sixty-Six'?",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "The poet's admiration for her mother's beauty."
+      },
+      {
+        "label": "B",
+        "text": "The poet's fear of separation from her aging mother and the inevitability of death."
+      },
+      {
+        "label": "C",
+        "text": "The poet's regret for not spending enough time with her mother."
+      },
+      {
+        "label": "D",
+        "text": "The poet's celebration of her mother's life."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem explores the universal theme of the fear of losing a loved one to old age and death, and the anxiety that accompanies such thoughts.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the order from Berlin in 'The Last Lesson'?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "It represents the imposition of German culture and language on the people of Alsace and Lorraine."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the loss of their freedom and identity."
+      },
+      {
+        "label": "C",
+        "text": "It highlights the importance of preserving one's language and culture."
+      },
+      {
+        "label": "D",
+        "text": "All of the above."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The order from Berlin encompasses all these aspects, representing the cultural and political oppression faced by the people of Alsace and Lorraine.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the character of Edla Willmansson in 'The Rattrap'.",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "She is kind, compassionate, and understanding, with a strong sense of empathy."
+      },
+      {
+        "label": "B",
+        "text": "She is suspicious, judgmental, and unforgiving."
+      },
+      {
+        "label": "C",
+        "text": "She is naive, gullible, and easily manipulated."
+      },
+      {
+        "label": "D",
+        "text": "She is selfish, arrogant, and indifferent to others' suffering."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Edla is portrayed as a kind and compassionate young woman who sees the good in people and believes in giving them a chance to redeem themselves.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the tone of the poem 'Aunt Jennifer's Tigers'?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Celebratory and joyful"
+      },
+      {
+        "label": "B",
+        "text": "Melancholy and critical"
+      },
+      {
+        "label": "C",
+        "text": "Optimistic and hopeful"
+      },
+      {
+        "label": "D",
+        "text": "Humorous and satirical"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem has a melancholy and critical tone, highlighting the contrast between Aunt Jennifer's oppressed life and the freedom and vitality of the tigers she creates.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the green sea in 'My Mother at Sixty-Six'?",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "It represents the poet's feelings of envy towards the youthfulness of others."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the poet's own aging process."
+      },
+      {
+        "label": "C",
+        "text": "It represents the vibrant and energetic world outside, contrasting with the mother's aging and frail condition."
+      },
+      {
+        "label": "D",
+        "text": "It symbolizes the poet's desire to escape from her responsibilities."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The green sea is a symbol of youth and vitality, contrasting with the poet's mother's aging and pale appearance, highlighting the poet's awareness of the passage of time and the inevitability of death.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does the author describe Mukesh's dream in 'Lost Spring'?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "Mukesh dreams of becoming a doctor."
+      },
+      {
+        "label": "B",
+        "text": "Mukesh dreams of becoming a pilot."
+      },
+      {
+        "label": "C",
+        "text": "Mukesh dreams of becoming a motor mechanic."
+      },
+      {
+        "label": "D",
+        "text": "Mukesh dreams of becoming a teacher."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Mukesh dreams of becoming a motor mechanic and learning to drive a car, representing his desire to break free from the cycle of poverty and traditional occupation.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What did M. Hamel write on the blackboard before dismissing the last class?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "\"Vive La France!\""
+      },
+      {
+        "label": "B",
+        "text": "\"Vive L'Allemagne!\""
+      },
+      {
+        "label": "C",
+        "text": "\"Liberté, Égalité, Fraternité\""
+      },
+      {
+        "label": "D",
+        "text": "\"Adieu, mes enfants!\""
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "M. Hamel wrote \"Vive La France!\" (Long live France!) on the blackboard as a final expression of his patriotism and love for the French language.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the significance of the tigers' prancing in 'Aunt Jennifer's Tigers'?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "It represents the tigers' fear of Aunt Jennifer."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the tigers' freedom and confidence, contrasting with Aunt Jennifer's oppression."
+      },
+      {
+        "label": "C",
+        "text": "It highlights the tigers' playful nature."
+      },
+      {
+        "label": "D",
+        "text": "It represents the tigers' struggle for survival."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The tigers' prancing symbolizes their freedom and confidence, which stands in stark contrast to Aunt Jennifer's oppressed and confined existence.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How did the peddler justify his act of theft to himself?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "He believed that the world was a rattrap and he was simply trying to survive."
+      },
+      {
+        "label": "B",
+        "text": "He felt entitled to the money because he had worked hard."
+      },
+      {
+        "label": "C",
+        "text": "He blamed the owner of the house for being too trusting."
+      },
+      {
+        "label": "D",
+        "text": "He didn't feel any remorse for his actions."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The peddler justified his actions by viewing the world as a rattrap, where everyone is trying to deceive and exploit each other, and he was simply trying to survive in this harsh environment.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What strategy did Douglas use to overcome his fear of water?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "He avoided water completely."
+      },
+      {
+        "label": "B",
+        "text": "He hired an instructor and practiced systematically, breaking down the process into smaller steps."
+      },
+      {
+        "label": "C",
+        "text": "He took medication to calm his nerves before entering the water."
+      },
+      {
+        "label": "D",
+        "text": "He relied on his friends to support him and encourage him."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Douglas hired an instructor and practiced systematically, breaking down the process into smaller steps, such as learning to breathe underwater and kicking his legs, until he gradually overcame his fear.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the theme of the poem 'Keeping Quiet'?",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of war and violence."
+      },
+      {
+        "label": "B",
+        "text": "The need for introspection and understanding to achieve peace and harmony."
+      },
+      {
+        "label": "C",
+        "text": "The celebration of human achievements and progress."
+      },
+      {
+        "label": "D",
+        "text": "The beauty of nature and the importance of environmental conservation."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem emphasizes the need for introspection and understanding to achieve peace and harmony, both within ourselves and in the world around us.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  }
+]

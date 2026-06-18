@@ -1,0 +1,326 @@
+[
+  {
+    "question_text": "How did the postal service begin?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "As a means of entertainment for kings"
+      },
+      {
+        "label": "B",
+        "text": "To maintain communication within an empire"
+      },
+      {
+        "label": "C",
+        "text": "To deliver goods and services"
+      },
+      {
+        "label": "D",
+        "text": "As a religious practice"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that postal service originated from the necessity of maintaining communications between different parts of an empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the primary advantage of the postal service for rulers?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "It allowed them to send gifts to other kingdoms."
+      },
+      {
+        "label": "B",
+        "text": "It enabled them to keep track of happenings in their empire."
+      },
+      {
+        "label": "C",
+        "text": "It helped them collect taxes more efficiently."
+      },
+      {
+        "label": "D",
+        "text": "It facilitated trade with distant lands."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that the postal service enabled the emperor to keep track of all that was happening in the empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How do modern communication services differ from early postal services?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "They rely solely on human messengers."
+      },
+      {
+        "label": "B",
+        "text": "They are slower and less reliable."
+      },
+      {
+        "label": "C",
+        "text": "They utilize air, railway, and motor services for speed."
+      },
+      {
+        "label": "D",
+        "text": "They are reserved only for government use."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage indicates that modern communication services use air, railway, and motor services to carry letters quickly.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What challenges did mail runners face in the past?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Lack of proper training and equipment"
+      },
+      {
+        "label": "B",
+        "text": "Navigating jungles, hills, rivers, and facing wild animals and dacoits"
+      },
+      {
+        "label": "C",
+        "text": "Competition from rival postal services"
+      },
+      {
+        "label": "D",
+        "text": "Language barriers and communication difficulties"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage describes mail runners passing through jungles, climbing hills, crossing rivers, and braving wild animals and dacoits.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Who is mentioned as one of the earliest rulers to begin a postal organization?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sher Shah"
+      },
+      {
+        "label": "B",
+        "text": "Akbar"
+      },
+      {
+        "label": "C",
+        "text": "Alauddin Khilji"
+      },
+      {
+        "label": "D",
+        "text": "Lord Clive"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that Alauddin Khilji had a horse-and-foot postal organization.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How did Sher Shah contribute to the development of postal services?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "By introducing airmail services"
+      },
+      {
+        "label": "B",
+        "text": "By building a 2,000-mile road and establishing horse despatches"
+      },
+      {
+        "label": "C",
+        "text": "By creating a postal service exclusively for the military"
+      },
+      {
+        "label": "D",
+        "text": "By inventing the postage stamp"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Sher Shah built a 2,000-mile road from Bengal to Sind and established horse despatches throughout the Empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Where were the first major post offices established by the East India Company?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Delhi and Agra"
+      },
+      {
+        "label": "B",
+        "text": "Bombay and Madras"
+      },
+      {
+        "label": "C",
+        "text": "Calcutta and Surat"
+      },
+      {
+        "label": "D",
+        "text": "Lahore and Karachi"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The East India Company established major post offices at Bombay and Madras.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the purpose of the copper token mentioned in the passage?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "To serve as identification for mail runners"
+      },
+      {
+        "label": "B",
+        "text": "To facilitate the payment of postage"
+      },
+      {
+        "label": "C",
+        "text": "To seal letters and ensure privacy"
+      },
+      {
+        "label": "D",
+        "text": "To commemorate the establishment of the postal service"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The copper token was struck by the mint to facilitate the payment of postage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what is the evolving role of instant food?",
+    "topic": "Food and Nutrition",
+    "options": [
+      {
+        "label": "A",
+        "text": "It is becoming a luxury item."
+      },
+      {
+        "label": "B",
+        "text": "It is slowly evolving as a staple diet."
+      },
+      {
+        "label": "C",
+        "text": "It is being used primarily for emergency relief."
+      },
+      {
+        "label": "D",
+        "text": "It is losing popularity due to health concerns."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that instant food, pushed by aggressive advertising, is slowly evolving as a staple diet.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the main concern raised by experts regarding instant noodles?",
+    "topic": "Food and Nutrition",
+    "options": [
+      {
+        "label": "A",
+        "text": "Their high cost and limited availability"
+      },
+      {
+        "label": "B",
+        "text": "The lack of nutrition and potential presence of harmful substances"
+      },
+      {
+        "label": "C",
+        "text": "Their negative impact on local food industries"
+      },
+      {
+        "label": "D",
+        "text": "Their contribution to food waste and environmental pollution"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Experts highlighted the lack of nutrition in instant noodles and the scare over products containing dangerously high levels of lead.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the nutritional drawbacks of instant noodles, as mentioned in the passage?",
+    "topic": "Food and Nutrition",
+    "options": [
+      {
+        "label": "A",
+        "text": "High in protein and essential vitamins"
+      },
+      {
+        "label": "B",
+        "text": "Calorie-packed, contain more taste enhancers, little nutrition, and lack fibre"
+      },
+      {
+        "label": "C",
+        "text": "Low in calories and rich in antioxidants"
+      },
+      {
+        "label": "D",
+        "text": "Balanced in nutrients and easily digestible"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that instant noodles are calorie-packed, contain more taste enhancers, little nutrition, and lack fibre.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the potential consequence of frequently consuming instant noodles?",
+    "topic": "Food and Nutrition",
+    "options": [
+      {
+        "label": "A",
+        "text": "Improved digestion and metabolism"
+      },
+      {
+        "label": "B",
+        "text": "Life-long constipation"
+      },
+      {
+        "label": "C",
+        "text": "Increased energy levels and physical endurance"
+      },
+      {
+        "label": "D",
+        "text": "Enhanced cognitive function and memory"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage suggests that frequently eating instant noodles could lead to life-long constipation.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

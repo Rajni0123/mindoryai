@@ -1,0 +1,650 @@
+[
+  {
+    "question_text": "Which of the following coordination compounds exhibits ionization isomerism?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "[Co(NH3)5Cl]Cl2"
+      },
+      {
+        "label": "B",
+        "text": "[Co(NH3)5SO4]Br"
+      },
+      {
+        "label": "C",
+        "text": "[Co(en)2Cl2]Cl"
+      },
+      {
+        "label": "D",
+        "text": "[Ni(CO)4]"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Ionization isomerism occurs when a counter ion in a complex ion is also a potential ligand and can exchange places with a ligand to form a different isomer. Only [Co(NH3)5SO4]Br can exhibit this, as SO4^2- and Br^- can exchange.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the IUPAC name of the complex [Pt(NH3)2Cl2]?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "Diamminedichloridoplatinum(II)"
+      },
+      {
+        "label": "B",
+        "text": "Diamminedichloroplatinate(II)"
+      },
+      {
+        "label": "C",
+        "text": "Dichloridodiammineplatinum(II)"
+      },
+      {
+        "label": "D",
+        "text": "Dichloridodiammineplatinate(II)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The correct IUPAC name is Diamminedichloridoplatinum(II). Ligands are named alphabetically (ammine before chlorido), and the oxidation state of the metal is indicated in Roman numerals in parentheses.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following compounds will give a positive iodoform test?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ethanol"
+      },
+      {
+        "label": "B",
+        "text": "Methanol"
+      },
+      {
+        "label": "C",
+        "text": "Benzaldehyde"
+      },
+      {
+        "label": "D",
+        "text": "Formaldehyde"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The iodoform test is given by compounds containing the CH3CO- group or CH3CH(OH)- group. Ethanol (CH3CH2OH) gets oxidized to CH3CHO, which then gives a positive iodoform test.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the major product formed when phenol reacts with bromine water?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "o-Bromophenol"
+      },
+      {
+        "label": "B",
+        "text": "p-Bromophenol"
+      },
+      {
+        "label": "C",
+        "text": "2,4,6-Tribromophenol"
+      },
+      {
+        "label": "D",
+        "text": "m-Bromophenol"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Phenol reacts with bromine water to give 2,4,6-tribromophenol due to the activation of the benzene ring by the -OH group.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the effect of increasing temperature on the rate constant of a reaction?",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Decreases"
+      },
+      {
+        "label": "B",
+        "text": "Increases"
+      },
+      {
+        "label": "C",
+        "text": "Remains constant"
+      },
+      {
+        "label": "D",
+        "text": "Becomes zero"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "According to the Arrhenius equation, the rate constant (k) increases with increasing temperature (T).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Write the IUPAC name of the compound CH3CH(CH3)CH2OH.",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "2-Methylpropan-1-ol"
+      },
+      {
+        "label": "B",
+        "text": "2-Methylbutan-1-ol"
+      },
+      {
+        "label": "C",
+        "text": "3-Methylpropan-1-ol"
+      },
+      {
+        "label": "D",
+        "text": "Butan-2-ol"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The longest carbon chain containing the -OH group has three carbons (propan-). A methyl group is attached to the second carbon. Hence, the IUPAC name is 2-Methylpropan-1-ol.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the coordination number of cobalt in [Co(en)2Cl2]+?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "4"
+      },
+      {
+        "label": "B",
+        "text": "6"
+      },
+      {
+        "label": "C",
+        "text": "2"
+      },
+      {
+        "label": "D",
+        "text": "3"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Ethylenediamine (en) is a bidentate ligand, so it occupies two coordination sites. There are two en ligands (2 x 2 = 4) and two chloride ligands (2 x 1 = 2). Therefore, the coordination number of cobalt is 4 + 2 = 6.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Arrange the following in increasing order of their boiling points: CH3CH2CH2OH, CH3CH2OCH3, CH3CH2CH3.",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH3CH2CH3 < CH3CH2OCH3 < CH3CH2CH2OH"
+      },
+      {
+        "label": "B",
+        "text": "CH3CH2OCH3 < CH3CH2CH2OH < CH3CH2CH3"
+      },
+      {
+        "label": "C",
+        "text": "CH3CH2CH2OH < CH3CH2CH3 < CH3CH2OCH3"
+      },
+      {
+        "label": "D",
+        "text": "CH3CH2CH3 < CH3CH2CH2OH < CH3CH2OCH3"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Alcohols have higher boiling points due to hydrogen bonding. Ethers have higher boiling points than alkanes due to dipole-dipole interactions. Therefore, the order is: CH3CH2CH3 < CH3CH2OCH3 < CH3CH2CH2OH.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the mechanism of acid dehydration of ethanol to ethene.",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Protonation of ethanol followed by elimination of water and deprotonation."
+      },
+      {
+        "label": "B",
+        "text": "Direct elimination of water from ethanol."
+      },
+      {
+        "label": "C",
+        "text": "Nucleophilic attack of water on ethanol."
+      },
+      {
+        "label": "D",
+        "text": "SN1 reaction followed by elimination."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The mechanism involves protonation of the alcohol, followed by the elimination of a water molecule to form a carbocation, and finally, deprotonation to form ethene.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain why aryl halides are less reactive than alkyl halides towards nucleophilic substitution reactions.",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Resonance stabilization in aryl halides, stronger C-X bond, and possible repulsion between nucleophile and electron-rich arene."
+      },
+      {
+        "label": "B",
+        "text": "Aryl halides undergo SN1 reactions more readily."
+      },
+      {
+        "label": "C",
+        "text": "Alkyl halides have resonance stabilization."
+      },
+      {
+        "label": "D",
+        "text": "Aryl halides have weaker C-X bonds."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Aryl halides are less reactive due to resonance stabilization, which gives the C-X bond partial double bond character, making it stronger and harder to break. Also, the arene ring is electron-rich, which can repel nucleophiles.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Define the term 'rate constant' of a reaction. Give two factors that affect the rate constant.",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Rate constant is the proportionality constant in the rate law. Factors: Temperature and Catalyst."
+      },
+      {
+        "label": "B",
+        "text": "Rate constant is the equilibrium constant. Factors: Pressure and Volume."
+      },
+      {
+        "label": "C",
+        "text": "Rate constant is the initial rate of the reaction. Factors: Concentration and Temperature."
+      },
+      {
+        "label": "D",
+        "text": "Rate constant is the final rate of the reaction. Factors: Catalyst and Concentration."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The rate constant (k) is the proportionality constant in the rate law expression. It is affected by temperature (Arrhenius equation) and the presence of a catalyst, which lowers the activation energy.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Differentiate between physisorption and chemisorption.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Physisorption: weak van der Waals forces, reversible, low enthalpy. Chemisorption: chemical bond formation, irreversible, high enthalpy."
+      },
+      {
+        "label": "B",
+        "text": "Physisorption: chemical bond formation, irreversible, high enthalpy. Chemisorption: weak van der Waals forces, reversible, low enthalpy."
+      },
+      {
+        "label": "C",
+        "text": "Physisorption: strong chemical bonds, irreversible. Chemisorption: weak physical forces, reversible."
+      },
+      {
+        "label": "D",
+        "text": "Physisorption and chemisorption are the same."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Physisorption involves weak van der Waals forces, is reversible, and has a low enthalpy of adsorption. Chemisorption involves the formation of chemical bonds, is irreversible, and has a high enthalpy of adsorption.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the differences between Schottky and Frenkel defects?",
+    "topic": "The Solid State",
+    "options": [
+      {
+        "label": "A",
+        "text": "Schottky: missing cations and anions, decreases density. Frenkel: ion displaced to interstitial site, no effect on density."
+      },
+      {
+        "label": "B",
+        "text": "Schottky: ion displaced to interstitial site, no effect on density. Frenkel: missing cations and anions, decreases density."
+      },
+      {
+        "label": "C",
+        "text": "Schottky and Frenkel defects are the same."
+      },
+      {
+        "label": "D",
+        "text": "Schottky: only cations are missing. Frenkel: only anions are missing."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Schottky defects involve missing cations and anions from the lattice, which decreases the density of the solid. Frenkel defects involve an ion being displaced to an interstitial site, so the density remains unchanged.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "How would you convert (i) Phenol to Anisole (ii) Ethanol to Ethene?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Phenol + NaOH + CH3I (ii) Ethanol + conc. H2SO4, heat"
+      },
+      {
+        "label": "B",
+        "text": "(i) Phenol + CH3Cl (ii) Ethanol + H2O, heat"
+      },
+      {
+        "label": "C",
+        "text": "(i) Phenol + CH3OH (ii) Ethanol + KMnO4"
+      },
+      {
+        "label": "D",
+        "text": "(i) Phenol + CH3COOH (ii) Ethanol + PCC"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Phenol reacts with NaOH to form sodium phenoxide, which then reacts with CH3I (Williamson ether synthesis) to form anisole. (ii) Ethanol undergoes dehydration in the presence of concentrated H2SO4 and heat to form ethene.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Write the reactions involved in the following: (i) Wolff-Kishner reduction (ii) Clemmensen reduction (iii) Rosenmund reduction",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Ketone + NH2NH2, KOH (ii) Ketone + Zn(Hg), HCl (iii) Acyl chloride + H2, Pd/BaSO4"
+      },
+      {
+        "label": "B",
+        "text": "(i) Ketone + Zn(Hg), HCl (ii) Ketone + NH2NH2, KOH (iii) Acyl chloride + H2, Pd/BaSO4"
+      },
+      {
+        "label": "C",
+        "text": "(i) Acyl chloride + H2, Pd/BaSO4 (ii) Ketone + NH2NH2, KOH (iii) Ketone + Zn(Hg), HCl"
+      },
+      {
+        "label": "D",
+        "text": "(i) Ketone + NH2OH (ii) Ketone + LiAlH4 (iii) Acyl chloride + H2, Pt"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Wolff-Kishner reduction: Ketone reacts with hydrazine (NH2NH2) followed by treatment with KOH to give alkane. (ii) Clemmensen reduction: Ketone reacts with zinc amalgam (Zn(Hg)) and concentrated HCl to give alkane. (iii) Rosenmund reduction: Acyl chloride is reduced to aldehyde using H2, Pd/BaSO4.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the following terms: (i) Electrophoresis (ii) Coagulation (iii) Dialysis",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Movement of colloidal particles under electric field (ii) Aggregation of colloidal particles (iii) Separation of crystalloids from colloids"
+      },
+      {
+        "label": "B",
+        "text": "(i) Separation of crystalloids from colloids (ii) Movement of colloidal particles under electric field (iii) Aggregation of colloidal particles"
+      },
+      {
+        "label": "C",
+        "text": "(i) Aggregation of colloidal particles (ii) Separation of crystalloids from colloids (iii) Movement of colloidal particles under electric field"
+      },
+      {
+        "label": "D",
+        "text": "(i) Movement of true solution particles under electric field (ii) Dissolution of colloidal particles (iii) Mixing of crystalloids and colloids"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Electrophoresis: Movement of colloidal particles under the influence of an electric field. (ii) Coagulation: Aggregation of colloidal particles to form larger particles, leading to precipitation. (iii) Dialysis: Separation of crystalloids from colloids using a semi-permeable membrane.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Write the Nernst equation for the cell reaction: Zn(s) + Cu2+(aq) → Zn2+(aq) + Cu(s). Calculate the EMF of the cell at 298 K if [Zn2+] = 0.1 M and [Cu2+] = 0.01 M. Given E°cell = 1.1 V.",
+    "topic": "Electrochemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ecell = 1.1 - (0.0591/2)log(10); Ecell = 1.07 V"
+      },
+      {
+        "label": "B",
+        "text": "Ecell = 1.1 + (0.0591/2)log(10); Ecell = 1.13 V"
+      },
+      {
+        "label": "C",
+        "text": "Ecell = 1.1 - (0.0591/2)log(0.1); Ecell = 1.13 V"
+      },
+      {
+        "label": "D",
+        "text": "Ecell = 1.1 + (0.0591/2)log(0.1); Ecell = 1.07 V"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Nernst equation: Ecell = E°cell - (0.0591/n)log([Zn2+]/[Cu2+]). Here, n = 2, [Zn2+] = 0.1 M, [Cu2+] = 0.01 M, E°cell = 1.1 V. Ecell = 1.1 - (0.0591/2)log(0.1/0.01) = 1.1 - (0.0591/2)log(10) = 1.1 - 0.02955 = 1.07045 V ≈ 1.07 V",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A first-order reaction is 50% complete in 30 minutes. Calculate the time required for 90% completion of the reaction.",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "99.7 min"
+      },
+      {
+        "label": "B",
+        "text": "60 min"
+      },
+      {
+        "label": "C",
+        "text": "30 min"
+      },
+      {
+        "label": "D",
+        "text": "120 min"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "For a first-order reaction, t1/2 = 0.693/k. k = 0.693/30 = 0.0231 min-1. For 90% completion, t = (2.303/k)log(100/10) = (2.303/0.0231)log(10) = (2.303/0.0231) = 99.69 min ≈ 99.7 min.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Account for the following: (i) Transition metals form complex compounds. (ii) E° value for the Mn3+/Mn2+ couple is highly positive (+1.57 V). (iii) Zn, Cd and Hg are not considered as transition elements.",
+    "topic": "The d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Small size, high charge, vacant d-orbitals (ii) Mn2+ is stable (iii) Fully filled d-orbitals"
+      },
+      {
+        "label": "B",
+        "text": "(i) Large size, low charge, no vacant d-orbitals (ii) Mn3+ is stable (iii) Partially filled d-orbitals"
+      },
+      {
+        "label": "C",
+        "text": "(i) Small size, high charge, vacant s-orbitals (ii) Mn2+ is unstable (iii) Fully filled p-orbitals"
+      },
+      {
+        "label": "D",
+        "text": "(i) Large size, high charge, vacant p-orbitals (ii) Mn3+ is stable (iii) Partially filled p-orbitals"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Transition metals form complex compounds due to their small size, high charge, and availability of vacant d-orbitals for accepting lone pairs of electrons from ligands. (ii) The E° value for the Mn3+/Mn2+ couple is highly positive because Mn2+ has a stable d5 configuration. (iii) Zn, Cd, and Hg are not considered transition elements because they have fully filled d-orbitals in their ground state and common oxidation states.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Give reasons for the following: (i) Haloarenes are less reactive than haloalkanes towards nucleophilic substitution reactions. (ii) Boiling points of alcohols increase with increase in molecular mass. (iii) Phenols are more acidic than alcohols.",
+    "topic": "Haloalkanes and Haloarenes, Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Resonance in haloarenes (ii) Increased van der Waals forces (iii) Resonance stabilization of phenoxide ion"
+      },
+      {
+        "label": "B",
+        "text": "(i) No resonance in haloarenes (ii) Decreased van der Waals forces (iii) No resonance stabilization of phenoxide ion"
+      },
+      {
+        "label": "C",
+        "text": "(i) Inductive effect in haloarenes (ii) Increased hydrogen bonding (iii) Inductive effect of phenoxide ion"
+      },
+      {
+        "label": "D",
+        "text": "(i) No inductive effect in haloarenes (ii) Decreased hydrogen bonding (iii) No inductive effect of phenoxide ion"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Haloarenes are less reactive due to resonance, which gives the C-X bond partial double bond character. (ii) Boiling points of alcohols increase with increasing molecular mass due to increased van der Waals forces. (iii) Phenols are more acidic than alcohols because the phenoxide ion is resonance-stabilized, making it more stable than alkoxide ions.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the preparation of potassium permanganate from pyrolusite ore. Write balanced chemical equations for the reactions involved.",
+    "topic": "The d- and f-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fusion with KOH, oxidation, acidification"
+      },
+      {
+        "label": "B",
+        "text": "Reduction with KOH, oxidation, neutralization"
+      },
+      {
+        "label": "C",
+        "text": "Fusion with HCl, reduction, acidification"
+      },
+      {
+        "label": "D",
+        "text": "Oxidation with KOH, fusion, neutralization"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The preparation involves three steps: (1) Fusion of pyrolusite ore (MnO2) with KOH in the presence of air or KNO3 to form potassium manganate (K2MnO4). (2) Oxidation of potassium manganate to potassium permanganate (KMnO4) by passing chlorine or ozone or by electrolytic oxidation. (3) Acidification to get KMnO4.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the following reactions with suitable examples: (i) Reimer-Tiemann reaction (ii) Kolbe's reaction (iii) Williamson ether synthesis (iv) Friedel-Crafts acylation (v) Aldol condensation",
+    "topic": "Alcohols, Phenols and Ethers, Aldehydes, Ketones and Carboxylic Acids, Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Correct definitions and examples for all reactions"
+      },
+      {
+        "label": "B",
+        "text": "Incorrect definitions and examples for all reactions"
+      },
+      {
+        "label": "C",
+        "text": "Correct definitions but incorrect examples"
+      },
+      {
+        "label": "D",
+        "text": "Incorrect definitions but correct examples"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Detailed explanations and examples are required for each reaction. (i) Reimer-Tiemann: Phenol reacts with chloroform in the presence of NaOH to form salicylaldehyde. (ii) Kolbe's reaction: Phenol reacts with CO2 in the presence of NaOH to form salicylic acid. (iii) Williamson ether synthesis: Alkyl halide reacts with sodium alkoxide to form ether. (iv) Friedel-Crafts acylation: Benzene reacts with acyl chloride in the presence of AlCl3 to form acylbenzene. (v) Aldol condensation: Two aldehydes or ketones react in the presence of a base to form a β-hydroxy aldehyde or ketone.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "How do you convert: (i) Propene to Propan-2-ol (ii) Benzyl chloride to Benzyl alcohol (iii) Ethyl magnesium chloride to Propan-1-ol (iv) Methyl magnesium bromide to 2-Methylpropan-2-ol (v) Phenol to Salicylic acid",
+    "topic": "Alcohols, Phenols and Ethers, Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Correct reagents and conditions for all conversions"
+      },
+      {
+        "label": "B",
+        "text": "Incorrect reagents and conditions for all conversions"
+      },
+      {
+        "label": "C",
+        "text": "Correct reagents but incorrect conditions"
+      },
+      {
+        "label": "D",
+        "text": "Incorrect reagents but correct conditions"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Propene to Propan-2-ol: H2O/H+ (acid-catalyzed hydration). (ii) Benzyl chloride to Benzyl alcohol: Aqueous KOH. (iii) Ethyl magnesium chloride to Propan-1-ol: (1) Ethylene oxide (2) H3O+. (iv) Methyl magnesium bromide to 2-Methylpropan-2-ol: (1) Acetone (2) H3O+. (v) Phenol to Salicylic acid: (1) NaOH (2) CO2 (3) H3O+ (Kolbe-Schmitt reaction).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What happens when: (i) Benzaldehyde is treated with concentrated NaOH solution? (ii) Ethanol is heated with conc. H2SO4 at 443 K? (iii) Phenol is treated with bromine water? (iv) Ethyl chloride is treated with alcoholic KOH? (v) Methyl chloride is treated with KCN?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids, Alcohols, Phenols and Ethers, Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Correct products for all reactions"
+      },
+      {
+        "label": "B",
+        "text": "Incorrect products for all reactions"
+      },
+      {
+        "label": "C",
+        "text": "Correct products but incorrect conditions"
+      },
+      {
+        "label": "D",
+        "text": "Incorrect products but correct conditions"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "(i) Benzaldehyde undergoes Cannizzaro reaction to form benzyl alcohol and sodium benzoate. (ii) Ethanol is dehydrated to ethene. (iii) Phenol forms 2,4,6-tribromophenol. (iv) Ethyl chloride undergoes dehydrohalogenation to form ethene. (v) Methyl chloride reacts with KCN to form methyl cyanide (acetonitrile).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  }
+]

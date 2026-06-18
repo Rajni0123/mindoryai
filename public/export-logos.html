@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindory Logo Export Tool</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+        }
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        .logo-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            background: #f9f9f9;
+        }
+        .logo-card h3 {
+            margin-top: 15px;
+            color: #333;
+        }
+        .logo-card p {
+            color: #666;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            margin-bottom: 15px;
+        }
+        button {
+            background: linear-gradient(135deg, #cc785c 0%, #0df259 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .download-all {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .download-all button {
+            font-size: 16px;
+            padding: 15px 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Mindory Logo Export Tool</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 30px;">
+            Click "Download PNG" to export high-quality PNG files (512x512px)
+        </p>
+
+        <div class="logo-grid">
+            <div class="logo-card">
+                <canvas id="logo1" width="512" height="512"></canvas>
+                <h3>Gradient Bulb</h3>
+                <p>Main logo with gradient</p>
+                <button onclick="downloadLogo('logo1', 'mindory-logo-gradient.png')">Download PNG</button>
+            </div>
+
+            <div class="logo-card">
+                <canvas id="logo2" width="512" height="512"></canvas>
+                <h3>Solid Icon</h3>
+                <p>Filled bulb icon</p>
+                <button onclick="downloadLogo('logo2', 'mindory-icon-solid.png')">Download PNG</button>
+            </div>
+
+            <div class="logo-card">
+                <canvas id="logo3" width="512" height="512"></canvas>
+                <h3>Minimal Icon</h3>
+                <p>Simple circular design</p>
+                <button onclick="downloadLogo('logo3', 'mindory-icon-minimal.png')">Download PNG</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Draw logos on canvases
+        function drawLogos() {
+            // Logo 1: Gradient Bulb
+            const ctx1 = document.getElementById('logo1').getContext('2d');
+            const grad1 = ctx1.createLinearGradient(0, 0, 512, 512);
+            grad1.addColorStop(0, '#cc785c');
+            grad1.addColorStop(1, '#0df259');
+
+            // Draw rays
+            ctx1.strokeStyle = grad1;
+            ctx1.lineWidth = 8;
+            for(let i = 0; i < 8; i++) {
+                const angle = (i * 45 * Math.PI) / 180;
+                const x1 = 256 + Math.cos(angle) * 140;
+                const y1 = 256 + Math.sin(angle) * 140;
+                const x2 = 256 + Math.cos(angle) * 180;
+                const y2 = 256 + Math.sin(angle) * 180;
+                ctx1.globalAlpha = 0.6;
+                ctx1.beginPath();
+                ctx1.moveTo(x1, y1);
+                ctx1.lineTo(x2, y2);
+                ctx1.stroke();
+            }
+
+            // Draw bulb
+            ctx1.globalAlpha = 1;
+            ctx1.fillStyle = grad1;
+            ctx1.beginPath();
+            ctx1.arc(256, 200, 100, 0, Math.PI * 2);
+            ctx1.fill();
+            ctx1.fillRect(236, 290, 40, 20);
+            ctx1.fillRect(236, 310, 40, 15);
+            ctx1.fillRect(246, 325, 20, 15);
+
+            // Logo 2: Solid Icon
+            const ctx2 = document.getElementById('logo2').getContext('2d');
+            const grad2 = ctx2.createLinearGradient(0, 0, 512, 512);
+            grad2.addColorStop(0, '#cc785c');
+            grad2.addColorStop(1, '#0df259');
+
+            ctx2.fillStyle = grad2;
+            ctx2.beginPath();
+            ctx2.arc(256, 220, 110, 0, Math.PI * 2);
+            ctx2.fill();
+            ctx2.fillRect(226, 320, 60, 30);
+            ctx2.fillStyle = grad2;
+            ctx2.globalAlpha = 0.8;
+            ctx2.fillRect(226, 350, 60, 25);
+            ctx2.globalAlpha = 0.6;
+            ctx2.fillRect(226, 375, 60, 25);
+
+            // Logo 3: Minimal Icon
+            const ctx3 = document.getElementById('logo3').getContext('2d');
+            const grad3 = ctx3.createLinearGradient(0, 0, 512, 512);
+            grad3.addColorStop(0, '#cc785c');
+            grad3.addColorStop(1, '#0df259');
+
+            ctx3.fillStyle = grad3;
+            ctx3.beginPath();
+            ctx3.arc(256, 256, 160, 0, Math.PI * 2);
+            ctx3.fill();
+
+            // Shine
+            ctx3.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx3.beginPath();
+            ctx3.ellipse(200, 200, 60, 80, -0.5, 0, Math.PI * 2);
+            ctx3.fill();
+        }
+
+        function downloadLogo(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const url = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = url;
+            link.click();
+        }
+
+        // Draw on load
+        window.onload = drawLogos;
+    </script>
+</body>
+</html>

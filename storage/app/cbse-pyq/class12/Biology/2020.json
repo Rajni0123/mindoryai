@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "What is the role of the enzyme DNA ligase in DNA replication?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Unwinding the DNA double helix"
+      },
+      {
+        "label": "B",
+        "text": "Joining Okazaki fragments"
+      },
+      {
+        "label": "C",
+        "text": "Synthesizing RNA primers"
+      },
+      {
+        "label": "D",
+        "text": "Proofreading newly synthesized DNA"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "DNA ligase joins the Okazaki fragments on the lagging strand during DNA replication by catalyzing the formation of phosphodiester bonds between the fragments.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is NOT a component of the lac operon?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Structural genes"
+      },
+      {
+        "label": "B",
+        "text": "Operator"
+      },
+      {
+        "label": "C",
+        "text": "Promoter"
+      },
+      {
+        "label": "D",
+        "text": "Enhancer"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The lac operon consists of structural genes, an operator, a promoter, and a regulator gene. Enhancers are not part of the lac operon.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the function of the Ti plasmid in biotechnology?",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To clone animal genes"
+      },
+      {
+        "label": "B",
+        "text": "To clone plant genes"
+      },
+      {
+        "label": "C",
+        "text": "To clone bacterial genes"
+      },
+      {
+        "label": "D",
+        "text": "To clone viral genes"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Ti plasmid, found in Agrobacterium tumefaciens, is used as a vector to introduce genes into plant cells.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of ex-situ conservation?",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "National Park"
+      },
+      {
+        "label": "B",
+        "text": "Wildlife Sanctuary"
+      },
+      {
+        "label": "C",
+        "text": "Botanical Garden"
+      },
+      {
+        "label": "D",
+        "text": "Biosphere Reserve"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Ex-situ conservation involves conserving organisms outside their natural habitat. Botanical gardens are an example of this.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of the acrosome in human sperm?",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Provides energy for sperm motility"
+      },
+      {
+        "label": "B",
+        "text": "Contains enzymes to penetrate the egg"
+      },
+      {
+        "label": "C",
+        "text": "Contains the genetic material"
+      },
+      {
+        "label": "D",
+        "text": "Helps in sperm recognition by the egg"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The acrosome contains enzymes that help the sperm penetrate the zona pellucida of the egg during fertilization.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the significance of 'hot spots' in biodiversity conservation.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Areas with low species richness but high endemism that are under threat"
+      },
+      {
+        "label": "B",
+        "text": "Areas with high species richness and high endemism that are under threat"
+      },
+      {
+        "label": "C",
+        "text": "Areas with low species richness and low endemism that are not under threat"
+      },
+      {
+        "label": "D",
+        "text": "Areas with high species richness but low endemism that are not under threat"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Biodiversity hotspots are regions with exceptionally high species richness and endemism that are facing significant threats of habitat loss. Conserving these areas is crucial for preserving global biodiversity.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of transcription in eukaryotes. Which of the following is NOT directly involved?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "RNA polymerase"
+      },
+      {
+        "label": "B",
+        "text": "Transcription factors"
+      },
+      {
+        "label": "C",
+        "text": "Ribosomes"
+      },
+      {
+        "label": "D",
+        "text": "DNA template"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Transcription in eukaryotes involves RNA polymerase, transcription factors, and a DNA template. Ribosomes are involved in translation, not transcription.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the concept of 'ecological succession'. Which of the following is a characteristic of a climax community?",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Rapid species turnover"
+      },
+      {
+        "label": "B",
+        "text": "Low species diversity"
+      },
+      {
+        "label": "C",
+        "text": "High biomass and stability"
+      },
+      {
+        "label": "D",
+        "text": "Simple food webs"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Ecological succession is the gradual process of change in an ecosystem. A climax community is a stable, mature community with high biomass and complex food webs.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the key differences between spermatogenesis and oogenesis?",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Spermatogenesis produces one gamete, oogenesis produces four"
+      },
+      {
+        "label": "B",
+        "text": "Spermatogenesis occurs continuously, oogenesis is cyclical"
+      },
+      {
+        "label": "C",
+        "text": "Spermatogenesis starts at puberty, oogenesis starts before birth"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Spermatogenesis and oogenesis differ in the number of gametes produced, the timing of the process, and the continuity of the process.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of Polymerase Chain Reaction (PCR). What is the role of primers in PCR?",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To degrade the DNA template"
+      },
+      {
+        "label": "B",
+        "text": "To initiate DNA synthesis at specific regions"
+      },
+      {
+        "label": "C",
+        "text": "To prevent DNA from re-annealing"
+      },
+      {
+        "label": "D",
+        "text": "To add phosphate groups to DNA"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Primers are short, single-stranded DNA sequences that bind to specific regions of the DNA template and initiate DNA synthesis by providing a starting point for DNA polymerase.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the concept of incomplete dominance with an example.",
+    "topic": "Principles of Inheritance and Variation",
+    "options": [
+      {
+        "label": "A",
+        "text": "One allele completely masks the other; example: blood groups"
+      },
+      {
+        "label": "B",
+        "text": "Neither allele is completely dominant, resulting in a blended phenotype; example: flower color in snapdragons"
+      },
+      {
+        "label": "C",
+        "text": "Both alleles are equally expressed; example: sickle cell anemia"
+      },
+      {
+        "label": "D",
+        "text": "Multiple genes control a trait; example: human height"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Incomplete dominance occurs when neither allele is completely dominant, resulting in a blended phenotype. A classic example is flower color in snapdragons, where a red flower crossed with a white flower produces pink flowers.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the structure of a typical antibody molecule. Which region determines its specificity?",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "Constant region"
+      },
+      {
+        "label": "B",
+        "text": "Variable region"
+      },
+      {
+        "label": "C",
+        "text": "Heavy chain"
+      },
+      {
+        "label": "D",
+        "text": "Light chain"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The variable region of an antibody molecule determines its specificity by binding to a specific antigen. The constant region is involved in other functions, such as activating the complement system.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of translation. What is the role of tRNA in this process?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "To carry amino acids to the ribosome"
+      },
+      {
+        "label": "B",
+        "text": "To transcribe DNA into mRNA"
+      },
+      {
+        "label": "C",
+        "text": "To catalyze peptide bond formation"
+      },
+      {
+        "label": "D",
+        "text": "To initiate DNA replication"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "tRNA carries specific amino acids to the ribosome and matches them to the codons on the mRNA during translation.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the different types of interactions in a food web. Which of the following is NOT a type of interaction?",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Predation"
+      },
+      {
+        "label": "B",
+        "text": "Competition"
+      },
+      {
+        "label": "C",
+        "text": "Commensalism"
+      },
+      {
+        "label": "D",
+        "text": "Transformation"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Predation, competition, and commensalism are all types of interactions in a food web. Transformation refers to the uptake of foreign DNA by a bacterium.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the principles of Mendelian inheritance. What is the law of segregation?",
+    "topic": "Principles of Inheritance and Variation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Alleles of different genes assort independently"
+      },
+      {
+        "label": "B",
+        "text": "Alleles segregate during gamete formation"
+      },
+      {
+        "label": "C",
+        "text": "One allele is dominant over the other"
+      },
+      {
+        "label": "D",
+        "text": "Genes are located on chromosomes"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The law of segregation states that alleles segregate during gamete formation, so each gamete carries only one allele for each gene.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of double fertilization in angiosperms. What is the product of triple fusion?",
+    "topic": "Sexual Reproduction in Flowering Plants",
+    "options": [
+      {
+        "label": "A",
+        "text": "Zygote"
+      },
+      {
+        "label": "B",
+        "text": "Embryo"
+      },
+      {
+        "label": "C",
+        "text": "Endosperm"
+      },
+      {
+        "label": "D",
+        "text": "Seed coat"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Triple fusion involves the fusion of a sperm nucleus with the two polar nuclei in the central cell, resulting in the formation of the endosperm, which provides nourishment to the developing embryo.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the role of microbes in sewage treatment. What is the function of the activated sludge?",
+    "topic": "Microbes in Human Welfare",
+    "options": [
+      {
+        "label": "A",
+        "text": "To filter out solid waste"
+      },
+      {
+        "label": "B",
+        "text": "To decompose organic matter"
+      },
+      {
+        "label": "C",
+        "text": "To kill pathogenic bacteria"
+      },
+      {
+        "label": "D",
+        "text": "To add nutrients to the water"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Activated sludge contains a consortium of microbes that decompose organic matter in sewage during secondary treatment.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the structure and function of the human placenta.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Provides nutrients and oxygen to the fetus, removes waste products"
+      },
+      {
+        "label": "B",
+        "text": "Produces hormones to maintain pregnancy"
+      },
+      {
+        "label": "C",
+        "text": "Acts as a barrier against pathogens"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The placenta is a vital organ that provides nutrients and oxygen to the fetus, removes waste products, produces hormones to maintain pregnancy, and acts as a barrier against some pathogens.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the principles and applications of recombinant DNA technology.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Cutting DNA at specific sites with restriction enzymes"
+      },
+      {
+        "label": "B",
+        "text": "Joining DNA fragments with DNA ligase"
+      },
+      {
+        "label": "C",
+        "text": "Introducing recombinant DNA into host cells"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Recombinant DNA technology involves cutting DNA at specific sites with restriction enzymes, joining DNA fragments with DNA ligase, and introducing recombinant DNA into host cells to produce desired products.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the different types of population interactions with examples.",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Mutualism: both species benefit"
+      },
+      {
+        "label": "B",
+        "text": "Competition: both species are harmed"
+      },
+      {
+        "label": "C",
+        "text": "Parasitism: one species benefits, the other is harmed"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Population interactions include mutualism, competition, predation, parasitism, and commensalism, each with different effects on the interacting species.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of speciation. What are the different types of speciation?",
+    "topic": "Evolution",
+    "options": [
+      {
+        "label": "A",
+        "text": "Allopatric speciation: geographic isolation"
+      },
+      {
+        "label": "B",
+        "text": "Sympatric speciation: reproductive isolation within the same area"
+      },
+      {
+        "label": "C",
+        "text": "Parapatric speciation: speciation in adjacent areas"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Speciation is the process by which new species arise. Different types of speciation include allopatric, sympatric, and parapatric speciation, each with different mechanisms of reproductive isolation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the causes, effects, and control measures for air pollution.",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Causes: burning fossil fuels, industrial emissions"
+      },
+      {
+        "label": "B",
+        "text": "Effects: respiratory problems, acid rain"
+      },
+      {
+        "label": "C",
+        "text": "Control measures: reducing emissions, using cleaner fuels"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Air pollution is caused by various factors, including burning fossil fuels and industrial emissions. It has several effects, such as respiratory problems and acid rain. Control measures include reducing emissions and using cleaner fuels.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of oogenesis in humans. Include the roles of FSH and LH.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "FSH stimulates follicle development, LH triggers ovulation"
+      },
+      {
+        "label": "B",
+        "text": "LH stimulates follicle development, FSH triggers ovulation"
+      },
+      {
+        "label": "C",
+        "text": "Both FSH and LH stimulate follicle development"
+      },
+      {
+        "label": "D",
+        "text": "Neither FSH nor LH is involved in oogenesis"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "FSH stimulates the development of ovarian follicles, while LH triggers ovulation, the release of the egg from the follicle. These hormones are crucial for oogenesis.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the structure of the human eye and explain the mechanism of vision. What are the common eye defects and how can they be corrected?",
+    "topic": "Neural Control and Coordination",
+    "options": [
+      {
+        "label": "A",
+        "text": "Myopia: corrected with concave lens"
+      },
+      {
+        "label": "B",
+        "text": "Hypermetropia: corrected with convex lens"
+      },
+      {
+        "label": "C",
+        "text": "Astigmatism: corrected with cylindrical lens"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Myopia (nearsightedness) is corrected with concave lenses, hypermetropia (farsightedness) is corrected with convex lenses, and astigmatism is corrected with cylindrical lenses.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the principles of inheritance as described by Mendel. How do these principles explain the inheritance of traits in sexually reproducing organisms?",
+    "topic": "Principles of Inheritance and Variation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Law of Dominance: one allele masks the other"
+      },
+      {
+        "label": "B",
+        "text": "Law of Segregation: alleles separate during gamete formation"
+      },
+      {
+        "label": "C",
+        "text": "Law of Independent Assortment: alleles of different genes assort independently"
+      },
+      {
+        "label": "D",
+        "text": "All of the above"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Mendel's laws of dominance, segregation, and independent assortment explain how traits are inherited in sexually reproducing organisms. These laws provide the foundation for understanding genetic inheritance.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  }
+]

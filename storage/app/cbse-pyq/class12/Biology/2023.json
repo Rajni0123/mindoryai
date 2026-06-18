@@ -1,0 +1,704 @@
+[
+  {
+    "question_text": "Which of the following is NOT a component of the lac operon?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Structural genes"
+      },
+      {
+        "label": "B",
+        "text": "Promoter"
+      },
+      {
+        "label": "C",
+        "text": "Enhancer"
+      },
+      {
+        "label": "D",
+        "text": "Operator"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The lac operon consists of structural genes, a promoter, an operator, and a regulator gene. Enhancers are not part of the lac operon; they are regulatory DNA sequences that can increase transcription of genes.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of DNA ligase in DNA replication?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "To unwind the DNA double helix"
+      },
+      {
+        "label": "B",
+        "text": "To synthesize RNA primers"
+      },
+      {
+        "label": "C",
+        "text": "To join Okazaki fragments"
+      },
+      {
+        "label": "D",
+        "text": "To proofread the newly synthesized DNA"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "DNA ligase joins the Okazaki fragments on the lagging strand during DNA replication by catalyzing the formation of phosphodiester bonds between the fragments.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of commensalism?",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ticks on a dog"
+      },
+      {
+        "label": "B",
+        "text": "Orchids growing on a tree"
+      },
+      {
+        "label": "C",
+        "text": "Lice on humans"
+      },
+      {
+        "label": "D",
+        "text": "Algae and fungi in lichens"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Commensalism is a relationship where one organism benefits, and the other is neither harmed nor helped. Orchids growing on a tree benefit from the support, while the tree is unaffected.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the function of the Ti plasmid in biotechnology?",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To clone animal genes"
+      },
+      {
+        "label": "B",
+        "text": "To transfer genes into plant cells"
+      },
+      {
+        "label": "C",
+        "text": "To produce antibiotics"
+      },
+      {
+        "label": "D",
+        "text": "To digest DNA"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Ti plasmid, found in *Agrobacterium tumefaciens*, is used to transfer genes into plant cells, making it a valuable tool in plant genetic engineering.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the primary function of the ozone layer?",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "To trap heat in the atmosphere"
+      },
+      {
+        "label": "B",
+        "text": "To absorb harmful UV radiation"
+      },
+      {
+        "label": "C",
+        "text": "To produce oxygen"
+      },
+      {
+        "label": "D",
+        "text": "To reflect sunlight back into space"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The ozone layer absorbs a significant portion of the harmful ultraviolet (UV) radiation from the sun, protecting life on Earth.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the process of transcription in eukaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA replication using DNA polymerase"
+      },
+      {
+        "label": "B",
+        "text": "RNA synthesis using RNA polymerase"
+      },
+      {
+        "label": "C",
+        "text": "Protein synthesis using ribosomes"
+      },
+      {
+        "label": "D",
+        "text": "DNA repair mechanisms"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Transcription in eukaryotes involves RNA polymerase synthesizing RNA from a DNA template. This process includes initiation, elongation, and termination, and occurs in the nucleus.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the significance of biodiversity hotspots.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Areas with low species richness"
+      },
+      {
+        "label": "B",
+        "text": "Regions with high species richness and high degree of endemism"
+      },
+      {
+        "label": "C",
+        "text": "Areas with minimal human impact"
+      },
+      {
+        "label": "D",
+        "text": "Regions suitable for agriculture"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Biodiversity hotspots are regions with exceptionally high species richness and a high degree of endemism, making them crucial for conservation efforts.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the principle of gel electrophoresis.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Separation of molecules based on size and charge"
+      },
+      {
+        "label": "B",
+        "text": "Amplification of DNA fragments"
+      },
+      {
+        "label": "C",
+        "text": "Cutting DNA at specific sites"
+      },
+      {
+        "label": "D",
+        "text": "Introducing foreign DNA into a host cell"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Gel electrophoresis separates molecules (DNA, RNA, or proteins) based on their size and charge by applying an electric field through a gel matrix.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the key differences between primary and secondary succession?",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Primary succession starts on bare rock, while secondary succession starts on previously vegetated land."
+      },
+      {
+        "label": "B",
+        "text": "Primary succession is faster than secondary succession."
+      },
+      {
+        "label": "C",
+        "text": "Primary succession involves only plants, while secondary succession involves animals."
+      },
+      {
+        "label": "D",
+        "text": "Primary succession occurs in aquatic environments, while secondary succession occurs in terrestrial environments."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Primary succession begins in lifeless areas where soil has not yet formed, such as bare rock. Secondary succession occurs in areas where a community previously existed but has been disturbed or destroyed.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of translation in prokaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA replication in the nucleus"
+      },
+      {
+        "label": "B",
+        "text": "RNA synthesis in the cytoplasm"
+      },
+      {
+        "label": "C",
+        "text": "Protein synthesis on ribosomes in the cytoplasm"
+      },
+      {
+        "label": "D",
+        "text": "mRNA processing in the nucleus"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Translation in prokaryotes involves the synthesis of proteins from mRNA on ribosomes in the cytoplasm. This process includes initiation, elongation, and termination.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the concept of co-dominance with an example.",
+    "topic": "Principles of Inheritance and Variation",
+    "options": [
+      {
+        "label": "A",
+        "text": "One allele masks the effect of another allele."
+      },
+      {
+        "label": "B",
+        "text": "Both alleles are equally expressed in the heterozygote. Example: AB blood group."
+      },
+      {
+        "label": "C",
+        "text": "Alleles blend to produce an intermediate phenotype."
+      },
+      {
+        "label": "D",
+        "text": "Multiple genes control a single trait."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Co-dominance occurs when both alleles are equally expressed in the heterozygote. A classic example is the AB blood group in humans, where both A and B alleles are expressed.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the role of microbes in sewage treatment.",
+    "topic": "Microbes in Human Welfare",
+    "options": [
+      {
+        "label": "A",
+        "text": "Microbes are used to physically filter sewage."
+      },
+      {
+        "label": "B",
+        "text": "Microbes are used to chemically treat sewage."
+      },
+      {
+        "label": "C",
+        "text": "Microbes are used to decompose organic matter in sewage."
+      },
+      {
+        "label": "D",
+        "text": "Microbes are used to sterilize sewage."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Microbes play a crucial role in sewage treatment by decomposing organic matter, reducing the pollutant load before the water is released back into the environment.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of PCR (Polymerase Chain Reaction) and its applications.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "A technique to cut DNA at specific sites."
+      },
+      {
+        "label": "B",
+        "text": "A technique to separate DNA fragments based on size."
+      },
+      {
+        "label": "C",
+        "text": "A technique to amplify a specific DNA sequence."
+      },
+      {
+        "label": "D",
+        "text": "A technique to introduce foreign DNA into a host cell."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "PCR is a technique used to amplify a specific DNA sequence, creating millions of copies. It has applications in diagnostics, forensics, and research.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the different types of interactions in a community with examples.",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Competition, predation, parasitism, commensalism, mutualism"
+      },
+      {
+        "label": "B",
+        "text": "Only competition and predation"
+      },
+      {
+        "label": "C",
+        "text": "Only mutualism and parasitism"
+      },
+      {
+        "label": "D",
+        "text": "Only commensalism and amensalism"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Interactions in a community include competition (e.g., two species competing for the same resource), predation (e.g., a lion hunting a zebra), parasitism (e.g., ticks on a dog), commensalism (e.g., orchids on a tree), and mutualism (e.g., bees pollinating flowers).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the causes and effects of global warming.",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Caused by deforestation, leading to decreased rainfall."
+      },
+      {
+        "label": "B",
+        "text": "Caused by increased greenhouse gases, leading to rising temperatures and climate change."
+      },
+      {
+        "label": "C",
+        "text": "Caused by ozone depletion, leading to increased UV radiation."
+      },
+      {
+        "label": "D",
+        "text": "Caused by acid rain, leading to soil degradation."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Global warming is primarily caused by increased greenhouse gases in the atmosphere, leading to rising temperatures, melting ice caps, sea-level rise, and other climate changes.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the structure of a typical antibody molecule and its function.",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "A protein with a single polypeptide chain that binds to antigens."
+      },
+      {
+        "label": "B",
+        "text": "A protein with four polypeptide chains (two heavy and two light) that binds to specific antigens."
+      },
+      {
+        "label": "C",
+        "text": "A lipid molecule that neutralizes toxins."
+      },
+      {
+        "label": "D",
+        "text": "A carbohydrate molecule that activates the immune system."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "An antibody molecule consists of four polypeptide chains (two heavy and two light chains) and binds to specific antigens, marking them for destruction by the immune system.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of recombinant DNA technology.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Cutting DNA into smaller fragments."
+      },
+      {
+        "label": "B",
+        "text": "Joining DNA fragments from different sources to create a new DNA molecule."
+      },
+      {
+        "label": "C",
+        "text": "Amplifying DNA using PCR."
+      },
+      {
+        "label": "D",
+        "text": "Separating DNA fragments using gel electrophoresis."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Recombinant DNA technology involves joining DNA fragments from different sources to create a new DNA molecule, which can then be introduced into a host organism.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the different types of biodiversity and their importance.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Genetic diversity, species diversity, and ecosystem diversity; all are important for ecosystem stability and human well-being."
+      },
+      {
+        "label": "B",
+        "text": "Only species diversity is important for ecosystem stability."
+      },
+      {
+        "label": "C",
+        "text": "Only genetic diversity is important for human well-being."
+      },
+      {
+        "label": "D",
+        "text": "Only ecosystem diversity is important for ecosystem services."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biodiversity includes genetic diversity, species diversity, and ecosystem diversity. All three are important for ecosystem stability, resilience, and the provision of ecosystem services that benefit human well-being.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the process of spermatogenesis and oogenesis.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Spermatogenesis produces eggs, and oogenesis produces sperm."
+      },
+      {
+        "label": "B",
+        "text": "Spermatogenesis produces sperm, and oogenesis produces eggs."
+      },
+      {
+        "label": "C",
+        "text": "Both spermatogenesis and oogenesis produce sperm."
+      },
+      {
+        "label": "D",
+        "text": "Both spermatogenesis and oogenesis produce eggs."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Spermatogenesis is the process of sperm formation in the testes, while oogenesis is the process of egg formation in the ovaries.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the structure and functions of the human heart.",
+    "topic": "Body Fluids and Circulation",
+    "options": [
+      {
+        "label": "A",
+        "text": "A single-chambered organ that pumps blood."
+      },
+      {
+        "label": "B",
+        "text": "A two-chambered organ that pumps blood."
+      },
+      {
+        "label": "C",
+        "text": "A three-chambered organ that pumps blood."
+      },
+      {
+        "label": "D",
+        "text": "A four-chambered organ that pumps blood throughout the body."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The human heart is a four-chambered organ (two atria and two ventricles) that pumps blood throughout the body, ensuring oxygen and nutrients are delivered to tissues and waste products are removed.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the different types of immunity and their mechanisms.",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "Innate immunity and adaptive immunity; both involve the same mechanisms."
+      },
+      {
+        "label": "B",
+        "text": "Innate immunity and adaptive immunity; innate immunity is non-specific, while adaptive immunity is specific."
+      },
+      {
+        "label": "C",
+        "text": "Only innate immunity protects against pathogens."
+      },
+      {
+        "label": "D",
+        "text": "Only adaptive immunity protects against pathogens."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Immunity includes innate immunity (non-specific, rapid response) and adaptive immunity (specific, slower response). Innate immunity involves physical barriers and immune cells, while adaptive immunity involves antibodies and T cells.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the process of DNA replication in detail, including the enzymes involved.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "A simple process involving only DNA polymerase."
+      },
+      {
+        "label": "B",
+        "text": "A complex process involving DNA polymerase, helicase, ligase, and primase."
+      },
+      {
+        "label": "C",
+        "text": "A process that only occurs in prokaryotes."
+      },
+      {
+        "label": "D",
+        "text": "A process that only occurs in eukaryotes."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "DNA replication is a complex process involving multiple enzymes, including DNA polymerase (synthesizes new DNA), helicase (unwinds DNA), ligase (joins Okazaki fragments), and primase (synthesizes RNA primers).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the different types of ecological pyramids and their significance.",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Pyramids of energy, biomass, and numbers; all represent the same thing."
+      },
+      {
+        "label": "B",
+        "text": "Pyramids of energy, biomass, and numbers; they represent the flow of energy and matter through trophic levels."
+      },
+      {
+        "label": "C",
+        "text": "Only pyramids of energy are important for understanding ecosystems."
+      },
+      {
+        "label": "D",
+        "text": "Only pyramids of biomass are important for understanding ecosystems."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Ecological pyramids include pyramids of energy, biomass, and numbers. They represent the flow of energy and matter through trophic levels in an ecosystem, providing insights into ecosystem structure and function.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the principles of Mendelian inheritance.",
+    "topic": "Principles of Inheritance and Variation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Only the law of dominance."
+      },
+      {
+        "label": "B",
+        "text": "Only the law of segregation."
+      },
+      {
+        "label": "C",
+        "text": "Only the law of independent assortment."
+      },
+      {
+        "label": "D",
+        "text": "Law of dominance, law of segregation, and law of independent assortment."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Mendelian inheritance includes the law of dominance, the law of segregation, and the law of independent assortment, which explain how traits are inherited from parents to offspring.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the role of Restriction Enzymes in recombinant DNA technology.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To join DNA fragments together."
+      },
+      {
+        "label": "B",
+        "text": "To cut DNA at specific sites."
+      },
+      {
+        "label": "C",
+        "text": "To amplify DNA fragments."
+      },
+      {
+        "label": "D",
+        "text": "To introduce foreign DNA into a host cell."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Restriction enzymes are used to cut DNA at specific recognition sequences, allowing for the precise insertion of DNA fragments into vectors during recombinant DNA technology.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the concept of mutualism with two examples.",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "One organism benefits, and the other is harmed."
+      },
+      {
+        "label": "B",
+        "text": "Both organisms benefit. Examples: Lichens (algae and fungi), mycorrhizae (fungi and plant roots)."
+      },
+      {
+        "label": "C",
+        "text": "One organism benefits, and the other is unaffected."
+      },
+      {
+        "label": "D",
+        "text": "Both organisms are harmed."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Mutualism is a relationship where both organisms benefit. Examples include lichens (algae and fungi) and mycorrhizae (fungi and plant roots).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

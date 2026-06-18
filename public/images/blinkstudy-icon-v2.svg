@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Main Gradient - More vibrant -->
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14B8A6"/>
+      <stop offset="50%" style="stop-color:#0D9488"/>
+      <stop offset="100%" style="stop-color:#0F766E"/>
+    </linearGradient>
+
+    <!-- Gold/Amber gradient for S -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FBBF24"/>
+      <stop offset="50%" style="stop-color:#F59E0B"/>
+      <stop offset="100%" style="stop-color:#D97706"/>
+    </linearGradient>
+
+    <!-- White gradient for B -->
+    <linearGradient id="whiteGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF"/>
+      <stop offset="100%" style="stop-color:#E5E7EB"/>
+    </linearGradient>
+
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Shadow -->
+    <filter id="shadow2">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background with rounded corners -->
+  <rect x="0" y="0" width="512" height="512" rx="108" ry="108" fill="url(#bgGrad2)"/>
+
+  <!-- Decorative pattern -->
+  <g opacity="0.08">
+    <circle cx="450" cy="80" r="120" fill="#FFFFFF"/>
+    <circle cx="60" cy="450" r="150" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Central emblem circle -->
+  <circle cx="256" cy="256" r="180" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+
+  <!-- BS Letters combined -->
+  <g filter="url(#shadow2)">
+    <!-- B Letter -->
+    <text x="95" y="340" font-family="'Segoe UI Black', 'Arial Black', sans-serif" font-size="240" font-weight="900" fill="url(#whiteGrad)">B</text>
+
+    <!-- S Letter overlapping -->
+    <text x="265" y="340" font-family="'Segoe UI Black', 'Arial Black', sans-serif" font-size="240" font-weight="900" fill="url(#goldGrad)">S</text>
+  </g>
+
+  <!-- Premium sparkle effects -->
+  <g filter="url(#glow)">
+    <circle cx="410" cy="100" r="8" fill="#FBBF24"/>
+    <circle cx="430" cy="130" r="4" fill="#FFFFFF"/>
+    <circle cx="390" cy="80" r="3" fill="#FFFFFF"/>
+  </g>
+
+  <!-- Bottom accent -->
+  <rect x="140" y="375" width="232" height="8" rx="4" fill="url(#goldGrad)"/>
+</svg>
