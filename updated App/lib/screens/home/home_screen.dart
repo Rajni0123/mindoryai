@@ -8,8 +8,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/theme/dashboard_theme.dart';
+import '../../models/user_badges.dart';
 import '../../providers/app_data_provider.dart';
 import '../../providers/providers.dart';
+import '../../widgets/dynamic_badge.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -26,6 +28,7 @@ class HomeScreen extends ConsumerWidget {
     final continueData = dash.continueLearning;
     final upcoming = dash.upcomingExam;
     final dailyChallenge = dash.dailyChallenge;
+    final badges = dash.badges;
 
     return Scaffold(
       backgroundColor: context.dash.background,
@@ -53,11 +56,19 @@ class HomeScreen extends ConsumerWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: _StreakCard(streak: streak),
+                            child: _StreakCard(
+                              streak: streak,
+                              badges: badges,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: _LevelCard(level: level, xp: xp, xpMax: xpMax),
+                            child: _LevelCard(
+                              level: level,
+                              xp: xp,
+                              xpMax: xpMax,
+                              badges: badges,
+                            ),
                           ),
                         ],
                       ),
@@ -423,20 +434,36 @@ class _WavePainter extends CustomPainter {
 
 class _StreakCard extends StatelessWidget {
   final int streak;
-  const _StreakCard({required this.streak});
+  final UserBadgesPayload badges;
+
+  const _StreakCard({required this.streak, required this.badges});
 
   @override
   Widget build(BuildContext context) {
     final c = context.dash;
-    final progress = (streak / 60).clamp(0.0, 1.0);
+    final badge = badges.streak;
+    final next = badges.streakProgress.nextBadge;
+    final progress = badges.streakProgress.percent / 100;
+    final milestoneLabel = next != null
+        ? '${badges.streakProgress.valueToNext} days to ${next.name}'
+        : 'Max streak tier!';
+
+    if (badge == null) {
+      return _StatCard(
+        child: Text(
+          'Start your streak today!',
+          style: TextStyle(fontSize: 13, color: c.textMuted),
+        ),
+      );
+    }
+
     return _StatCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.local_fire_department_rounded,
-                  color: Color(0xFFF97316), size: 22),
+              DynamicBadge(badge: badge, size: 28),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
@@ -448,14 +475,30 @@ class _StreakCard extends StatelessWidget {
                   ),
                 ),
               ),
-              _HexBadge(value: streak),
+              Text(
+                badge.name,
+                style: TextStyle(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w800,
+                  color: badge.gradient.first,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 6),
           Text(
-            streak > 0 ? "You're on fire! Keep it up." : 'Start your streak today!',
+            streak > 0 ? badge.tagline : 'Start your streak today!',
             style: TextStyle(fontSize: 11, color: c.textMuted, height: 1.3),
           ),
+          if (streak > 0 && next != null)
+            Text(
+              milestoneLabel,
+              style: TextStyle(
+                fontSize: 10,
+                color: badge.gradient.first.withOpacity(0.85),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           const SizedBox(height: 12),
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
@@ -465,12 +508,10 @@ class _StreakCard extends StatelessWidget {
                 children: [
                   Container(color: c.cardBorder),
                   FractionallySizedBox(
-                    widthFactor: progress,
+                    widthFactor: progress.clamp(0.0, 1.0),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xFFF97316), Color(0xFF3B82F6)],
-                        ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: badge.gradient),
                       ),
                     ),
                   ),
@@ -488,36 +529,77 @@ class _LevelCard extends StatelessWidget {
   final int level;
   final int xp;
   final int xpMax;
+  final UserBadgesPayload badges;
 
-  const _LevelCard({required this.level, required this.xp, required this.xpMax});
+  const _LevelCard({
+    required this.level,
+    required this.xp,
+    required this.xpMax,
+    required this.badges,
+  });
 
   @override
   Widget build(BuildContext context) {
     final c = context.dash;
-    final progress = xpMax > 0 ? (xp / xpMax).clamp(0.0, 1.0) : 0.0;
+    final badge = badges.league;
+    final next = badges.leagueProgress.nextBadge;
+    final progress = xpMax > 0
+        ? (xp / xpMax).clamp(0.0, 1.0)
+        : badges.leagueProgress.percent / 100;
+
+    if (badge == null) {
+      return _StatCard(
+        child: Text(
+          'Level $level',
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: c.textPrimary),
+        ),
+      );
+    }
+
     return _StatCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Text(
-                'Level $level',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w800,
-                  color: c.textPrimary,
+              DynamicBadge(badge: badge, size: 28),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  badge.name,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                    color: c.textPrimary,
+                  ),
                 ),
               ),
-              const Spacer(),
-              Icon(LucideIcons.chevronRight, size: 16, color: c.textMuted),
+              Text(
+                'Lv $level',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  color: c.textMuted,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 6),
           Text(
-            'XP ${_formatXp(xp)} / ${_formatXp(xpMax)}',
+            badge.tagline,
             style: TextStyle(fontSize: 11, color: c.textMuted),
           ),
+          if (next != null)
+            Text(
+              badges.leagueProgress.valueToNext > 0
+                  ? '${badges.leagueProgress.valueToNext} levels to ${next.name}'
+                  : 'Next: ${next.name}',
+              style: TextStyle(
+                fontSize: 10,
+                color: badge.gradient.first.withOpacity(0.85),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           const SizedBox(height: 12),
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
@@ -528,11 +610,20 @@ class _LevelCard extends StatelessWidget {
                   Container(color: c.cardBorder),
                   FractionallySizedBox(
                     widthFactor: progress,
-                    child: Container(color: AppColors.primary),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: badge.gradient),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'XP ${_formatXp(xp)} / ${_formatXp(xpMax)}',
+            style: TextStyle(fontSize: 10, color: c.textMuted),
           ),
         ],
       ),
@@ -567,34 +658,6 @@ class _StatCard extends StatelessWidget {
         ],
       ),
       child: child,
-    );
-  }
-}
-
-class _HexBadge extends StatelessWidget {
-  final int value;
-  const _HexBadge({required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 32,
-      height: 32,
-      decoration: BoxDecoration(
-        color: const Color(0xFFFBBF24).withValues(alpha: 0.2),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFFBBF24), width: 1.5),
-      ),
-      child: Center(
-        child: Text(
-          '$value',
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w800,
-            color: Color(0xFFD97706),
-          ),
-        ),
-      ),
     );
   }
 }

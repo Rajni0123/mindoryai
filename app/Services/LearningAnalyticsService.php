@@ -530,7 +530,10 @@ class LearningAnalyticsService
         $user = User::find($userId);
         $analytics = self::getOrCreateAnalytics($userId);
 
-        // Streak achievements
+        // Sync batches.jpeg badge tiers into user_achievements
+        $awarded = array_merge($awarded, BadgeService::syncBadgeAchievements($userId));
+
+        // Streak achievements (legacy keys — kept for backward compatibility)
         $streak = $user->current_streak ?? 0;
         if ($streak >= 3) {
             $a = UserAchievement::award($userId, 'streak_3', '3-Day Streak', '🔥', 'streaks');
@@ -1113,6 +1116,11 @@ class LearningAnalyticsService
             'weak_topics' => $weakAreas,
             'revision_needed' => $dashboard['revision_needed'],
             'profile' => $dashboard['profile'],
+            'level_progress' => $dashboard['level_progress'],
+            'peer_comparison' => $dashboard['peer_comparison'],
+            'achievements' => $dashboard['achievements'],
+            'achievement_count' => $dashboard['achievement_count'],
+            'badges' => BadgeService::getUserBadges($userId),
             'saved_notes_hint' => count($weakAreas),
         ];
     }

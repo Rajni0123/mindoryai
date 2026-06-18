@@ -234,6 +234,8 @@ Route::middleware('auth:sanctum')->post('/user/complete-profile', function (Requ
     ]);
 });
 
+Route::middleware('auth:sanctum')->get('/user/badges', [\App\Http\Controllers\Api\BadgeController::class, 'index']);
+
 // Update profile (name and/or mobile)
 Route::middleware('auth:sanctum')->put('/user/profile', function (Request $request) {
     try {

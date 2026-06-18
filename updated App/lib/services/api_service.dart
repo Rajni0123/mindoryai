@@ -429,6 +429,11 @@ class ApiService {
     return Map<String, dynamic>.from(res.data as Map);
   }
 
+  Future<Map<String, dynamic>> getUserBadges() async {
+    final res = await _dio.get('/user/badges');
+    return Map<String, dynamic>.from(res.data as Map);
+  }
+
   Future<RevisionPlan> getRevisionPlan() async {
     final res = await _dio.get('/revision/plan');
     final data = Map<String, dynamic>.from(res.data as Map);

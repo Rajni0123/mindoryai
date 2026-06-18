@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/user_badges.dart';
 import '../models/models.dart';
 import '../services/api_service.dart';
 import 'providers.dart' show apiServiceProvider;
@@ -143,6 +144,7 @@ class HomeDashboardData {
   final HomeUpcomingExam upcomingExam;
   final double studyHoursWeek;
   final int averageAccuracy;
+  final UserBadgesPayload badges;
   final bool loading;
   final String? error;
 
@@ -166,6 +168,7 @@ class HomeDashboardData {
     this.upcomingExam = const HomeUpcomingExam(),
     this.studyHoursWeek = 0,
     this.averageAccuracy = 0,
+    this.badges = UserBadgesPayload.empty,
     this.loading = false,
     this.error,
   });
@@ -217,7 +220,8 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
       int xpMaxDisplay = 2000;
       List<WeakTopicAlert> weak = [];
       RevisionPlan? revisionPlan;
-
+      UserBadgesPayload badgesPayload = UserBadgesPayload.empty;
+      final dailyDone = daily['user_attempt']?['completed'] == true;
       try {
         final revisionProfile = await _api.getRevisionProfile();
         readiness = revisionProfile['strength_score'] as int? ??
@@ -228,6 +232,18 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
         if (profile != null) {
           streak = (profile['streak'] as num?)?.toInt() ?? streak;
           level = (profile['level'] as num?)?.toInt() ?? level;
+        }
+
+        if (revisionProfile['badges'] is Map) {
+          badgesPayload = UserBadgesPayload.fromJson(
+            Map<String, dynamic>.from(revisionProfile['badges'] as Map),
+          );
+          streak = badgesPayload.stats.streak > streak
+              ? badgesPayload.stats.streak
+              : streak;
+          level = badgesPayload.stats.level > 0
+              ? badgesPayload.stats.level
+              : level;
         }
 
         final levelProgress = revisionProfile['level_progress'] as Map?;
@@ -291,7 +307,6 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
       } catch (_) {}
 
       final usageMap = usage['usage'] as Map<String, dynamic>? ?? {};
-      final dailyDone = daily['user_attempt']?['completed'] == true;
       final challengeAvailable = daily['available'] == true;
       final challengeMap = daily['challenge'] as Map?;
 
@@ -368,6 +383,8 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
         exams: exams,
       );
 
+      final badgeStats = badgesPayload;
+
       state = HomeDashboardData(
         streak: streak,
         level: level,
@@ -388,6 +405,7 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
         upcomingExam: upcomingExam,
         studyHoursWeek: studyHours,
         averageAccuracy: avgAccuracy,
+        badges: badgeStats,
       );
     } catch (e) {
       state = HomeDashboardData(error: e.toString());

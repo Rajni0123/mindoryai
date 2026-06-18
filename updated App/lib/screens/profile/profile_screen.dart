@@ -9,6 +9,8 @@ import '../../core/theme/dashboard_theme.dart';
 import '../../core/utils/study_profile_utils.dart';
 import '../../providers/app_data_provider.dart';
 import '../../providers/providers.dart';
+import '../../models/user_badges.dart';
+import '../../widgets/dynamic_badge.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -17,6 +19,9 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authProvider).user;
     final prefs = ref.watch(userStudyPreferencesProvider);
+    final dash = ref.watch(homeDashboardProvider);
+    final badges = dash.badges;
+    final leagueBadge = badges.league;
     final c = context.dash;
     final name = _displayName(user?.name);
     final targetExam = user?.targetExam ?? prefs.targetExam;
@@ -50,9 +55,19 @@ class ProfileScreen extends ConsumerWidget {
                       aspirantLabel: aspirantLabel,
                       profileSubtitle: profileSubtitle,
                       avatarUrl: user?.avatar,
+                      leagueBadge: leagueBadge,
                     ).stagger(0),
-                    const SizedBox(height: 28),
-                    _StatsCard(tests: 48, battles: 12, rank: 342).stagger(1),
+                    const SizedBox(height: 20),
+                    BadgeShowcaseRow(
+                      badges: badges.unlocked,
+                      onViewAll: () => BadgeGuideSheet.show(context),
+                    ).stagger(1),
+                    const SizedBox(height: 16),
+                    _StatsCard(
+                      tests: badges.stats.totalQuizzes,
+                      battles: badges.stats.battleWins,
+                      rank: badges.stats.xpPercentile,
+                    ).stagger(2),
                     const SizedBox(height: 16),
                     _MenuCard(
                       onEditProfile: () => AppRouter.go(context, AppRoutes.editProfile),
@@ -60,7 +75,7 @@ class ProfileScreen extends ConsumerWidget {
                       onSettings: () => AppRouter.go(context, AppRoutes.settings),
                       onHelp: () => AppRouter.go(context, AppRoutes.helpSupport),
                       onLogout: () => _logout(context, ref),
-                    ).stagger(2),
+                    ).stagger(3),
                     const SizedBox(height: 100),
                   ],
                 ),
@@ -172,11 +187,13 @@ class _ProfileHero extends StatelessWidget {
   final String aspirantLabel;
   final String profileSubtitle;
   final String? avatarUrl;
+  final ApiBadge? leagueBadge;
 
   const _ProfileHero({
     required this.name,
     required this.aspirantLabel,
     required this.profileSubtitle,
+    this.leagueBadge,
     this.avatarUrl,
   });
 
@@ -220,19 +237,12 @@ class _ProfileHero extends StatelessWidget {
                       : _AvatarIllustration(name: name),
                 ),
               ),
-              Positioned(
-                right: 4,
-                bottom: 4,
-                child: Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    color: AppColors.success,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: c.background, width: 3),
-                  ),
+              if (leagueBadge != null)
+                Positioned(
+                  right: -2,
+                  bottom: -2,
+                  child: DynamicBadge(badge: leagueBadge!, size: 36),
                 ),
-              ),
             ],
           ),
         ),
@@ -255,6 +265,17 @@ class _ProfileHero extends StatelessWidget {
             color: AppColors.primary,
           ),
         ),
+        if (leagueBadge != null) ...[
+          const SizedBox(height: 2),
+          Text(
+            leagueBadge!.name,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              color: leagueBadge!.gradient.first,
+            ),
+          ),
+        ],
         const SizedBox(height: 4),
         Text(
           profileSubtitle,
@@ -345,7 +366,12 @@ class _StatsCard extends StatelessWidget {
           Container(width: 1, height: 40, color: c.cardBorder),
           Expanded(child: _StatCell(label: 'Battles', value: '$battles')),
           Container(width: 1, height: 40, color: c.cardBorder),
-          Expanded(child: _StatCell(label: 'Rank', value: '#$rank')),
+          Expanded(
+            child: _StatCell(
+              label: 'Rank',
+              value: rank >= 50 ? 'Top $rank%' : '—',
+            ),
+          ),
         ],
       ),
     );
