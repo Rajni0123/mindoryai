@@ -23,14 +23,17 @@ return Application::configure(basePath: dirname(__DIR__))
             'ip.whitelist' => \App\Http\Middleware\IpWhitelistMiddleware::class,
             'access.check' => \App\Http\Middleware\CheckAccess::class,
             'ai.access' => \App\Http\Middleware\AiAccessControl::class,
-            'admin' => \App\Http\Middleware\EnsureAdminRole::class, // Updated to use new admin middleware
-            'user.role' => \App\Http\Middleware\EnsureUserRole::class, // New user role middleware
+            'admin' => \App\Http\Middleware\EnsureAdminRole::class,
+            'user.role' => \App\Http\Middleware\EnsureUserRole::class,
             'subscription.active' => \App\Http\Middleware\CheckSubscriptionActive::class,
             'maintenance' => \App\Http\Middleware\CheckMaintenanceMode::class,
-            'admin.ip.restrict' => \App\Http\Middleware\AdminIpRestrict::class, // Admin IP restriction
-            'check.feature' => \App\Http\Middleware\CheckFeatureLimit::class, // Feature daily limit check
-            'admin.only' => \App\Http\Middleware\AdminOnly::class, // Admin role enforcement
-            'smartcache' => \App\Http\Middleware\SmartCacheMiddleware::class, // Smart Cache for AI responses
+            'admin.ip.restrict' => \App\Http\Middleware\AdminIpRestrict::class,
+            'check.feature' => \App\Http\Middleware\CheckFeatureLimit::class,
+            'admin.only' => \App\Http\Middleware\AdminOnly::class,
+            'smartcache' => \App\Http\Middleware\SmartCacheMiddleware::class,
+            'throttle.auth' => \Illuminate\Routing\Middleware\ThrottleRequests::class . ':auth',
+            'throttle.ai' => \Illuminate\Routing\Middleware\ThrottleRequests::class . ':ai',
+            'throttle.upload' => \Illuminate\Routing\Middleware\ThrottleRequests::class . ':upload',
         ]);
 
         // Apply maintenance mode check globally to web routes
@@ -45,10 +48,23 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withProviders([
         \App\Providers\AppServiceProvider::class,
+        \App\Providers\RateLimitServiceProvider::class,
         \App\Providers\OAuthConfigServiceProvider::class,
         \App\Providers\SmartCacheServiceProvider::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->renderable(function (\Illuminate\Validation\ValidationException $e, \Illuminate\Http\Request $request) {
+            if ($request->is('api/*') || $request->expectsJson()) {
+                \App\Support\ApiValidator::logFailure($request, $e->errors());
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid input.',
+                    'errors' => $e->errors(),
+                ], 400);
+            }
+        });
+
         $exceptions->reportable(function (\Throwable $e) {
             try {
                 \Illuminate\Support\Facades\Log::error('Application exception', [

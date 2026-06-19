@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Support\ResourceAuthorizer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -181,6 +182,31 @@ class TokenController extends Controller
             ];
 
             $api->utility->verifyPaymentSignature($attributes);
+
+            // Ensure order was created for this user (prevents verifying another user's payment)
+            $razorpayOrder = $api->order->fetch($request->razorpay_order_id);
+            $orderUserId = $razorpayOrder->notes['user_id'] ?? null;
+            if ((int) $orderUserId !== (int) $user->id) {
+                ResourceAuthorizer::forbidden('You do not have permission to verify this payment.');
+            }
+
+            // Idempotency: reject replay of the same payment
+            $alreadyProcessed = DB::table('token_transactions')
+                ->where('user_id', $user->id)
+                ->where('payment_id', $request->razorpay_payment_id)
+                ->exists();
+            if ($alreadyProcessed) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Payment already verified.',
+                    'data' => [
+                        'tokens_added' => 0,
+                        'new_balance' => $user->token_balance,
+                        'new_balance_formatted' => $this->formatTokens($user->token_balance ?? 0),
+                        'already_processed' => true,
+                    ],
+                ]);
+            }
 
             // Get pack details
             $pack = DB::table('token_packs')->where('id', $request->pack_id)->first();

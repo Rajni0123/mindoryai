@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Support\TestAccountHelper;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -91,14 +92,9 @@ class RenflairOTPService
                 ];
             }
 
-            // Permanent test accounts — skip SMS, OTP verified directly in verifyOTP
-            $permanentTestAccounts = [
-                '8888888888' => '5678',
-                '9999999999' => '1234',
-            ];
-
-            if (isset($permanentTestAccounts[$mobile])) {
-                Log::info('Permanent test account OTP request (no SMS)', [
+            // Test accounts — skip SMS, OTP verified directly in verifyOTP
+            if (TestAccountHelper::isAnyTestAccount($mobile)) {
+                Log::info('Test account OTP request (no SMS)', [
                     'mobile' => $this->maskMobile($mobile),
                     'ip' => $ipAddress,
                 ]);
@@ -110,45 +106,6 @@ class RenflairOTPService
                     'is_test_account' => true,
                 ];
             }
-
-            // ═══════════════════════════════════════════════════════════════
-            // Google Play Reviewer Test Account - Skip SMS, use fixed OTP
-            // ═══════════════════════════════════════════════════════════════
-            $testPhone = env('TEST_PHONE', '');
-            $testOTP = env('TEST_OTP', '');
-
-            if (!empty($testPhone) && $mobile === $testPhone) {
-                Log::info('🧪 Google Play Reviewer Test Account - OTP request (no SMS sent)', [
-                    'mobile' => $this->maskMobile($mobile),
-                    'ip' => $ipAddress
-                ]);
-
-                // Invalidate previous OTPs for test account
-                DB::table('otp_verifications')
-                    ->where('mobile', $mobile)
-                    ->where('verified', false)
-                    ->update(['verified' => true, 'updated_at' => Carbon::now()]);
-
-                // Store fixed test OTP in database
-                DB::table('otp_verifications')->insert([
-                    'mobile' => $mobile,
-                    'otp_code' => (string) $testOTP,
-                    'expires_at' => Carbon::now()->addMinutes(60), // Longer expiry for testing
-                    'verified' => false,
-                    'attempts' => 0,
-                    'ip_address' => $ipAddress,
-                    'user_agent' => $userAgent,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ]);
-
-                return [
-                    'success' => true,
-                    'message' => 'OTP sent successfully to ' . $this->maskMobile($mobile),
-                    'expires_in' => '60 minutes'
-                ];
-            }
-            // ═══════════════════════════════════════════════════════════════
 
             // Invalidate all previous unverified OTPs for this mobile
             DB::table('otp_verifications')
@@ -242,38 +199,24 @@ class RenflairOTPService
                 ];
             }
 
-            // ═══════════════════════════════════════════════════════════════
-            // Permanent Test Accounts - Never mark as verified (for testing)
-            // ═══════════════════════════════════════════════════════════════
-            $permanentTestAccounts = [
-                '8888888888' => '5678',
-                '9999999999' => '1234',
-            ];
-
-            // Check if this is a permanent test account
-            if (isset($permanentTestAccounts[$mobile]) && $otpCode === $permanentTestAccounts[$mobile]) {
-                Log::info('🧪 Permanent Test Account - OTP verified (not marking as used)', [
-                    'mobile' => $this->maskMobile($mobile)
+            if (TestAccountHelper::isAdditionalTestAccount($mobile)
+                && TestAccountHelper::verifyAdditionalTestOtp($mobile, $otpCode)) {
+                Log::info('Additional test account - OTP verified (not marking as used)', [
+                    'mobile' => $this->maskMobile($mobile),
                 ]);
 
-                // DO NOT mark as verified - allow unlimited logins
                 return [
                     'success' => true,
                     'message' => 'OTP verified successfully!',
-                    'is_test_account' => true
+                    'is_test_account' => true,
                 ];
             }
 
-            // Google Play Reviewer Test Account from .env
-            $testPhone = env('TEST_PHONE', '');
-            $testOTP = env('TEST_OTP', '');
-
-            if (!empty($testPhone) && !empty($testOTP) && $mobile === $testPhone && $otpCode === $testOTP) {
-                Log::info('🧪 Google Play Reviewer Test Account - OTP verified successfully', [
-                    'mobile' => $this->maskMobile($mobile)
+            if (TestAccountHelper::verifyConfiguredTestOtp($mobile, $otpCode)) {
+                Log::info('Configured test account - OTP verified successfully', [
+                    'mobile' => $this->maskMobile($mobile),
                 ]);
 
-                // Mark any existing OTP as verified
                 DB::table('otp_verifications')
                     ->where('mobile', $mobile)
                     ->where('verified', false)
@@ -282,10 +225,9 @@ class RenflairOTPService
                 return [
                     'success' => true,
                     'message' => 'OTP verified successfully!',
-                    'is_test_account' => true  // Flag for controller to assign Ultimate plan
+                    'is_test_account' => true,
                 ];
             }
-            // ═══════════════════════════════════════════════════════════════
 
             // Get latest OTP for this mobile - single optimized query
             // This allows retry if user creation failed after OTP verification
@@ -658,44 +600,19 @@ class RenflairOTPService
                 ];
             }
 
-            // ═══════════════════════════════════════════════════════════════
-            // Google Play Reviewer Test Account - Skip WhatsApp, use fixed OTP
-            // ═══════════════════════════════════════════════════════════════
-            $testPhone = env('TEST_PHONE', '');
-            $testOTP = env('TEST_OTP', '');
-
-            if (!empty($testPhone) && $mobile === $testPhone) {
-                Log::info('🧪 Google Play Reviewer Test Account - WhatsApp OTP request (no message sent)', [
+            if (TestAccountHelper::isAnyTestAccount($mobile)) {
+                Log::info('Test account WhatsApp OTP request (no message sent)', [
                     'mobile' => $this->maskMobile($mobile),
-                    'ip' => $ipAddress
-                ]);
-
-                // Invalidate previous OTPs for test account
-                DB::table('otp_verifications')
-                    ->where('mobile', $mobile)
-                    ->where('verified', false)
-                    ->update(['verified' => true, 'updated_at' => Carbon::now()]);
-
-                // Store fixed test OTP in database
-                DB::table('otp_verifications')->insert([
-                    'mobile' => $mobile,
-                    'otp_code' => (string) $testOTP,
-                    'expires_at' => Carbon::now()->addMinutes(60),
-                    'verified' => false,
-                    'attempts' => 0,
-                    'ip_address' => $ipAddress,
-                    'user_agent' => $userAgent,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
+                    'ip' => $ipAddress,
                 ]);
 
                 return [
                     'success' => true,
                     'message' => 'OTP sent to your WhatsApp',
-                    'expires_in' => 3600 // 60 minutes in seconds
+                    'expires_in' => 3600,
+                    'is_test_account' => true,
                 ];
             }
-            // ═══════════════════════════════════════════════════════════════
 
             // Invalidate all previous unverified OTPs for this mobile
             DB::table('otp_verifications')

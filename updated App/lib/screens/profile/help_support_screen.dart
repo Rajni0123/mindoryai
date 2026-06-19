@@ -105,7 +105,7 @@ class HelpSupportScreen extends StatelessWidget {
           _faq(
             context,
             'OTP not received?',
-            'Check network, wait 30 seconds, then retry. Test account: 9999999999 / OTP 1234.',
+            'Check network, wait 30 seconds, then retry. Contact support if the issue persists.',
           ),
         ],
       ),

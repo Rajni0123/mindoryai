@@ -25,6 +25,11 @@ class PaymentGateway extends Model
         'config' => 'array',
     ];
 
+    protected $hidden = [
+        'api_secret',
+        'webhook_secret',
+    ];
+
     /**
      * Get enabled payment gateways
      */

@@ -4,58 +4,59 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\FrontendConfig;
+use App\Support\SensitiveConfigFilter;
 use Illuminate\Http\JsonResponse;
 
 class FrontendConfigController extends Controller
 {
     /**
-     * Get all active frontend configurations
-     * This endpoint is publicly accessible and cached
-     *
-     * @return JsonResponse
+     * Get public frontend configurations (secrets stripped).
      */
     public function index(): JsonResponse
     {
         try {
-            $configs = FrontendConfig::getAllConfigs();
+            $configs = FrontendConfig::getPublicConfigs();
 
             return response()->json($configs, 200, [
-                'Cache-Control' => 'public, max-age=3600', // Cache for 1 hour
-                'X-Config-Version' => now()->timestamp
+                'Cache-Control' => 'public, max-age=3600',
+                'X-Config-Version' => now()->timestamp,
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to load configurations'
+                'error' => 'Failed to load configurations',
             ], 500);
         }
     }
 
     /**
-     * Get specific config value by key
-     *
-     * @param string $key
-     * @return JsonResponse
+     * Get a single public config value by key.
      */
     public function show(string $key): JsonResponse
     {
+        if (SensitiveConfigFilter::isSensitiveKey($key)) {
+            return response()->json([
+                'error' => 'Configuration not found',
+            ], 404);
+        }
+
         try {
             $value = FrontendConfig::getValue($key);
 
             if ($value === null) {
                 return response()->json([
-                    'error' => 'Configuration not found'
+                    'error' => 'Configuration not found',
                 ], 404);
             }
 
             return response()->json([
                 'key' => $key,
-                'value' => $value
+                'value' => $value,
             ], 200, [
-                'Cache-Control' => 'public, max-age=3600'
+                'Cache-Control' => 'public, max-age=3600',
             ]);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Failed to load configuration'
+                'error' => 'Failed to load configuration',
             ], 500);
         }
     }

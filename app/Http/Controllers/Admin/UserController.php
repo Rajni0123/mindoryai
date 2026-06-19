@@ -8,6 +8,7 @@ use App\Models\UserPlan;
 use App\Models\UserSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -131,7 +132,7 @@ class UserController extends Controller
         $userData = [
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
+            'password' => Hash::make($validated['password']),
             'role' => 'user', // ALWAYS user - admin registration closed
             'is_active' => $request->has('is_active') ? 1 : 0,
             'tokens_used' => 0,

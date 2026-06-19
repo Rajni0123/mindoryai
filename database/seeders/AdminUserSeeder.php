@@ -8,18 +8,22 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Create default admin user
+        $adminPassword = env('SEEDER_ADMIN_PASSWORD');
+        $userPassword = env('SEEDER_DEMO_USER_PASSWORD');
+
+        if (empty($adminPassword) || empty($userPassword)) {
+            $this->command->warn('Set SEEDER_ADMIN_PASSWORD and SEEDER_DEMO_USER_PASSWORD in .env before seeding admin users.');
+            return;
+        }
+
         User::updateOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make($adminPassword),
                 'role' => 'admin',
                 'is_active' => true,
                 'token_limit' => 999999,
@@ -33,13 +37,12 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        // Create demo user
         User::updateOrCreate(
             ['email' => 'user@example.com'],
             [
                 'name' => 'Demo User',
                 'email' => 'user@example.com',
-                'password' => Hash::make('user123'),
+                'password' => Hash::make($userPassword),
                 'role' => 'user',
                 'is_active' => true,
                 'token_limit' => 10000,
@@ -53,11 +56,6 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        echo "Admin user created:\n";
-        echo "Email: admin@example.com\n";
-        echo "Password: admin123\n\n";
-        echo "Demo user created:\n";
-        echo "Email: user@example.com\n";
-        echo "Password: user123\n";
+        $this->command->info('Admin and demo users seeded (passwords from .env only).');
     }
 }

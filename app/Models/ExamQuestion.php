@@ -9,6 +9,12 @@ class ExamQuestion extends Model
 {
     use HasFactory;
 
+    protected $hidden = [
+        'correct_answer',
+        'explanation',
+        'solution_steps',
+    ];
+
     protected $fillable = [
         'exam_id',
         'subject',

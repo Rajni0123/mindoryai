@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\SensitiveConfigFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
@@ -55,6 +56,14 @@ class FrontendConfig extends Model
     {
         $configs = self::getAllConfigs();
         return $configs[$key] ?? $default;
+    }
+
+    /**
+     * Public-safe configs only (no API keys, secrets, or passwords).
+     */
+    public static function getPublicConfigs(): array
+    {
+        return SensitiveConfigFilter::filterArray(self::getAllConfigs());
     }
 
     /**

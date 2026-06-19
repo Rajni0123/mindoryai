@@ -712,7 +712,6 @@ class ImageAnalysisController extends Controller
                     } elseif ($httpCode === 401) {
                         Log::error('Gemini 401 error', [
                             'response' => substr($rawResponse, 0, 500),
-                            'api_key_prefix' => substr($apiKey, 0, 10) . '...'
                         ]);
                         echo "data: " . json_encode(['error' => 'API authentication failed. Check your Gemini API key in admin panel.']) . "\n\n";
                     } elseif ($httpCode !== 200) {
@@ -869,7 +868,6 @@ class ImageAnalysisController extends Controller
                         'provider' => $aiModel->provider,
                         'model' => $aiModel->model_identifier,
                         'http_code' => $httpCode,
-                        'api_key_prefix' => substr($apiKey, 0, 10) . '...'
                     ]);
                     echo "data: " . json_encode(['error' => ucfirst($aiModel->provider) . ' API key is invalid or expired. Please check your API key configuration in settings.']) . "\n\n";
                 } elseif ($httpCode === 400) {

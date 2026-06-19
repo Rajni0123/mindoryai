@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Notebook;
 use App\Models\Quiz;
 use App\Models\QuizCache;
+use App\Support\ResourceAuthorizer;
 use App\Services\UnifiedAIService;
 use App\Services\QuizPdfGenerator;
 use App\Services\StudentDoubtSolverService;
@@ -439,6 +440,7 @@ class QuizController extends Controller
 
             // Store quiz result for PDF download
             $cachedQuiz = QuizCache::create([
+                'user_id' => $user->id,
                 'image_hash' => Str::uuid()->toString(),
                 'quiz_data' => $quizData,
                 'quiz_type' => $quizType,
@@ -1690,8 +1692,7 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             $showAnswers = $request->input('show_answers', true);
             $showExplanations = $request->input('show_explanations', true);
 
-            // Get quiz from cache
-            $cachedQuiz = QuizCache::findOrFail($quizCacheId);
+            $cachedQuiz = ResourceAuthorizer::ownedQuizCache($user, (int) $quizCacheId);
 
             // Prepare quiz data
             $quizData = $cachedQuiz->quiz_data;
@@ -1744,8 +1745,7 @@ IMPORTANT: Your response must start with { and end with }. Include exactly {$que
             $user = Auth::user();
             $quizCacheId = $request->input('quiz_cache_id');
 
-            // Get quiz from cache
-            $cachedQuiz = QuizCache::findOrFail($quizCacheId);
+            $cachedQuiz = ResourceAuthorizer::ownedQuizCache($user, (int) $quizCacheId);
 
             // Prepare quiz data
             $quizData = $cachedQuiz->quiz_data;

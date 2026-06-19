@@ -8,6 +8,7 @@ use App\Models\PublicDoubt;
 use App\Models\User;
 use App\Services\TopperConnectService;
 use App\Services\TokenWalletService;
+use App\Support\ApiValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -31,7 +32,10 @@ class TopperConnectController extends Controller
     public function getToppers(Request $request): JsonResponse
     {
         try {
-            $subject = $request->get('subject');
+            $validated = ApiValidator::validateQuery($request, [
+                'subject' => ApiValidator::safeString(config('api-validation.limits.subject_max', 100), false),
+            ]);
+            $subject = $validated['subject'] ?? null;
             $toppers = $this->topperService->getAvailableToppers($subject);
 
             return response()->json([
@@ -249,9 +253,14 @@ class TopperConnectController extends Controller
     public function getPublicDoubts(Request $request): JsonResponse
     {
         try {
-            $subject = $request->get('subject');
-            $sort = $request->get('sort', 'recent');
-            $limit = min($request->get('limit', 20), 50);
+            $validated = ApiValidator::validateQuery($request, [
+                'subject' => ApiValidator::safeString(config('api-validation.limits.subject_max', 100), false),
+                'sort' => 'nullable|string|in:recent,popular,votes,latest',
+                'limit' => ApiValidator::paginationLimit(20, 50),
+            ]);
+            $subject = $validated['subject'] ?? null;
+            $sort = $validated['sort'] ?? 'recent';
+            $limit = $validated['limit'] ?? 20;
 
             $doubts = $this->topperService->getPublicDoubts($subject, $sort, $limit);
 

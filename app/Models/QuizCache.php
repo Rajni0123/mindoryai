@@ -9,6 +9,7 @@ class QuizCache extends Model
     protected $table = 'quiz_cache'; // Override default plural table name
 
     protected $fillable = [
+        'user_id',
         'image_hash',
         'quiz_data',
         'quiz_type',
@@ -28,6 +29,16 @@ class QuizCache extends Model
         'usage_count' => 'integer',
         'last_used_at' => 'datetime',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function scopeOwnedBy($query, int $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
 
     /**
      * Scope for filtering by quiz type

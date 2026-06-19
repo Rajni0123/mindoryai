@@ -364,10 +364,13 @@ class User extends Authenticatable
     public function incrementLoginAttempts(): void
     {
         $this->increment('failed_login_attempts');
+        $this->refresh();
 
-        // Lock account after 5 failed attempts
-        if ($this->failed_login_attempts >= 5) {
-            $this->lockAccount(15); // Lock for 15 minutes
+        $maxAttempts = (int) config('auth-security.lockout.max_attempts', 5);
+        $lockoutMinutes = (int) config('auth-security.lockout.lockout_minutes', 15);
+
+        if ($this->failed_login_attempts >= $maxAttempts) {
+            $this->lockAccount($lockoutMinutes);
         }
     }
 

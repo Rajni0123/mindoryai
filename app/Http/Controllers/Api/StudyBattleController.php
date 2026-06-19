@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\StudyBattleService;
 use App\Services\UsageLimitService;
+use App\Support\ResourceAuthorizer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -154,6 +155,10 @@ class StudyBattleController extends Controller
      */
     public function join(Request $request, string $code): JsonResponse
     {
+        ApiValidator::validateRoute($request, ['code' => $code], [
+            'code' => ApiValidator::roomCode(),
+        ], [], ['code' => 'room code']);
+
         $user = $request->user();
 
         try {
@@ -695,18 +700,7 @@ class StudyBattleController extends Controller
 
         $user = $request->user();
 
-        // Get order
-        $order = \Illuminate\Support\Facades\DB::table('payment_orders')
-            ->where('order_id', $request->order_id)
-            ->where('user_id', $user->id)
-            ->first();
-
-        if (!$order) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Order not found.',
-            ], 404);
-        }
+        $order = ResourceAuthorizer::ownedPaymentOrder($user, $request->order_id);
 
         // Idempotency check
         if ($order->status === 'completed') {
@@ -730,14 +724,8 @@ class StudyBattleController extends Controller
             $paymentData['razorpay_signature'] = $request->signature;
         }
 
-        // Get transaction
-        $transaction = \App\Models\Transaction::where('gateway_order_id', $order->order_id)->first();
-        if (!$transaction) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Transaction not found.',
-            ], 404);
-        }
+        // Get transaction (must belong to authenticated user)
+        $transaction = ResourceAuthorizer::ownedGatewayTransaction($user, $order->order_id);
 
         $result = $paymentService->verifyPayment($transaction->transaction_id, $paymentData);
 

@@ -60,6 +60,11 @@ return [
         'api_key' => env('RENFLAIR_API_KEY'),
     ],
 
+    'msg91' => [
+        'auth_key' => env('MSG91_AUTH_KEY'),
+        'template_id' => env('MSG91_TEMPLATE_ID'),
+    ],
+
     'cashfree' => [
         'app_id' => env('CASHFREE_APP_ID'),
         'secret_key' => env('CASHFREE_SECRET_KEY'),

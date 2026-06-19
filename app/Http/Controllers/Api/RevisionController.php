@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\LearningAnalyticsService;
+use App\Support\ApiValidator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,11 @@ class RevisionController extends Controller
 
     public function flashcards(Request $request): JsonResponse
     {
-        $subject = $request->query('subject');
+        $validated = ApiValidator::validateQuery($request, [
+            'subject' => ApiValidator::safeString(config('api-validation.limits.subject_max', 100), false),
+        ]);
+
+        $subject = $validated['subject'] ?? null;
 
         return response()->json([
             'success' => true,

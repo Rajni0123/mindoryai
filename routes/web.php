@@ -30,8 +30,13 @@ Route::get('/', [PageController::class, 'landing'])->name('home');
 // ========================================
 // IMPORTANT: Only ONE login URL - role detection is automatic
 Route::get('/login', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP'])->name('otp.send');
-Route::post('/login/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP'])->name('otp.verify');
+Route::middleware('throttle:auth')->group(function () {
+    Route::post('/login/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP'])->name('otp.send');
+    Route::post('/login/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP'])->name('otp.verify');
+    Route::post('/register', function () {
+        return redirect()->route('login');
+    })->name('register.submit');
+});
 Route::post('/logout', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'logout'])->name('logout');
 
 // Admin 2FA (After OTP verification, only for admin with 2FA enabled)
@@ -42,9 +47,6 @@ Route::post('/admin/verify-2fa', [\App\Http\Controllers\Auth\Admin2FAController:
 Route::get('/register', function () {
     return redirect()->route('login');
 })->name('register');
-Route::post('/register', function () {
-    return redirect()->route('login');
-})->name('register.submit');
 
 // Google OAuth Routes (Optional, if enabled)
 Route::get('/auth/google/redirect', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirectToGoogle'])->name('google.redirect');
@@ -156,7 +158,9 @@ Route::get('/contact', function() {
         // User Settings
         Route::get('/settings', [\App\Http\Controllers\UserDashboardController::class, 'settings'])->name('user.settings');
         Route::put('/profile/update', [\App\Http\Controllers\UserDashboardController::class, 'updateProfile'])->name('profile.update');
-        Route::put('/profile/password', [\App\Http\Controllers\UserDashboardController::class, 'updatePassword'])->name('profile.password');
+        Route::put('/profile/password', [\App\Http\Controllers\UserDashboardController::class, 'updatePassword'])
+            ->middleware('throttle:auth')
+            ->name('profile.password');
 
         // First-time profile completion (popup after OTP login)
         Route::post('/profile/complete', function (\Illuminate\Http\Request $request) {
@@ -207,23 +211,23 @@ Route::get('/contact', function() {
         // Image analysis endpoint with rate limiting and AI access control
         // Rate limit: 10 requests per minute per IP
         Route::post('/analyze-image', [ImageAnalysisController::class, 'analyze'])
-            ->middleware(['throttle:10,1', 'ai.access'])
+            ->middleware(['throttle:ai', 'throttle:upload', 'ai.access'])
             ->name('analyze.image');
 
         // PDF analysis endpoint with rate limiting and AI access control
         // Rate limit: 10 requests per minute per IP
         Route::post('/analyze-pdf', [ImageAnalysisController::class, 'analyzePdf'])
-            ->middleware(['throttle:10,1', 'ai.access'])
+            ->middleware(['throttle:ai', 'throttle:upload', 'ai.access'])
             ->name('analyze.pdf');
 
         // Text question endpoint with rate limiting and AI access control
         Route::post('/ask-question', [ImageAnalysisController::class, 'askQuestion'])
-            ->middleware(['throttle:10,1', 'ai.access'])
+            ->middleware(['throttle:ai', 'ai.access'])
             ->name('ask.question');
 
         // Streaming chat endpoint with rate limiting and AI access control
         Route::post('/chat/stream', [ImageAnalysisController::class, 'stream'])
-            ->middleware(['throttle:10,1', 'ai.access'])
+            ->middleware(['throttle:ai', 'ai.access'])
             ->name('chat.stream');
 
         // AI Chat endpoint
@@ -243,7 +247,7 @@ Route::get('/contact', function() {
 
             // Send message in conversation (with AI response streaming)
             Route::post('/message', [\App\Http\Controllers\ConversationController::class, 'sendMessage'])
-                ->middleware(['throttle:10,1', 'ai.access'])
+                ->middleware(['throttle:ai', 'throttle:upload', 'ai.access'])
                 ->name('message');
 
             // Create new conversation (New Chat button)

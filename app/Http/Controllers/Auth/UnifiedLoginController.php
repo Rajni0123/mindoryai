@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\RenflairOTPService;
 use App\Services\EmailOTPService;
+use App\Support\AuthTokenService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
@@ -103,8 +105,8 @@ class UnifiedLoginController extends Controller
                     'ip' => $request->ip(),
                 ]);
             } else {
-                // Check if account is locked (for admin accounts)
-                if ($user->role === 'admin' && $user->isLocked()) {
+                // Check if account is locked
+                if ($user->isLocked()) {
                     $minutesLeft = now()->diffInMinutes($user->locked_until);
                     return response()->json([
                         'success' => false,
@@ -208,6 +210,16 @@ class UnifiedLoginController extends Controller
         $mobile = $request->mobile;
         $otp = $request->otp;
 
+        // Block locked accounts before OTP verification
+        $existingUser = User::where('mobile', $mobile)->first();
+        if ($existingUser && $existingUser->isLocked()) {
+            $minutesLeft = now()->diffInMinutes($existingUser->locked_until);
+            return response()->json([
+                'success' => false,
+                'message' => "Account is locked. Try again in {$minutesLeft} minutes.",
+            ], 423);
+        }
+
         // Verify OTP
         $result = $this->otpService->verifyOTP($mobile, $otp);
 
@@ -252,7 +264,7 @@ class UnifiedLoginController extends Controller
                     'email' => $uniqueEmail,
                     'mobile' => $mobile,
                     'mobile_verified_at' => now(),
-                    'password' => bcrypt(Str::random(32)),
+                    'password' => Hash::make(Str::random(32)),
                     'role' => 'user', // ALWAYS user - admins must be created manually
                     'plan_id' => null,
                     'token_limit' => 150,
@@ -311,7 +323,7 @@ class UnifiedLoginController extends Controller
         // ═══════════════════════════════════════════════════════════════
         // Google Play Reviewer Test Account - Assign Ultimate Plan
         // ═══════════════════════════════════════════════════════════════
-        $testPhone = env('TEST_PHONE', '');
+        $testPhone = config('test.phone');
         if (!empty($testPhone) && $mobile === $testPhone) {
             // Get Ultimate plan from database
             $ultimatePlan = DB::table('user_plans')->where('slug', 'ultimate')->first();
@@ -372,7 +384,7 @@ class UnifiedLoginController extends Controller
 
         if ($isApiRequest) {
             try {
-                $token = $user->createToken('mobile-app')->plainTextToken;
+                $token = AuthTokenService::createAccessToken($user)->plainTextToken;
             } catch (\Throwable $e) {
                 Log::error('Mobile token creation failed', [
                     'user_id' => $user->id,
@@ -398,6 +410,7 @@ class UnifiedLoginController extends Controller
                 'success' => true,
                 'message' => 'Login successful!',
                 'token' => $token,
+                'expires_in_minutes' => AuthTokenService::expirationMinutes(),
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -489,7 +502,10 @@ class UnifiedLoginController extends Controller
         $chatUrl = env('CHAT_SUBDOMAIN_URL', 'https://chat.blinkstudy.in');
 
         // Generate a one-time auth token for cross-domain transfer
-        $authToken = $user->createToken('web-chat-transfer', ['web-chat'])->plainTextToken;
+        $expiresAt = AuthTokenService::expirationMinutes()
+            ? now()->addMinutes(AuthTokenService::expirationMinutes())
+            : null;
+        $authToken = $user->createToken('web-chat-transfer', ['web-chat'], $expiresAt)->plainTextToken;
 
         // Store token hash in cache for 5 minutes (one-time use)
         $tokenHash = hash('sha256', $authToken);
@@ -545,8 +561,8 @@ class UnifiedLoginController extends Controller
                 'ip' => $request->ip(),
             ]);
         } else {
-            // Check if account is locked (for admin accounts)
-            if ($user->role === 'admin' && $user->isLocked()) {
+            // Check if account is locked
+            if ($user->isLocked()) {
                 $minutesLeft = now()->diffInMinutes($user->locked_until);
                 return response()->json([
                     'success' => false,
@@ -631,8 +647,8 @@ class UnifiedLoginController extends Controller
                 'ip' => $request->ip(),
             ]);
         } else {
-            // Check if account is locked (for admin accounts)
-            if ($user->role === 'admin' && $user->isLocked()) {
+            // Check if account is locked
+            if ($user->isLocked()) {
                 $minutesLeft = now()->diffInMinutes($user->locked_until);
                 return response()->json([
                     'success' => false,
@@ -710,6 +726,15 @@ class UnifiedLoginController extends Controller
         $email = $request->email;
         $otp = $request->otp;
 
+        $existingUser = User::where('email', $email)->first();
+        if ($existingUser && $existingUser->isLocked()) {
+            $minutesLeft = now()->diffInMinutes($existingUser->locked_until);
+            return response()->json([
+                'success' => false,
+                'message' => "Account is locked. Try again in {$minutesLeft} minutes.",
+            ], 423);
+        }
+
         // Verify OTP
         $result = $this->emailOTPService->verifyOTP($email, $otp);
 
@@ -754,7 +779,7 @@ class UnifiedLoginController extends Controller
                     'name' => $userName,
                     'email' => $email,
                     'email_verified_at' => now(),
-                    'password' => bcrypt(Str::random(32)),
+                    'password' => Hash::make(Str::random(32)),
                     'role' => 'user', // ALWAYS user - admins must be created manually
                     'plan_id' => null,
                     'token_limit' => 150,
@@ -1014,7 +1039,7 @@ class UnifiedLoginController extends Controller
                 $user->forceFill([
                     'name' => $name ?? 'Google User',
                     'email' => $email,
-                    'password' => bcrypt(Str::random(32)),
+                    'password' => Hash::make(Str::random(32)),
                     'role' => 'user',
                     'is_active' => true,
                     'email_verified_at' => now(),
@@ -1062,7 +1087,14 @@ class UnifiedLoginController extends Controller
             }
 
             // Generate API token for mobile app
-            $token = $user->createToken('mobile-app')->plainTextToken;
+            if ($user->isLocked()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Account is locked due to repeated failed login attempts.',
+                ], 423);
+            }
+
+            $token = AuthTokenService::createAccessToken($user)->plainTextToken;
 
             // Check if user needs to complete profile
             $needsProfileCompletion = !$user->hasCompletedProfile();
@@ -1081,6 +1113,7 @@ class UnifiedLoginController extends Controller
                     'profile_completed' => $user->profile_completed,
                 ],
                 'token' => $token,
+                'expires_in_minutes' => AuthTokenService::expirationMinutes(),
                 'needs_profile_completion' => $needsProfileCompletion,
             ]);
 

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Support\ApiValidator;
 use App\Http\Controllers\AIChatController;
 use App\Http\Controllers\MobileChatController;
 
@@ -22,8 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         $user = $request->user();
         $usageService = app(\App\Services\UsageLimitService::class);
 
-        // Return user as array
-        $userData = $user->toArray();
+        $userData = \App\Support\ApiResponseSanitizer::userProfile($user);
 
         // Add plan information
         if ($user->plan_id) {
@@ -157,9 +157,13 @@ Route::middleware('auth:sanctum')->get('/user/profile', function (Request $reque
 
 // Update user name
 Route::middleware('auth:sanctum')->put('/user/update-name', function (Request $request) {
-    $validated = $request->validate([
-        'name' => 'required|string|min:2|max:50',
+    $validated = ApiValidator::validate($request, [
+        'name' => ApiValidator::safeString(config('api-validation.limits.name_max', 50), true),
     ]);
+    $validated['name'] = trim($validated['name']);
+    if (strlen($validated['name']) < config('api-validation.limits.name_min', 2)) {
+        ApiValidator::throwResponse(['name' => ['Name must be at least 2 characters.']]);
+    }
 
     $user = $request->user();
     $user->name = $validated['name'];
@@ -174,8 +178,8 @@ Route::middleware('auth:sanctum')->put('/user/update-name', function (Request $r
 
 // Update user mobile (for email login users)
 Route::middleware('auth:sanctum')->put('/user/update-mobile', function (Request $request) {
-    $validated = $request->validate([
-        'mobile' => 'required|digits:10|unique:users,mobile,' . $request->user()->id,
+    $validated = ApiValidator::validate($request, [
+        'mobile' => ApiValidator::mobileIndia() . '|unique:users,mobile,' . $request->user()->id,
     ]);
 
     $user = $request->user();
@@ -191,15 +195,18 @@ Route::middleware('auth:sanctum')->put('/user/update-mobile', function (Request 
 
 // Complete profile (for first-time login / study setup)
 Route::middleware('auth:sanctum')->post('/user/complete-profile', function (Request $request) {
-    $validated = $request->validate([
-        'name' => 'required|string|min:2|max:50',
+    $validated = ApiValidator::validate($request, [
+        'name' => ApiValidator::safeString(config('api-validation.limits.name_max', 50), true),
         'mobile' => 'nullable|digits:10|unique:users,mobile,' . $request->user()->id,
-        'target_exam' => 'nullable|string|max:50',
-        'student_class' => 'nullable|string|in:6,7,8,9,10,11,12',
-        'subjects' => 'nullable|string|max:30',
-        'favorite_subject' => 'nullable|string|max:30',
+        'target_exam' => ApiValidator::safeString(50, false),
+        'student_class' => ApiValidator::inConfig('student_classes'),
+        'subjects' => ApiValidator::safeString(30, false),
+        'favorite_subject' => ApiValidator::safeString(30, false),
         'exam_date' => 'nullable|date|after:today',
     ]);
+    if (strlen(trim($validated['name'])) < config('api-validation.limits.name_min', 2)) {
+        ApiValidator::throwResponse(['name' => ['Name must be at least 2 characters.']]);
+    }
 
     $user = $request->user();
     $user->name = $validated['name'];
@@ -248,20 +255,23 @@ Route::middleware('auth:sanctum')->put('/user/profile', function (Request $reque
             ], 401);
         }
 
-        $validated = $request->validate([
-            'name' => 'nullable|string|min:2|max:50',
+        $validated = ApiValidator::validate($request, [
+            'name' => ApiValidator::safeString(config('api-validation.limits.name_max', 50), false),
             'mobile' => 'nullable|digits:10|unique:users,mobile,' . $user->id,
-            'target_exam' => 'nullable|string|max:50',
-            'student_class' => 'nullable|string|in:6,7,8,9,10,11,12',
-            'subjects' => 'nullable|string|max:30',
-            'favorite_subject' => 'nullable|string|max:30',
+            'target_exam' => ApiValidator::safeString(50, false),
+            'student_class' => ApiValidator::inConfig('student_classes'),
+            'subjects' => ApiValidator::safeString(30, false),
+            'favorite_subject' => ApiValidator::safeString(30, false),
             'exam_date' => 'nullable|date|after:today',
         ]);
 
         $updated = false;
 
         if (isset($validated['name']) && $validated['name']) {
-            $user->name = $validated['name'];
+            if (strlen(trim($validated['name'])) < config('api-validation.limits.name_min', 2)) {
+                ApiValidator::throwResponse(['name' => ['Name must be at least 2 characters.']]);
+            }
+            $user->name = trim($validated['name']);
             $user->is_profile_complete = true;
             $user->profile_completed = true;
             $user->profile_completed_at = now();
@@ -350,6 +360,9 @@ Route::middleware('auth:sanctum')->get('/usage/summary', function (Request $requ
 
 // Check if a specific feature can be used
 Route::middleware('auth:sanctum')->get('/usage/check/{feature}', function (Request $request, string $feature) {
+    \App\Support\ApiValidator::validateRoute($request, ['feature' => $feature], [
+        'feature' => \App\Support\ApiValidator::requiredInConfig('features'),
+    ]);
     $usageService = app(\App\Services\UsageLimitService::class);
     $user = $request->user();
 
@@ -431,28 +444,31 @@ Route::middleware('auth:sanctum')->get('/payments', function (Request $request) 
 });
 
 // ========================================
-// MOBILE APP AUTHENTICATION (OTP-based)
+// MOBILE APP AUTHENTICATION (OTP-based) — 5 req / 15 min per IP
 // ========================================
-// Mobile OTP Login Routes — UnifiedLoginController (handles web + API)
-Route::post('/login/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP']);
-Route::post('/login/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP']);
+Route::middleware('throttle:auth')->group(function () {
+    Route::post('/login/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP']);
+    Route::post('/login/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP']);
 
-// Legacy aliases kept for older app builds
-Route::post('/auth/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP']);
-Route::post('/auth/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP']);
+    // Legacy aliases kept for older app builds
+    Route::post('/auth/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP']);
+    Route::post('/auth/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP']);
 
-// Email OTP Login Routes
-Route::post('/login/send-email-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendEmailOTP']);
-Route::post('/login/verify-email-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyEmailOTP']);
+    // Email OTP Login Routes
+    Route::post('/login/send-email-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendEmailOTP']);
+    Route::post('/login/verify-email-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyEmailOTP']);
 
-// WhatsApp OTP Login Routes
-Route::post('/login/send-whatsapp-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendWhatsAppOTP']);
+    // WhatsApp OTP Login Routes
+    Route::post('/login/send-whatsapp-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendWhatsAppOTP']);
 
-// Google Sign-In Route
-Route::post('/login/google', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'googleSignIn']);
+    // Google Sign-In Route
+    Route::post('/login/google', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'googleSignIn']);
+});
 
-// Logout
 Route::post('/logout', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'logout'])->middleware('auth:sanctum');
+
+// Rotate Sanctum bearer token (mobile clients). Web SPAs use httpOnly session cookies.
+Route::middleware('auth:sanctum')->post('/auth/refresh', [\App\Http\Controllers\Api\AuthSessionController::class, 'refreshToken']);
 
 // AI Models API - Returns only active models from ENABLED providers
 Route::get('/ai-models', function () {
@@ -518,11 +534,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Send message - non-streaming JSON (add ?stream=1 for GPT-like instant tokens)
     Route::post('/chats/{chatId}/messages', [MobileChatController::class, 'sendMessage'])
-        ->middleware('check.feature:chat');
+        ->middleware(['check.feature:chat', 'throttle:ai', 'throttle:upload']);
 
     // Streaming chat — first token in ~1-2 seconds like ChatGPT
     Route::post('/chats/{chatId}/messages/stream', [MobileChatController::class, 'sendMessageStream'])
-        ->middleware('check.feature:chat');
+        ->middleware(['check.feature:chat', 'throttle:ai', 'throttle:upload']);
 
     // Delete chat
     Route::delete('/chats/{chatId}', [MobileChatController::class, 'deleteChat']);
@@ -534,20 +550,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/feedback', [MobileChatController::class, 'saveFeedback']);
 
     // Voice transcription and summarization
-    Route::post('/voice/transcribe', [\App\Http\Controllers\VoiceController::class, 'transcribe']);
-    Route::post('/voice/summarize', [\App\Http\Controllers\VoiceController::class, 'summarize']);
+    Route::post('/voice/transcribe', [\App\Http\Controllers\VoiceController::class, 'transcribe'])
+        ->middleware(['throttle:ai', 'throttle:upload']);
+    Route::post('/voice/summarize', [\App\Http\Controllers\VoiceController::class, 'summarize'])
+        ->middleware('throttle:ai');
 
     // Quiz generation from image with caching
     Route::post('/quiz/generate-from-image', [\App\Http\Controllers\QuizController::class, 'generateFromImage'])
-        ->middleware('check.feature:video_quiz');
+        ->middleware(['check.feature:video_quiz', 'throttle:ai', 'throttle:upload']);
 
     // Quiz generation by topic (without image)
     Route::get('/quiz/generate-by-topic', [\App\Http\Controllers\QuizController::class, 'generateByTopic'])
-        ->middleware('check.feature:topic_quiz');
+        ->middleware(['check.feature:topic_quiz', 'throttle:ai']);
 
     // Reasoning quiz generation
     Route::get('/quiz/generate-reasoning', [\App\Http\Controllers\QuizController::class, 'generateReasoningQuiz'])
-        ->middleware('check.feature:topic_quiz');
+        ->middleware(['check.feature:topic_quiz', 'throttle:ai']);
 
     // Quiz PDF download - download generated quiz as PDF
     Route::post('/quiz/download-pdf', [\App\Http\Controllers\QuizController::class, 'downloadQuizPdf']);
@@ -896,8 +914,11 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
     // Get quiz history
     Route::get('/history', function (\Illuminate\Http\Request $request) {
         try {
+            $validated = ApiValidator::validateQuery($request, [
+                'limit' => ApiValidator::paginationLimit(50),
+            ]);
             $user = $request->user();
-            $limit = $request->query('limit', 50);
+            $limit = $validated['limit'] ?? 50;
 
             $history = \App\Models\QuizAttempt::where('user_id', $user->id)
                 ->completed()
@@ -944,8 +965,11 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
     // Get quiz statistics
     Route::get('/stats', function (\Illuminate\Http\Request $request) {
         try {
+            $validated = ApiValidator::validateQuery($request, [
+                'period' => 'nullable|string|in:today,weekly,monthly,all',
+            ]);
             $user = $request->user();
-            $period = $request->query('period', 'weekly'); // today, weekly, monthly, all
+            $period = $validated['period'] ?? 'weekly';
 
             // Calculate date range based on period
             $now = \Carbon\Carbon::now();
@@ -1188,9 +1212,15 @@ Route::middleware('auth:sanctum')->prefix('quiz')->group(function () {
             // Server-calculated score (overrides client score)
             $calculatedScore = $totalQuestions > 0 ? round(($correctAnswers / $totalQuestions) * 100, 2) : 0;
 
+            // Validate optional linked chat belongs to this user
+            $mobileChatId = $validated['mobile_chat_id'] ?? null;
+            if ($mobileChatId) {
+                \App\Support\ResourceAuthorizer::ownedMobileChat($user, (int) $mobileChatId);
+            }
+
             $attempt = \App\Models\QuizAttempt::create([
                 'user_id' => $user->id,
-                'mobile_chat_id' => $validated['mobile_chat_id'] ?? null,
+                'mobile_chat_id' => $mobileChatId,
                 'title' => $validated['title'],
                 'exam' => $validated['exam'] ?? null,
                 'subject' => $validated['subject'] ?? null,
@@ -1261,7 +1291,11 @@ Route::prefix('pages')->group(function () {
     });
 
     // Get single page by slug
-    Route::get('/{slug}', function ($slug) {
+    Route::get('/{slug}', function (\Illuminate\Http\Request $request, $slug) {
+        ApiValidator::validateRoute($request, ['slug' => $slug], [
+            'slug' => ApiValidator::slug(),
+        ]);
+
         $page = \App\Models\Page::where('slug', $slug)
             ->active()
             ->first();
@@ -1293,6 +1327,8 @@ Route::prefix('pages')->group(function () {
 Route::middleware(['auth:sanctum', 'admin.only'])->prefix('admin')->group(function () {
     // Get app config for admin
     Route::get('/app-config', function () {
+        \App\Support\ResourceAuthorizer::ensureAdmin(auth()->user());
+
         return response()->json([
             'success' => true,
             'config' => [
@@ -1305,6 +1341,8 @@ Route::middleware(['auth:sanctum', 'admin.only'])->prefix('admin')->group(functi
 
     // Update force update configuration
     Route::put('/app-config/force-update', function (\Illuminate\Http\Request $request) {
+        \App\Support\ResourceAuthorizer::ensureAdmin($request->user());
+
         $validated = $request->validate([
             'force_update' => 'required|boolean',
             'min_version' => 'required|string|regex:/^\d+\.\d+\.\d+$/',
@@ -1647,18 +1685,7 @@ Route::middleware('auth:sanctum')->post('/subscription/verify-payment', function
 
     $user = $request->user();
 
-    // Get order details
-    $order = DB::table('payment_orders')
-        ->where('order_id', $validated['order_id'])
-        ->where('user_id', $user->id)
-        ->first();
-
-    if (!$order) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Order not found',
-        ], 404);
-    }
+    $order = \App\Support\ResourceAuthorizer::ownedPaymentOrder($user, $validated['order_id']);
 
     // SECURITY: Idempotency check - prevent replay attacks
     if ($order->status === 'completed') {
@@ -1686,15 +1713,8 @@ Route::middleware('auth:sanctum')->post('/subscription/verify-payment', function
         $paymentData['razorpay_signature'] = $validated['signature'];
     }
 
-    // Get transaction record by gateway_order_id
-    $transaction = \App\Models\Transaction::where('gateway_order_id', $order->order_id)->first();
-
-    if (!$transaction) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Transaction not found',
-        ], 404);
-    }
+    // Get transaction record by gateway_order_id (must belong to authenticated user)
+    $transaction = \App\Support\ResourceAuthorizer::ownedGatewayTransaction($user, $order->order_id);
 
     $result = $paymentService->verifyPayment($transaction->transaction_id, $paymentData);
 
@@ -1800,8 +1820,8 @@ Route::get('/payment/cashfree/callback', [\App\Http\Controllers\PaymentControlle
 Route::get('/payment/callback/{gateway}', [\App\Http\Controllers\PaymentController::class, 'gatewayCallback']);
 Route::post('/payment/callback/{gateway}', [\App\Http\Controllers\PaymentController::class, 'gatewayCallback']);
 
-// BlinkStudy AI Routes (authenticated + rate-limited)
-Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('blinkstudy')->group(function () {
+// BlinkStudy AI Routes (authenticated + AI rate limit: 10/min per user)
+Route::middleware(['auth:sanctum', 'throttle:ai'])->prefix('blinkstudy')->group(function () {
 
     // Main chat endpoint
     Route::post('/chat', [AIChatController::class, 'chat']);
@@ -1815,7 +1835,8 @@ Route::middleware(['auth:sanctum', 'throttle:60,1'])->prefix('blinkstudy')->grou
     Route::post('/notes', [AIChatController::class, 'generateNotes']);
 
     // Image/PDF processing
-    Route::post('/solve-image', [AIChatController::class, 'solveFromImage']);
+    Route::post('/solve-image', [AIChatController::class, 'solveFromImage'])
+        ->middleware('throttle:upload');
 });
 
 // ============================================================
@@ -1832,7 +1853,8 @@ Route::middleware('auth:sanctum')->get('/app/features', [\App\Http\Controllers\A
 Route::middleware(['auth:sanctum', 'admin.only'])->prefix('admin/app')->group(function () {
     Route::get('/configs', [\App\Http\Controllers\Api\DynamicAppController::class, 'getAllConfigs']);
     Route::post('/configs', [\App\Http\Controllers\Api\DynamicAppController::class, 'updateConfigs']);
-    Route::post('/icon/upload', [\App\Http\Controllers\Api\DynamicAppController::class, 'uploadIcon']);
+    Route::post('/icon/upload', [\App\Http\Controllers\Api\DynamicAppController::class, 'uploadIcon'])
+        ->middleware('throttle:upload');
     Route::post('/trigger-update', [\App\Http\Controllers\Api\DynamicAppController::class, 'triggerUpdate']);
     Route::post('/test-notification', [\App\Http\Controllers\Api\DynamicAppController::class, 'sendTestNotification']);
 });
@@ -1854,17 +1876,17 @@ Route::middleware('auth:sanctum')->prefix('exams')->group(function () {
     Route::get('/{exam}', [\App\Http\Controllers\Api\ExamController::class, 'show']);
     Route::get('/{exam}/questions', [\App\Http\Controllers\Api\ExamController::class, 'getQuestions']);
     Route::post('/{exam}/generate-questions', [\App\Http\Controllers\Api\ExamController::class, 'generateQuestions'])
-        ->middleware('check.feature:exam_prep');
+        ->middleware(['check.feature:exam_prep', 'throttle:ai']);
 
     // PYQ (Previous Year Questions) Routes
     Route::get('/{exam}/pyq-years', [\App\Http\Controllers\Api\ExamController::class, 'getAvailablePYQYears']);
     Route::get('/{exam}/pyq/{year}', [\App\Http\Controllers\Api\ExamController::class, 'getPYQPaper']);
     Route::post('/pyq-mock-test/generate', [\App\Http\Controllers\Api\ExamController::class, 'generatePYQMockTest'])
-        ->middleware('check.feature:exam_prep');
+        ->middleware(['check.feature:exam_prep', 'throttle:ai']);
 
     // Mock Test Routes
     Route::post('/mock-test/generate', [\App\Http\Controllers\Api\ExamController::class, 'generateMockTest'])
-        ->middleware('check.feature:exam_prep');
+        ->middleware(['check.feature:exam_prep', 'throttle:ai']);
     Route::post('/mock-test/{mockTest}/start', [\App\Http\Controllers\Api\ExamController::class, 'startMockTest']);
     Route::post('/mock-test/{mockTest}/submit', [\App\Http\Controllers\Api\ExamController::class, 'submitMockTest']);
     Route::get('/mock-test/{mockTest}/result', [\App\Http\Controllers\Api\ExamController::class, 'getMockTestResult']);
@@ -1887,8 +1909,13 @@ Route::middleware('auth:sanctum')->prefix('daily-challenge')->group(function () 
 // DAILY CHALLENGE
 // ============================================================
 Route::middleware(['auth:sanctum', 'admin.only'])->get('/usage/stats', function (Request $request) {
+    \App\Support\ResourceAuthorizer::ensureAdmin($request->user());
+
     try {
-        $days = $request->input('days', 7); // Default to last 7 days for mobile/website
+        $validated = ApiValidator::validateQuery($request, [
+            'days' => ['nullable', 'integer', 'min:1', 'max:' . config('api-validation.limits.stats_days_max', 365)],
+        ]);
+        $days = $validated['days'] ?? 7;
 
         // Get overall stats
         $overallStats = \App\Models\AiUsageTracking::where('created_at', '>=', now()->subDays($days))
@@ -1974,7 +2001,7 @@ Route::middleware('auth:sanctum')->prefix('topper-connect')->group(function () {
 // TOPPER DASHBOARD (For Toppers)
 // ============================================================
 Route::middleware('auth:sanctum')->prefix('topper-dashboard')->group(function () {
-    Route::get('/', [\App\Http\Controllers\Api\TopperDashboardController::class, 'index']);
+    Route::get('/', [\App\Http\Controllers\Api\TopperDashboardController::class, 'getDashboard']);
     Route::get('/requests', [\App\Http\Controllers\Api\TopperDashboardController::class, 'getPendingRequests']);
     Route::post('/requests/{requestId}/accept', [\App\Http\Controllers\Api\TopperDashboardController::class, 'acceptRequest']);
     Route::post('/requests/{requestId}/reject', [\App\Http\Controllers\Api\TopperDashboardController::class, 'rejectRequest']);

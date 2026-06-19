@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\ResourceAuthorizer;
+use App\Rules\SafeText;
+use App\Rules\ValidBase64Image;
+use App\Support\ApiValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
@@ -67,12 +71,14 @@ class MobileChatController extends Controller
             ? implode(',', $this->fileStorageService->getActiveStorage()->getAllowedExtensions())
             : 'jpeg,jpg,png,gif,webp,pdf';
 
-        $request->validate([
-            'content' => 'nullable|string',
-            'ai_model_id' => 'nullable|integer',
-            'has_image' => 'nullable|boolean', // If user attached an image
-            'file' => "nullable|mimes:{$allowedExtensions}|max:{$maxFileSize}", // Dynamic validation from storage settings
-            'language' => 'nullable|string|in:english,hindi,hinglish', // User's preferred language
+        $contentMax = config('api-validation.limits.content_max', 50000);
+
+        $this->validateApi($request, [
+            'content' => ['nullable', 'string', 'max:' . $contentMax, new SafeText(true)],
+            'ai_model_id' => 'nullable|integer|min:1',
+            'has_image' => 'nullable|boolean',
+            'file' => "nullable|file|mimes:{$allowedExtensions}|max:{$maxFileSize}",
+            'language' => ApiValidator::inConfig('languages'),
         ]);
 
         $user = auth()->user();
@@ -100,15 +106,7 @@ class MobileChatController extends Controller
         }
 
         // Verify chat exists and belongs to user
-        $chat = \App\Models\MobileChat::where('id', $chatId)
-            ->where('user_id', $user->id)
-            ->first();
-
-        if (!$chat) {
-            return response()->json([
-                'error' => 'Chat not found'
-            ], 404);
-        }
+        $chat = ResourceAuthorizer::ownedMobileChat($user, $chatId);
 
         // Handle file upload (image or PDF) - Upload to R2/S3 Storage
         $imageData = null;
@@ -784,13 +782,7 @@ class MobileChatController extends Controller
     {
         $user = auth()->user();
 
-        $chatExists = \App\Models\MobileChat::where('id', $chatId)
-            ->where('user_id', $user->id)
-            ->exists();
-
-        if (!$chatExists) {
-            return response()->json(['error' => 'Chat not found'], 404);
-        }
+        ResourceAuthorizer::ownedMobileChat($user, $chatId);
 
         $messages = \App\Models\MobileChatMessage::where('mobile_chat_id', $chatId)
             ->select(['id', 'mobile_chat_id', 'sender', 'content', 'image', 'created_at'])
@@ -841,11 +833,15 @@ class MobileChatController extends Controller
      */
     public function createChat(Request $request)
     {
+        $validated = $this->validateApi($request, [
+            'title' => ApiValidator::safeString(config('api-validation.limits.chat_title_max', 255), false),
+        ]);
+
         $user = auth()->user();
 
         $chat = \App\Models\MobileChat::create([
             'user_id' => $user->id,
-            'title' => $request->input('title', 'New Chat'),
+            'title' => $validated['title'] ?? 'New Chat',
             'ai_model_id' => null,
             'last_message_at' => null,
         ]);
@@ -863,14 +859,7 @@ class MobileChatController extends Controller
     public function deleteChat($chatId)
     {
         $user = auth()->user();
-
-        $chat = \App\Models\MobileChat::where('id', $chatId)
-            ->where('user_id', $user->id)
-            ->first();
-
-        if (!$chat) {
-            return response()->json(['error' => 'Chat not found'], 404);
-        }
+        $chat = ResourceAuthorizer::ownedMobileChat($user, $chatId);
 
         $chat->delete();
 
@@ -882,19 +871,12 @@ class MobileChatController extends Controller
      */
     public function renameChat(Request $request, $chatId)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
+        $this->validateApi($request, [
+            'title' => ApiValidator::safeString(config('api-validation.limits.chat_title_max', 255), true),
         ]);
 
         $user = auth()->user();
-
-        $chat = \App\Models\MobileChat::where('id', $chatId)
-            ->where('user_id', $user->id)
-            ->first();
-
-        if (!$chat) {
-            return response()->json(['error' => 'Chat not found'], 404);
-        }
+        $chat = ResourceAuthorizer::ownedMobileChat($user, $chatId);
 
         $chat->update(['title' => $request->input('title')]);
 
@@ -1035,10 +1017,13 @@ class MobileChatController extends Controller
      */
     public function sendMessageStream(Request $request, $chatId)
     {
-        $request->validate([
-            'content' => 'nullable|string',
-            'ai_model_id' => 'nullable|integer',
-            'image' => 'nullable|string',
+        $contentMax = config('api-validation.limits.content_max', 50000);
+        $imageMaxKb = config('api-validation.limits.image_max_kb', 10240);
+
+        $this->validateApi($request, [
+            'content' => ['nullable', 'string', 'max:' . $contentMax, new SafeText(true)],
+            'ai_model_id' => 'nullable|integer|min:1',
+            'image' => ['nullable', 'string', new ValidBase64Image($imageMaxKb)],
         ]);
 
         $user = auth()->user();
@@ -1047,13 +1032,7 @@ class MobileChatController extends Controller
         $imageBase64 = $request->input('image');
 
         // Verify chat exists and belongs to user
-        $chat = \App\Models\MobileChat::where('id', $chatId)
-            ->where('user_id', $user->id)
-            ->first();
-
-        if (!$chat) {
-            return response()->json(['error' => 'Chat not found'], 404);
-        }
+        $chat = ResourceAuthorizer::ownedMobileChat($user, $chatId);
 
         // Rate limiting
         $rateLimitKey = 'chat_message:' . $user->id;
@@ -1245,8 +1224,10 @@ class MobileChatController extends Controller
 
         $user = $request->user();
         $feedbackType = $request->input('feedback_type');
-        $chatId = $request->input('chat_id');
+        $chatId = (int) $request->input('chat_id');
         $messageId = $request->input('message_id');
+
+        ResourceAuthorizer::ownedMobileChat($user, $chatId);
         $aiResponse = $request->input('message_content', '');
         $feedbackReason = $request->input('feedback_reason');
         if ($feedbackReason) {
@@ -1263,8 +1244,11 @@ class MobileChatController extends Controller
             $question = $prevUser?->content ?? '';
         }
 
-        if (empty($aiResponse)) {
-            $aiMessage = \App\Models\MobileChatMessage::find($messageId);
+        if (empty($aiResponse) && is_numeric($messageId)) {
+            $aiMessage = ResourceAuthorizer::ownedMobileChatMessage($user, $chatId, (int) $messageId);
+            $aiResponse = $aiMessage->content ?? '';
+        } elseif (empty($aiResponse)) {
+            $aiMessage = \App\Models\MobileChatMessage::where('mobile_chat_id', $chatId)->find($messageId);
             $aiResponse = $aiMessage?->content ?? '';
         }
 

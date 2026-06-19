@@ -61,7 +61,19 @@ return [
     |
     */
 
-    'expiration' => null,
+    'expiration' => (static function (): ?int {
+        $raw = env('SANCTUM_TOKEN_EXPIRATION');
+
+        if ($raw === null || $raw === '') {
+            return 60;
+        }
+
+        $minutes = (int) $raw;
+        $min = (int) config('auth-security.sanctum_token_min_minutes', 15);
+        $max = (int) config('auth-security.sanctum_token_max_minutes', 60);
+
+        return max($min, min($max, $minutes));
+    })(),
 
     /*
     |--------------------------------------------------------------------------

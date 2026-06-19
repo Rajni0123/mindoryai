@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
 use App\Services\FunNotificationService;
+use App\Support\ResourceAuthorizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,7 +27,12 @@ class NotificationController extends Controller
 
         $notifications = Notification::forUser($user->id)
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(20)
+            ->through(function (Notification $notification) use ($user) {
+                $notification->setAttribute('is_read', $notification->isReadByUser($user->id));
+
+                return $notification;
+            });
 
         return response()->json([
             'success' => true,
@@ -42,7 +48,7 @@ class NotificationController extends Controller
         $user = Auth::user();
 
         $count = Notification::forUser($user->id)
-            ->unread()
+            ->unreadForUser($user->id)
             ->count();
 
         return response()->json([
@@ -60,9 +66,9 @@ class NotificationController extends Controller
         $user = Auth::user();
 
         $notification = Notification::where('id', $id)
-            ->where(function($q) use ($user) {
+            ->where(function ($q) use ($user) {
                 $q->where('user_id', $user->id)
-                  ->orWhere('is_global', true);
+                    ->orWhere('is_global', true);
             })
             ->first();
 
@@ -73,7 +79,11 @@ class NotificationController extends Controller
             ], 404);
         }
 
-        $notification->markAsRead();
+        if (!$notification->is_global && (int) $notification->user_id !== (int) $user->id) {
+            ResourceAuthorizer::forbidden('You do not have permission to modify this notification.');
+        }
+
+        $notification->markAsReadForUser($user->id);
 
         return response()->json([
             'success' => true,
@@ -88,12 +98,7 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
 
-        Notification::forUser($user->id)
-            ->unread()
-            ->update([
-                'is_read' => true,
-                'read_at' => now(),
-            ]);
+        Notification::markAllAsReadForUser($user->id);
 
         return response()->json([
             'success' => true,
@@ -113,10 +118,7 @@ class NotificationController extends Controller
             ->first();
 
         if (!$notification) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Notification not found or cannot be deleted',
-            ], 404);
+            ResourceAuthorizer::forbidden('You do not have permission to delete this notification.');
         }
 
         $notification->delete();

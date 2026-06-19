@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\OTPVerification;
 use App\Models\UserSession;
+use App\Support\TestAccountHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,11 +16,6 @@ use Carbon\Carbon;
 
 class AuthController extends Controller
 {
-    private const PERMANENT_TEST_ACCOUNTS = [
-        '8888888888' => '5678',
-        '9999999999' => '1234',
-    ];
-
     /**
      * Normalize mobile app payload (mobile/otp) to API fields.
      */
@@ -47,7 +43,7 @@ class AuthController extends Controller
 
             $phoneNumber = $request->phone_number;
 
-            if (isset(self::PERMANENT_TEST_ACCOUNTS[$phoneNumber])) {
+            if (TestAccountHelper::isAnyTestAccount($phoneNumber)) {
                 Log::info('Test Account - Skipping OTP send', ['phone' => $phoneNumber]);
 
                 return response()->json([
@@ -115,10 +111,10 @@ class AuthController extends Controller
 
             $phoneNumber = $request->phone_number;
             $otpCode = $request->otp_code;
-            $isTestAccount = isset(self::PERMANENT_TEST_ACCOUNTS[$phoneNumber]);
+            $isTestAccount = TestAccountHelper::isAnyTestAccount($phoneNumber);
 
             if ($isTestAccount) {
-                if ($otpCode !== self::PERMANENT_TEST_ACCOUNTS[$phoneNumber]) {
+                if (!TestAccountHelper::verifyAnyTestOtp($phoneNumber, $otpCode)) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Invalid OTP for test account.',

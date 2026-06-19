@@ -11,6 +11,7 @@ use App\Models\AiModel;
 use App\Services\UnifiedAIService;
 use App\Services\FileStorageService;
 use App\Services\UsageLimitService;
+use App\Support\ResourceAuthorizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -56,16 +57,7 @@ class ChatController extends Controller
      */
     public function show($id)
     {
-        $chat = Chat::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->first();
-
-        if (!$chat) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Chat not found'
-            ], 404);
-        }
+        $chat = ResourceAuthorizer::ownedMobileChat(Auth::user(), (int) $id);
 
         $messages = ChatMessage::where('mobile_chat_id', $id)
             ->orderBy('created_at', 'asc')
@@ -201,13 +193,7 @@ class ChatController extends Controller
                 ]);
                 $chatId = $chat->id;
             } else {
-                $chat = Chat::where('id', $chatId)
-                    ->where('user_id', $user->id)
-                    ->first();
-
-                if (!$chat) {
-                    throw new \Exception('Chat not found');
-                }
+                $chat = ResourceAuthorizer::ownedMobileChat($user, (int) $chatId);
             }
 
             // Save user message

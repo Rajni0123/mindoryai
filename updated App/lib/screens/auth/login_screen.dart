@@ -244,7 +244,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               ? _phoneStep(auth, compact: keyboardOpen)
                               : _otpStep(auth, mobile),
                         ),
-                        if (_step == LoginStep.phone && !keyboardOpen) ...[
+                        if (_step == LoginStep.phone && !keyboardOpen && AppConstants.hasDemoAccount) ...[
                           const SizedBox(height: 28),
                           _DemoCard(onTap: _useDemoAccount)
                               .animate()
@@ -340,7 +340,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
             ),
             child: Text(
-              'Demo OTP: ${AppConstants.demoOtp}',
+              'Test account — enter the OTP configured on the server.',
               style: GoogleFonts.jetBrainsMono(
                 fontSize: 13,
                 color: AppColors.primary,
@@ -663,7 +663,7 @@ class _DemoCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      '${AppConstants.demoMobile}  ·  OTP ${AppConstants.demoOtp}',
+                      AppConstants.demoMobile,
                       style: GoogleFonts.jetBrainsMono(
                         fontSize: 12,
                         color: c.textMuted,

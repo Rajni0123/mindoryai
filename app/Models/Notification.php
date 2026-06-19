@@ -49,6 +49,22 @@ class Notification extends Model
         return $query->where('is_read', false);
     }
 
+    public function scopeUnreadForUser($query, int $userId)
+    {
+        $readGlobalIds = NotificationUserRead::where('user_id', $userId)->pluck('notification_id');
+
+        return $query->where(function ($q) use ($userId, $readGlobalIds) {
+            $q->where(function ($personal) use ($userId) {
+                $personal->where('user_id', $userId)->where('is_read', false);
+            })->orWhere(function ($global) use ($readGlobalIds) {
+                $global->where('is_global', true);
+                if ($readGlobalIds->isNotEmpty()) {
+                    $global->whereNotIn('id', $readGlobalIds);
+                }
+            });
+        });
+    }
+
     /**
      * Scope for read notifications
      */
@@ -66,6 +82,55 @@ class Notification extends Model
             $q->where('user_id', $userId)
               ->orWhere('is_global', true);
         });
+    }
+
+    /**
+     * Mark notification as read for a specific user (handles global notifications safely).
+     */
+    public function markAsReadForUser(int $userId): void
+    {
+        if ($this->is_global) {
+            NotificationUserRead::updateOrCreate(
+                ['user_id' => $userId, 'notification_id' => $this->id],
+                ['read_at' => now()]
+            );
+
+            return;
+        }
+
+        if ((int) $this->user_id !== $userId) {
+            return;
+        }
+
+        $this->markAsRead();
+    }
+
+    public static function markAllAsReadForUser(int $userId): void
+    {
+        static::where('user_id', $userId)
+            ->unread()
+            ->update(['is_read' => true, 'read_at' => now()]);
+
+        $globalIds = static::where('is_global', true)->pluck('id');
+        $now = now();
+
+        foreach ($globalIds as $notificationId) {
+            NotificationUserRead::updateOrCreate(
+                ['user_id' => $userId, 'notification_id' => $notificationId],
+                ['read_at' => $now]
+            );
+        }
+    }
+
+    public function isReadByUser(int $userId): bool
+    {
+        if ($this->is_global) {
+            return NotificationUserRead::where('user_id', $userId)
+                ->where('notification_id', $this->id)
+                ->exists();
+        }
+
+        return (bool) $this->is_read;
     }
 
     /**

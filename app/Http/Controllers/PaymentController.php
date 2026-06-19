@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\PaymentGateway;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
+use App\Support\ResourceAuthorizer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -93,6 +94,8 @@ class PaymentController extends Controller
      */
     public function confirmPayment($paymentId)
     {
+        ResourceAuthorizer::ensureAdmin(auth()->user());
+
         $payment = Payment::with('user', 'plan')->findOrFail($paymentId);
 
         try {
@@ -410,6 +413,13 @@ class PaymentController extends Controller
             'payment_data' => 'required|array',
         ]);
 
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        ResourceAuthorizer::ownedTransaction($user, $request->transaction_id);
+
         $paymentService = new PaymentService();
         $result = $paymentService->verifyPayment(
             $request->transaction_id,
@@ -423,14 +433,15 @@ class PaymentController extends Controller
             ], 400);
         }
 
-        // Find transaction and activate user plan
-        $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)->first();
+        // Find transaction and activate user plan (must belong to authenticated user)
+        $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)
+            ->where('user_id', $user->id)
+            ->first();
 
         if ($transaction && isset($transaction->metadata['plan_id'])) {
             $plan = Plan::find($transaction->metadata['plan_id']);
-            $user = Auth::user();
 
-            if ($plan && $user) {
+            if ($plan) {
                 $user->update([
                     'plan_id' => $plan->id,
                     'plan_expires_at' => now()->addDays($plan->validity_days ?? 30),
@@ -528,16 +539,21 @@ class PaymentController extends Controller
         ]);
 
         $user = Auth::user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        ResourceAuthorizer::ownedTransaction($user, $request->transaction_id);
+
         $plan = Plan::findOrFail($request->plan_id);
 
-        // Find the transaction
-        $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)->first();
+        // Find the transaction (must belong to authenticated user)
+        $transaction = \App\Models\Transaction::where('transaction_id', $request->transaction_id)
+            ->where('user_id', $user->id)
+            ->first();
 
         if (!$transaction) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Transaction not found.',
-            ], 400);
+            ResourceAuthorizer::forbidden('You do not have permission to verify this payment.');
         }
 
         // Verify using PaymentService

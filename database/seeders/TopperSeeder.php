@@ -11,12 +11,21 @@ class TopperSeeder extends Seeder
 {
     public function run(): void
     {
+        $topperPassword = env('SEEDER_TOPPER_PASSWORD');
+
+        if (empty($topperPassword)) {
+            $this->command->warn('Set SEEDER_TOPPER_PASSWORD in .env before seeding toppers.');
+            return;
+        }
+
+        $passwordHash = Hash::make($topperPassword);
+
         $toppers = [
             [
                 'name' => 'Rahul Sharma',
                 'email' => 'rahul.topper@blinkstudy.in',
                 'mobile' => '9999000001',
-                'password' => Hash::make('topper123'),
+                'password' => $passwordHash,
                 'is_topper' => true,
                 'is_verified_topper' => true,
                 'topper_exam' => 'JEE Advanced',
@@ -32,7 +41,7 @@ class TopperSeeder extends Seeder
                 'name' => 'Priya Patel',
                 'email' => 'priya.topper@blinkstudy.in',
                 'mobile' => '9999000002',
-                'password' => Hash::make('topper123'),
+                'password' => $passwordHash,
                 'is_topper' => true,
                 'is_verified_topper' => true,
                 'topper_exam' => 'NEET',
@@ -48,7 +57,7 @@ class TopperSeeder extends Seeder
                 'name' => 'Amit Kumar',
                 'email' => 'amit.topper@blinkstudy.in',
                 'mobile' => '9999000003',
-                'password' => Hash::make('topper123'),
+                'password' => $passwordHash,
                 'is_topper' => true,
                 'is_verified_topper' => true,
                 'topper_exam' => 'JEE Main',
@@ -64,7 +73,7 @@ class TopperSeeder extends Seeder
                 'name' => 'Sneha Reddy',
                 'email' => 'sneha.topper@blinkstudy.in',
                 'mobile' => '9999000004',
-                'password' => Hash::make('topper123'),
+                'password' => $passwordHash,
                 'is_topper' => true,
                 'is_verified_topper' => true,
                 'topper_exam' => 'CBSE Board',
@@ -80,7 +89,7 @@ class TopperSeeder extends Seeder
                 'name' => 'Karthik Iyer',
                 'email' => 'karthik.topper@blinkstudy.in',
                 'mobile' => '9999000005',
-                'password' => Hash::make('topper123'),
+                'password' => $passwordHash,
                 'is_topper' => true,
                 'is_verified_topper' => true,
                 'topper_exam' => 'JEE Advanced',

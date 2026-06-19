@@ -8,6 +8,8 @@ use App\Models\MockTest;
 use App\Services\ExamQuestionGenerator;
 use App\Services\ExamService;
 use App\Services\UsageLimitService;
+use App\Support\ApiValidator;
+use App\Support\ResourceAuthorizer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -25,7 +27,10 @@ class ExamController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $category = $request->query('category');
+        $validated = ApiValidator::validateQuery($request, [
+            'category' => ApiValidator::safeString(50, false),
+        ]);
+        $category = $validated['category'] ?? null;
 
         // Cache exam list for 5 minutes for faster response
         $cacheKey = 'exams_list_' . ($category ?? 'all');
@@ -126,6 +131,23 @@ class ExamController extends Controller
             ->orderBy('subject')
             ->paginate($request->input('per_page', 20));
 
+        $questions->getCollection()->transform(function ($question) {
+            return [
+                'id' => $question->id,
+                'exam_id' => $question->exam_id,
+                'subject' => $question->subject,
+                'topic' => $question->topic,
+                'subtopic' => $question->subtopic,
+                'year' => $question->year,
+                'type' => $question->type,
+                'question_text' => $question->question_text,
+                'options' => $question->options,
+                'difficulty' => $question->difficulty,
+                'language' => $question->language,
+                'tags' => $question->tags,
+            ];
+        });
+
         return response()->json([
             'success' => true,
             'data' => $questions,
@@ -187,7 +209,7 @@ class ExamController extends Controller
 
     public function startMockTest(int $mockTestId): JsonResponse
     {
-        $mockTest = MockTest::where('user_id', auth()->id())->findOrFail($mockTestId);
+        $mockTest = ResourceAuthorizer::ownedMockTest(auth()->user(), $mockTestId);
 
         if ($mockTest->status !== 'pending') {
             return response()->json([
@@ -286,7 +308,7 @@ class ExamController extends Controller
             'answers' => 'required|array',
         ]);
 
-        $mockTest = MockTest::where('user_id', auth()->id())->findOrFail($mockTestId);
+        $mockTest = ResourceAuthorizer::ownedMockTest($request->user(), $mockTestId);
 
         if ($mockTest->status === 'completed') {
             return response()->json([
@@ -313,7 +335,7 @@ class ExamController extends Controller
 
     public function getMockTestResult(int $mockTestId): JsonResponse
     {
-        $mockTest = MockTest::where('user_id', auth()->id())->findOrFail($mockTestId);
+        $mockTest = ResourceAuthorizer::ownedMockTest(auth()->user(), $mockTestId);
 
         $result = $this->examService->getMockTestResult($mockTest);
 
@@ -325,10 +347,14 @@ class ExamController extends Controller
 
     public function getMockTestHistory(Request $request): JsonResponse
     {
+        $validated = ApiValidator::validateQuery($request, [
+            'per_page' => ApiValidator::paginationLimit(15, 50),
+        ]);
+
         $history = MockTest::where('user_id', $request->user()->id)
             ->with('exam:id,name,slug,category')
             ->orderBy('created_at', 'desc')
-            ->paginate($request->input('per_page', 15));
+            ->paginate($validated['per_page'] ?? 15);
 
         return response()->json([
             'success' => true,

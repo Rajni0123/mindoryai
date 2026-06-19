@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\DynamicAppConfig;
+use App\Support\ApiValidator;
+use App\Support\ResourceAuthorizer;
+use App\Support\SensitiveConfigFilter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -16,13 +19,21 @@ class DynamicAppController extends Controller
      */
     public function getConfigs(Request $request)
     {
-        // Get client app version
         $appVersion = $request->header('X-App-Version') ?? $request->input('app_version', '1.0.0');
         $platform = $request->header('X-Platform') ?? $request->input('platform', 'android');
+
+        ApiValidator::validateRoute($request, [
+            'app_version' => $appVersion,
+            'platform' => $platform,
+        ], [
+            'app_version' => ['required', 'string', 'max:20', 'regex:/^[0-9]+(\.[0-9]+)*$/'],
+            'platform' => 'required|string|in:' . implode(',', config('api-validation.platforms', ['android', 'ios'])),
+        ]);
 
         // Get all public configs
         $configs = DynamicAppConfig::public()
             ->get()
+            ->filter(fn ($config) => !SensitiveConfigFilter::isSensitiveKey($config->key))
             ->map(function ($config) {
                 $value = DynamicAppConfig::decodeValue($config->value, $config->type);
 
@@ -110,6 +121,8 @@ class DynamicAppController extends Controller
      */
     public function uploadIcon(Request $request)
     {
+        ResourceAuthorizer::ensureAdmin($request->user());
+
         $validator = Validator::make($request->all(), [
             'icon' => 'required|image|mimes:png,jpg,jpeg|max:1024', // Max 1MB
         ]);
@@ -156,13 +169,18 @@ class DynamicAppController extends Controller
      */
     public function updateConfigs(Request $request)
     {
-        $configs = $request->input('configs', []);
+        ResourceAuthorizer::ensureAdmin($request->user());
 
-        if (empty($configs)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'No configs provided',
-            ], 400);
+        $validated = $this->validateApi($request, [
+            'configs' => 'required|array|min:1|max:100',
+        ]);
+
+        $configs = $validated['configs'];
+
+        foreach (array_keys($configs) as $key) {
+            if (!preg_match('/^[a-z][a-z0-9_.]{0,99}$/', (string) $key)) {
+                ApiValidator::throwResponse(['configs' => ["Invalid config key: {$key}"]]);
+            }
         }
 
         try {
@@ -202,6 +220,8 @@ class DynamicAppController extends Controller
      */
     public function getAllConfigs()
     {
+        ResourceAuthorizer::ensureAdmin(auth()->user());
+
         $configs = DynamicAppConfig::orderBy('category')
             ->orderBy('label')
             ->get()
@@ -218,6 +238,8 @@ class DynamicAppController extends Controller
      */
     public function sendTestNotification(Request $request)
     {
+        ResourceAuthorizer::ensureAdmin($request->user());
+
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:100',
             'message' => 'required|string|max:255',
@@ -250,6 +272,8 @@ class DynamicAppController extends Controller
      */
     public function triggerUpdate(Request $request)
     {
+        ResourceAuthorizer::ensureAdmin($request->user());
+
         $validator = Validator::make($request->all(), [
             'force_update' => 'required|boolean',
             'update_message' => 'nullable|string|max:255',
