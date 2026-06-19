@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "What is the purpose of the notices displayed in the Bulletin Board?",
+    "topic": "Notice Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "To entertain students with jokes"
+      },
+      {
+        "label": "B",
+        "text": "To provide information about school events and activities"
+      },
+      {
+        "label": "C",
+        "text": "To display student artwork"
+      },
+      {
+        "label": "D",
+        "text": "To advertise local businesses"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Bulletin boards are primarily used to disseminate information regarding school events, announcements, and important activities to the student body.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Choose the option that correctly sequences the events in 'The Last Lesson': (i) M. Hamel announces it's the last lesson; (ii) Franz is late for school; (iii) The blacksmith watches students; (iv) M. Hamel writes 'Vive La France!'",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "(ii), (i), (iii), (iv)"
+      },
+      {
+        "label": "B",
+        "text": "(i), (ii), (iii), (iv)"
+      },
+      {
+        "label": "C",
+        "text": "(ii), (iii), (i), (iv)"
+      },
+      {
+        "label": "D",
+        "text": "(iv), (iii), (ii), (i)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Franz was late, then M. Hamel made the announcement, the blacksmith was present, and finally, M. Hamel wrote 'Vive La France!'",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What does the expression 'keeping the body and soul together' mean?",
+    "topic": "Idioms and Phrases",
+    "options": [
+      {
+        "label": "A",
+        "text": "To maintain physical fitness"
+      },
+      {
+        "label": "B",
+        "text": "To earn just enough to survive"
+      },
+      {
+        "label": "C",
+        "text": "To meditate and find inner peace"
+      },
+      {
+        "label": "D",
+        "text": "To engage in spiritual practices"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The idiom refers to the struggle of surviving on minimal resources.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the central theme of the poem 'My Mother at Sixty-Six'?",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "The poet's love for nature"
+      },
+      {
+        "label": "B",
+        "text": "The poet's fear of losing her mother to old age and death"
+      },
+      {
+        "label": "C",
+        "text": "The joys of childhood"
+      },
+      {
+        "label": "D",
+        "text": "The importance of travel"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem explores the poet's anxiety and fear related to her mother's aging and mortality.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'The Rattrap', what does the rattrap peddler do to survive?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "He works as a blacksmith"
+      },
+      {
+        "label": "B",
+        "text": "He begs for money"
+      },
+      {
+        "label": "C",
+        "text": "He sells rattraps and begs, resorting to petty thievery"
+      },
+      {
+        "label": "D",
+        "text": "He works as a farmer"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The peddler makes and sells rattraps, begs, and sometimes steals to make ends meet.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the significance of the title 'Indigo'?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the color of the sky"
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the British flag"
+      },
+      {
+        "label": "C",
+        "text": "It represents the crop that the peasants were forced to grow"
+      },
+      {
+        "label": "D",
+        "text": "It is the name of a river in India"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The title refers to the indigo crop that the Indian peasants were forced to cultivate under oppressive conditions.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'The Tiger King', why did the Maharaja decide to marry?",
+    "topic": "The Tiger King",
+    "options": [
+      {
+        "label": "A",
+        "text": "For political alliance"
+      },
+      {
+        "label": "B",
+        "text": "Because he fell in love"
+      },
+      {
+        "label": "C",
+        "text": "To find more tigers to kill in his wife's kingdom"
+      },
+      {
+        "label": "D",
+        "text": "To produce an heir to the throne"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The Maharaja married to extend his tiger hunting territory and fulfill his vow of killing 100 tigers.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the central theme of 'Should Wizard Hit Mommy'?",
+    "topic": "Should Wizard Hit Mommy?",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of obedience"
+      },
+      {
+        "label": "B",
+        "text": "The conflict between a child's perspective and an adult's reasoning"
+      },
+      {
+        "label": "C",
+        "text": "The power of magic"
+      },
+      {
+        "label": "D",
+        "text": "The importance of family values"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story explores the clash between a child's desire for a happy ending and an adult's understanding of consequences and societal norms.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'On the Face of It', what is the reason for Derry's isolation and bitterness?",
+    "topic": "On the Face of It",
+    "options": [
+      {
+        "label": "A",
+        "text": "He is poor and neglected"
+      },
+      {
+        "label": "B",
+        "text": "He has a burnt face and feels alienated"
+      },
+      {
+        "label": "C",
+        "text": "He is an orphan"
+      },
+      {
+        "label": "D",
+        "text": "He is bullied at school"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Derry's burnt face leads to feelings of alienation, low self-esteem, and bitterness towards the world.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Memories of Childhood', what does Zitkala-Sa protest against?",
+    "topic": "Memories of Childhood",
+    "options": [
+      {
+        "label": "A",
+        "text": "Being forced to learn English"
+      },
+      {
+        "label": "B",
+        "text": "Having her long hair cut off"
+      },
+      {
+        "label": "C",
+        "text": "Being separated from her family"
+      },
+      {
+        "label": "D",
+        "text": "Being denied education"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Zitkala-Sa strongly resists having her hair cut, as it is a symbol of her cultural identity and pride.",
+    "difficulty": "medium",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "You are the Secretary of the Literary Club of your school. Draft a notice inviting students to participate in an inter-school debate competition. Which of the following is the MOST appropriate heading for the notice?",
+    "topic": "Notice Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "Debate Competition"
+      },
+      {
+        "label": "B",
+        "text": "Inter-School Debate Competition - Invitation to Participate"
+      },
+      {
+        "label": "C",
+        "text": "Literary Club Event"
+      },
+      {
+        "label": "D",
+        "text": "Important Announcement"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The heading should be clear, concise, and informative, specifying the type of event and its purpose.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "You are the President of the Residents' Welfare Association of your locality. Write a letter to the Municipal Commissioner complaining about the irregular water supply in your area. Which of the following is the MOST appropriate subject line for the letter?",
+    "topic": "Letter Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "Water Supply Complaint"
+      },
+      {
+        "label": "B",
+        "text": "Irregular Water Supply in [Your Locality]"
+      },
+      {
+        "label": "C",
+        "text": "Request for Water Supply"
+      },
+      {
+        "label": "D",
+        "text": "Complaint Regarding Municipal Services"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The subject line should be specific and clearly state the issue and location for quick identification.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "You are a reporter for a local newspaper. Write a report on a recent fire accident in a slum area. Which of the following should be the MOST prominent element in your report's headline?",
+    "topic": "Report Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "Local Newspaper Reports Fire"
+      },
+      {
+        "label": "B",
+        "text": "Slum Area Fire: Many Feared Dead"
+      },
+      {
+        "label": "C",
+        "text": "Fire in Slum Area"
+      },
+      {
+        "label": "D",
+        "text": "Tragedy Strikes Slum Area"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The headline should be attention-grabbing and convey the most important information about the event, including the location and potential casualties.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'The Last Lesson', why was Franz reluctant to go to school that morning?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "He had a headache"
+      },
+      {
+        "label": "B",
+        "text": "He had not learned the participles and feared being scolded"
+      },
+      {
+        "label": "C",
+        "text": "He wanted to go fishing"
+      },
+      {
+        "label": "D",
+        "text": "He had a fight with his parents"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Franz was afraid of being scolded by M. Hamel because he had not prepared his lesson on participles.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does Pablo Neruda mean by 'keeping quiet' in the poem 'Keeping Quiet'?",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "Remaining silent and inactive"
+      },
+      {
+        "label": "B",
+        "text": "Engaging in introspection and ceasing destructive activities"
+      },
+      {
+        "label": "C",
+        "text": "Avoiding communication with others"
+      },
+      {
+        "label": "D",
+        "text": "Staying away from crowded places"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Neruda advocates for a period of introspection and stillness to promote peace and understanding, urging people to cease harmful activities.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'Aunt Jennifer's Tigers', what do the tigers symbolize?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Aunt Jennifer's fear of her husband"
+      },
+      {
+        "label": "B",
+        "text": "Aunt Jennifer's artistic talent"
+      },
+      {
+        "label": "C",
+        "text": "Aunt Jennifer's suppressed desires and longing for freedom"
+      },
+      {
+        "label": "D",
+        "text": "Aunt Jennifer's love for animals"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The tigers symbolize Aunt Jennifer's suppressed desires and longing for freedom from her oppressive marriage.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'The Rattrap', how does the peddler's perspective change after spending a night with Edla Willmansson?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "He becomes more determined to steal"
+      },
+      {
+        "label": "B",
+        "text": "He remains unchanged and continues his dishonest ways"
+      },
+      {
+        "label": "C",
+        "text": "He experiences a sense of redemption and decides to become honest"
+      },
+      {
+        "label": "D",
+        "text": "He becomes fearful of being caught by the police"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Edla's kindness and trust inspire a change of heart in the peddler, leading him to return the stolen money and resolve to live honestly.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the conflict between the landlords and the peasants in 'Indigo'?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "The landlords wanted to increase the rent"
+      },
+      {
+        "label": "B",
+        "text": "The peasants refused to grow indigo"
+      },
+      {
+        "label": "C",
+        "text": "The landlords forced the peasants to grow indigo and then demanded compensation for releasing them from the obligation"
+      },
+      {
+        "label": "D",
+        "text": "The peasants destroyed the indigo crops"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The landlords compelled the peasants to grow indigo and later demanded compensation to release them from the agreement when synthetic indigo became available.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'The Tiger King', what led the Tiger King to order the doubling of the land tax?",
+    "topic": "The Tiger King",
+    "options": [
+      {
+        "label": "A",
+        "text": "He needed more money for his personal expenses"
+      },
+      {
+        "label": "B",
+        "text": "He was angry that he could not find any more tigers in his kingdom"
+      },
+      {
+        "label": "C",
+        "text": "He wanted to punish the villagers for not helping him find tigers"
+      },
+      {
+        "label": "D",
+        "text": "He wanted to fund a new hunting expedition"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Tiger King, frustrated by his inability to find tigers, impulsively doubled the land tax as a display of his anger.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'Should Wizard Hit Mommy?', why does Jack insist that the wizard should hit Mommy?",
+    "topic": "Should Wizard Hit Mommy?",
+    "options": [
+      {
+        "label": "A",
+        "text": "He believes that Mommy was right to change Roger Skunk back"
+      },
+      {
+        "label": "B",
+        "text": "He believes that Roger Skunk should smell the way his mommy wanted him to"
+      },
+      {
+        "label": "C",
+        "text": "He identifies with Roger Skunk and believes that the wizard should have sided with him"
+      },
+      {
+        "label": "D",
+        "text": "He wants to teach Mommy a lesson"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Jack identifies with Roger Skunk's desire to be accepted and believes the wizard should have supported him against his mother's wishes.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'On the Face of It', what attracts Derry to Mr. Lamb?",
+    "topic": "On the Face of It",
+    "options": [
+      {
+        "label": "A",
+        "text": "Mr. Lamb's physical appearance"
+      },
+      {
+        "label": "B",
+        "text": "Mr. Lamb's wealth and status"
+      },
+      {
+        "label": "C",
+        "text": "Mr. Lamb's positive attitude and acceptance of Derry despite his disfigurement"
+      },
+      {
+        "label": "D",
+        "text": "Mr. Lamb's stories about his past"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Derry is drawn to Mr. Lamb's positive outlook, his non-judgmental attitude, and his acceptance of Derry's disfigured face.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Imagine you are Sarah, a student who has just won a national-level essay competition. Write a diary entry expressing your feelings about the achievement. Which of the following best captures the tone and content of such an entry?",
+    "topic": "Diary Entry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Dear Diary, Today was just another day. I went to school, attended classes, and came back home. Nothing exciting happened."
+      },
+      {
+        "label": "B",
+        "text": "Dear Diary, I won! I actually won the national essay competition! I can't believe it! All the hard work, the late nights, the research... it all paid off. I'm so incredibly happy and proud of myself. This is a dream come true!"
+      },
+      {
+        "label": "C",
+        "text": "Dear Diary, I guess I won the essay competition. It's not a big deal. I'm sure everyone expected me to win anyway."
+      },
+      {
+        "label": "D",
+        "text": "Dear Diary, I'm so tired. I had to write an essay for a competition, and it was so boring. I don't even care if I win or not."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A diary entry should reflect personal feelings and experiences. Option B best captures the excitement and pride associated with winning a national-level competition.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "C"
+  },
+  {
+    "question_text": "You are the editor of your school magazine. Write an article on the importance of environmental conservation. Which of the following introductory paragraphs would be MOST effective in engaging the reader?",
+    "topic": "Article Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "Environmental conservation is a very important topic that everyone should know about."
+      },
+      {
+        "label": "B",
+        "text": "In today's world, environmental conservation is crucial for the survival of our planet."
+      },
+      {
+        "label": "C",
+        "text": "Imagine a world without clean air, fresh water, or lush forests. This is the grim reality we face if we fail to protect our environment. Environmental conservation is not just a responsibility; it's a necessity for our survival and the well-being of future generations."
+      },
+      {
+        "label": "D",
+        "text": "This article will discuss the various aspects of environmental conservation."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "An effective introduction should grab the reader's attention and highlight the significance of the topic. Option C uses a vivid image to create a sense of urgency and importance.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "C"
+  },
+  {
+    "question_text": "Discuss the significance of the ending of 'The Last Lesson'. What does M. Hamel's act of writing 'Vive La France!' on the blackboard symbolize?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "It symbolizes M. Hamel's resignation and acceptance of defeat."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes M. Hamel's patriotism, his love for the French language, and his hope for the future."
+      },
+      {
+        "label": "C",
+        "text": "It symbolizes M. Hamel's anger and frustration towards the Prussians."
+      },
+      {
+        "label": "D",
+        "text": "It symbolizes M. Hamel's desire to start a revolution."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "M. Hamel's act symbolizes his deep patriotism, his love for the French language, and his unwavering hope for the future of France, even in the face of adversity.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Analyze the theme of social injustice as depicted in the story 'Indigo'. How does Gandhi's intervention help the peasants of Champaran?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gandhi's intervention only provides temporary relief to the peasants."
+      },
+      {
+        "label": "B",
+        "text": "Gandhi's intervention leads to the complete eradication of poverty in Champaran."
+      },
+      {
+        "label": "C",
+        "text": "Gandhi's intervention empowers the peasants, raises their awareness of their rights, and leads to significant improvements in their living conditions."
+      },
+      {
+        "label": "D",
+        "text": "Gandhi's intervention has no lasting impact on the lives of the peasants."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Gandhi's intervention empowers the peasants by raising their awareness of their rights and leading to improvements in their living conditions. He also negotiates a refund of a portion of the money taken from them illegally.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  }
+]

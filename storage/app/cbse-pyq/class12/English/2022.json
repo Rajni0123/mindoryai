@@ -1,0 +1,650 @@
+[
+  {
+    "question_text": "What is the purpose of the lost spring?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "To show the beauty of nature"
+      },
+      {
+        "label": "B",
+        "text": "To highlight the grinding poverty and traditions that condemn children to a life of exploitation"
+      },
+      {
+        "label": "C",
+        "text": "To describe the author's childhood"
+      },
+      {
+        "label": "D",
+        "text": "To promote tourism in India"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The purpose of 'Lost Spring' is to highlight the grinding poverty and traditions that condemn children to a life of exploitation, as seen through the stories of Saheb and Mukesh.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does the title 'Lost Spring' symbolize?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "The beauty of nature"
+      },
+      {
+        "label": "B",
+        "text": "The loss of childhood and innocence due to poverty and exploitation"
+      },
+      {
+        "label": "C",
+        "text": "The changing seasons"
+      },
+      {
+        "label": "D",
+        "text": "The author's personal loss"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "'Lost Spring' symbolizes the loss of childhood and innocence experienced by children like Saheb and Mukesh, who are forced into labor due to poverty.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the central theme of the story 'The Rattrap'?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of wealth"
+      },
+      {
+        "label": "B",
+        "text": "The inherent goodness in human beings can be awakened through understanding and love"
+      },
+      {
+        "label": "C",
+        "text": "The dangers of traveling alone"
+      },
+      {
+        "label": "D",
+        "text": "The benefits of a simple life"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The central theme of 'The Rattrap' is that the inherent goodness in human beings can be awakened through understanding and love, as demonstrated by Edla Willmansson's treatment of the peddler.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does Edla Willmansson change the peddler's life in 'The Rattrap'?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "By giving him money"
+      },
+      {
+        "label": "B",
+        "text": "By treating him with respect and kindness, awakening his inherent goodness"
+      },
+      {
+        "label": "C",
+        "text": "By forcing him to work"
+      },
+      {
+        "label": "D",
+        "text": "By reporting him to the police"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Edla Willmansson changes the peddler's life by treating him with respect and kindness, which awakens his inherent goodness and leads him to return the stolen money.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the title 'Indigo'?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the color of the sky"
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the struggle of the Indian peasants against the British planters over indigo cultivation"
+      },
+      {
+        "label": "C",
+        "text": "It represents the wealth of the British planters"
+      },
+      {
+        "label": "D",
+        "text": "It is the name of a river in India"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title 'Indigo' symbolizes the struggle of the Indian peasants against the British planters over the unjust system of indigo cultivation, highlighting Gandhi's role in securing their rights.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What role did Mahatma Gandhi play in the Champaran movement?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "He was a silent observer"
+      },
+      {
+        "label": "B",
+        "text": "He led the peasants in a non-violent protest against the British planters, securing their rights and improving their living conditions"
+      },
+      {
+        "label": "C",
+        "text": "He supported the British planters"
+      },
+      {
+        "label": "D",
+        "text": "He was arrested and imprisoned"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Mahatma Gandhi played a pivotal role in the Champaran movement by leading the peasants in a non-violent protest against the British planters, ultimately securing their rights and improving their living conditions.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does the poem 'Aunt Jennifer's Tigers' symbolize?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "The beauty of nature"
+      },
+      {
+        "label": "B",
+        "text": "Aunt Jennifer's desire for freedom and escape from her oppressive marriage"
+      },
+      {
+        "label": "C",
+        "text": "The power of animals"
+      },
+      {
+        "label": "D",
+        "text": "The importance of art"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "'Aunt Jennifer's Tigers' symbolize Aunt Jennifer's desire for freedom and escape from her oppressive marriage, as the tigers represent the strength and fearlessness she lacks in her own life.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the tigers being 'prancing, proud, and unafraid'?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "It shows the beauty of nature"
+      },
+      {
+        "label": "B",
+        "text": "It contrasts with Aunt Jennifer's own timid and oppressed state, highlighting her yearning for freedom and strength"
+      },
+      {
+        "label": "C",
+        "text": "It represents the power of animals"
+      },
+      {
+        "label": "D",
+        "text": "It is a symbol of wealth"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The tigers being 'prancing, proud, and unafraid' contrasts with Aunt Jennifer's own timid and oppressed state, highlighting her yearning for freedom and strength, which she expresses through her art.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the central idea of the poem 'A Thing of Beauty'?",
+    "topic": "A Thing of Beauty",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of wealth"
+      },
+      {
+        "label": "B",
+        "text": "A thing of beauty provides lasting joy and helps us overcome the hardships of life"
+      },
+      {
+        "label": "C",
+        "text": "The dangers of nature"
+      },
+      {
+        "label": "D",
+        "text": "The beauty of youth"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The central idea of 'A Thing of Beauty' is that a thing of beauty provides lasting joy and helps us overcome the hardships of life, offering solace and inspiration.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does the poet describe the impact of beautiful things on our lives?",
+    "topic": "A Thing of Beauty",
+    "options": [
+      {
+        "label": "A",
+        "text": "They make us sad"
+      },
+      {
+        "label": "B",
+        "text": "They provide lasting joy, comfort, and help us cope with the pain and suffering in the world"
+      },
+      {
+        "label": "C",
+        "text": "They are temporary distractions"
+      },
+      {
+        "label": "D",
+        "text": "They are a waste of time"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poet describes the impact of beautiful things on our lives as providing lasting joy, comfort, and helping us cope with the pain and suffering in the world, acting as a source of hope and inspiration.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of keeping quiet?",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "To promote laziness"
+      },
+      {
+        "label": "B",
+        "text": "To encourage introspection, understanding, and peace"
+      },
+      {
+        "label": "C",
+        "text": "To avoid conflict"
+      },
+      {
+        "label": "D",
+        "text": "To stop all activity"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Keeping quiet is significant because it encourages introspection, understanding, and peace, allowing us to connect with ourselves and others on a deeper level.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does the poet NOT want in the poem 'Keeping Quiet'?",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "To stop all activity"
+      },
+      {
+        "label": "B",
+        "text": "To promote understanding and peace"
+      },
+      {
+        "label": "C",
+        "text": "To encourage introspection"
+      },
+      {
+        "label": "D",
+        "text": "To stop all activity that threatens life and the environment"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The poet does NOT want to stop all activity. He wants to stop all activity that threatens life and the environment, promoting understanding and peace.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the moral of the story 'The Third Level'?",
+    "topic": "The Third Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of wealth"
+      },
+      {
+        "label": "B",
+        "text": "The story explores the theme of escapism and the human tendency to seek refuge from the harsh realities of the present by delving into the past or imagining a better future"
+      },
+      {
+        "label": "C",
+        "text": "The dangers of traveling alone"
+      },
+      {
+        "label": "D",
+        "text": "The benefits of a simple life"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The moral of 'The Third Level' is that the story explores the theme of escapism and the human tendency to seek refuge from the harsh realities of the present by delving into the past or imagining a better future.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does the third level represent in 'The Third Level'?",
+    "topic": "The Third Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "A real place"
+      },
+      {
+        "label": "B",
+        "text": "A form of escapism, a refuge from the anxieties and pressures of modern life"
+      },
+      {
+        "label": "C",
+        "text": "A dangerous place"
+      },
+      {
+        "label": "D",
+        "text": "A dream"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The third level represents a form of escapism, a refuge from the anxieties and pressures of modern life, as Charley seeks to escape the stress and uncertainty of his present.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the central theme of 'Memories of Childhood'?",
+    "topic": "Memories of Childhood",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of wealth"
+      },
+      {
+        "label": "B",
+        "text": "The experiences of childhood, cultural identity, and the challenges faced by marginalized communities"
+      },
+      {
+        "label": "C",
+        "text": "The dangers of traveling alone"
+      },
+      {
+        "label": "D",
+        "text": "The benefits of a simple life"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The central theme of 'Memories of Childhood' is the experiences of childhood, cultural identity, and the challenges faced by marginalized communities, as seen through the narratives of Zitkala-Sa and Bama.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does Zitkala-Sa resist the cultural assimilation at the Carlisle Indian School?",
+    "topic": "Memories of Childhood",
+    "options": [
+      {
+        "label": "A",
+        "text": "By conforming to the school's rules"
+      },
+      {
+        "label": "B",
+        "text": "By refusing to have her hair cut, symbolizing her resistance to the loss of her cultural identity"
+      },
+      {
+        "label": "C",
+        "text": "By becoming a teacher"
+      },
+      {
+        "label": "D",
+        "text": "By running away from the school"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Zitkala-Sa resists the cultural assimilation at the Carlisle Indian School by refusing to have her hair cut, symbolizing her resistance to the loss of her cultural identity and her determination to preserve her heritage.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of Bama's experience with caste discrimination?",
+    "topic": "Memories of Childhood",
+    "options": [
+      {
+        "label": "A",
+        "text": "It shows the beauty of nature"
+      },
+      {
+        "label": "B",
+        "text": "It highlights the social injustice and inequality prevalent in Indian society, and her realization of her own identity and the need for resistance"
+      },
+      {
+        "label": "C",
+        "text": "It represents the wealth of the upper castes"
+      },
+      {
+        "label": "D",
+        "text": "It is a personal story with no broader significance"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Bama's experience with caste discrimination highlights the social injustice and inequality prevalent in Indian society, and her realization of her own identity and the need for resistance against such discrimination.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Write a notice for your school notice board informing students about an upcoming inter-school debate competition.",
+    "topic": "Notice Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A notice announcing a school trip."
+      },
+      {
+        "label": "B",
+        "text": "A notice providing details about an inter-school debate competition, including date, time, venue, and registration details."
+      },
+      {
+        "label": "C",
+        "text": "A notice about a lost item."
+      },
+      {
+        "label": "D",
+        "text": "A notice cancelling school due to bad weather."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The correct answer is a notice providing details about an inter-school debate competition, including date, time, venue, and registration details, as it fulfills the requirement of the question.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "You are the secretary of the Literary Club of your school. Draft a formal invitation to a renowned author to be the chief guest at the annual literary event.",
+    "topic": "Invitation Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "An informal invitation to a friend's birthday party."
+      },
+      {
+        "label": "B",
+        "text": "A formal invitation to a renowned author, including details about the event, date, time, venue, and a request for their presence as the chief guest."
+      },
+      {
+        "label": "C",
+        "text": "An invitation to a school picnic."
+      },
+      {
+        "label": "D",
+        "text": "A letter to the editor of a newspaper."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The correct answer is a formal invitation to a renowned author, including details about the event, date, time, venue, and a request for their presence as the chief guest, as it fulfills the requirement of the question.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Write a letter to the editor of a national newspaper expressing your concern about the increasing pollution in your city.",
+    "topic": "Letter to the Editor",
+    "options": [
+      {
+        "label": "A",
+        "text": "A personal letter to a friend."
+      },
+      {
+        "label": "B",
+        "text": "A letter to the editor expressing concern about increasing pollution, including details about the sources of pollution, its effects, and suggestions for solutions."
+      },
+      {
+        "label": "C",
+        "text": "A letter to the principal requesting a leave of absence."
+      },
+      {
+        "label": "D",
+        "text": "A letter to a company complaining about a product."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The correct answer is a letter to the editor expressing concern about increasing pollution, including details about the sources of pollution, its effects, and suggestions for solutions, as it fulfills the requirement of the question.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Write an article on the importance of yoga in maintaining a healthy lifestyle.",
+    "topic": "Article Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A short story about a fictional character."
+      },
+      {
+        "label": "B",
+        "text": "An article discussing the benefits of yoga, its various forms, and its role in promoting physical and mental well-being."
+      },
+      {
+        "label": "C",
+        "text": "A poem about nature."
+      },
+      {
+        "label": "D",
+        "text": "A recipe for a healthy meal."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The correct answer is an article discussing the benefits of yoga, its various forms, and its role in promoting physical and mental well-being, as it fulfills the requirement of the question.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Read the passage and answer the questions: (Passage about the benefits of reading). What is the main idea of the passage?",
+    "topic": "Reading Comprehension",
+    "options": [
+      {
+        "label": "A",
+        "text": "Reading is a waste of time."
+      },
+      {
+        "label": "B",
+        "text": "Reading offers numerous benefits, including improved knowledge, vocabulary, and cognitive skills."
+      },
+      {
+        "label": "C",
+        "text": "Reading is only for students."
+      },
+      {
+        "label": "D",
+        "text": "Reading is a dying habit."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The main idea of the passage is that reading offers numerous benefits, including improved knowledge, vocabulary, and cognitive skills, as it is the central theme discussed in the passage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Read the passage and answer the questions: (Passage about the benefits of reading). According to the passage, what is one benefit of reading?",
+    "topic": "Reading Comprehension",
+    "options": [
+      {
+        "label": "A",
+        "text": "It makes you tired."
+      },
+      {
+        "label": "B",
+        "text": "It improves your vocabulary."
+      },
+      {
+        "label": "C",
+        "text": "It is expensive."
+      },
+      {
+        "label": "D",
+        "text": "It is boring."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "According to the passage, one benefit of reading is that it improves your vocabulary, as it is explicitly mentioned in the passage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Read the passage and answer the questions: (Passage about the benefits of reading). What type of text is this?",
+    "topic": "Reading Comprehension",
+    "options": [
+      {
+        "label": "A",
+        "text": "Poetry"
+      },
+      {
+        "label": "B",
+        "text": "Narrative"
+      },
+      {
+        "label": "C",
+        "text": "Expository"
+      },
+      {
+        "label": "D",
+        "text": "Drama"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage is an expository text because it explains the benefits of reading.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  }
+]

@@ -1,0 +1,272 @@
+[
+  {
+    "question_text": "Which of the following is the molecular formula of the first member of the homologous series having functional group -Cl?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "CH4Cl"
+      },
+      {
+        "label": "B",
+        "text": "CH3Cl"
+      },
+      {
+        "label": "C",
+        "text": "C2H5Cl"
+      },
+      {
+        "label": "D",
+        "text": "C2H6Cl"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The general formula for the homologous series of a functional group -Cl is CnH2n+1Cl. For the first member, n=1, so the formula is CH3Cl.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Spirogyra reproduces under favorable conditions by which method?",
+    "topic": "How do Organisms Reproduce?",
+    "options": [
+      {
+        "label": "A",
+        "text": "Budding"
+      },
+      {
+        "label": "B",
+        "text": "Fragmentation"
+      },
+      {
+        "label": "C",
+        "text": "Regeneration"
+      },
+      {
+        "label": "D",
+        "text": "Binary Fission"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Under favorable conditions, Spirogyra reproduces by fragmentation, where the filament breaks into smaller pieces, and each piece grows into a new individual.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following best describes an ecosystem?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "A group of similar organisms"
+      },
+      {
+        "label": "B",
+        "text": "A self-sustaining system where biotic and abiotic components interact"
+      },
+      {
+        "label": "C",
+        "text": "A collection of only living organisms"
+      },
+      {
+        "label": "D",
+        "text": "The physical environment surrounding an organism"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "An ecosystem is a self-sustaining system where biotic (living) and abiotic (non-living) components interact with each other. Examples include ponds, forests, and grasslands.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "An object is placed at a distance of 30 cm in front of a convex mirror of focal length 15 cm. Which of the following describes the nature of the image?",
+    "topic": "Light: Reflection and Refraction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Real, inverted, and magnified"
+      },
+      {
+        "label": "B",
+        "text": "Virtual, erect, and diminished"
+      },
+      {
+        "label": "C",
+        "text": "Real, erect, and magnified"
+      },
+      {
+        "label": "D",
+        "text": "Virtual, inverted, and diminished"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For a convex mirror, regardless of the object distance, the image formed is always virtual, erect, and diminished (smaller than the object).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Why is reuse considered better than recycle in sustainable management?",
+    "topic": "Our Environment",
+    "options": [
+      {
+        "label": "A",
+        "text": "Recycling consumes more energy and resources."
+      },
+      {
+        "label": "B",
+        "text": "Reuse requires complex industrial processes."
+      },
+      {
+        "label": "C",
+        "text": "Recycling always produces higher quality products."
+      },
+      {
+        "label": "D",
+        "text": "Reuse creates more waste."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Reuse is better than recycle because recycling requires energy and resources to process the material again, while reuse directly utilizes the item without significant processing.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following is NOT a reason why management of forest and wildlife resources is a challenging task?",
+    "topic": "Management of Natural Resources",
+    "options": [
+      {
+        "label": "A",
+        "text": "Conflicting interests of various stakeholders"
+      },
+      {
+        "label": "B",
+        "text": "Industries seeking raw materials at low costs"
+      },
+      {
+        "label": "C",
+        "text": "Lack of government regulation"
+      },
+      {
+        "label": "D",
+        "text": "The complex interdependence of species within an ecosystem"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "While conflicting interests and industrial pressures are significant challenges, the lack of government regulation is not the primary reason. In fact, there are many regulations, but their enforcement and effectiveness are the real issues.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Two carbon compounds X and Y have the molecular formula C4H8 and C5H12 respectively. Which one is most likely to show addition reaction?",
+    "topic": "Carbon and Its Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "X (C4H8)"
+      },
+      {
+        "label": "B",
+        "text": "Y (C5H12)"
+      },
+      {
+        "label": "C",
+        "text": "Both X and Y"
+      },
+      {
+        "label": "D",
+        "text": "Neither X nor Y"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "C4H8 is an alkene (unsaturated hydrocarbon) and will undergo addition reactions due to the presence of a double bond. C5H12 is an alkane (saturated hydrocarbon) and primarily undergoes substitution reactions.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "In the Modern Periodic Table, what are the vertical columns and horizontal rows called, respectively?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Periods and Groups"
+      },
+      {
+        "label": "B",
+        "text": "Groups and Periods"
+      },
+      {
+        "label": "C",
+        "text": "Families and Series"
+      },
+      {
+        "label": "D",
+        "text": "Series and Families"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Vertical columns are called groups, and horizontal rows are called periods.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How does the metallic character of elements vary on moving down a vertical column (group) in the Modern Periodic Table?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increases"
+      },
+      {
+        "label": "B",
+        "text": "Decreases"
+      },
+      {
+        "label": "C",
+        "text": "Remains the same"
+      },
+      {
+        "label": "D",
+        "text": "First increases, then decreases"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Metallic character increases down a group because the atomic size increases, and the outermost electrons are more easily lost.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "How does the size of the atomic radius vary on moving from left to right in a horizontal row (period) in the Modern Periodic Table?",
+    "topic": "Periodic Classification of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increases"
+      },
+      {
+        "label": "B",
+        "text": "Decreases"
+      },
+      {
+        "label": "C",
+        "text": "Remains the same"
+      },
+      {
+        "label": "D",
+        "text": "First decreases, then increases"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Atomic radius generally decreases from left to right across a period because the nuclear charge increases, pulling the electrons closer to the nucleus.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

@@ -1,0 +1,326 @@
+[
+  {
+    "question_text": "Who wrote the novel 'Anandamath'?",
+    "topic": "Nationalism in India",
+    "options": [
+      {
+        "label": "A",
+        "text": "Rabindranath Tagore"
+      },
+      {
+        "label": "B",
+        "text": "Bankim Chandra Chattopadhyay"
+      },
+      {
+        "label": "C",
+        "text": "Munshi Premchand"
+      },
+      {
+        "label": "D",
+        "text": "Sharat Chandra Chattopadhyay"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Bankim Chandra Chattopadhyay wrote the novel 'Anandamath', which played a significant role in the Indian nationalist movement.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which river is associated with National Waterways No. 1?",
+    "topic": "Lifelines of National Economy",
+    "options": [
+      {
+        "label": "A",
+        "text": "Yamuna"
+      },
+      {
+        "label": "B",
+        "text": "Ganga"
+      },
+      {
+        "label": "C",
+        "text": "Brahmaputra"
+      },
+      {
+        "label": "D",
+        "text": "Narmada"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "National Waterways No. 1 is associated with the Ganga-Bhagirathi-Hooghly river system from Allahabad to Haldia.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Pressure groups are formed when people come together with:",
+    "topic": "Political Parties",
+    "options": [
+      {
+        "label": "A",
+        "text": "Divergent interests"
+      },
+      {
+        "label": "B",
+        "text": "Common interests, aspirations, or opinions"
+      },
+      {
+        "label": "C",
+        "text": "Conflicting objectives"
+      },
+      {
+        "label": "D",
+        "text": "Individual goals"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Pressure groups are formed when people with common interests, aspirations, or opinions come together to achieve a common objective by influencing government policies.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following best explains the meaning of 'challenge' in the context of development?",
+    "topic": "Democracy and Diversity",
+    "options": [
+      {
+        "label": "A",
+        "text": "A problem with no solution"
+      },
+      {
+        "label": "B",
+        "text": "A difficulty that carries an opportunity for progress"
+      },
+      {
+        "label": "C",
+        "text": "An obstacle that hinders growth"
+      },
+      {
+        "label": "D",
+        "text": "A setback that leads to failure"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A challenge is a difficulty that carries within it an opportunity for progress, implying that overcoming it can lead to positive development.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of a pressure group in India that functions as a branch of a political party?",
+    "topic": "Political Parties",
+    "options": [
+      {
+        "label": "A",
+        "text": "FICCI"
+      },
+      {
+        "label": "B",
+        "text": "ASSOCHAM"
+      },
+      {
+        "label": "C",
+        "text": "INTUC"
+      },
+      {
+        "label": "D",
+        "text": "Narmada Bachao Andolan"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "INTUC (Indian National Trade Union Congress) is a trade union that often functions as a branch of a political party.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the inherent problem in the double coincidence of wants?",
+    "topic": "Money and Credit",
+    "options": [
+      {
+        "label": "A",
+        "text": "One party must agree to sell while the other refuses to buy."
+      },
+      {
+        "label": "B",
+        "text": "Both parties must agree to sell and buy each other’s commodities at the same time."
+      },
+      {
+        "label": "C",
+        "text": "There is no problem; it is a perfect system."
+      },
+      {
+        "label": "D",
+        "text": "Only one party benefits from the transaction."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The inherent problem in the double coincidence of wants is that both parties must simultaneously agree to sell and buy each other's commodities for a transaction to occur.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of a consumer's 'right to choose'?",
+    "topic": "Consumer Rights",
+    "options": [
+      {
+        "label": "A",
+        "text": "Right to safety"
+      },
+      {
+        "label": "B",
+        "text": "Right to be informed"
+      },
+      {
+        "label": "C",
+        "text": "Right to seek redressal"
+      },
+      {
+        "label": "D",
+        "text": "Choosing between different brands of the same product"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The 'right to choose' allows consumers to select from a variety of products and services at competitive prices, ensuring they have options.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If you want to extract information about the functions of any government department, which right would you exercise?",
+    "topic": "Democracy and Diversity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Right to Education"
+      },
+      {
+        "label": "B",
+        "text": "Right to Information"
+      },
+      {
+        "label": "C",
+        "text": "Right to Equality"
+      },
+      {
+        "label": "D",
+        "text": "Right to Constitutional Remedies"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Right to Information Act empowers citizens to request and obtain information from government departments, promoting transparency and accountability.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following was NOT a step taken by the French revolutionaries to create a sense of collective identity amongst the French people?",
+    "topic": "The Rise of Nationalism in Europe",
+    "options": [
+      {
+        "label": "A",
+        "text": "The ideas of La Patrie (the fatherland) and Le Citoyen (the citizen)"
+      },
+      {
+        "label": "B",
+        "text": "Adoption of the tricolor flag"
+      },
+      {
+        "label": "C",
+        "text": "Establishment of a monarchy"
+      },
+      {
+        "label": "D",
+        "text": "A centralized administrative system"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The French Revolution aimed to abolish the monarchy and establish a republic. Therefore, the establishment of a monarchy was not a step taken to create a sense of collective identity.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following was a significant change in the life of Vietnamese people after colonization by the French?",
+    "topic": "Nationalism in Indo-China",
+    "options": [
+      {
+        "label": "A",
+        "text": "Increased autonomy and self-governance"
+      },
+      {
+        "label": "B",
+        "text": "Military and economic domination by the French"
+      },
+      {
+        "label": "C",
+        "text": "Preservation of Vietnamese culture and traditions"
+      },
+      {
+        "label": "D",
+        "text": "Strengthening of the Vietnamese economy"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "French colonization led to military and economic domination, reshaping Vietnamese culture and sparking nationalist movements.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Why did Gandhiji decide to launch a nationwide Satyagraha against the Rowlatt Act of 1919?",
+    "topic": "Nationalism in India",
+    "options": [
+      {
+        "label": "A",
+        "text": "Because it promoted political activities."
+      },
+      {
+        "label": "B",
+        "text": "Because it gave the government enormous powers to repress political activities."
+      },
+      {
+        "label": "C",
+        "text": "Because it was supported by Indian members."
+      },
+      {
+        "label": "D",
+        "text": "Because it allowed fair trials for political prisoners."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Gandhiji launched the Satyagraha because the Rowlatt Act gave the government excessive powers to suppress political activities and detain political prisoners without trial.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Folklore, songs, popular prints, and symbols played a vital role in shaping nationalism during the freedom struggle by:",
+    "topic": "Nationalism in India",
+    "options": [
+      {
+        "label": "A",
+        "text": "Promoting regional identities"
+      },
+      {
+        "label": "B",
+        "text": "Unifying people and instilling a sense of collective identity"
+      },
+      {
+        "label": "C",
+        "text": "Supporting colonial rule"
+      },
+      {
+        "label": "D",
+        "text": "Discouraging political participation"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "These cultural elements helped to unify people, instill a sense of collective identity, and inspire them to fight for freedom.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  }
+]

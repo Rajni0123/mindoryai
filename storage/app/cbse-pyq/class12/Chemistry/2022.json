@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Which of the following coordination entities is chiral?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "[Cr(en)3]3+"
+      },
+      {
+        "label": "B",
+        "text": "[Co(NH3)4Cl2]+"
+      },
+      {
+        "label": "C",
+        "text": "[Pt(NH3)2Cl2]"
+      },
+      {
+        "label": "D",
+        "text": "[Ni(CO)4]"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "[Cr(en)3]3+ is chiral because it has no plane of symmetry. The other complexes are achiral due to the presence of a plane of symmetry or tetrahedral geometry.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following will give a positive iodoform test?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ethanol"
+      },
+      {
+        "label": "B",
+        "text": "Methanol"
+      },
+      {
+        "label": "C",
+        "text": "Benzaldehyde"
+      },
+      {
+        "label": "D",
+        "text": "Benzoic acid"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Ethanol (CH3CH2OH) contains the CH3CH(OH)- group, which is required for a positive iodoform test. Methanol, benzaldehyde, and benzoic acid do not contain this group.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the IUPAC name of the complex [Co(en)2Cl2]Cl?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "Dichloridobis(ethylenediamine)cobalt(III) chloride"
+      },
+      {
+        "label": "B",
+        "text": "Bis(ethylenediamine)dichloridocobalt(III) chloride"
+      },
+      {
+        "label": "C",
+        "text": "Chloridobis(ethylenediamine)dichloridocobalt(III)"
+      },
+      {
+        "label": "D",
+        "text": "Dichlorobis(ethylenediamine)cobalt(II) chloride"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The correct IUPAC name is Bis(ethylenediamine)dichloridocobalt(III) chloride. Ligands are named alphabetically, and the oxidation state of cobalt is +3.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following amines can be prepared by Gabriel phthalimide synthesis?",
+    "topic": "Amines",
+    "options": [
+      {
+        "label": "A",
+        "text": "Aniline"
+      },
+      {
+        "label": "B",
+        "text": "Methylamine"
+      },
+      {
+        "label": "C",
+        "text": "Tert-butylamine"
+      },
+      {
+        "label": "D",
+        "text": "Diethylamine"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Gabriel phthalimide synthesis is used to prepare primary aliphatic amines. Methylamine is a primary aliphatic amine. Aniline is aromatic, and tert-butylamine and diethylamine are not primary.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the effect of temperature on the rate constant of a reaction?",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Rate constant decreases with increase in temperature"
+      },
+      {
+        "label": "B",
+        "text": "Rate constant increases with increase in temperature"
+      },
+      {
+        "label": "C",
+        "text": "Rate constant remains constant with increase in temperature"
+      },
+      {
+        "label": "D",
+        "text": "Rate constant is independent of temperature"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "According to the Arrhenius equation, the rate constant (k) increases with an increase in temperature (T).",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of cryolite in the metallurgy of aluminum?",
+    "topic": "General Principles and Processes of Isolation of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "To lower the melting point of alumina"
+      },
+      {
+        "label": "B",
+        "text": "To increase the electrical conductivity of alumina"
+      },
+      {
+        "label": "C",
+        "text": "Both A and B"
+      },
+      {
+        "label": "D",
+        "text": "To remove impurities from alumina"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Cryolite (Na3AlF6) lowers the melting point of alumina (Al2O3) and increases its electrical conductivity, making the electrolysis process more efficient.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following is the strongest oxidizing agent?",
+    "topic": "The p-Block Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "F2"
+      },
+      {
+        "label": "B",
+        "text": "Cl2"
+      },
+      {
+        "label": "C",
+        "text": "Br2"
+      },
+      {
+        "label": "D",
+        "text": "I2"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Fluorine (F2) is the strongest oxidizing agent among the halogens due to its high electronegativity and low bond dissociation enthalpy.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the product formed when phenol is treated with bromine water?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "o-Bromophenol"
+      },
+      {
+        "label": "B",
+        "text": "p-Bromophenol"
+      },
+      {
+        "label": "C",
+        "text": "2,4,6-Tribromophenol"
+      },
+      {
+        "label": "D",
+        "text": "Bromobenzene"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "When phenol is treated with bromine water, it undergoes electrophilic substitution at all ortho and para positions, forming 2,4,6-tribromophenol.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the coordination number of central metal atom in [Cu(NH3)4]SO4?",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "2"
+      },
+      {
+        "label": "B",
+        "text": "4"
+      },
+      {
+        "label": "C",
+        "text": "6"
+      },
+      {
+        "label": "D",
+        "text": "8"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "In [Cu(NH3)4]SO4, the central metal atom (Cu) is coordinated to four ammonia ligands. Therefore, the coordination number is 4.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is a condensation polymer?",
+    "topic": "Polymers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Polyethylene"
+      },
+      {
+        "label": "B",
+        "text": "PVC"
+      },
+      {
+        "label": "C",
+        "text": "Nylon 6,6"
+      },
+      {
+        "label": "D",
+        "text": "Teflon"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Nylon 6,6 is a condensation polymer formed by the reaction of hexamethylenediamine and adipic acid, with the elimination of water molecules.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of zinc chloride in Lucas reagent?",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Catalyst"
+      },
+      {
+        "label": "B",
+        "text": "Dehydrating agent"
+      },
+      {
+        "label": "C",
+        "text": "Oxidizing agent"
+      },
+      {
+        "label": "D",
+        "text": "Reducing agent"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Zinc chloride (ZnCl2) acts as a Lewis acid catalyst in Lucas reagent (anhydrous ZnCl2 + conc. HCl), facilitating the formation of carbocations from alcohols.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following is an example of a lyophilic colloid?",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gold sol"
+      },
+      {
+        "label": "B",
+        "text": "Starch sol"
+      },
+      {
+        "label": "C",
+        "text": "Fe(OH)3 sol"
+      },
+      {
+        "label": "D",
+        "text": "As2S3 sol"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Starch sol is a lyophilic colloid because it has a strong affinity for the dispersion medium (water). Gold sol, Fe(OH)3 sol, and As2S3 sol are lyophobic colloids.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the product formed when propanone reacts with methylmagnesium bromide followed by hydrolysis?",
+    "topic": "Aldehydes, Ketones and Carboxylic Acids",
+    "options": [
+      {
+        "label": "A",
+        "text": "Propan-1-ol"
+      },
+      {
+        "label": "B",
+        "text": "Propan-2-ol"
+      },
+      {
+        "label": "C",
+        "text": "2-Methylbutan-2-ol"
+      },
+      {
+        "label": "D",
+        "text": "Butan-2-ol"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Propanone (CH3COCH3) reacts with methylmagnesium bromide (CH3MgBr) to form a tertiary alcohol after hydrolysis, which is 2-Methylbutan-2-ol.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the mechanism of acid catalyzed dehydration of ethanol to ethene.",
+    "topic": "Alcohols, Phenols and Ethers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Protonation of alcohol -> Formation of carbocation -> Elimination of proton"
+      },
+      {
+        "label": "B",
+        "text": "Elimination of water -> Protonation of alcohol -> Formation of carbocation"
+      },
+      {
+        "label": "C",
+        "text": "Formation of carbocation -> Protonation of alcohol -> Elimination of proton"
+      },
+      {
+        "label": "D",
+        "text": "Protonation of alcohol -> Elimination of proton -> Formation of carbocation"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The mechanism involves three steps: protonation of alcohol to form oxonium ion, formation of carbocation by loss of water molecule, and elimination of a proton to form ethene.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are the differences between Schottky and Frenkel defects?",
+    "topic": "The Solid State",
+    "options": [
+      {
+        "label": "A",
+        "text": "Schottky defect involves missing ions, Frenkel defect involves displaced ions"
+      },
+      {
+        "label": "B",
+        "text": "Schottky defect involves displaced ions, Frenkel defect involves missing ions"
+      },
+      {
+        "label": "C",
+        "text": "Schottky defect affects density, Frenkel defect does not"
+      },
+      {
+        "label": "D",
+        "text": "Both A and C"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Schottky defect arises due to missing of equal number of cations and anions from the lattice sites, decreasing the density. Frenkel defect arises when an ion is displaced from its lattice site to an interstitial site, not affecting the density significantly.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the role of depressant in froth floatation process?",
+    "topic": "General Principles and Processes of Isolation of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "To selectively prevent one ore from forming froth"
+      },
+      {
+        "label": "B",
+        "text": "To increase the froth formation"
+      },
+      {
+        "label": "C",
+        "text": "To decrease the froth formation"
+      },
+      {
+        "label": "D",
+        "text": "To remove impurities"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Depressants are used to selectively prevent one type of ore particle from forming froth, allowing other ore particles to be concentrated.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Write the mechanism of SN1 reaction.",
+    "topic": "Haloalkanes and Haloarenes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Formation of carbocation followed by nucleophilic attack"
+      },
+      {
+        "label": "B",
+        "text": "Simultaneous bond breaking and bond forming"
+      },
+      {
+        "label": "C",
+        "text": "Nucleophilic attack followed by carbocation formation"
+      },
+      {
+        "label": "D",
+        "text": "Formation of transition state followed by product formation"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "SN1 reaction proceeds in two steps: first, the formation of a carbocation, which is the rate-determining step, followed by the nucleophilic attack on the carbocation.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are the factors affecting the rate of a chemical reaction?",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Concentration, Temperature, Catalyst"
+      },
+      {
+        "label": "B",
+        "text": "Pressure, Volume, Inert gas addition"
+      },
+      {
+        "label": "C",
+        "text": "Only Temperature"
+      },
+      {
+        "label": "D",
+        "text": "Only Concentration"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The rate of a chemical reaction is affected by factors such as concentration of reactants, temperature, presence of a catalyst, and surface area of reactants.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the difference between thermoplastic and thermosetting polymers?",
+    "topic": "Polymers",
+    "options": [
+      {
+        "label": "A",
+        "text": "Thermoplastics can be repeatedly softened upon heating, thermosetting polymers cannot"
+      },
+      {
+        "label": "B",
+        "text": "Thermosetting polymers can be repeatedly softened upon heating, thermoplastics cannot"
+      },
+      {
+        "label": "C",
+        "text": "Both can be repeatedly softened"
+      },
+      {
+        "label": "D",
+        "text": "Neither can be repeatedly softened"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Thermoplastics can be repeatedly softened upon heating and hardened upon cooling due to weak intermolecular forces. Thermosetting polymers undergo irreversible chemical changes upon heating, forming a rigid, cross-linked structure.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the cleansing action of soaps.",
+    "topic": "Surface Chemistry",
+    "options": [
+      {
+        "label": "A",
+        "text": "Soap molecules form micelles that dissolve grease and oil"
+      },
+      {
+        "label": "B",
+        "text": "Soap molecules react chemically with grease and oil"
+      },
+      {
+        "label": "C",
+        "text": "Soap molecules emulsify grease and oil"
+      },
+      {
+        "label": "D",
+        "text": "Both A and C"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Soap molecules have a hydrophobic tail that dissolves in grease and oil and a hydrophilic head that interacts with water. They form micelles, encapsulating the grease and oil, and emulsify them, allowing them to be washed away with water.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are the differences between DNA and RNA?",
+    "topic": "Biomolecules",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA contains deoxyribose, RNA contains ribose; DNA is double-stranded, RNA is single-stranded"
+      },
+      {
+        "label": "B",
+        "text": "DNA contains ribose, RNA contains deoxyribose; DNA is single-stranded, RNA is double-stranded"
+      },
+      {
+        "label": "C",
+        "text": "DNA contains uracil, RNA contains thymine"
+      },
+      {
+        "label": "D",
+        "text": "DNA is only found in the nucleus, RNA is only found in the cytoplasm"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "DNA contains deoxyribose sugar and is double-stranded, while RNA contains ribose sugar and is typically single-stranded. DNA contains thymine, while RNA contains uracil.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the Werner's theory of coordination compounds.",
+    "topic": "Coordination Compounds",
+    "options": [
+      {
+        "label": "A",
+        "text": "Metal ions have primary and secondary valencies; primary valencies are ionizable, secondary are non-ionizable"
+      },
+      {
+        "label": "B",
+        "text": "Metal ions only have one type of valency"
+      },
+      {
+        "label": "C",
+        "text": "Ligands are directly bonded to the metal through ionic bonds"
+      },
+      {
+        "label": "D",
+        "text": "Complexes are always tetrahedral"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Werner's theory states that metal ions have two types of valencies: primary (ionizable) and secondary (non-ionizable). Primary valencies are satisfied by negative ions, while secondary valencies are satisfied by neutral molecules or negative ions.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the role of potassium ethyl xanthate in froth floatation?",
+    "topic": "General Principles and Processes of Isolation of Elements",
+    "options": [
+      {
+        "label": "A",
+        "text": "Collector"
+      },
+      {
+        "label": "B",
+        "text": "Frother"
+      },
+      {
+        "label": "C",
+        "text": "Depressant"
+      },
+      {
+        "label": "D",
+        "text": "Reducing agent"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Potassium ethyl xanthate acts as a collector in froth floatation. It makes the ore particles hydrophobic, allowing them to attach to the froth.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the effect of catalyst on activation energy?",
+    "topic": "Chemical Kinetics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Catalyst lowers the activation energy"
+      },
+      {
+        "label": "B",
+        "text": "Catalyst increases the activation energy"
+      },
+      {
+        "label": "C",
+        "text": "Catalyst does not affect the activation energy"
+      },
+      {
+        "label": "D",
+        "text": "Catalyst doubles the activation energy"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A catalyst provides an alternative reaction pathway with a lower activation energy, thus increasing the rate of the reaction.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the product formed when aniline reacts with bromine water?",
+    "topic": "Amines",
+    "options": [
+      {
+        "label": "A",
+        "text": "o-Bromoaniline"
+      },
+      {
+        "label": "B",
+        "text": "p-Bromoaniline"
+      },
+      {
+        "label": "C",
+        "text": "2,4,6-Tribromoaniline"
+      },
+      {
+        "label": "D",
+        "text": "Bromobenzene"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Aniline reacts with bromine water to give 2,4,6-tribromoaniline due to the high activating effect of the -NH2 group.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

@@ -1,0 +1,650 @@
+[
+  {
+    "question_text": "What is the purpose of the notices in the lost and found column?",
+    "topic": "Notice Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "To advertise items for sale"
+      },
+      {
+        "label": "B",
+        "text": "To report lost or found items"
+      },
+      {
+        "label": "C",
+        "text": "To announce upcoming events"
+      },
+      {
+        "label": "D",
+        "text": "To provide contact information"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The primary purpose of notices in the lost and found column is to inform the public about items that have been lost or found, with the intention of reuniting owners with their belongings.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is NOT a characteristic of a good report?",
+    "topic": "Report Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "Objectivity"
+      },
+      {
+        "label": "B",
+        "text": "Clarity"
+      },
+      {
+        "label": "C",
+        "text": "Bias"
+      },
+      {
+        "label": "D",
+        "text": "Accuracy"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "A good report should be objective, clear, and accurate. Bias undermines the credibility and reliability of the report.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the main theme of the poem 'My Mother at Sixty-Six'?",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "The joys of motherhood"
+      },
+      {
+        "label": "B",
+        "text": "The fear of loss and aging"
+      },
+      {
+        "label": "C",
+        "text": "The beauty of nature"
+      },
+      {
+        "label": "D",
+        "text": "The importance of travel"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem primarily explores the poet's fear of losing her mother due to aging and the inevitable separation that death brings.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'The Rattrap', what does the peddler do to survive?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "He works as a blacksmith"
+      },
+      {
+        "label": "B",
+        "text": "He begs for money"
+      },
+      {
+        "label": "C",
+        "text": "He sells rattraps"
+      },
+      {
+        "label": "D",
+        "text": "He steals from people"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The peddler makes and sells rattraps, but he also resorts to petty theft to supplement his income and survive.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the title 'Indigo'?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the color of the sky"
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the British flag"
+      },
+      {
+        "label": "C",
+        "text": "It represents the crop that the peasants were forced to grow"
+      },
+      {
+        "label": "D",
+        "text": "It is the name of a village in Champaran"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The title 'Indigo' is significant because it refers to the indigo crop that the Indian peasants in Champaran were forced to cultivate under an oppressive agreement with the British landlords.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does Mr. Lamb teach Derry in 'On the Face of It'?",
+    "topic": "On the Face of It",
+    "options": [
+      {
+        "label": "A",
+        "text": "To hate everyone"
+      },
+      {
+        "label": "B",
+        "text": "To be independent and value himself"
+      },
+      {
+        "label": "C",
+        "text": "To become a gardener"
+      },
+      {
+        "label": "D",
+        "text": "To avoid people with disabilities"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Mr. Lamb teaches Derry to overcome his feelings of inferiority and isolation by encouraging him to value himself and embrace life's opportunities, regardless of his physical appearance.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the central theme of 'Lost Spring'?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "The beauty of childhood"
+      },
+      {
+        "label": "B",
+        "text": "The exploitation of child labor and the loss of childhood dreams"
+      },
+      {
+        "label": "C",
+        "text": "The importance of education"
+      },
+      {
+        "label": "D",
+        "text": "The dangers of poverty"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story revolves around the grim reality of child labor and the loss of innocence and dreams experienced by children forced into such circumstances.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the tiger king's obsession with killing tigers?",
+    "topic": "The Tiger King",
+    "options": [
+      {
+        "label": "A",
+        "text": "He enjoys hunting"
+      },
+      {
+        "label": "B",
+        "text": "He wants to prove his bravery"
+      },
+      {
+        "label": "C",
+        "text": "He wants to disprove the astrologer's prediction"
+      },
+      {
+        "label": "D",
+        "text": "He wants to protect his kingdom"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The Tiger King's obsession stems from an astrologer's prediction that he would be killed by a tiger. He is determined to defy this fate by killing all the tigers in his kingdom.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the moral of the story 'The Third Level'?",
+    "topic": "The Third Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "Time travel is possible"
+      },
+      {
+        "label": "B",
+        "text": "Escapism can be a response to modern anxieties"
+      },
+      {
+        "label": "C",
+        "text": "The importance of collecting stamps"
+      },
+      {
+        "label": "D",
+        "text": "The dangers of mental illness"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story suggests that the desire to escape from the pressures and anxieties of modern life can lead to escapism, as seen in Charley's longing for a simpler, more peaceful past.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the white elephants in 'Should Wizard Hit Mommy'?",
+    "topic": "Should Wizard Hit Mommy?",
+    "options": [
+      {
+        "label": "A",
+        "text": "They represent wealth"
+      },
+      {
+        "label": "B",
+        "text": "They symbolize Roger Skunk's unique identity"
+      },
+      {
+        "label": "C",
+        "text": "They are a gift from the wizard"
+      },
+      {
+        "label": "D",
+        "text": "They represent the mother's love"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The white elephants are not directly mentioned in the story. The story revolves around Roger Skunk's unique identity (his smell) and whether he should change it to fit in, highlighting the conflict between conformity and individuality.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does the author describe Antarctica in 'Journey to the End of the Earth'?",
+    "topic": "Journey to the End of the Earth",
+    "options": [
+      {
+        "label": "A",
+        "text": "As a barren and lifeless wasteland"
+      },
+      {
+        "label": "B",
+        "text": "As a pristine and crucial environment for understanding Earth's past and future"
+      },
+      {
+        "label": "C",
+        "text": "As a tourist destination"
+      },
+      {
+        "label": "D",
+        "text": "As a source of valuable minerals"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The author describes Antarctica as a pristine and vital environment that holds valuable clues about Earth's geological history, climate change, and the interconnectedness of ecosystems.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the title 'Memories of Childhood'?",
+    "topic": "Memories of Childhood",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the author's happy childhood"
+      },
+      {
+        "label": "B",
+        "text": "It highlights the lasting impact of childhood experiences on one's identity"
+      },
+      {
+        "label": "C",
+        "text": "It describes the author's favorite toys"
+      },
+      {
+        "label": "D",
+        "text": "It is about the author's school friends"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title emphasizes how childhood experiences, both positive and negative, shape an individual's character, values, and perspectives throughout their life.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of silence in the poem 'Keeping Quiet'?",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "It represents death"
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes inactivity and stagnation"
+      },
+      {
+        "label": "C",
+        "text": "It allows for introspection and understanding"
+      },
+      {
+        "label": "D",
+        "text": "It represents fear"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "In the poem, silence is not merely the absence of sound but a state of introspection that allows individuals to connect with themselves and others, fostering peace and understanding.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does Aunt Jennifer create in her embroidery in 'Aunt Jennifer's Tigers'?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "A garden"
+      },
+      {
+        "label": "B",
+        "text": "A scene of tigers prancing freely"
+      },
+      {
+        "label": "C",
+        "text": "A portrait of her husband"
+      },
+      {
+        "label": "D",
+        "text": "A map of the world"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Aunt Jennifer creates tigers prancing freely across a screen. These tigers symbolize freedom and strength, contrasting with her own oppressed state within her marriage.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the central idea of the poem 'A Thing of Beauty'?",
+    "topic": "A Thing of Beauty",
+    "options": [
+      {
+        "label": "A",
+        "text": "Beauty is temporary"
+      },
+      {
+        "label": "B",
+        "text": "Beauty is a constant source of joy and comfort"
+      },
+      {
+        "label": "C",
+        "text": "Beauty is only found in nature"
+      },
+      {
+        "label": "D",
+        "text": "Beauty is superficial"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem emphasizes that beauty, in its various forms, provides lasting joy and solace, helping us cope with the hardships and sorrows of life.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the title 'The Last Lesson'?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the last day of school"
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the loss of language and cultural identity"
+      },
+      {
+        "label": "C",
+        "text": "It is about the teacher's retirement"
+      },
+      {
+        "label": "D",
+        "text": "It marks the end of an era"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title 'The Last Lesson' signifies the last French lesson given by M. Hamel, symbolizing the loss of the French language and the cultural identity of the people of Alsace due to the Prussian occupation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does the author use imagery in 'Deep Water' to convey the feeling of terror?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "By describing the beauty of the water"
+      },
+      {
+        "label": "B",
+        "text": "By using vivid descriptions of the dark water and the author's struggle to breathe"
+      },
+      {
+        "label": "C",
+        "text": "By focusing on the sounds of the pool"
+      },
+      {
+        "label": "D",
+        "text": "By describing the other swimmers in the pool"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The author employs vivid imagery to depict the dark, murky water and his desperate attempts to breathe, creating a palpable sense of terror and claustrophobia.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the ending of 'The Enemy'?",
+    "topic": "The Enemy",
+    "options": [
+      {
+        "label": "A",
+        "text": "It shows the triumph of war"
+      },
+      {
+        "label": "B",
+        "text": "It highlights the conflict between duty and humanity"
+      },
+      {
+        "label": "C",
+        "text": "It emphasizes the importance of revenge"
+      },
+      {
+        "label": "D",
+        "text": "It demonstrates the power of love"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The ending underscores the moral dilemma faced by Dr. Sadao, who chooses to prioritize his humanity over his duty to his country, ultimately allowing the American soldier to escape.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How does the story 'Evans Tries an O-Level' create suspense?",
+    "topic": "Evans Tries an O-Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "By revealing the entire plan at the beginning"
+      },
+      {
+        "label": "B",
+        "text": "By using clever plot twists and red herrings to keep the reader guessing"
+      },
+      {
+        "label": "C",
+        "text": "By focusing on the mundane details of the exam"
+      },
+      {
+        "label": "D",
+        "text": "By making the characters predictable"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story employs clever plot twists, red herrings, and a cat-and-mouse game between Evans and the prison authorities to maintain suspense and keep the reader engaged until the very end.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Discuss the significance of the title 'Going Places'.",
+    "topic": "Going Places",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the places Sophie has visited."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes Sophie's dreams and fantasies of a better future."
+      },
+      {
+        "label": "C",
+        "text": "It describes Sophie's travel plans."
+      },
+      {
+        "label": "D",
+        "text": "It refers to the places her family has lived."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title 'Going Places' is significant because it represents Sophie's aspirations and imaginative journeys, which are often unrealistic and disconnected from her actual circumstances. It highlights her desire for a more exciting and fulfilling life.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "How does the story 'The Third Level' blend reality and fantasy?",
+    "topic": "The Third Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "It presents a straightforward account of historical events."
+      },
+      {
+        "label": "B",
+        "text": "It mixes Charley's everyday life with his imagined journey to the past."
+      },
+      {
+        "label": "C",
+        "text": "It focuses solely on Charley's psychological state."
+      },
+      {
+        "label": "D",
+        "text": "It provides a realistic depiction of life in the 1890s."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story blends reality and fantasy by interweaving Charley's ordinary life with his imagined experiences on the third level of Grand Central Station, creating a sense of ambiguity and blurring the lines between what is real and what is imagined.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Analyze the character of Mr. Lamb in 'On the Face of It'. What makes him a positive influence on Derry?",
+    "topic": "On the Face of It",
+    "options": [
+      {
+        "label": "A",
+        "text": "Mr. Lamb is a negative influence because he is also disabled."
+      },
+      {
+        "label": "B",
+        "text": "Mr. Lamb's positive outlook, acceptance of himself, and encouragement of Derry's potential help Derry overcome his insecurities."
+      },
+      {
+        "label": "C",
+        "text": "Mr. Lamb ignores Derry's feelings."
+      },
+      {
+        "label": "D",
+        "text": "Mr. Lamb is only kind to Derry because he is lonely."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Mr. Lamb's positive outlook on life, his acceptance of his own disability, and his encouragement of Derry's potential are key factors in helping Derry overcome his feelings of isolation and insecurity. He teaches Derry to value himself and embrace life's opportunities.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "How does the story 'Indigo' reflect the theme of effective leadership?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "It shows how leaders should use force to achieve their goals."
+      },
+      {
+        "label": "B",
+        "text": "It illustrates how Gandhi's strategic non-violent methods and dedication to the cause empowered the peasants and brought about change."
+      },
+      {
+        "label": "C",
+        "text": "It emphasizes the importance of wealth in leadership."
+      },
+      {
+        "label": "D",
+        "text": "It shows how leaders should avoid conflict at all costs."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story demonstrates how Gandhi's strategic use of non-violent methods, his unwavering dedication to the cause, and his ability to empower the peasants were crucial in achieving justice and bringing about significant change in Champaran. This exemplifies effective and ethical leadership.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Discuss the symbolism of the rattrap in Selma Lagerlöf's 'The Rattrap'.",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "It represents the beauty of nature."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the world's temptations and the human tendency to fall into traps of greed and materialism."
+      },
+      {
+        "label": "C",
+        "text": "It represents the peddler's skill as a craftsman."
+      },
+      {
+        "label": "D",
+        "text": "It symbolizes the warmth and generosity of the ironmaster."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The rattrap serves as a powerful symbol of the world's temptations and the human tendency to be ensnared by greed and materialism. It highlights the idea that worldly possessions and desires can trap individuals, leading them astray from their true values.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  }
+]

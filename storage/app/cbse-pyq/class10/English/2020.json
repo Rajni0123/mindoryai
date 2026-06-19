@@ -1,0 +1,272 @@
+[
+  {
+    "question_text": "How did the postal service begin?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Due to the invention of the printing press"
+      },
+      {
+        "label": "B",
+        "text": "As a means of maintaining communication within an empire"
+      },
+      {
+        "label": "C",
+        "text": "For delivering goods and merchandise"
+      },
+      {
+        "label": "D",
+        "text": "To facilitate personal communication between individuals"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that postal service originated from the necessity of maintaining communications between different parts of an empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the primary advantage of the postal service for rulers?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "It allowed them to send gifts to other rulers."
+      },
+      {
+        "label": "B",
+        "text": "It enabled them to keep track of events and the progress of their army."
+      },
+      {
+        "label": "C",
+        "text": "It helped them collect taxes more efficiently."
+      },
+      {
+        "label": "D",
+        "text": "It facilitated trade with distant lands."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that the postal service enabled the emperor to keep track of all that was happening, including the condition and progress of his army.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How are postal services different today compared to their early forms?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are slower and less reliable."
+      },
+      {
+        "label": "B",
+        "text": "They are primarily used for government purposes."
+      },
+      {
+        "label": "C",
+        "text": "They rely solely on horse-and-foot couriers."
+      },
+      {
+        "label": "D",
+        "text": "They utilize air, railway, and motor services for faster delivery."
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "The passage states that modern communication means have improved greatly, with air, railway, and motor services playing an important role in carrying letters speedily.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What difficulties did mail runners face in the early postal system?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Lack of proper training and equipment"
+      },
+      {
+        "label": "B",
+        "text": "Navigating through jungles, climbing hills, crossing rivers, and facing wild animals and dacoits"
+      },
+      {
+        "label": "C",
+        "text": "Dealing with bureaucratic red tape and corruption"
+      },
+      {
+        "label": "D",
+        "text": "Competition from rival postal services"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that mail runners had to pass through jungles, climb hills, cross rivers, and brave wild animals and dacoits.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Who is mentioned as the first person to begin a postal organization in the passage?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sher Shah"
+      },
+      {
+        "label": "B",
+        "text": "Akbar"
+      },
+      {
+        "label": "C",
+        "text": "Alauddin Khilji"
+      },
+      {
+        "label": "D",
+        "text": "Lord Clive"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that Alauddin Khilji had a horse-and-foot postal organization.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How did Sher Shah contribute to the promotion of postal services?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "By introducing the use of camels for postal transport"
+      },
+      {
+        "label": "B",
+        "text": "By building a 2,000-mile road and establishing horse despatches"
+      },
+      {
+        "label": "C",
+        "text": "By establishing major post offices in Bombay and Madras"
+      },
+      {
+        "label": "D",
+        "text": "By opening the postal service to the public"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that Sher Shah built a 2,000-mile road and established horse despatches throughout the Empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, where were the first major post offices established by the East India Company?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Delhi and Agra"
+      },
+      {
+        "label": "B",
+        "text": "Bombay and Madras"
+      },
+      {
+        "label": "C",
+        "text": "Calcutta and Surat"
+      },
+      {
+        "label": "D",
+        "text": "Lahore and Karachi"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that the East India Company established major post offices at Bombay and Madras.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the purpose of the special copper token mentioned in the passage?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "To serve as identification for mail runners"
+      },
+      {
+        "label": "B",
+        "text": "To facilitate the payment of postage"
+      },
+      {
+        "label": "C",
+        "text": "To be used as currency in post offices"
+      },
+      {
+        "label": "D",
+        "text": "To seal letters and ensure their privacy"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that a special copper token was struck to facilitate the payment of postage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what is a major drawback of instant foods?",
+    "topic": "Health and Medicine",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are difficult to prepare."
+      },
+      {
+        "label": "B",
+        "text": "They lack sufficient nutrition and fibre."
+      },
+      {
+        "label": "C",
+        "text": "They are too expensive for the average consumer."
+      },
+      {
+        "label": "D",
+        "text": "They require specialized cooking equipment."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage highlights that instant foods are calorie-packed, contain more taste enhancers, little nutrition, and lack fibre.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "The passage mentions Nestle India being embroiled in a scare. What was the concern regarding their Maggi noodles?",
+    "topic": "Health and Medicine",
+    "options": [
+      {
+        "label": "A",
+        "text": "They contained excessive amounts of sugar."
+      },
+      {
+        "label": "B",
+        "text": "They were found to have dangerously high levels of lead."
+      },
+      {
+        "label": "C",
+        "text": "They were contaminated with harmful bacteria."
+      },
+      {
+        "label": "D",
+        "text": "They caused allergic reactions in many consumers."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that Nestle India was embroiled in a scare over Maggi noodles allegedly containing dangerously high levels of lead.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

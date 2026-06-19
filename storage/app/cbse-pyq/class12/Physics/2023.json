@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "A metallic wire of resistance R is stretched to double its length. What is the new resistance of the wire?",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "R"
+      },
+      {
+        "label": "B",
+        "text": "2R"
+      },
+      {
+        "label": "C",
+        "text": "4R"
+      },
+      {
+        "label": "D",
+        "text": "R/2"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "When the length of the wire is doubled, the area of cross-section becomes half. Resistance R = ρl/A. New resistance R' = ρ(2l)/(A/2) = 4ρl/A = 4R.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The magnetic field at the center of a current-carrying circular loop of radius r is proportional to:",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "r"
+      },
+      {
+        "label": "B",
+        "text": "1/r"
+      },
+      {
+        "label": "C",
+        "text": "r^2"
+      },
+      {
+        "label": "D",
+        "text": "1/r^2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The magnetic field at the center of a current-carrying circular loop is given by B = (μ₀I)/(2r), which is inversely proportional to the radius r.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following electromagnetic waves has the shortest wavelength?",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "Radio waves"
+      },
+      {
+        "label": "B",
+        "text": "Microwaves"
+      },
+      {
+        "label": "C",
+        "text": "Infrared waves"
+      },
+      {
+        "label": "D",
+        "text": "Gamma rays"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Gamma rays have the shortest wavelength in the electromagnetic spectrum.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The refractive index of a material is 1.5. What is the speed of light in that material?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "2 x 10^8 m/s"
+      },
+      {
+        "label": "B",
+        "text": "3 x 10^8 m/s"
+      },
+      {
+        "label": "C",
+        "text": "4.5 x 10^8 m/s"
+      },
+      {
+        "label": "D",
+        "text": "1.5 x 10^8 m/s"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Refractive index n = c/v, where c is the speed of light in vacuum and v is the speed of light in the material.  Therefore, v = c/n = (3 x 10^8 m/s) / 1.5 = 2 x 10^8 m/s.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the de Broglie wavelength of an electron accelerated through a potential difference of V volts?",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "h/√(2meV)"
+      },
+      {
+        "label": "B",
+        "text": "√(2meV)/h"
+      },
+      {
+        "label": "C",
+        "text": "h/(meV)"
+      },
+      {
+        "label": "D",
+        "text": "meV/h"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The de Broglie wavelength λ = h/p, where p is the momentum. Kinetic energy KE = eV = p²/2m.  Therefore, p = √(2meV), and λ = h/√(2meV).",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the working principle of a photodiode.",
+    "topic": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+    "options": [
+      {
+        "label": "A",
+        "text": "A photodiode is a p-n junction diode which converts optical energy into electrical energy. When light falls on the depletion region, electron-hole pairs are generated. These carriers are separated by the junction field, resulting in a photocurrent."
+      },
+      {
+        "label": "B",
+        "text": "A photodiode is a device that emits light when a current passes through it."
+      },
+      {
+        "label": "C",
+        "text": "A photodiode is a type of transistor."
+      },
+      {
+        "label": "D",
+        "text": "A photodiode is a device that blocks current in one direction."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A photodiode operates on the principle of converting light energy into electrical energy. When photons strike the depletion region of the p-n junction, electron-hole pairs are generated. The electric field at the junction separates these carriers, creating a photocurrent that is proportional to the intensity of the incident light.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "State the laws of reflection.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "The angle of incidence is equal to the angle of reflection, and the incident ray, the reflected ray, and the normal to the surface at the point of incidence, all lie in the same plane."
+      },
+      {
+        "label": "B",
+        "text": "The angle of incidence is greater than the angle of reflection, and the incident ray, the reflected ray, and the normal to the surface at the point of incidence, all lie in different planes."
+      },
+      {
+        "label": "C",
+        "text": "The angle of incidence is less than the angle of reflection, and the incident ray, the reflected ray, and the normal to the surface at the point of incidence, all lie in the same plane."
+      },
+      {
+        "label": "D",
+        "text": "The angle of incidence is equal to the angle of refraction, and the incident ray, the refracted ray, and the normal to the surface at the point of incidence, all lie in the same plane."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The laws of reflection state that the angle of incidence is equal to the angle of reflection, and the incident ray, the reflected ray, and the normal to the surface at the point of incidence, all lie in the same plane.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Define the term 'drift velocity' in the context of current electricity.",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "The average velocity attained by charged particles in a material due to an electric field."
+      },
+      {
+        "label": "B",
+        "text": "The maximum velocity attained by charged particles in a material due to an electric field."
+      },
+      {
+        "label": "C",
+        "text": "The random velocity of charged particles in a material in the absence of an electric field."
+      },
+      {
+        "label": "D",
+        "text": "The velocity of light in a material."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Drift velocity is the average velocity attained by charged particles (e.g., electrons) in a material due to an electric field. It is the net velocity of the particles in a specific direction due to the applied field.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the effect on the interference fringes in Young's double-slit experiment if the separation between the slits is increased?",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "The fringe width increases."
+      },
+      {
+        "label": "B",
+        "text": "The fringe width decreases."
+      },
+      {
+        "label": "C",
+        "text": "The fringe width remains the same."
+      },
+      {
+        "label": "D",
+        "text": "The fringes disappear."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The fringe width β in Young's double-slit experiment is given by β = λD/d, where λ is the wavelength of light, D is the distance between the slits and the screen, and d is the separation between the slits. If d increases, β decreases.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A parallel plate capacitor has a capacitance C. If the distance between the plates is doubled and the area of each plate is halved, what is the new capacitance?",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "C/4"
+      },
+      {
+        "label": "B",
+        "text": "C/2"
+      },
+      {
+        "label": "C",
+        "text": "C"
+      },
+      {
+        "label": "D",
+        "text": "2C"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The capacitance of a parallel plate capacitor is given by C = ε₀A/d, where A is the area of the plates and d is the distance between them. If the distance is doubled (d' = 2d) and the area is halved (A' = A/2), the new capacitance C' = ε₀(A/2)/(2d) = (1/4)ε₀A/d = C/4.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the concept of 'motional emf'.",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "The emf induced in a conductor due to its motion in a magnetic field."
+      },
+      {
+        "label": "B",
+        "text": "The emf induced in a stationary conductor due to a changing magnetic field."
+      },
+      {
+        "label": "C",
+        "text": "The emf induced in a circuit due to a changing current."
+      },
+      {
+        "label": "D",
+        "text": "The emf induced in a battery due to its internal resistance."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Motional emf is the electromotive force induced in a conductor when it moves through a magnetic field. This occurs because the magnetic force on the moving charges in the conductor causes them to separate, creating a potential difference.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Draw a labelled ray diagram showing the formation of an image by a compound microscope.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "Diagram showing two converging lenses (objective and eyepiece), object near the objective, intermediate image formed between the lenses, and final magnified virtual image formed by the eyepiece."
+      },
+      {
+        "label": "B",
+        "text": "Diagram showing a single converging lens forming a real image."
+      },
+      {
+        "label": "C",
+        "text": "Diagram showing a diverging lens forming a virtual image."
+      },
+      {
+        "label": "D",
+        "text": "Diagram showing a prism dispersing light into different colors."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The ray diagram for a compound microscope should show two converging lenses: the objective and the eyepiece. The object is placed near the objective lens, forming a real, inverted, and magnified intermediate image. This intermediate image acts as the object for the eyepiece, which forms a final magnified virtual image.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Derive the expression for the energy stored in a capacitor.",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "U = (1/2)CV^2, derived by integrating the work done to charge the capacitor from 0 to Q."
+      },
+      {
+        "label": "B",
+        "text": "U = QV, derived from Ohm's law."
+      },
+      {
+        "label": "C",
+        "text": "U = (1/2)LI^2, derived from Faraday's law."
+      },
+      {
+        "label": "D",
+        "text": "U = IR, derived from Kirchhoff's laws."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The energy stored in a capacitor is derived by calculating the work done to charge the capacitor. The work done to add a small charge dQ at a potential V is dW = VdQ = (Q/C)dQ. Integrating from 0 to Q gives U = ∫dW = ∫(Q/C)dQ = (1/2)Q²/C = (1/2)CV².",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the working principle of a transformer. What are the different types of energy losses in a transformer?",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "A transformer works on the principle of mutual induction. Energy losses include copper losses, iron losses (hysteresis and eddy current losses), and flux leakage."
+      },
+      {
+        "label": "B",
+        "text": "A transformer works on the principle of self-induction. Energy losses include only copper losses."
+      },
+      {
+        "label": "C",
+        "text": "A transformer works on the principle of Ohm's law. Energy losses include only iron losses."
+      },
+      {
+        "label": "D",
+        "text": "A transformer works on the principle of the photoelectric effect. There are no energy losses in a transformer."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A transformer works on the principle of mutual induction, where a changing magnetic flux in the primary coil induces an emf in the secondary coil. Energy losses include copper losses (due to resistance in the windings), iron losses (hysteresis and eddy current losses in the core), flux leakage (magnetic flux not linking both coils), and humming noise (magnetostriction).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "State and explain Ampere's circuital law. Apply it to find the magnetic field inside a long straight solenoid carrying current.",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ampere's law states that the line integral of B.dl around any closed loop is equal to μ₀ times the total current enclosed by the loop. Applying it to a solenoid gives B = μ₀nI, where n is the number of turns per unit length."
+      },
+      {
+        "label": "B",
+        "text": "Ampere's law states that the magnetic field is inversely proportional to the current. Applying it to a solenoid gives B = I/(2πr)."
+      },
+      {
+        "label": "C",
+        "text": "Ampere's law states that the electric field is proportional to the charge enclosed. Applying it to a solenoid gives E = Q/(ε₀A)."
+      },
+      {
+        "label": "D",
+        "text": "Ampere's law states that the force between two charges is proportional to the product of the charges. Applying it to a solenoid gives F = k(q1q2)/r²."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Ampere's circuital law states that the line integral of the magnetic field B around any closed loop is equal to μ₀ times the total current enclosed by the loop (∮ B.dl = μ₀I). Applying this to a long straight solenoid involves choosing an Amperian loop inside the solenoid. The magnetic field is approximately uniform inside and zero outside. The integral simplifies to B*l = μ₀(n*l*I), where n is the number of turns per unit length. Thus, B = μ₀nI.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the working of a full-wave rectifier using a p-n junction diode. Draw the circuit diagram and input/output waveforms.",
+    "topic": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+    "options": [
+      {
+        "label": "A",
+        "text": "A full-wave rectifier uses two diodes to convert AC to DC, conducting during both positive and negative half-cycles. The circuit diagram shows a center-tapped transformer and two diodes connected to the load resistor. The output waveform is a pulsating DC with reduced ripple compared to a half-wave rectifier."
+      },
+      {
+        "label": "B",
+        "text": "A full-wave rectifier uses a single diode to convert AC to DC, conducting only during the positive half-cycle."
+      },
+      {
+        "label": "C",
+        "text": "A full-wave rectifier uses a transistor to amplify the signal."
+      },
+      {
+        "label": "D",
+        "text": "A full-wave rectifier uses a capacitor to store energy."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A full-wave rectifier uses two diodes to rectify both halves of the AC input. A center-tapped transformer is used, and each diode conducts during one half-cycle. The output is a pulsating DC voltage. The circuit diagram shows the transformer, diodes, and load resistor. The input waveform is a sine wave, and the output waveform is a rectified DC with smaller gaps compared to a half-wave rectifier.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are coherent sources of light? How are they important in observing sustained interference pattern?",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Coherent sources emit light waves with a constant phase difference and the same frequency. They are essential for sustained interference because they ensure that the interference pattern remains stable over time."
+      },
+      {
+        "label": "B",
+        "text": "Coherent sources emit light waves with random phase differences and different frequencies. They are essential for observing diffraction patterns."
+      },
+      {
+        "label": "C",
+        "text": "Coherent sources emit light waves with increasing amplitude. They are essential for observing polarization."
+      },
+      {
+        "label": "D",
+        "text": "Coherent sources emit light waves with decreasing wavelength. They are essential for observing the photoelectric effect."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Coherent sources of light are sources that emit light waves having a constant phase difference and the same frequency. They are crucial for observing a sustained interference pattern because the constant phase relationship ensures that the bright and dark fringes remain in fixed positions over time. If the sources were incoherent, the phase difference would change randomly, leading to a blurred or non-existent interference pattern.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the working of a Zener diode as a voltage regulator.",
+    "topic": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+    "options": [
+      {
+        "label": "A",
+        "text": "A Zener diode maintains a constant voltage across its terminals when reverse biased above its breakdown voltage. It diverts excess current through a series resistor, keeping the output voltage stable."
+      },
+      {
+        "label": "B",
+        "text": "A Zener diode amplifies the voltage when forward biased."
+      },
+      {
+        "label": "C",
+        "text": "A Zener diode blocks the voltage when reverse biased."
+      },
+      {
+        "label": "D",
+        "text": "A Zener diode oscillates at a constant frequency."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A Zener diode, when reverse biased above its breakdown voltage (Zener voltage), maintains a nearly constant voltage across its terminals. In a voltage regulator circuit, the Zener diode is connected in parallel with the load. When the input voltage increases, the excess current flows through the Zener diode (and a series resistor), keeping the voltage across the load constant at the Zener voltage.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the significance of the Bohr model of the atom?",
+    "topic": "Atoms",
+    "options": [
+      {
+        "label": "A",
+        "text": "The Bohr model successfully explained the stability of the atom and the discrete nature of atomic spectra by postulating quantized energy levels."
+      },
+      {
+        "label": "B",
+        "text": "The Bohr model explained the continuous nature of atomic spectra."
+      },
+      {
+        "label": "C",
+        "text": "The Bohr model explained the wave nature of electrons."
+      },
+      {
+        "label": "D",
+        "text": "The Bohr model explained the existence of neutrons."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The Bohr model was significant because it successfully explained the stability of the atom (why electrons don't spiral into the nucleus) and the discrete nature of atomic spectra (specific wavelengths of light emitted by atoms). It did this by postulating that electrons can only occupy specific quantized energy levels, and transitions between these levels result in the emission or absorption of photons with specific energies.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Define the term 'stopping potential' in the context of the photoelectric effect.",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "The minimum negative potential applied to the anode to stop the emission of photoelectrons."
+      },
+      {
+        "label": "B",
+        "text": "The maximum positive potential applied to the anode to maximize the emission of photoelectrons."
+      },
+      {
+        "label": "C",
+        "text": "The potential at which the current is maximum."
+      },
+      {
+        "label": "D",
+        "text": "The potential at which the current is zero in the absence of light."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The stopping potential is the minimum negative potential applied to the anode of a photoelectric cell that is just sufficient to stop the most energetic photoelectrons from reaching the anode, thus making the photoelectric current zero. It is a measure of the maximum kinetic energy of the emitted photoelectrons.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the concept of nuclear fission. Give an example of a nuclear fission reaction.",
+    "topic": "Nuclei",
+    "options": [
+      {
+        "label": "A",
+        "text": "Nuclear fission is the process in which a heavy nucleus splits into two or more lighter nuclei, releasing a large amount of energy. Example: Uranium-235 bombarded with a neutron splits into Barium and Krypton, releasing neutrons and energy."
+      },
+      {
+        "label": "B",
+        "text": "Nuclear fission is the process in which two or more lighter nuclei combine to form a heavier nucleus, releasing a large amount of energy."
+      },
+      {
+        "label": "C",
+        "text": "Nuclear fission is the process in which an atom loses electrons to become positively charged."
+      },
+      {
+        "label": "D",
+        "text": "Nuclear fission is the process in which an atom gains electrons to become negatively charged."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Nuclear fission is a nuclear reaction in which a heavy nucleus (e.g., Uranium-235) splits into two or more lighter nuclei, typically accompanied by the release of neutrons and a significant amount of energy. A common example is the fission of Uranium-235 when bombarded with a neutron:  ²³⁵U + ¹n → ¹⁴¹Ba + ⁹²Kr + 3¹n + Energy.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the function of modulation in communication systems? Explain amplitude modulation (AM).",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "Modulation is the process of superimposing a low-frequency message signal onto a high-frequency carrier wave. In AM, the amplitude of the carrier wave is varied in proportion to the instantaneous amplitude of the message signal."
+      },
+      {
+        "label": "B",
+        "text": "Modulation is the process of separating different signals in a communication channel."
+      },
+      {
+        "label": "C",
+        "text": "Modulation is the process of amplifying the signal strength in a communication system."
+      },
+      {
+        "label": "D",
+        "text": "Modulation is the process of reducing noise in a communication system."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Modulation is the process of superimposing a low-frequency message signal (e.g., audio or video) onto a high-frequency carrier wave. This is necessary for efficient transmission of signals over long distances. Amplitude modulation (AM) is a type of modulation where the amplitude of the carrier wave is varied in proportion to the instantaneous amplitude of the message signal, while the frequency and phase of the carrier wave remain constant.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Derive the lens maker's formula.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/f = (n-1)(1/R1 - 1/R2), derived by considering refraction at two spherical surfaces of a lens."
+      },
+      {
+        "label": "B",
+        "text": "1/v + 1/u = 1/f, derived from the mirror formula."
+      },
+      {
+        "label": "C",
+        "text": "n = sin i / sin r, derived from Snell's law."
+      },
+      {
+        "label": "D",
+        "text": "P = 1/f, derived from the definition of power of a lens."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The lens maker's formula relates the focal length of a lens to its refractive index and the radii of curvature of its two surfaces. It is derived by considering refraction at two spherical surfaces of a lens. The formula is 1/f = (n-1)(1/R1 - 1/R2), where f is the focal length, n is the refractive index of the lens material, R1 is the radius of curvature of the first surface, and R2 is the radius of curvature of the second surface.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the principle of superposition of waves. Use it to explain the formation of standing waves.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "The principle of superposition states that when two or more waves overlap in a region, the resultant displacement at any point is the vector sum of the displacements due to each individual wave. Standing waves are formed when two identical waves traveling in opposite directions interfere, resulting in points of maximum displacement (antinodes) and points of zero displacement (nodes)."
+      },
+      {
+        "label": "B",
+        "text": "The principle of superposition states that waves always cancel each other out."
+      },
+      {
+        "label": "C",
+        "text": "The principle of superposition states that waves always travel in the same direction."
+      },
+      {
+        "label": "D",
+        "text": "The principle of superposition states that the amplitude of a wave always increases."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The principle of superposition states that when two or more waves overlap in a region, the resultant displacement at any point is the vector sum of the displacements due to each individual wave. Standing waves are formed when two identical waves (same frequency, amplitude, and wavelength) traveling in opposite directions interfere. The superposition of these waves results in a wave pattern that appears to be stationary, with fixed points of maximum displacement (antinodes) and points of zero displacement (nodes).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the working of a common emitter transistor amplifier. Draw the circuit diagram and explain the input and output characteristics.",
+    "topic": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+    "options": [
+      {
+        "label": "A",
+        "text": "In a common emitter amplifier, the input signal is applied between the base and emitter, and the output is taken between the collector and emitter. The transistor amplifies the input signal due to the transistor's current gain. The circuit diagram shows the transistor, biasing resistors, and coupling capacitors. The input characteristic shows the relationship between base current and base-emitter voltage, while the output characteristic shows the relationship between collector current and collector-emitter voltage for different values of base current."
+      },
+      {
+        "label": "B",
+        "text": "In a common emitter amplifier, the input signal is applied between the collector and emitter."
+      },
+      {
+        "label": "C",
+        "text": "In a common emitter amplifier, the output is taken between the base and emitter."
+      },
+      {
+        "label": "D",
+        "text": "A common emitter amplifier does not amplify the signal."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "In a common emitter (CE) transistor amplifier, the input signal is applied between the base and emitter, and the output is taken between the collector and emitter. The emitter is common to both the input and output circuits. The transistor amplifies the input signal due to the transistor's current gain (β). The circuit diagram includes the transistor, biasing resistors (to set the operating point), and coupling capacitors (to block DC). The input characteristic shows the relationship between base current (Ib) and base-emitter voltage (Vbe), while the output characteristic shows the relationship between collector current (Ic) and collector-emitter voltage (Vce) for different values of base current.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  }
+]

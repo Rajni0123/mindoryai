@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BlinkStudy Play Store Screenshots</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+        }
+        h1 {
+            text-align: center;
+            color: #0D9488;
+            margin-bottom: 20px;
+        }
+        .info {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .screenshots-grid {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Individual screenshot container - 1080x1920 ratio */
+        .screenshot-container {
+            width: 360px;
+            height: 640px;
+            background: linear-gradient(180deg, #0D9488 0%, #0F766E 50%, #115E59 100%);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 30px 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative circles */
+        .screenshot-container::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+        }
+        .screenshot-container::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 50%;
+            bottom: 100px;
+            left: -50px;
+        }
+
+        .header-text {
+            text-align: center;
+            z-index: 10;
+        }
+        .header-text h2 {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+        .header-text p {
+            color: rgba(255,255,255,0.85);
+            font-size: 14px;
+        }
+
+        /* Phone mockup */
+        .phone-frame {
+            width: 240px;
+            height: 480px;
+            background: #1a1a1a;
+            border-radius: 35px;
+            padding: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            z-index: 10;
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 28px;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .phone-screen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        /* Notch */
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 25px;
+            background: #1a1a1a;
+            border-radius: 0 0 15px 15px;
+            z-index: 20;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .screenshot-number {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>BlinkStudy - Play Store Screenshots</h1>
+    <p class="info">Each screenshot is 360x640px (1080x1920 at 3x). Open in browser, screenshot each one individually.</p>
+
+    <div class="screenshots-grid">
+
+        <!-- Screenshot 1: Home Screen -->
+        <div class="screenshot-container">
+            <div class="header-text">
+                <h2>Your AI Study<br>Companion</h2>
+                <p>Everything you need to excel</p>
+            </div>
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <img src="../screen1.jpeg" alt="Home Screen">
+                </div>
+            </div>
+            <div class="badge">📚 All-in-One Learning</div>
+            <span class="screenshot-number">1/6</span>
+        </div>
+
+        <!-- Screenshot 2: Scan & Solve -->
+        <div class="screenshot-container">
+            <div class="header-text">
+                <h2>Scan Any Problem<br>Get Instant Solution</h2>
+                <p>Point, scan, learn!</p>
+            </div>
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <img src="../scan page.jpeg" alt="Scan & Solve">
+                </div>
+            </div>
+            <div class="badge">📷 AI-Powered Scanner</div>
+            <span class="screenshot-number">2/6</span>
+        </div>
+
+        <!-- Screenshot 3: Solution Page -->
+        <div class="screenshot-container">
+            <div class="header-text">
+                <h2>Step-by-Step<br>Solutions</h2>
+                <p>Understand every concept</p>
+            </div>
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <img src="../solucti.jpeg" alt="Solution">
+                </div>
+            </div>
+            <div class="badge">✅ Detailed Explanations</div>
+            <span class="screenshot-number">3/6</span>
+        </div>
+
+        <!-- Screenshot 4: Quiz -->
+        <div class="screenshot-container">
+            <div class="header-text">
+                <h2>AI-Generated<br>Quizzes</h2>
+                <p>Test your knowledge</p>
+            </div>
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <img src="../quiz.jpeg" alt="Quiz">
+                </div>
+            </div>
+            <div class="badge">🧠 Smart Practice</div>
+            <span class="screenshot-number">4/6</span>
+        </div>
+
+        <!-- Screenshot 5: Whiteboard Video -->
+        <div class="screenshot-container">
+            <div class="header-text">
+                <h2>Whiteboard<br>Video Lessons</h2>
+                <p>Visual learning made easy</p>
+            </div>
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <img src="../whiteboard screen.jpeg" alt="Whiteboard">
+                </div>
+            </div>
+            <div class="badge">🎬 Animated Explanations</div>
+            <span class="screenshot-number">5/6</span>
+        </div>
+
+        <!-- Screenshot 6: Advanced Solution -->
+        <div class="screenshot-container">
+            <div class="header-text">
+                <h2>Complex Problems<br>Simplified</h2>
+                <p>From LCM to Calculus</p>
+            </div>
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <img src="../soluction page.jpeg" alt="Advanced Solution">
+                </div>
+            </div>
+            <div class="badge">🔢 All Subjects Covered</div>
+            <span class="screenshot-number">6/6</span>
+        </div>
+
+    </div>
+</body>
+</html>

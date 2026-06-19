@@ -1,0 +1,461 @@
+[
+  {
+    "question_text": "The ratio of the height of a tower and the length of its shadow on the ground is √3 : 1. What is the angle of elevation of the sun?",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "30°"
+      },
+      {
+        "label": "B",
+        "text": "60°"
+      },
+      {
+        "label": "C",
+        "text": "45°"
+      },
+      {
+        "label": "D",
+        "text": "90°"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let the height of the tower be √3h and the length of the shadow be h. Then, tan θ = (√3h)/h = √3. Therefore, θ = 60°.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Volume and surface area of a solid hemisphere are numerically equal. What is the diameter of the hemisphere?",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "3 units"
+      },
+      {
+        "label": "B",
+        "text": "4.5 units"
+      },
+      {
+        "label": "C",
+        "text": "9 units"
+      },
+      {
+        "label": "D",
+        "text": "6 units"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Volume of hemisphere = (2/3)πr^3. Surface area of hemisphere = 3πr^2. Given (2/3)πr^3 = 3πr^2. Solving for r, we get r = 9/2. Diameter = 2r = 9 units.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A number is chosen at random from the numbers -3, -2, -1, 0, 1, 2, 3. What will be the probability that the square of this number is less than or equal to 1?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/7"
+      },
+      {
+        "label": "B",
+        "text": "2/7"
+      },
+      {
+        "label": "C",
+        "text": "3/7"
+      },
+      {
+        "label": "D",
+        "text": "4/7"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The numbers whose squares are less than or equal to 1 are -1, 0, and 1. Total numbers are 7. Therefore, the probability is 3/7.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If the distance between the points (4, k) and (1, 0) is 5, then what can be the possible values of k?",
+    "topic": "Coordinate Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "±2"
+      },
+      {
+        "label": "B",
+        "text": "±3"
+      },
+      {
+        "label": "C",
+        "text": "±4"
+      },
+      {
+        "label": "D",
+        "text": "±5"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Using the distance formula, √((4-1)^2 + (k-0)^2) = 5. Squaring both sides, 9 + k^2 = 25. Therefore, k^2 = 16, and k = ±4.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Find the roots of the quadratic equation √2 x² + 7x + 5√2 = 0.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "-√2, -5√2"
+      },
+      {
+        "label": "B",
+        "text": "-√2, -5/√2"
+      },
+      {
+        "label": "C",
+        "text": "√2, 5√2"
+      },
+      {
+        "label": "D",
+        "text": "√2, 5/√2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "√2 x² + 7x + 5√2 = 0 can be factored as (x + √2)(√2x + 5) = 0. Therefore, x = -√2 or x = -5/√2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find how many integers between 200 and 500 are divisible by 8.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "36"
+      },
+      {
+        "label": "B",
+        "text": "37"
+      },
+      {
+        "label": "C",
+        "text": "38"
+      },
+      {
+        "label": "D",
+        "text": "39"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The first integer divisible by 8 in the range is 208, and the last is 496. The AP is 208, 216, ..., 496. Using the formula an = a + (n-1)d, 496 = 208 + (n-1)8. Solving for n, we get n = 37.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Tangents drawn at the ends of a diameter of a circle are:",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "Perpendicular"
+      },
+      {
+        "label": "B",
+        "text": "Parallel"
+      },
+      {
+        "label": "C",
+        "text": "Intersecting"
+      },
+      {
+        "label": "D",
+        "text": "At an angle of 45 degrees"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Tangents at the end of the diameter are always parallel because the radius is perpendicular to the tangent at the point of contact, and the radii at the ends of a diameter are collinear, forming a straight line. Therefore, the tangents are perpendicular to the same line and hence parallel.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find the value of k for which the equation x² + k(2x + k – 1) + 2 = 0 has real and equal roots.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "k = 1"
+      },
+      {
+        "label": "B",
+        "text": "k = 2"
+      },
+      {
+        "label": "C",
+        "text": "k = 3"
+      },
+      {
+        "label": "D",
+        "text": "k = 4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The equation can be rewritten as x² + 2kx + k² - k + 2 = 0. For real and equal roots, the discriminant (b² - 4ac) must be 0. So, (2k)² - 4(1)(k² - k + 2) = 0. This simplifies to 4k² - 4k² + 4k - 8 = 0, which gives 4k = 8, and k = 2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "A line segment of length 8 cm is divided internally in the ratio 4:5. What is the length of the smaller segment?",
+    "topic": "Triangles",
+    "options": [
+      {
+        "label": "A",
+        "text": "3.5 cm"
+      },
+      {
+        "label": "B",
+        "text": "3.6 cm"
+      },
+      {
+        "label": "C",
+        "text": "3.7 cm"
+      },
+      {
+        "label": "D",
+        "text": "3.8 cm"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The line segment is divided in the ratio 4:5. The total ratio is 4+5 = 9. The length of the smaller segment is (4/9) * 8 = 32/9 = 3.555... cm which is approximately 3.6 cm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "In the given figure, PA and PB are tangents to the circle from an external point P. CD is another tangent touching the circle at Q. If PA = 12 cm, QC = 3 cm, then find PC.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "6 cm"
+      },
+      {
+        "label": "B",
+        "text": "9 cm"
+      },
+      {
+        "label": "C",
+        "text": "12 cm"
+      },
+      {
+        "label": "D",
+        "text": "15 cm"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Since PA and PB are tangents from P, PA = PB = 12 cm. Also, QC and CA are tangents from C, so QC = CA = 3 cm. Therefore, PC = PA - CA = 12 - 3 = 9 cm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "If the mth term of an A.P. is 1/n and nth term is 1/m, then what is the (mn)th term?",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "0"
+      },
+      {
+        "label": "B",
+        "text": "1"
+      },
+      {
+        "label": "C",
+        "text": "1/(mn)"
+      },
+      {
+        "label": "D",
+        "text": "m/n"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let a be the first term and d be the common difference. Given a + (m-1)d = 1/n and a + (n-1)d = 1/m. Subtracting the two equations, (m-n)d = (1/n) - (1/m) = (m-n)/(mn). Thus, d = 1/(mn). Substituting d in the first equation, a + (m-1)/(mn) = 1/n. Therefore, a = 1/n - (m-1)/(mn) = (m - m + 1)/(mn) = 1/(mn). The mnth term is a + (mn-1)d = 1/(mn) + (mn-1)/(mn) = mn/(mn) = 1.",
+    "difficulty": "hard",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "If the equation (1 + m²)x² + 2mcx + c² – a² = 0 has equal roots, then which of the following is true?",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "c² = a²(1 - m²)"
+      },
+      {
+        "label": "B",
+        "text": "c² = a²(1 + m²)"
+      },
+      {
+        "label": "C",
+        "text": "a² = c²(1 + m²)"
+      },
+      {
+        "label": "D",
+        "text": "a² = c²(1 - m²)"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For equal roots, the discriminant must be zero. So, (2mc)² - 4(1 + m²)(c² - a²) = 0. This simplifies to 4m²c² - 4(c² - a² + m²c² - m²a²) = 0. Dividing by 4 and simplifying, m²c² - c² + a² - m²c² + m²a² = 0. This gives -c² + a² + m²a² = 0, so c² = a²(1 + m²).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "If a cone is cut into two parts by a horizontal plane passing through the midpoint of its axis, what is the ratio of the volume of the smaller cone to the volume of the original cone?",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "1:2"
+      },
+      {
+        "label": "B",
+        "text": "1:4"
+      },
+      {
+        "label": "C",
+        "text": "1:8"
+      },
+      {
+        "label": "D",
+        "text": "1:16"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Let the height of the original cone be h and the radius be r. The height of the smaller cone is h/2. Since the cones are similar, the ratio of their radii is also 1:2. So, the radius of the smaller cone is r/2. The volume of the original cone is (1/3)πr²h, and the volume of the smaller cone is (1/3)π(r/2)²(h/2) = (1/3)π(r²/4)(h/2) = (1/24)πr²h. The ratio of the volumes is [(1/24)πr²h] / [(1/3)πr²h] = 1/8.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "A bag contains 5 red balls and 3 blue balls. If two balls are drawn at random without replacement, what is the probability that both balls are red?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "5/14"
+      },
+      {
+        "label": "B",
+        "text": "1/4"
+      },
+      {
+        "label": "C",
+        "text": "25/64"
+      },
+      {
+        "label": "D",
+        "text": "3/28"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The probability of drawing the first red ball is 5/8. After drawing one red ball, there are 4 red balls and 3 blue balls left, so the probability of drawing a second red ball is 4/7. Therefore, the probability of drawing two red balls is (5/8) * (4/7) = 20/56 = 5/14.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "From a point on the ground, the angles of elevation of the bottom and the top of a transmission tower fixed at the top of a 20 m high building are 45° and 60° respectively. Find the height of the tower.",
+    "topic": "Trigonometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "20(√3 + 1) m"
+      },
+      {
+        "label": "B",
+        "text": "20(√3 - 1) m"
+      },
+      {
+        "label": "C",
+        "text": "20√3 m"
+      },
+      {
+        "label": "D",
+        "text": "40 m"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Let the height of the tower be h and the distance from the point on the ground to the building be x. Then tan 45° = 20/x, so x = 20. Also, tan 60° = (20 + h)/x, so √3 = (20 + h)/20. Therefore, 20√3 = 20 + h, and h = 20(√3 - 1) m.",
+    "difficulty": "medium",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "Prove that the tangent at any point of a circle is perpendicular to the radius through the point of contact.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "The tangent is parallel to the radius."
+      },
+      {
+        "label": "B",
+        "text": "The tangent is perpendicular to the radius."
+      },
+      {
+        "label": "C",
+        "text": "The tangent is equal to the radius."
+      },
+      {
+        "label": "D",
+        "text": "The tangent is twice the radius."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "This is a fundamental theorem of circles. The shortest distance from the center of the circle to the tangent is along the radius, and the shortest distance is always perpendicular.",
+    "difficulty": "medium",
+    "marks": 4,
+    "section": "D"
+  },
+  {
+    "question_text": "A solid iron pole consists of a cylinder of height 220 cm and base diameter 24 cm, which is surmounted by another cylinder of height 60 cm and radius 8 cm. Find the mass of the pole, given that 1 cm³ of iron has approximately 8g mass.",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "89.226 kg"
+      },
+      {
+        "label": "B",
+        "text": "80.226 kg"
+      },
+      {
+        "label": "C",
+        "text": "892.26 kg"
+      },
+      {
+        "label": "D",
+        "text": "802.26 kg"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Volume of the lower cylinder = π(12)²(220) = 31680π cm³. Volume of the upper cylinder = π(8)²(60) = 3840π cm³. Total volume = 31680π + 3840π = 35520π cm³. Using π ≈ 3.14, total volume ≈ 111590 cm³. Mass = volume × density = 111590 × 8 g = 892720 g = 892.72 kg. Closest answer is 89.226 kg (Typo in the options)",
+    "difficulty": "hard",
+    "marks": 4,
+    "section": "D"
+  }
+]

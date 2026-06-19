@@ -1,0 +1,515 @@
+[
+  {
+    "question_text": "Who wrote the novel 'Anandamath'?",
+    "topic": "Nationalism in India",
+    "options": [
+      {
+        "label": "A",
+        "text": "Rabindranath Tagore"
+      },
+      {
+        "label": "B",
+        "text": "Bankim Chandra Chattopadhyay"
+      },
+      {
+        "label": "C",
+        "text": "Munshi Premchand"
+      },
+      {
+        "label": "D",
+        "text": "Saratchandra Chattopadhyay"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Bankim Chandra Chattopadhyay wrote the novel 'Anandamath', which played a significant role in the Indian nationalist movement.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which river is associated with National Waterways No. 1?",
+    "topic": "Lifelines of National Economy",
+    "options": [
+      {
+        "label": "A",
+        "text": "Yamuna"
+      },
+      {
+        "label": "B",
+        "text": "Ganga"
+      },
+      {
+        "label": "C",
+        "text": "Brahmaputra"
+      },
+      {
+        "label": "D",
+        "text": "Narmada"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "National Waterways No. 1 is the Ganga-Bhagirathi-Hooghly river system from Allahabad to Haldia.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "How are pressure groups primarily formed?",
+    "topic": "Political Parties",
+    "options": [
+      {
+        "label": "A",
+        "text": "By government decree"
+      },
+      {
+        "label": "B",
+        "text": "When people with common interests come together"
+      },
+      {
+        "label": "C",
+        "text": "Through elections"
+      },
+      {
+        "label": "D",
+        "text": "By the judiciary"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Pressure groups are formed when people with common interests, aspirations, or opinions come together to achieve a common objective by influencing government policies.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following best describes a 'challenge' in the context of development?",
+    "topic": "Development",
+    "options": [
+      {
+        "label": "A",
+        "text": "A problem with no solution"
+      },
+      {
+        "label": "B",
+        "text": "A difficulty that carries an opportunity for progress"
+      },
+      {
+        "label": "C",
+        "text": "An insurmountable obstacle"
+      },
+      {
+        "label": "D",
+        "text": "A minor inconvenience"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A challenge is a difficulty that presents an opportunity for progress and improvement.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of a pressure group in India that functions as a branch of a political party?",
+    "topic": "Political Parties",
+    "options": [
+      {
+        "label": "A",
+        "text": "Consumer Protection Council"
+      },
+      {
+        "label": "B",
+        "text": "Trade Union (e.g., INTUC, AITUC)"
+      },
+      {
+        "label": "C",
+        "text": "Environmental Action Group"
+      },
+      {
+        "label": "D",
+        "text": "Human Rights Watch"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Trade unions like INTUC and AITUC often function as extended arms of political parties.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the primary problem associated with the 'double coincidence of wants'?",
+    "topic": "Money and Credit",
+    "options": [
+      {
+        "label": "A",
+        "text": "Difficulty in determining the value of goods"
+      },
+      {
+        "label": "B",
+        "text": "Both parties must agree to sell and buy each other's commodities simultaneously"
+      },
+      {
+        "label": "C",
+        "text": "Lack of legal framework for transactions"
+      },
+      {
+        "label": "D",
+        "text": "High transaction costs"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The double coincidence of wants requires both parties to simultaneously agree to exchange each other's goods, which is often difficult to achieve.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which consumer right ensures that consumers can select from a variety of products at competitive prices?",
+    "topic": "Consumer Rights",
+    "options": [
+      {
+        "label": "A",
+        "text": "Right to Safety"
+      },
+      {
+        "label": "B",
+        "text": "Right to be Informed"
+      },
+      {
+        "label": "C",
+        "text": "Right to Choose"
+      },
+      {
+        "label": "D",
+        "text": "Right to be Heard"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The 'Right to Choose' allows consumers to select from a variety of products at competitive prices.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If you want to obtain information about the functions of a government department, which right would you exercise?",
+    "topic": "Democracy and Rights",
+    "options": [
+      {
+        "label": "A",
+        "text": "Right to Education"
+      },
+      {
+        "label": "B",
+        "text": "Right to Information"
+      },
+      {
+        "label": "C",
+        "text": "Right to Privacy"
+      },
+      {
+        "label": "D",
+        "text": "Right to Constitutional Remedies"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Right to Information Act allows citizens to request and obtain information about the functioning of government departments.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following actions by the French revolutionaries aimed to create a sense of collective identity among the French people?",
+    "topic": "The Rise of Nationalism in Europe",
+    "options": [
+      {
+        "label": "A",
+        "text": "Establishing a monarchy"
+      },
+      {
+        "label": "B",
+        "text": "Adopting the tricolor flag"
+      },
+      {
+        "label": "C",
+        "text": "Maintaining internal custom duties"
+      },
+      {
+        "label": "D",
+        "text": "Promoting regional dialects"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Adopting the tricolor flag was one of the steps taken by the French revolutionaries to foster a sense of collective identity.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following was NOT a change experienced by the Vietnamese after French colonization?",
+    "topic": "Nationalism in Indo-China",
+    "options": [
+      {
+        "label": "A",
+        "text": "Conflicts with colonizers in all areas of life"
+      },
+      {
+        "label": "B",
+        "text": "Military and economic domination by the French"
+      },
+      {
+        "label": "C",
+        "text": "Preservation of traditional Vietnamese culture"
+      },
+      {
+        "label": "D",
+        "text": "Efforts to reshape Vietnamese culture by the French"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "French colonization led to attempts to reshape Vietnamese culture, not preserve it.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Why did Gandhiji launch a nationwide Satyagraha against the Rowlatt Act of 1919?",
+    "topic": "Nationalism in India",
+    "options": [
+      {
+        "label": "A",
+        "text": "To protest against high taxes"
+      },
+      {
+        "label": "B",
+        "text": "Because it gave the government power to repress political activities"
+      },
+      {
+        "label": "C",
+        "text": "To demand complete independence"
+      },
+      {
+        "label": "D",
+        "text": "To support the British government"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Rowlatt Act gave the government enormous powers to repress political activities, which led Gandhiji to launch a Satyagraha.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "How did folklore, songs, and popular prints contribute to shaping nationalism during the Indian freedom struggle?",
+    "topic": "Nationalism in India",
+    "options": [
+      {
+        "label": "A",
+        "text": "By promoting religious divisions"
+      },
+      {
+        "label": "B",
+        "text": "By reinforcing colonial rule"
+      },
+      {
+        "label": "C",
+        "text": "By providing a shared cultural identity and inspiring resistance"
+      },
+      {
+        "label": "D",
+        "text": "By focusing solely on economic issues"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Folklore, songs, and popular prints helped create a shared cultural identity and inspired resistance against colonial rule, thus shaping nationalism.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Which of the following is NOT a characteristic of federalism?",
+    "topic": "Federalism",
+    "options": [
+      {
+        "label": "A",
+        "text": "Two or more levels of government"
+      },
+      {
+        "label": "B",
+        "text": "Written constitution"
+      },
+      {
+        "label": "C",
+        "text": "Centralized power in one government"
+      },
+      {
+        "label": "D",
+        "text": "Division of powers"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Federalism involves a division of powers between different levels of government, not centralized power in one government.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the main aim of the Right to Information (RTI) Act?",
+    "topic": "Democracy and Rights",
+    "options": [
+      {
+        "label": "A",
+        "text": "To provide free education"
+      },
+      {
+        "label": "B",
+        "text": "To promote transparency and accountability in government"
+      },
+      {
+        "label": "C",
+        "text": "To protect personal privacy"
+      },
+      {
+        "label": "D",
+        "text": "To ensure fair elections"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The RTI Act aims to promote transparency and accountability in the working of the government by giving citizens the right to access information.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the main function of the Reserve Bank of India (RBI)?",
+    "topic": "Money and Credit",
+    "options": [
+      {
+        "label": "A",
+        "text": "Accepting deposits from the public"
+      },
+      {
+        "label": "B",
+        "text": "Controlling the money supply and supervising banks"
+      },
+      {
+        "label": "C",
+        "text": "Providing loans to industries"
+      },
+      {
+        "label": "D",
+        "text": "Collecting taxes"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The RBI is the central bank of India and is responsible for controlling the money supply and supervising banks.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Which sector is most affected by disguised unemployment in India?",
+    "topic": "Sectors of the Indian Economy",
+    "options": [
+      {
+        "label": "A",
+        "text": "Manufacturing"
+      },
+      {
+        "label": "B",
+        "text": "Agriculture"
+      },
+      {
+        "label": "C",
+        "text": "Information Technology"
+      },
+      {
+        "label": "D",
+        "text": "Banking"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Disguised unemployment, where more people are employed than needed, is most prevalent in the agricultural sector in India.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the key features of the Multi-Party System?",
+    "topic": "Political Parties",
+    "options": [
+      {
+        "label": "A",
+        "text": "Only two major parties compete for power."
+      },
+      {
+        "label": "B",
+        "text": "Several parties compete for power, and the government is often formed by a coalition."
+      },
+      {
+        "label": "C",
+        "text": "One party dominates the political system."
+      },
+      {
+        "label": "D",
+        "text": "The military controls the government."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "In a multi-party system, several parties compete for power, and governments are often formed by coalitions due to the distribution of votes among multiple parties.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the Preamble to the Indian Constitution?",
+    "topic": "Constitutional Design",
+    "options": [
+      {
+        "label": "A",
+        "text": "It contains all the laws of the country."
+      },
+      {
+        "label": "B",
+        "text": "It is a brief introductory statement of the Constitution's guiding values and principles."
+      },
+      {
+        "label": "C",
+        "text": "It lists the fundamental rights of citizens."
+      },
+      {
+        "label": "D",
+        "text": "It outlines the structure of the government."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Preamble is a brief introductory statement that sets out the guiding purpose and principles of the document.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the main objectives of the National Rural Employment Guarantee Act (NREGA) 2005?",
+    "topic": "Development",
+    "options": [
+      {
+        "label": "A",
+        "text": "To provide free housing to rural families."
+      },
+      {
+        "label": "B",
+        "text": "To guarantee 100 days of wage employment to rural households."
+      },
+      {
+        "label": "C",
+        "text": "To provide free education to rural children."
+      },
+      {
+        "label": "D",
+        "text": "To provide healthcare services to rural communities."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "NREGA 2005 guarantees 100 days of wage employment to rural households to enhance their livelihood security.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  }
+]

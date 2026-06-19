@@ -1,0 +1,650 @@
+[
+  {
+    "question_text": "A metallic wire of resistance R is cut into ten equal parts. These parts are then connected in parallel. If the effective resistance of the combination is R', then the ratio R/R' is:",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "10"
+      },
+      {
+        "label": "B",
+        "text": "100"
+      },
+      {
+        "label": "C",
+        "text": "1"
+      },
+      {
+        "label": "D",
+        "text": "0.1"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "When a wire of resistance R is cut into ten equal parts, the resistance of each part is R/10. When these parts are connected in parallel, the effective resistance R' is given by 1/R' = 10/(R/10) = 100/R. Therefore, R' = R/100, and R/R' = 100.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The magnetic field at the center of a circular coil of radius r carrying current I is:",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "Directly proportional to r and I"
+      },
+      {
+        "label": "B",
+        "text": "Inversely proportional to r and I"
+      },
+      {
+        "label": "C",
+        "text": "Directly proportional to I and inversely proportional to r"
+      },
+      {
+        "label": "D",
+        "text": "Directly proportional to r and inversely proportional to I"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The magnetic field at the center of a circular coil is given by B = (μ₀I)/(2r), where I is the current and r is the radius. Therefore, B is directly proportional to I and inversely proportional to r.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following electromagnetic waves has the shortest wavelength?",
+    "topic": "Electromagnetic Waves",
+    "options": [
+      {
+        "label": "A",
+        "text": "Infrared waves"
+      },
+      {
+        "label": "B",
+        "text": "Ultraviolet waves"
+      },
+      {
+        "label": "C",
+        "text": "Microwaves"
+      },
+      {
+        "label": "D",
+        "text": "Gamma rays"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Gamma rays have the shortest wavelength among the given options. The order of wavelengths from shortest to longest is: Gamma rays < Ultraviolet waves < Infrared waves < Microwaves.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "The work function of a metal is 4.2 eV. Its threshold wavelength will be:",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "295 nm"
+      },
+      {
+        "label": "B",
+        "text": "330 nm"
+      },
+      {
+        "label": "C",
+        "text": "360 nm"
+      },
+      {
+        "label": "D",
+        "text": "400 nm"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The threshold wavelength λ₀ is related to the work function φ by the equation φ = hc/λ₀, where h is Planck's constant and c is the speed of light.  λ₀ = hc/φ = (1240 eV.nm)/4.2 eV ≈ 295 nm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Two lenses of power +12D and -2D are placed in contact. What will be the focal length of the combination?",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "10 cm"
+      },
+      {
+        "label": "B",
+        "text": "12.5 cm"
+      },
+      {
+        "label": "C",
+        "text": "16.67 cm"
+      },
+      {
+        "label": "D",
+        "text": "8.33 cm"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The effective power of the combination is P = P₁ + P₂ = 12D - 2D = 10D. The focal length is f = 1/P = 1/10 m = 0.1 m = 10 cm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "State the principle of superposition of waves.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "When two or more waves overlap in a region, the resultant displacement is the algebraic sum of the individual displacements."
+      },
+      {
+        "label": "B",
+        "text": "When two or more waves overlap in a region, the resultant intensity is the sum of the individual intensities."
+      },
+      {
+        "label": "C",
+        "text": "When two or more waves overlap in a region, the resultant frequency is the average of the individual frequencies."
+      },
+      {
+        "label": "D",
+        "text": "When two or more waves overlap in a region, the resultant wavelength is the sum of the individual wavelengths."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The principle of superposition states that when two or more waves overlap in a region, the resultant displacement at any point is the algebraic sum of the displacements due to each wave individually.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the de Broglie wavelength of an electron accelerated through a potential difference of 100 V?",
+    "topic": "Dual Nature of Radiation and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "0.123 nm"
+      },
+      {
+        "label": "B",
+        "text": "1.23 nm"
+      },
+      {
+        "label": "C",
+        "text": "12.3 nm"
+      },
+      {
+        "label": "D",
+        "text": "123 nm"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The de Broglie wavelength λ is given by λ = h/p = h/√(2mKE) = h/√(2meV), where V is the potential difference. Substituting the values, λ ≈ 0.123 nm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the working principle of a photodiode.",
+    "topic": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+    "options": [
+      {
+        "label": "A",
+        "text": "A photodiode is a p-n junction diode that converts light energy into electrical energy when illuminated. When light with energy greater than the band gap energy falls on the depletion region, electron-hole pairs are generated, which are then swept away by the electric field, resulting in a current."
+      },
+      {
+        "label": "B",
+        "text": "A photodiode is a device that emits light when a current passes through it."
+      },
+      {
+        "label": "C",
+        "text": "A photodiode is a device that amplifies electrical signals using light."
+      },
+      {
+        "label": "D",
+        "text": "A photodiode is a device that blocks current flow in one direction."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A photodiode operates on the principle of converting light energy into electrical energy. When photons with sufficient energy strike the depletion region of the p-n junction, electron-hole pairs are generated. These carriers are then separated by the built-in electric field, creating a current proportional to the incident light intensity.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Derive an expression for the electric field due to an infinitely long straight wire using Gauss's law.",
+    "topic": "Electric Charges and Fields",
+    "options": [
+      {
+        "label": "A",
+        "text": "E = λ / (2πε₀r)"
+      },
+      {
+        "label": "B",
+        "text": "E = λ / (4πε₀r²)"
+      },
+      {
+        "label": "C",
+        "text": "E = λr / (2πε₀)"
+      },
+      {
+        "label": "D",
+        "text": "E = λ / (πε₀r)"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Applying Gauss's law to a cylindrical Gaussian surface around the wire, the electric flux is E * 2πrL = Q/ε₀ = λL/ε₀, where λ is the linear charge density. Solving for E, we get E = λ / (2πε₀r).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the working of a transformer. Mention its types and uses.",
+    "topic": "Electromagnetic Induction",
+    "options": [
+      {
+        "label": "A",
+        "text": "A transformer works on the principle of mutual induction. It consists of two coils, primary and secondary, wound on a common core. AC voltage in the primary coil induces a changing magnetic flux, which induces an emf in the secondary coil. Types: Step-up and Step-down. Uses: Voltage regulation, power transmission."
+      },
+      {
+        "label": "B",
+        "text": "A transformer works on the principle of self-induction. It consists of a single coil wound on a core. DC voltage is applied to the coil, which generates a magnetic field. Types: Step-up and Step-down. Uses: Current amplification."
+      },
+      {
+        "label": "C",
+        "text": "A transformer works on the principle of electromagnetic damping. It consists of two coils, primary and secondary, wound on separate cores. AC voltage in the primary coil induces a constant magnetic flux, which induces an emf in the secondary coil. Types: AC and DC. Uses: Signal filtering."
+      },
+      {
+        "label": "D",
+        "text": "A transformer works on the principle of electrostatic induction. It consists of two plates, primary and secondary, separated by a dielectric. AC voltage in the primary plate induces an electric field, which induces a charge in the secondary plate. Types: Positive and Negative. Uses: Charge storage."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A transformer operates based on mutual induction between two coils. The changing magnetic flux produced by the primary coil induces an emf in the secondary coil. Transformers are classified as step-up or step-down based on their voltage transformation ratio. They are widely used in power transmission, voltage regulation, and electronic circuits.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are coherent sources of light? Explain how interference fringes are formed in Young's double-slit experiment.",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "Coherent sources emit light waves with the same frequency, wavelength, and a constant phase difference. In Young's experiment, light from two coherent sources interferes constructively and destructively, creating bright and dark fringes, respectively."
+      },
+      {
+        "label": "B",
+        "text": "Coherent sources emit light waves with different frequencies and wavelengths. In Young's experiment, light from two incoherent sources interferes randomly, creating uniform illumination."
+      },
+      {
+        "label": "C",
+        "text": "Coherent sources emit light waves with the same amplitude but different phases. In Young's experiment, light from two coherent sources interferes only constructively, creating bright fringes."
+      },
+      {
+        "label": "D",
+        "text": "Coherent sources emit light waves with the same intensity but different polarizations. In Young's experiment, light from two coherent sources interferes only destructively, creating dark fringes."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Coherent sources are essential for producing stable interference patterns. In Young's double-slit experiment, the interference of light from two coherent sources results in alternating bright and dark fringes due to constructive and destructive interference, respectively. The path difference between the waves determines the type of interference.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the working of a nuclear reactor with a labeled diagram.",
+    "topic": "Nuclear Physics",
+    "options": [
+      {
+        "label": "A",
+        "text": "A nuclear reactor uses controlled nuclear fission to generate heat. It consists of a fuel (e.g., uranium), moderator (e.g., graphite), control rods (e.g., boron), coolant (e.g., water), and a shield. Fission releases energy, which heats the coolant, producing steam to drive turbines and generate electricity."
+      },
+      {
+        "label": "B",
+        "text": "A nuclear reactor uses controlled nuclear fusion to generate heat. It consists of plasma, magnetic confinement, and a heat exchanger. Fusion releases energy, which heats the plasma, producing electricity directly."
+      },
+      {
+        "label": "C",
+        "text": "A nuclear reactor uses chemical reactions to generate heat. It consists of fuel, oxidizer, and a combustion chamber. Combustion releases energy, which heats the coolant, producing steam to drive turbines and generate electricity."
+      },
+      {
+        "label": "D",
+        "text": "A nuclear reactor uses solar energy to generate heat. It consists of solar panels, a heat storage system, and a heat engine. Solar energy heats the storage medium, producing steam to drive turbines and generate electricity."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Nuclear reactors harness the energy released from controlled nuclear fission reactions. The key components include the fuel, moderator, control rods, coolant, and shielding. The heat generated from fission is used to produce steam, which drives turbines to generate electricity.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Define electric potential. Derive an expression for the electric potential due to a point charge.",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Electric potential is the work done per unit charge to bring a test charge from infinity to a point. For a point charge q, V = kq/r, where k = 1/(4πε₀) and r is the distance from the charge."
+      },
+      {
+        "label": "B",
+        "text": "Electric potential is the force experienced by a unit charge placed at a point. For a point charge q, V = kqr, where k = 1/(4πε₀) and r is the distance from the charge."
+      },
+      {
+        "label": "C",
+        "text": "Electric potential is the energy required to move a charge between two points. For a point charge q, V = kq/r², where k = 1/(4πε₀) and r is the distance from the charge."
+      },
+      {
+        "label": "D",
+        "text": "Electric potential is the charge per unit volume at a point. For a point charge q, V = kqr², where k = 1/(4πε₀) and r is the distance from the charge."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Electric potential is defined as the work done per unit charge to bring a test charge from infinity to a specific point. The electric potential due to a point charge q at a distance r is given by V = kq/r, where k is Coulomb's constant.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Explain the concept of drift velocity. Derive the relationship between drift velocity and electric current.",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "Drift velocity is the average velocity attained by charged particles in a material due to an electric field. The relationship is I = nAevd, where n is the number density of electrons, A is the cross-sectional area, e is the charge of an electron, and vd is the drift velocity."
+      },
+      {
+        "label": "B",
+        "text": "Drift velocity is the maximum velocity attained by charged particles in a material due to an electric field. The relationship is I = nAevd², where n is the number density of electrons, A is the cross-sectional area, e is the charge of an electron, and vd is the drift velocity."
+      },
+      {
+        "label": "C",
+        "text": "Drift velocity is the random velocity of charged particles in a material in the absence of an electric field. The relationship is I = nAevd/2, where n is the number density of electrons, A is the cross-sectional area, e is the charge of an electron, and vd is the drift velocity."
+      },
+      {
+        "label": "D",
+        "text": "Drift velocity is the instantaneous velocity of charged particles in a material due to a magnetic field. The relationship is I = nAevd³, where n is the number density of electrons, A is the cross-sectional area, e is the charge of an electron, and vd is the drift velocity."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Drift velocity represents the average velocity of charge carriers in a conductor under the influence of an electric field. The relationship between drift velocity and electric current is given by I = nAevd, where n is the number density of charge carriers, A is the cross-sectional area, e is the charge of an electron, and vd is the drift velocity.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "A parallel plate capacitor with air between the plates has a capacitance of 8 pF. What will be the capacitance if the distance between the plates is reduced by half, and the space between them is filled with a substance of dielectric constant 6?",
+    "topic": "Electrostatic Potential and Capacitance",
+    "options": [
+      {
+        "label": "A",
+        "text": "96 pF"
+      },
+      {
+        "label": "B",
+        "text": "48 pF"
+      },
+      {
+        "label": "C",
+        "text": "24 pF"
+      },
+      {
+        "label": "D",
+        "text": "192 pF"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The capacitance of a parallel plate capacitor is given by C = ε₀A/d. When the distance is halved and a dielectric is introduced, the new capacitance C' = kε₀A/(d/2) = 2k(ε₀A/d) = 2kC = 2 * 6 * 8 pF = 96 pF.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "State Kirchhoff's rules for electrical circuits.",
+    "topic": "Current Electricity",
+    "options": [
+      {
+        "label": "A",
+        "text": "1. Junction Rule: The algebraic sum of currents meeting at a junction is zero. 2. Loop Rule: The algebraic sum of changes in potential around any closed loop is zero."
+      },
+      {
+        "label": "B",
+        "text": "1. Junction Rule: The sum of currents entering a junction is equal to the sum of currents leaving the junction. 2. Loop Rule: The sum of emfs in a closed loop is equal to the sum of potential drops in that loop."
+      },
+      {
+        "label": "C",
+        "text": "1. Junction Rule: The total current in a circuit is constant. 2. Loop Rule: The total voltage in a circuit is constant."
+      },
+      {
+        "label": "D",
+        "text": "1. Junction Rule: The current is directly proportional to the voltage. 2. Loop Rule: The voltage is inversely proportional to the current."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Kirchhoff's rules are fundamental for analyzing complex electrical circuits. The junction rule states that the total current entering a junction must equal the total current leaving it, reflecting charge conservation. The loop rule states that the algebraic sum of potential differences around any closed loop is zero, reflecting energy conservation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the principle and working of a moving coil galvanometer.",
+    "topic": "Moving Charges and Magnetism",
+    "options": [
+      {
+        "label": "A",
+        "text": "A moving coil galvanometer works on the principle that a current-carrying coil placed in a magnetic field experiences a torque. This torque is proportional to the current and causes the coil to rotate. The rotation is opposed by a spring, and the deflection is proportional to the current."
+      },
+      {
+        "label": "B",
+        "text": "A moving coil galvanometer works on the principle of electromagnetic induction. A changing magnetic field induces a current in the coil, which causes it to rotate. The rotation is opposed by a magnetic field, and the deflection is proportional to the rate of change of current."
+      },
+      {
+        "label": "C",
+        "text": "A moving coil galvanometer works on the principle of electrostatic attraction. A charged coil is attracted to a charged plate, causing it to rotate. The rotation is opposed by a spring, and the deflection is proportional to the charge."
+      },
+      {
+        "label": "D",
+        "text": "A moving coil galvanometer works on the principle of thermal expansion. A current heats the coil, causing it to expand and rotate. The rotation is opposed by a spring, and the deflection is proportional to the temperature."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A moving coil galvanometer operates on the principle that a current-carrying coil placed in a magnetic field experiences a torque. This torque is proportional to the current and causes the coil to rotate. The rotation is opposed by a spring, and the deflection is proportional to the current, allowing for accurate measurement of current.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is meant by the term 'modulation'? Explain the need for modulation in communication systems.",
+    "topic": "Communication Systems",
+    "options": [
+      {
+        "label": "A",
+        "text": "Modulation is the process of superimposing a low-frequency message signal onto a high-frequency carrier wave. It is needed to transmit signals over long distances, reduce antenna size, avoid signal mixing, and improve signal-to-noise ratio."
+      },
+      {
+        "label": "B",
+        "text": "Modulation is the process of amplifying a low-frequency message signal. It is needed to increase the power of the signal for transmission."
+      },
+      {
+        "label": "C",
+        "text": "Modulation is the process of filtering out noise from a message signal. It is needed to improve the clarity of the signal."
+      },
+      {
+        "label": "D",
+        "text": "Modulation is the process of converting an analog signal into a digital signal. It is needed for secure communication."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Modulation involves superimposing a message signal onto a carrier wave. This is essential for efficient signal transmission over long distances, reducing antenna size, preventing signal interference, and improving the signal-to-noise ratio.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Define the terms 'magnetic susceptibility' and 'relative permeability'. Establish the relationship between them.",
+    "topic": "Magnetism and Matter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Magnetic susceptibility (χm) is the degree to which a substance can be magnetized in an external magnetic field. Relative permeability (μr) is the ratio of permeability of a medium to the permeability of free space. The relationship is μr = 1 + χm."
+      },
+      {
+        "label": "B",
+        "text": "Magnetic susceptibility (χm) is the ability of a substance to conduct magnetic fields. Relative permeability (μr) is the ratio of magnetic field strength inside a material to the applied magnetic field strength. The relationship is μr = χm - 1."
+      },
+      {
+        "label": "C",
+        "text": "Magnetic susceptibility (χm) is the resistance of a substance to magnetization. Relative permeability (μr) is the product of permeability of a medium and the permeability of free space. The relationship is μr = 1 - χm."
+      },
+      {
+        "label": "D",
+        "text": "Magnetic susceptibility (χm) is the measure of a substance's permanent magnetic moment. Relative permeability (μr) is the sum of permeability of a medium and the permeability of free space. The relationship is μr = χm + 2."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Magnetic susceptibility (χm) quantifies how easily a material can be magnetized. Relative permeability (μr) compares the permeability of a material to that of free space. The relationship between them is given by μr = 1 + χm.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Draw a ray diagram to show the formation of the image of an object placed between f and 2f of a convex lens. Write the characteristics of the image formed.",
+    "topic": "Ray Optics and Optical Instruments",
+    "options": [
+      {
+        "label": "A",
+        "text": "The image is real, inverted, and magnified."
+      },
+      {
+        "label": "B",
+        "text": "The image is virtual, erect, and magnified."
+      },
+      {
+        "label": "C",
+        "text": "The image is real, erect, and diminished."
+      },
+      {
+        "label": "D",
+        "text": "The image is virtual, inverted, and diminished."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "When an object is placed between f and 2f of a convex lens, the image formed is real, inverted, and magnified. This can be verified by drawing a ray diagram.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the effect on the interference fringes in Young's double-slit experiment when (i) the separation between the slits is increased; (ii) the wavelength of the light is increased?",
+    "topic": "Wave Optics",
+    "options": [
+      {
+        "label": "A",
+        "text": "(i) Fringe width decreases; (ii) Fringe width increases"
+      },
+      {
+        "label": "B",
+        "text": "(i) Fringe width increases; (ii) Fringe width decreases"
+      },
+      {
+        "label": "C",
+        "text": "(i) Fringe width remains the same; (ii) Fringe width increases"
+      },
+      {
+        "label": "D",
+        "text": "(i) Fringe width decreases; (ii) Fringe width remains the same"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The fringe width (β) in Young's double-slit experiment is given by β = λD/d, where λ is the wavelength, D is the distance between the slits and the screen, and d is the separation between the slits. (i) If d increases, β decreases. (ii) If λ increases, β increases.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the working of a Zener diode as a voltage regulator.",
+    "topic": "Semiconductor Electronics: Materials, Devices and Simple Circuits",
+    "options": [
+      {
+        "label": "A",
+        "text": "A Zener diode, when reverse biased, maintains a constant voltage across its terminals once the breakdown voltage is reached. This property is used to regulate voltage by connecting the Zener diode in parallel with the load. Any excess voltage is dropped across a series resistor, keeping the voltage across the load constant."
+      },
+      {
+        "label": "B",
+        "text": "A Zener diode, when forward biased, conducts current and maintains a constant voltage. This property is used to amplify voltage by connecting the Zener diode in series with the load."
+      },
+      {
+        "label": "C",
+        "text": "A Zener diode, when unbiased, blocks current and maintains a constant voltage. This property is used to switch voltage by connecting the Zener diode in series with the load."
+      },
+      {
+        "label": "D",
+        "text": "A Zener diode, when heated, generates a constant voltage. This property is used to regulate temperature by connecting the Zener diode in parallel with the load."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A Zener diode acts as a voltage regulator by maintaining a constant voltage across its terminals in the reverse breakdown region. When connected in parallel with a load, it ensures that the voltage across the load remains stable, even with variations in input voltage or load current. A series resistor limits the current through the Zener diode.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the Bohr quantization condition for the angular momentum of an electron in an orbit? Explain its significance.",
+    "topic": "Atoms",
+    "options": [
+      {
+        "label": "A",
+        "text": "The Bohr quantization condition states that the angular momentum of an electron in an orbit is an integral multiple of h/2π (L = nh/2π). This implies that electrons can only exist in specific orbits with quantized energy levels, leading to discrete emission spectra."
+      },
+      {
+        "label": "B",
+        "text": "The Bohr quantization condition states that the energy of an electron in an orbit is an integral multiple of hf (E = nhf). This implies that electrons can only exist in specific orbits with quantized angular momentum, leading to continuous emission spectra."
+      },
+      {
+        "label": "C",
+        "text": "The Bohr quantization condition states that the velocity of an electron in an orbit is an integral multiple of c (v = nc). This implies that electrons can only exist in specific orbits with quantized speed, leading to discrete absorption spectra."
+      },
+      {
+        "label": "D",
+        "text": "The Bohr quantization condition states that the radius of an electron in an orbit is an integral multiple of a₀ (r = na₀). This implies that electrons can only exist in specific orbits with quantized radius, leading to continuous absorption spectra."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The Bohr quantization condition (L = nh/2π) restricts the angular momentum of an electron to specific quantized values. This leads to discrete energy levels and explains the observed line spectra of atoms, providing a foundation for understanding atomic structure.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "State the laws of radioactive decay.",
+    "topic": "Nuclei",
+    "options": [
+      {
+        "label": "A",
+        "text": "1. The rate of decay is proportional to the number of radioactive nuclei present. 2. The decay is a random process and is independent of external conditions."
+      },
+      {
+        "label": "B",
+        "text": "1. The rate of decay is constant. 2. The decay is a deterministic process and depends on external conditions."
+      },
+      {
+        "label": "C",
+        "text": "1. The rate of decay is inversely proportional to the number of radioactive nuclei present. 2. The decay is a random process and depends on external conditions."
+      },
+      {
+        "label": "D",
+        "text": "1. The rate of decay is proportional to the square of the number of radioactive nuclei present. 2. The decay is a deterministic process and is independent of external conditions."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The laws of radioactive decay state that the rate of decay is proportional to the number of radioactive nuclei present and that the decay process is random and independent of external conditions. These laws form the basis for understanding and predicting radioactive decay rates.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

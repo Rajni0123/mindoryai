@@ -1,0 +1,299 @@
+[
+  {
+    "question_text": "The ratio of the height of a tower and the length of its shadow on the ground is √3 : 1. What is the angle of elevation of the sun?",
+    "topic": "Trigonometry: Heights and Distances",
+    "options": [
+      {
+        "label": "A",
+        "text": "30°"
+      },
+      {
+        "label": "B",
+        "text": "45°"
+      },
+      {
+        "label": "C",
+        "text": "60°"
+      },
+      {
+        "label": "D",
+        "text": "90°"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Let the height of the tower be √3h and the length of the shadow be h. Then, tan θ = (√3h)/h = √3. Therefore, θ = 60°.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Volume and surface area of a solid hemisphere are numerically equal. What is the diameter of the hemisphere?",
+    "topic": "Surface Areas and Volumes",
+    "options": [
+      {
+        "label": "A",
+        "text": "3 units"
+      },
+      {
+        "label": "B",
+        "text": "4.5 units"
+      },
+      {
+        "label": "C",
+        "text": "6 units"
+      },
+      {
+        "label": "D",
+        "text": "9 units"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Volume of hemisphere = (2/3)πr³. Surface area of hemisphere = 3πr².  (2/3)πr³ = 3πr².  r = 9/2. Diameter = 2r = 9 units.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "A number is chosen at random from the numbers -3, -2, -1, 0, 1, 2, 3. What will be the probability that the square of this number is less than or equal to 1?",
+    "topic": "Probability",
+    "options": [
+      {
+        "label": "A",
+        "text": "1/7"
+      },
+      {
+        "label": "B",
+        "text": "2/7"
+      },
+      {
+        "label": "C",
+        "text": "3/7"
+      },
+      {
+        "label": "D",
+        "text": "4/7"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Possible outcomes: {-3, -2, -1, 0, 1, 2, 3}. Total outcomes = 7. Favorable outcomes (square ≤ 1): {-1, 0, 1}. Number of favorable outcomes = 3. Probability = 3/7.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "If the distance between the points (4, k) and (1, 0) is 5, then what can be the possible values of k?",
+    "topic": "Coordinate Geometry",
+    "options": [
+      {
+        "label": "A",
+        "text": "±3"
+      },
+      {
+        "label": "B",
+        "text": "±4"
+      },
+      {
+        "label": "C",
+        "text": "±5"
+      },
+      {
+        "label": "D",
+        "text": "±2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Distance = √((4-1)² + (k-0)²) = 5.  √(9 + k²) = 5.  9 + k² = 25.  k² = 16.  k = ±4.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Find the roots of the quadratic equation √2 x² + 7x + 5√2 = 0.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "-√2, -5√2"
+      },
+      {
+        "label": "B",
+        "text": "-√2, -5/√2"
+      },
+      {
+        "label": "C",
+        "text": "√2, 5√2"
+      },
+      {
+        "label": "D",
+        "text": "√2, 5/√2"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "√2 x² + 7x + 5√2 = 0. √2 x² + 2x + 5x + 5√2 = 0. √2x(x + √2) + 5(x + √2) = 0. (√2x + 5)(x + √2) = 0. x = -5/√2, -√2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find how many integers between 200 and 500 are divisible by 8.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "36"
+      },
+      {
+        "label": "B",
+        "text": "37"
+      },
+      {
+        "label": "C",
+        "text": "38"
+      },
+      {
+        "label": "D",
+        "text": "39"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The first number divisible by 8 in the range is 208, and the last is 496.  So, 208, 216, ..., 496 is an AP with a = 208, d = 8, and an = 496.  an = a + (n-1)d.  496 = 208 + (n-1)8.  288 = (n-1)8.  36 = n-1.  n = 37.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Tangents drawn at the ends of a diameter of a circle are:",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "Perpendicular"
+      },
+      {
+        "label": "B",
+        "text": "Parallel"
+      },
+      {
+        "label": "C",
+        "text": "Intersecting"
+      },
+      {
+        "label": "D",
+        "text": "None of the above"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Tangents at the end of the diameter are always parallel because the radius is perpendicular to the tangent at the point of contact, and the radii at the ends of a diameter are collinear, forming a straight line. Thus, the tangents are perpendicular to the same line and hence parallel.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Find the value of k for which the equation x² + k(2x + k – 1) + 2 = 0 has real and equal roots.",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "k = 1"
+      },
+      {
+        "label": "B",
+        "text": "k = 2"
+      },
+      {
+        "label": "C",
+        "text": "k = 3"
+      },
+      {
+        "label": "D",
+        "text": "k = 4"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "x² + 2kx + k² - k + 2 = 0. For real and equal roots, the discriminant (b² - 4ac) must be 0. (2k)² - 4(1)(k² - k + 2) = 0. 4k² - 4k² + 4k - 8 = 0. 4k = 8. k = 2.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "In the given figure, PA and PB are tangents to the circle from an external point P. CD is another tangent touching the circle at Q. If PA = 12 cm, QC = QD = 3 cm, then find PC + PD.",
+    "topic": "Circles",
+    "options": [
+      {
+        "label": "A",
+        "text": "12 cm"
+      },
+      {
+        "label": "B",
+        "text": "15 cm"
+      },
+      {
+        "label": "C",
+        "text": "18 cm"
+      },
+      {
+        "label": "D",
+        "text": "21 cm"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "PA = PB = 12 cm. AC = QC = 3 cm. BD = QD = 3 cm. PC = PA - AC = 12 - 3 = 9 cm. PD = PB - BD = 12 - 3 = 9 cm. PC + PD = 9 + 9 = 18 cm.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "If the mth term of an A.P. is 1/n and nth term is 1/m, then find the sum of its first mn terms.",
+    "topic": "Arithmetic Progressions",
+    "options": [
+      {
+        "label": "A",
+        "text": "mn/2"
+      },
+      {
+        "label": "B",
+        "text": "(mn+1)/2"
+      },
+      {
+        "label": "C",
+        "text": "mn(mn+1)/2"
+      },
+      {
+        "label": "D",
+        "text": "(mn-1)/2"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "am = a + (m-1)d = 1/n. an = a + (n-1)d = 1/m. Subtracting, (m-n)d = (1/n) - (1/m) = (m-n)/mn. d = 1/mn. a + (m-1)(1/mn) = 1/n. a = 1/n - (m-1)/mn = (m - m + 1)/mn = 1/mn. Smn = (mn/2)[2a + (mn-1)d] = (mn/2)[2/mn + (mn-1)/mn] = (mn/2)[(2 + mn - 1)/mn] = (mn/2)[(mn+1)/mn] = (mn(mn+1))/2.",
+    "difficulty": "hard",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "If the equation (1 + m²)x² + 2mcx + c² – a² = 0 has equal roots then which of the following is true?",
+    "topic": "Quadratic Equations",
+    "options": [
+      {
+        "label": "A",
+        "text": "c² = a²(1 - m²)"
+      },
+      {
+        "label": "B",
+        "text": "c² = a²(1 + m²)"
+      },
+      {
+        "label": "C",
+        "text": "a² = c²(1 + m²)"
+      },
+      {
+        "label": "D",
+        "text": "a² = c²(1 - m²)"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "For equal roots, the discriminant must be zero. D = (2mc)² - 4(1 + m²)(c² - a²) = 0. 4m²c² - 4(c² - a² + m²c² - m²a²) = 0. m²c² - c² + a² - m²c² + m²a² = 0. -c² + a² + m²a² = 0. c² = a²(1 + m²).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  }
+]

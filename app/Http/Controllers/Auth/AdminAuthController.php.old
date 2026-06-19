@@ -1,0 +1,284 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\RenflairOTPService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Validator;
+
+class AdminAuthController extends Controller
+{
+    private RenflairOTPService $otpService;
+
+    public function __construct(RenflairOTPService $otpService)
+    {
+        $this->otpService = $otpService;
+    }
+
+    /**
+     * Show admin login form
+     */
+    public function showLoginForm()
+    {
+        return view('auth.admin-login');
+    }
+
+    /**
+     * Send OTP to admin mobile number
+     */
+    public function sendOTP(Request $request)
+    {
+        // Rate limiting: 3 attempts per 10 minutes
+        $key = 'admin-otp-send:' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($key, 3)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "Too many OTP requests. Please try again in {$seconds} seconds."
+            ], 429);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'mobile' => ['required', 'string', 'regex:/^[6-9]\d{9}$/']
+        ], [
+            'mobile.required' => 'Mobile number is required',
+            'mobile.regex' => 'Please enter a valid 10-digit mobile number'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+
+        $mobile = $request->mobile;
+
+        // Check if mobile belongs to an admin
+        $admin = User::where('mobile', $mobile)
+                     ->where('role', 'admin')
+                     ->first();
+
+        if (!$admin) {
+            // Don't reveal that admin doesn't exist (security)
+            RateLimiter::hit($key, 600); // 10 minutes
+
+            // Log suspicious attempt
+            Log::warning('Admin login attempt with invalid mobile', [
+                'mobile' => $mobile,
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials'
+            ], 401);
+        }
+
+        // Check if account is locked
+        if ($admin->isLocked()) {
+            $minutesLeft = now()->diffInMinutes($admin->locked_until);
+            return response()->json([
+                'success' => false,
+                'message' => "Account is locked. Try again in {$minutesLeft} minutes."
+            ], 423);
+        }
+
+        // Send OTP
+        $result = $this->otpService->sendOTP($mobile, $request->ip(), $request->userAgent());
+
+        if ($result['success']) {
+            RateLimiter::hit($key, 600);
+
+            // Log OTP sent
+            Log::info('Admin OTP sent', [
+                'admin_id' => $admin->id,
+                'mobile' => $mobile,
+                'ip' => $request->ip(),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => $result['message'],
+                'expires_in' => $result['expires_in'],
+                'requires_2fa' => $admin->two_factor_enabled
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $result['message']
+        ], 400);
+    }
+
+    /**
+     * Verify OTP and proceed to 2FA or login
+     */
+    public function verifyOTP(Request $request)
+    {
+        // Rate limiting: 5 attempts per 10 minutes
+        $key = 'admin-otp-verify:' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json([
+                'success' => false,
+                'message' => "Too many verification attempts. Try again in {$seconds} seconds."
+            ], 429);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'mobile' => ['required', 'string', 'regex:/^[6-9]\d{9}$/'],
+            'otp' => ['required', 'string', 'size:4']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+
+        $mobile = $request->mobile;
+        $otp = $request->otp;
+
+        // Verify OTP
+        $result = $this->otpService->verifyOTP($mobile, $otp);
+
+        if (!$result['success']) {
+            RateLimiter::hit($key, 600);
+
+            // Increment failed attempts
+            $admin = User::where('mobile', $mobile)->where('role', 'admin')->first();
+            if ($admin) {
+                $admin->incrementLoginAttempts();
+
+                Log::warning('Admin OTP verification failed', [
+                    'admin_id' => $admin->id,
+                    'mobile' => $mobile,
+                    'ip' => $request->ip(),
+                    'failed_attempts' => $admin->failed_login_attempts,
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => $result['message']
+            ], 400);
+        }
+
+        // OTP verified, get admin
+        $admin = User::where('mobile', $mobile)
+                     ->where('role', 'admin')
+                     ->first();
+
+        if (!$admin) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Admin not found'
+            ], 404);
+        }
+
+        // Store verified mobile in session for 2FA step
+        session(['admin_mobile_verified' => $mobile]);
+        session(['admin_id_pending_2fa' => $admin->id]);
+
+        // Check if 2FA is enabled
+        if ($admin->two_factor_enabled) {
+            return response()->json([
+                'success' => true,
+                'requires_2fa' => true,
+                'message' => 'OTP verified. Please enter 2FA code.',
+                'redirect' => route('admin.2fa.verify')
+            ]);
+        }
+
+        // No 2FA required, complete login
+        return $this->completeLogin($admin, $request);
+    }
+
+    /**
+     * Complete admin login
+     */
+    private function completeLogin(User $admin, Request $request)
+    {
+        // Reset failed attempts
+        $admin->resetLoginAttempts();
+
+        // Update login information
+        $admin->updateLastLogin($request);
+
+        // Login admin with "remember me" enabled
+        Auth::login($admin, true);
+
+        // Regenerate session to prevent session fixation attacks
+        $request->session()->regenerate();
+
+        // Clear OTP session data
+        session()->forget(['admin_mobile_verified', 'admin_id_pending_2fa']);
+
+        // CRITICAL: Save session before responding
+        // This ensures the session is fully persisted before redirect
+        $request->session()->save();
+
+        // Log successful login with detailed session info
+        Log::info('Admin login successful', [
+            'admin_id' => $admin->id,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'session_id' => session()->getId(),
+            'auth_check' => Auth::check(),
+            'auth_id' => Auth::id(),
+            'session_data' => session()->all(),
+        ]);
+
+        // Create response with explicit session cookie
+        $response = response()->json([
+            'success' => true,
+            'message' => 'Login successful!',
+            'redirect' => route('admin.dashboard'),
+            'debug' => [
+                'session_id' => session()->getId(),
+                'auth_check' => Auth::check(),
+            ]
+        ]);
+
+        // Explicitly set the session cookie
+        return $response->withCookie(
+            cookie(
+                config('session.cookie', 'laravel_session'),
+                session()->getId(),
+                config('session.lifetime', 120),
+                config('session.path', '/'),
+                config('session.domain', null),
+                config('session.secure', false),
+                config('session.http_only', true),
+                false,
+                config('session.same_site', 'lax')
+            )
+        );
+    }
+
+    /**
+     * Logout admin
+     */
+    public function logout(Request $request)
+    {
+        $adminId = Auth::id();
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        Log::info('Admin logout', ['admin_id' => $adminId]);
+
+        return redirect()->route('home')->with('success', 'Logged out successfully');
+    }
+}

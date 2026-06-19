@@ -1,0 +1,299 @@
+[
+  {
+    "question_text": "How did the postal service begin?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Due to the invention of the printing press"
+      },
+      {
+        "label": "B",
+        "text": "To maintain communication within an empire"
+      },
+      {
+        "label": "C",
+        "text": "For personal correspondence between friends"
+      },
+      {
+        "label": "D",
+        "text": "To deliver packages and goods"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that postal service originated from the necessity of maintaining communications between different parts of an empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the main advantage of the postal service for rulers?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "It helped them collect taxes efficiently."
+      },
+      {
+        "label": "B",
+        "text": "It allowed them to keep track of happenings in their empire."
+      },
+      {
+        "label": "C",
+        "text": "It facilitated trade and commerce."
+      },
+      {
+        "label": "D",
+        "text": "It improved diplomatic relations with other countries."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that the postal service enabled the emperor to keep track of all that was happening in the empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How are postal services different today compared to their early forms?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are slower and less reliable."
+      },
+      {
+        "label": "B",
+        "text": "They are only available to government officials."
+      },
+      {
+        "label": "C",
+        "text": "They utilize air, railway, and motor services for speed."
+      },
+      {
+        "label": "D",
+        "text": "They are primarily used for sending packages."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that modern postal services use air, railway, and motor services to carry letters speedily to their destinations.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What difficulties did mail runners face in the early postal system?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Lack of proper training and equipment"
+      },
+      {
+        "label": "B",
+        "text": "Navigating jungles, hills, rivers, wild animals, and dacoits"
+      },
+      {
+        "label": "C",
+        "text": "High postal rates and limited access"
+      },
+      {
+        "label": "D",
+        "text": "Competition from other courier services"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that mail runners had to pass through jungles, climb hills, cross rivers, and brave wild animals and dacoits.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Who is mentioned as the first person to begin a postal organization in the passage?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Sher Shah"
+      },
+      {
+        "label": "B",
+        "text": "Akbar"
+      },
+      {
+        "label": "C",
+        "text": "Alauddin Khilji"
+      },
+      {
+        "label": "D",
+        "text": "Lord Clive"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The passage states that Alauddin Khilji had a horse-and-foot postal organization.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "How did Sher Shah contribute to the promotion of postal services?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "By introducing airmail services"
+      },
+      {
+        "label": "B",
+        "text": "By building a 2,000-mile road and establishing horse despatches"
+      },
+      {
+        "label": "C",
+        "text": "By creating the first postal stamps"
+      },
+      {
+        "label": "D",
+        "text": "By establishing post offices in every village"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that Sher Shah built a 2,000-mile road and established horse despatches throughout the Empire.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "Which two places are mentioned as having the first major post offices established by the East India Company?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "Delhi and Agra"
+      },
+      {
+        "label": "B",
+        "text": "Bombay and Madras"
+      },
+      {
+        "label": "C",
+        "text": "Calcutta and Surat"
+      },
+      {
+        "label": "D",
+        "text": "Goa and Cochin"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that the East India Company established major post offices at Bombay and Madras.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "What was the purpose of the special copper token of the value of 2 annas?",
+    "topic": "The Letter",
+    "options": [
+      {
+        "label": "A",
+        "text": "To be used as currency in trade"
+      },
+      {
+        "label": "B",
+        "text": "To facilitate the payment of postage"
+      },
+      {
+        "label": "C",
+        "text": "To reward loyal postal workers"
+      },
+      {
+        "label": "D",
+        "text": "To commemorate the establishment of the postal system"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage mentions that the copper token was struck by the mint to facilitate the payment of postage.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "B"
+  },
+  {
+    "question_text": "According to the passage, what is the role of fast foods during crises?",
+    "topic": "Health and Medicine",
+    "options": [
+      {
+        "label": "A",
+        "text": "They are a primary source of nutrition."
+      },
+      {
+        "label": "B",
+        "text": "They provide sustenance to those affected by disasters."
+      },
+      {
+        "label": "C",
+        "text": "They are a luxury item for the wealthy."
+      },
+      {
+        "label": "D",
+        "text": "They are used to promote aggressive advertising."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The passage states that fast foods fed starving soldiers, those displaced by natural calamities, and silenced hunger pangs during economic crises.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the main concern raised by experts regarding instant foods like noodles?",
+    "topic": "Health and Medicine",
+    "options": [
+      {
+        "label": "A",
+        "text": "Their high cost and limited availability"
+      },
+      {
+        "label": "B",
+        "text": "Their lack of nutrition and potential health risks"
+      },
+      {
+        "label": "C",
+        "text": "Their impact on traditional cooking methods"
+      },
+      {
+        "label": "D",
+        "text": "Their environmental impact due to packaging"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Experts highlighted the lack of nutrition in these products and the potential health risks, such as high lead levels.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the typical characteristics of convenience foods, according to the expert?",
+    "topic": "Health and Medicine",
+    "options": [
+      {
+        "label": "A",
+        "text": "Low in calories, high in fiber, and rich in nutrients"
+      },
+      {
+        "label": "B",
+        "text": "Calorie-packed, contain more taste enhancers, little nutrition, and lack fiber"
+      },
+      {
+        "label": "C",
+        "text": "Balanced in nutrients, with moderate amounts of calories and fiber"
+      },
+      {
+        "label": "D",
+        "text": "Made with fresh ingredients and minimal processing"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The expert states that convenience foods are calorie-packed, contain more taste enhancers, little nutrition, and lack fiber.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

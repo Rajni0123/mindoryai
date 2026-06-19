@@ -1,0 +1,704 @@
+[
+  {
+    "question_text": "What is apomixis and what is its significance?",
+    "topic": "Reproduction in Organisms",
+    "options": [
+      {
+        "label": "A",
+        "text": "A type of asexual reproduction that mimics sexual reproduction; it leads to uniform progeny and can preserve desirable traits in crops."
+      },
+      {
+        "label": "B",
+        "text": "A type of sexual reproduction that mimics asexual reproduction; it leads to diverse progeny and can eliminate undesirable traits in crops."
+      },
+      {
+        "label": "C",
+        "text": "A type of vegetative propagation; it leads to uniform progeny and can preserve desirable traits in crops."
+      },
+      {
+        "label": "D",
+        "text": "A type of parthenogenesis; it leads to diverse progeny and can eliminate undesirable traits in crops."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Apomixis is a form of asexual reproduction that mimics sexual reproduction by producing seeds without fertilization. Its significance lies in its ability to produce genetically uniform progeny, which is valuable in agriculture for preserving desirable traits in crops.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the role of the lac operon in E. coli.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "It regulates the synthesis of lactose by repressing the lac genes in the absence of lactose and inducing them in the presence of lactose."
+      },
+      {
+        "label": "B",
+        "text": "It regulates the synthesis of glucose by repressing the lac genes in the absence of glucose and inducing them in the presence of glucose."
+      },
+      {
+        "label": "C",
+        "text": "It regulates the synthesis of proteins by repressing the lac genes in the absence of proteins and inducing them in the presence of proteins."
+      },
+      {
+        "label": "D",
+        "text": "It regulates the synthesis of lipids by repressing the lac genes in the absence of lipids and inducing them in the presence of lipids."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The lac operon in E. coli regulates the expression of genes involved in lactose metabolism. In the absence of lactose, a repressor protein binds to the operator region, preventing transcription. When lactose is present, it binds to the repressor, inactivating it and allowing transcription of the lac genes.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the process of translation.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "The process by which mRNA is decoded and a protein is produced, involving ribosomes, tRNA, and various initiation, elongation, and termination factors."
+      },
+      {
+        "label": "B",
+        "text": "The process by which DNA is replicated, involving DNA polymerase, helicase, and ligase."
+      },
+      {
+        "label": "C",
+        "text": "The process by which RNA is transcribed from DNA, involving RNA polymerase and various transcription factors."
+      },
+      {
+        "label": "D",
+        "text": "The process by which lipids are synthesized, involving various enzymes and cofactors."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Translation is the process of protein synthesis where the genetic code carried by mRNA is decoded to produce a specific sequence of amino acids in a polypeptide chain. This process occurs on ribosomes and involves tRNA molecules that bring specific amino acids to the ribosome based on the mRNA codons.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the role of restriction enzymes in recombinant DNA technology?",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To cut DNA at specific recognition sequences, creating fragments with sticky or blunt ends."
+      },
+      {
+        "label": "B",
+        "text": "To join DNA fragments together."
+      },
+      {
+        "label": "C",
+        "text": "To amplify DNA sequences."
+      },
+      {
+        "label": "D",
+        "text": "To protect bacterial DNA from viral infection."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Restriction enzymes are used to cut DNA at specific recognition sequences. These enzymes are crucial for creating compatible ends on DNA fragments that can then be joined together using DNA ligase in recombinant DNA technology.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the key features of genetic code?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "The genetic code is universal, unambiguous, degenerate, and commaless."
+      },
+      {
+        "label": "B",
+        "text": "The genetic code is species-specific, ambiguous, non-degenerate, and contains commas."
+      },
+      {
+        "label": "C",
+        "text": "The genetic code is variable, unambiguous, degenerate, and contains commas."
+      },
+      {
+        "label": "D",
+        "text": "The genetic code is universal, ambiguous, non-degenerate, and commaless."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The genetic code is universal (same across organisms), unambiguous (one codon codes for one amino acid), degenerate (multiple codons can code for the same amino acid), and commaless (no punctuation between codons).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the function of the Ti plasmid in biotechnology?",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "It is used as a vector to transfer genes into plant cells."
+      },
+      {
+        "label": "B",
+        "text": "It is used to amplify DNA sequences."
+      },
+      {
+        "label": "C",
+        "text": "It is used to cut DNA at specific sites."
+      },
+      {
+        "label": "D",
+        "text": "It is used to produce antibiotics."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The Ti plasmid (Tumor-inducing plasmid) from Agrobacterium tumefaciens is used as a vector to transfer desired genes into plant cells, creating genetically modified plants.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of DNA replication.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA replication is the process of copying DNA, involving enzymes like DNA polymerase, helicase, and ligase, resulting in two identical DNA molecules."
+      },
+      {
+        "label": "B",
+        "text": "DNA replication is the process of synthesizing RNA from a DNA template, involving RNA polymerase."
+      },
+      {
+        "label": "C",
+        "text": "DNA replication is the process of synthesizing proteins from an RNA template, involving ribosomes and tRNA."
+      },
+      {
+        "label": "D",
+        "text": "DNA replication is the process of breaking down DNA into smaller fragments."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "DNA replication is the process of copying a DNA molecule to produce two identical DNA molecules. It involves unwinding the DNA double helix, using each strand as a template for synthesizing a new complementary strand, and joining the newly synthesized strands together.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What is the significance of biodiversity?",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "It provides essential ecosystem services, supports human livelihoods, and contributes to genetic resources."
+      },
+      {
+        "label": "B",
+        "text": "It leads to increased pollution and environmental degradation."
+      },
+      {
+        "label": "C",
+        "text": "It has no impact on ecosystem stability or human well-being."
+      },
+      {
+        "label": "D",
+        "text": "It only benefits a small number of species."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biodiversity is essential for maintaining ecosystem stability, providing ecosystem services (like pollination and water purification), supporting human livelihoods (through agriculture and fisheries), and providing genetic resources for future use.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What are the advantages of using biogas?",
+    "topic": "Microbes in Human Welfare",
+    "options": [
+      {
+        "label": "A",
+        "text": "It is a clean, renewable energy source, reduces pollution, and provides nutrient-rich fertilizer."
+      },
+      {
+        "label": "B",
+        "text": "It is a non-renewable energy source that contributes to pollution."
+      },
+      {
+        "label": "C",
+        "text": "It is expensive to produce and has no environmental benefits."
+      },
+      {
+        "label": "D",
+        "text": "It is difficult to store and transport."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biogas is a clean and renewable energy source produced from the anaerobic digestion of organic waste. It reduces pollution, provides a sustainable energy source, and the slurry left behind is a nutrient-rich fertilizer.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the greenhouse effect and how does it contribute to global warming?",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "The greenhouse effect is the trapping of heat by gases in the atmosphere, leading to an increase in global temperatures."
+      },
+      {
+        "label": "B",
+        "text": "The greenhouse effect is the cooling of the Earth's surface due to the reflection of sunlight."
+      },
+      {
+        "label": "C",
+        "text": "The greenhouse effect is the depletion of the ozone layer."
+      },
+      {
+        "label": "D",
+        "text": "The greenhouse effect is the process of acid rain formation."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The greenhouse effect is the natural process by which certain gases in the Earth's atmosphere trap heat from the sun, warming the planet. Increased concentrations of greenhouse gases due to human activities enhance this effect, leading to global warming.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Define mutualism with an example.",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "An interaction where both species benefit, such as mycorrhizae association between fungi and plant roots."
+      },
+      {
+        "label": "B",
+        "text": "An interaction where one species benefits and the other is harmed, such as parasitism."
+      },
+      {
+        "label": "C",
+        "text": "An interaction where one species benefits and the other is unaffected, such as commensalism."
+      },
+      {
+        "label": "D",
+        "text": "An interaction where both species are harmed, such as competition."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Mutualism is an interaction between two species where both species benefit. An example is the mycorrhizae association between fungi and plant roots, where the fungi help the plant absorb nutrients, and the plant provides the fungi with carbohydrates.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of transcription in eukaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Transcription in eukaryotes involves RNA polymerase, transcription factors, and post-transcriptional modifications like splicing, capping, and tailing."
+      },
+      {
+        "label": "B",
+        "text": "Transcription in eukaryotes involves DNA polymerase and the direct synthesis of mRNA without any modifications."
+      },
+      {
+        "label": "C",
+        "text": "Transcription in eukaryotes involves ribosomes and the synthesis of proteins."
+      },
+      {
+        "label": "D",
+        "text": "Transcription in eukaryotes involves the breakdown of DNA into smaller fragments."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Transcription in eukaryotes is a complex process involving RNA polymerase II, transcription factors that bind to promoter regions, and post-transcriptional modifications such as splicing (removal of introns), capping (addition of a 5' cap), and tailing (addition of a poly-A tail) to produce mature mRNA.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are the different types of biodiversity?",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Genetic diversity, species diversity, and ecosystem diversity."
+      },
+      {
+        "label": "B",
+        "text": "Structural diversity, functional diversity, and behavioral diversity."
+      },
+      {
+        "label": "C",
+        "text": "Alpha diversity, beta diversity, and gamma diversity."
+      },
+      {
+        "label": "D",
+        "text": "Habitat diversity, niche diversity, and trophic diversity."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The three main types of biodiversity are genetic diversity (variation within a species), species diversity (variety of species in a region), and ecosystem diversity (variety of ecosystems in a region).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the role of microbes in sewage treatment?",
+    "topic": "Microbes in Human Welfare",
+    "options": [
+      {
+        "label": "A",
+        "text": "Microbes decompose organic matter in sewage, reducing pollution and making the water safer to release into the environment."
+      },
+      {
+        "label": "B",
+        "text": "Microbes add pollutants to sewage, making it easier to dispose of."
+      },
+      {
+        "label": "C",
+        "text": "Microbes are used to filter solid waste from sewage."
+      },
+      {
+        "label": "D",
+        "text": "Microbes are used to sterilize sewage, killing all organisms."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Microbes play a crucial role in sewage treatment by decomposing organic matter in the sewage. This process reduces the levels of pollutants and makes the water safer to release back into the environment. The treatment involves primary, secondary, and sometimes tertiary stages, with microbes being most active in the secondary stage.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the major causes of air pollution?",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Burning of fossil fuels, industrial emissions, and vehicular exhaust."
+      },
+      {
+        "label": "B",
+        "text": "Deforestation and soil erosion."
+      },
+      {
+        "label": "C",
+        "text": "Water pollution and sewage disposal."
+      },
+      {
+        "label": "D",
+        "text": "Overfishing and marine pollution."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The major causes of air pollution include the burning of fossil fuels (coal, oil, and natural gas) in power plants and vehicles, industrial emissions, and vehicular exhaust. These activities release pollutants such as particulate matter, sulfur dioxide, nitrogen oxides, and carbon monoxide into the atmosphere.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the difference between primary and secondary succession?",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Primary succession starts in a lifeless area, while secondary succession starts in an area with existing soil."
+      },
+      {
+        "label": "B",
+        "text": "Primary succession is faster than secondary succession."
+      },
+      {
+        "label": "C",
+        "text": "Primary succession involves only plants, while secondary succession involves both plants and animals."
+      },
+      {
+        "label": "D",
+        "text": "Primary succession leads to a climax community, while secondary succession does not."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Primary succession occurs in an area where no soil exists, such as after a volcanic eruption or glacial retreat. Secondary succession occurs in an area where soil is already present, such as after a fire or flood. Secondary succession is generally faster because the soil already contains nutrients and seeds.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of PCR (Polymerase Chain Reaction).",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "PCR is a technique used to amplify a specific DNA sequence, involving denaturation, annealing, and extension cycles."
+      },
+      {
+        "label": "B",
+        "text": "PCR is a technique used to cut DNA at specific sites."
+      },
+      {
+        "label": "C",
+        "text": "PCR is a technique used to sequence DNA."
+      },
+      {
+        "label": "D",
+        "text": "PCR is a technique used to transfer genes into cells."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "PCR (Polymerase Chain Reaction) is a technique used to amplify a specific DNA sequence. It involves repeated cycles of denaturation (separating the DNA strands), annealing (binding of primers to the DNA), and extension (DNA polymerase synthesizing new strands).",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are the different strategies for biodiversity conservation?",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "In-situ conservation (protecting species in their natural habitat) and ex-situ conservation (protecting species outside their natural habitat)."
+      },
+      {
+        "label": "B",
+        "text": "Increasing pollution and deforestation."
+      },
+      {
+        "label": "C",
+        "text": "Introducing invasive species and overexploitation of resources."
+      },
+      {
+        "label": "D",
+        "text": "Ignoring endangered species and promoting habitat destruction."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Biodiversity conservation strategies include in-situ conservation (protecting species within their natural habitats, such as national parks and biosphere reserves) and ex-situ conservation (protecting species outside their natural habitats, such as zoos and botanical gardens).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the role of mycorrhizae in plant nutrition?",
+    "topic": "Microbes in Human Welfare",
+    "options": [
+      {
+        "label": "A",
+        "text": "Mycorrhizae enhance the absorption of nutrients and water by plant roots."
+      },
+      {
+        "label": "B",
+        "text": "Mycorrhizae protect plants from herbivores."
+      },
+      {
+        "label": "C",
+        "text": "Mycorrhizae provide plants with carbon dioxide."
+      },
+      {
+        "label": "D",
+        "text": "Mycorrhizae help plants fix nitrogen."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Mycorrhizae are symbiotic associations between fungi and plant roots. The fungi enhance the absorption of nutrients (especially phosphorus) and water by plant roots, while the plant provides the fungi with carbohydrates.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the effects of acid rain?",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Acid rain damages buildings, corrodes metals, and harms aquatic ecosystems and vegetation."
+      },
+      {
+        "label": "B",
+        "text": "Acid rain improves soil fertility and promotes plant growth."
+      },
+      {
+        "label": "C",
+        "text": "Acid rain has no impact on the environment."
+      },
+      {
+        "label": "D",
+        "text": "Acid rain cleans the atmosphere and reduces pollution."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Acid rain has several harmful effects, including damaging buildings and monuments (especially those made of limestone or marble), corroding metals, acidifying lakes and streams (harming aquatic life), and damaging vegetation by affecting soil chemistry and nutrient availability.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the difference between food chain and food web?",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "A food chain is a linear sequence of organisms through which nutrients and energy pass, while a food web is a network of interconnected food chains."
+      },
+      {
+        "label": "B",
+        "text": "A food chain is more complex than a food web."
+      },
+      {
+        "label": "C",
+        "text": "A food chain only includes plants, while a food web includes both plants and animals."
+      },
+      {
+        "label": "D",
+        "text": "A food chain represents energy flow, while a food web represents nutrient cycling."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A food chain is a linear sequence of organisms through which nutrients and energy pass as one organism eats another. A food web is a more complex network of interconnected food chains, showing the multiple feeding relationships within an ecosystem.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the process of cloning a gene.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gene cloning involves isolating a gene, inserting it into a vector, and introducing the vector into a host cell for replication."
+      },
+      {
+        "label": "B",
+        "text": "Gene cloning involves cutting DNA at specific sites."
+      },
+      {
+        "label": "C",
+        "text": "Gene cloning involves sequencing DNA."
+      },
+      {
+        "label": "D",
+        "text": "Gene cloning involves transferring genes directly into an organism."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Gene cloning involves several steps: isolating the desired gene, inserting the gene into a suitable vector (such as a plasmid), introducing the vector into a host cell (such as bacteria), and allowing the host cell to replicate the vector and the inserted gene. This results in multiple copies of the gene.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What are the major threats to biodiversity?",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Habitat loss, overexploitation, invasive species, pollution, and climate change."
+      },
+      {
+        "label": "B",
+        "text": "Sustainable resource management and conservation efforts."
+      },
+      {
+        "label": "C",
+        "text": "Increased biodiversity and ecosystem stability."
+      },
+      {
+        "label": "D",
+        "text": "Decreased pollution and habitat restoration."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The major threats to biodiversity include habitat loss (due to deforestation and urbanization), overexploitation (overfishing and hunting), invasive species (competition with native species), pollution (air, water, and soil), and climate change (altering habitats and species distributions).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is the role of microbes in the production of antibiotics?",
+    "topic": "Microbes in Human Welfare",
+    "options": [
+      {
+        "label": "A",
+        "text": "Microbes produce antibiotics to inhibit the growth of other microorganisms."
+      },
+      {
+        "label": "B",
+        "text": "Microbes produce antibiotics to promote the growth of other microorganisms."
+      },
+      {
+        "label": "C",
+        "text": "Microbes produce antibiotics to decompose organic matter."
+      },
+      {
+        "label": "D",
+        "text": "Microbes produce antibiotics to fix nitrogen."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Many microbes, particularly bacteria and fungi, produce antibiotics as secondary metabolites. These antibiotics inhibit the growth of other microorganisms, providing a competitive advantage to the antibiotic-producing microbe.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the strategies to control air pollution?",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Using cleaner fuels, installing pollution control devices, and promoting public transportation."
+      },
+      {
+        "label": "B",
+        "text": "Increasing the use of fossil fuels and industrial emissions."
+      },
+      {
+        "label": "C",
+        "text": "Deforestation and burning of agricultural waste."
+      },
+      {
+        "label": "D",
+        "text": "Ignoring pollution standards and promoting private vehicles."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Strategies to control air pollution include using cleaner fuels (such as natural gas and renewable energy), installing pollution control devices in industries and vehicles (such as catalytic converters and scrubbers), promoting public transportation, and implementing stricter emission standards.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "What is ecological succession?",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "The gradual process of change in an ecosystem over time, involving the colonization of new species and the replacement of existing ones."
+      },
+      {
+        "label": "B",
+        "text": "The sudden and catastrophic destruction of an ecosystem."
+      },
+      {
+        "label": "C",
+        "text": "The stable and unchanging state of an ecosystem."
+      },
+      {
+        "label": "D",
+        "text": "The artificial creation of a new ecosystem."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Ecological succession is the gradual process of change in an ecosystem over time. It involves the colonization of new species, the replacement of existing species, and changes in the physical and chemical environment. Succession leads to a more stable and complex ecosystem.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  }
+]

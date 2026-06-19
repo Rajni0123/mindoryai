@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Which of the following is NOT a component of the lac operon in E. coli?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "Structural genes"
+      },
+      {
+        "label": "B",
+        "text": "Operator"
+      },
+      {
+        "label": "C",
+        "text": "Enhancer"
+      },
+      {
+        "label": "D",
+        "text": "Promoter"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The lac operon consists of structural genes, an operator, a promoter, and a regulator gene. Enhancers are not part of the lac operon; they are regulatory DNA sequences that can enhance transcription levels but are not directly involved in the lac operon's function.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the primary function of the enzyme DNA ligase?",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "To unwind the DNA double helix"
+      },
+      {
+        "label": "B",
+        "text": "To synthesize new DNA strands"
+      },
+      {
+        "label": "C",
+        "text": "To join DNA fragments together"
+      },
+      {
+        "label": "D",
+        "text": "To degrade damaged DNA"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "DNA ligase is an enzyme that facilitates the joining of DNA strands together by catalyzing the formation of a phosphodiester bond. It is essential for DNA replication and repair.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Which of the following is an example of commensalism?",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Ticks on a dog"
+      },
+      {
+        "label": "B",
+        "text": "Orchids growing on a tree"
+      },
+      {
+        "label": "C",
+        "text": "Lions hunting zebras"
+      },
+      {
+        "label": "D",
+        "text": "Parasitic worms in a human intestine"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Commensalism is a relationship where one organism benefits and the other is neither harmed nor helped. Orchids growing on a tree benefit from the support and access to sunlight, while the tree is unaffected.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the role of the Ti plasmid in biotechnology?",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To produce antibiotics"
+      },
+      {
+        "label": "B",
+        "text": "To transfer genes into plant cells"
+      },
+      {
+        "label": "C",
+        "text": "To degrade pollutants"
+      },
+      {
+        "label": "D",
+        "text": "To synthesize proteins"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The Ti plasmid (Tumor-inducing plasmid) from Agrobacterium tumefaciens is used as a vector to introduce foreign genes into plant cells, making it a crucial tool in plant genetic engineering.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the function of the acrosome in human sperm?",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "To provide energy for movement"
+      },
+      {
+        "label": "B",
+        "text": "To penetrate the egg"
+      },
+      {
+        "label": "C",
+        "text": "To store genetic material"
+      },
+      {
+        "label": "D",
+        "text": "To attract the egg"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The acrosome contains enzymes that help the sperm penetrate the zona pellucida of the egg, allowing fertilization to occur.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Explain the significance of biodiversity hotspots.",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Areas with low species richness and high endemism"
+      },
+      {
+        "label": "B",
+        "text": "Areas with high species richness and high endemism under threat"
+      },
+      {
+        "label": "C",
+        "text": "Areas with low species richness and low endemism"
+      },
+      {
+        "label": "D",
+        "text": "Areas with high species richness and low endemism"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Biodiversity hotspots are regions with a high concentration of endemic species that are experiencing significant habitat loss. They are crucial for conservation efforts due to their unique biodiversity.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of transcription in eukaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA replication using RNA polymerase"
+      },
+      {
+        "label": "B",
+        "text": "RNA synthesis using DNA polymerase"
+      },
+      {
+        "label": "C",
+        "text": "RNA synthesis using RNA polymerase"
+      },
+      {
+        "label": "D",
+        "text": "Protein synthesis using ribosomes"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Transcription in eukaryotes involves RNA polymerase synthesizing RNA from a DNA template. This process occurs in the nucleus and involves initiation, elongation, and termination steps.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the key differences between primary and secondary succession?",
+    "topic": "Ecosystem",
+    "options": [
+      {
+        "label": "A",
+        "text": "Primary succession starts on bare rock, while secondary succession starts on soil."
+      },
+      {
+        "label": "B",
+        "text": "Primary succession is faster than secondary succession."
+      },
+      {
+        "label": "C",
+        "text": "Primary succession involves only plants, while secondary succession involves animals."
+      },
+      {
+        "label": "D",
+        "text": "Primary succession occurs in aquatic environments, while secondary succession occurs in terrestrial environments."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Primary succession begins in lifeless areas where soil is not present, such as bare rock. Secondary succession occurs in areas where soil is already present, but the ecosystem has been disturbed or destroyed.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the principle of competitive exclusion.",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Two species can coexist if they have the same niche."
+      },
+      {
+        "label": "B",
+        "text": "Two species competing for the same resources cannot coexist indefinitely; the inferior competitor will be eliminated."
+      },
+      {
+        "label": "C",
+        "text": "Species compete for resources only in aquatic environments."
+      },
+      {
+        "label": "D",
+        "text": "Competition always leads to mutual benefit."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The competitive exclusion principle states that two species competing for the same limited resources cannot coexist at constant population values. One species will eventually outcompete and eliminate the other.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of translation in prokaryotes.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "mRNA synthesis from a DNA template"
+      },
+      {
+        "label": "B",
+        "text": "Protein synthesis from an mRNA template"
+      },
+      {
+        "label": "C",
+        "text": "DNA replication using ribosomes"
+      },
+      {
+        "label": "D",
+        "text": "RNA processing in the nucleus"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Translation in prokaryotes is the process of synthesizing proteins from an mRNA template. It involves ribosomes, tRNA, and various initiation, elongation, and termination factors.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the role of restriction enzymes in recombinant DNA technology.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "To join DNA fragments together"
+      },
+      {
+        "label": "B",
+        "text": "To cut DNA at specific sequences"
+      },
+      {
+        "label": "C",
+        "text": "To amplify DNA"
+      },
+      {
+        "label": "D",
+        "text": "To synthesize proteins"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Restriction enzymes are used to cut DNA at specific recognition sequences, allowing for the precise insertion of DNA fragments into vectors during recombinant DNA technology.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Describe the process of oogenesis in humans.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "The production of sperm in the testes"
+      },
+      {
+        "label": "B",
+        "text": "The production of eggs in the ovaries"
+      },
+      {
+        "label": "C",
+        "text": "The fusion of sperm and egg"
+      },
+      {
+        "label": "D",
+        "text": "The development of the embryo"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Oogenesis is the process of egg production in the ovaries, involving meiosis and the development of primary oocytes into mature eggs.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What are the main causes of biodiversity loss?",
+    "topic": "Biodiversity and Conservation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Habitat loss, overexploitation, invasive species, pollution, and climate change"
+      },
+      {
+        "label": "B",
+        "text": "Only climate change"
+      },
+      {
+        "label": "C",
+        "text": "Only pollution"
+      },
+      {
+        "label": "D",
+        "text": "Only habitat loss"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The main causes of biodiversity loss include habitat loss and fragmentation, overexploitation of resources, invasive species, pollution, and climate change.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Explain the concept of co-dominance with an example.",
+    "topic": "Principles of Inheritance and Variation",
+    "options": [
+      {
+        "label": "A",
+        "text": "One allele masks the effect of another allele."
+      },
+      {
+        "label": "B",
+        "text": "Both alleles are equally expressed in the heterozygote."
+      },
+      {
+        "label": "C",
+        "text": "Alleles blend together to produce an intermediate phenotype."
+      },
+      {
+        "label": "D",
+        "text": "Multiple genes control a single trait."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Co-dominance is a genetic phenomenon where both alleles are equally expressed in the heterozygote. A classic example is the ABO blood group system, where individuals with the AB genotype express both A and B antigens.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the process of PCR (Polymerase Chain Reaction) and its applications.",
+    "topic": "Biotechnology: Principles and Processes",
+    "options": [
+      {
+        "label": "A",
+        "text": "A technique to cut DNA at specific sites"
+      },
+      {
+        "label": "B",
+        "text": "A technique to amplify DNA"
+      },
+      {
+        "label": "C",
+        "text": "A technique to synthesize proteins"
+      },
+      {
+        "label": "D",
+        "text": "A technique to sequence DNA"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "PCR is a technique used to amplify specific DNA sequences. It involves repeated cycles of denaturation, annealing, and extension, resulting in exponential amplification of the target DNA. Applications include DNA cloning, disease diagnosis, and forensic analysis.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the different types of interactions in a community with examples.",
+    "topic": "Organisms and Populations",
+    "options": [
+      {
+        "label": "A",
+        "text": "Mutualism, commensalism, parasitism, competition, and predation"
+      },
+      {
+        "label": "B",
+        "text": "Only mutualism and competition"
+      },
+      {
+        "label": "C",
+        "text": "Only parasitism and predation"
+      },
+      {
+        "label": "D",
+        "text": "Only commensalism and mutualism"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Different types of interactions in a community include mutualism (e.g., pollination), commensalism (e.g., orchids on trees), parasitism (e.g., ticks on animals), competition (e.g., two species competing for the same resource), and predation (e.g., lions hunting zebras).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the structure of the human sperm and explain the function of each part.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "Head, midpiece, and tail; head contains genetic material, midpiece provides energy, tail facilitates movement"
+      },
+      {
+        "label": "B",
+        "text": "Only head and tail; head contains genetic material, tail facilitates movement"
+      },
+      {
+        "label": "C",
+        "text": "Head, midpiece, and tail; head provides energy, midpiece contains genetic material, tail facilitates movement"
+      },
+      {
+        "label": "D",
+        "text": "Only head and midpiece; head contains genetic material, midpiece provides energy"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The human sperm consists of a head, midpiece, and tail. The head contains the genetic material (DNA) and the acrosome. The midpiece contains mitochondria, which provide energy for movement. The tail (flagellum) facilitates movement.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of double fertilization in angiosperms.",
+    "topic": "Sexual Reproduction in Flowering Plants",
+    "options": [
+      {
+        "label": "A",
+        "text": "Fusion of two sperm with the egg cell"
+      },
+      {
+        "label": "B",
+        "text": "Fusion of one sperm with the egg and another with the central cell"
+      },
+      {
+        "label": "C",
+        "text": "Fusion of the egg with two polar nuclei"
+      },
+      {
+        "label": "D",
+        "text": "Fusion of two eggs with one sperm"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Double fertilization in angiosperms involves the fusion of one sperm with the egg to form the zygote and another sperm with the central cell to form the endosperm. This process is unique to flowering plants.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the structure and function of the different types of RNA (mRNA, tRNA, rRNA).",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "mRNA carries genetic information, tRNA transfers amino acids, rRNA forms ribosomes"
+      },
+      {
+        "label": "B",
+        "text": "mRNA forms ribosomes, tRNA carries genetic information, rRNA transfers amino acids"
+      },
+      {
+        "label": "C",
+        "text": "mRNA transfers amino acids, tRNA forms ribosomes, rRNA carries genetic information"
+      },
+      {
+        "label": "D",
+        "text": "All types of RNA have the same function"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "mRNA (messenger RNA) carries genetic information from DNA to the ribosomes. tRNA (transfer RNA) transfers amino acids to the ribosomes during protein synthesis. rRNA (ribosomal RNA) forms the structural and functional components of ribosomes.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the principles of Mendelian inheritance.",
+    "topic": "Principles of Inheritance and Variation",
+    "options": [
+      {
+        "label": "A",
+        "text": "Law of Dominance, Law of Segregation, Law of Independent Assortment"
+      },
+      {
+        "label": "B",
+        "text": "Only Law of Dominance"
+      },
+      {
+        "label": "C",
+        "text": "Only Law of Segregation"
+      },
+      {
+        "label": "D",
+        "text": "Only Law of Independent Assortment"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The principles of Mendelian inheritance include the Law of Dominance, the Law of Segregation, and the Law of Independent Assortment. These laws explain how traits are inherited from parents to offspring.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the process of spermatogenesis in humans.",
+    "topic": "Human Reproduction",
+    "options": [
+      {
+        "label": "A",
+        "text": "The production of eggs in the ovaries"
+      },
+      {
+        "label": "B",
+        "text": "The production of sperm in the testes"
+      },
+      {
+        "label": "C",
+        "text": "The fusion of sperm and egg"
+      },
+      {
+        "label": "D",
+        "text": "The development of the embryo"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Spermatogenesis is the process of sperm production in the testes, involving meiosis and the development of spermatogonia into mature sperm cells.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of sewage water treatment.",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Primary treatment, secondary treatment, and tertiary treatment"
+      },
+      {
+        "label": "B",
+        "text": "Only primary treatment"
+      },
+      {
+        "label": "C",
+        "text": "Only secondary treatment"
+      },
+      {
+        "label": "D",
+        "text": "Only tertiary treatment"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "Sewage water treatment involves primary treatment (physical removal of solids), secondary treatment (biological degradation of organic matter), and tertiary treatment (removal of specific pollutants).",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Describe the structure of a typical antibody molecule and explain its function.",
+    "topic": "Human Health and Disease",
+    "options": [
+      {
+        "label": "A",
+        "text": "Two heavy chains and two light chains; binds to antigens"
+      },
+      {
+        "label": "B",
+        "text": "Only heavy chains; binds to antigens"
+      },
+      {
+        "label": "C",
+        "text": "Only light chains; binds to antigens"
+      },
+      {
+        "label": "D",
+        "text": "One heavy chain and one light chain; binds to antigens"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "An antibody molecule consists of two heavy chains and two light chains. It binds to specific antigens, marking them for destruction by the immune system.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "C"
+  },
+  {
+    "question_text": "Explain the process of DNA replication in eukaryotes, including the enzymes involved and the role of the replication fork.",
+    "topic": "Molecular Basis of Inheritance",
+    "options": [
+      {
+        "label": "A",
+        "text": "DNA polymerase synthesizes new strands, helicase unwinds DNA, ligase joins fragments, replication fork is the site of replication"
+      },
+      {
+        "label": "B",
+        "text": "RNA polymerase synthesizes new strands, helicase unwinds DNA, ligase joins fragments, replication fork is the site of replication"
+      },
+      {
+        "label": "C",
+        "text": "DNA polymerase synthesizes new strands, ligase unwinds DNA, helicase joins fragments, replication fork is the site of replication"
+      },
+      {
+        "label": "D",
+        "text": "RNA polymerase synthesizes new strands, ligase unwinds DNA, helicase joins fragments, replication fork is the site of replication"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "DNA replication in eukaryotes involves DNA polymerase synthesizing new DNA strands, helicase unwinding the DNA double helix, DNA ligase joining Okazaki fragments, and the replication fork being the site where DNA replication occurs.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Describe the greenhouse effect and its impact on global climate change. What are the major greenhouse gases and how do they contribute to the problem? What measures can be taken to mitigate the effects of climate change?",
+    "topic": "Environmental Issues",
+    "options": [
+      {
+        "label": "A",
+        "text": "Trapping of heat by gases, leading to warming; major gases are CO2, CH4, N2O; mitigation includes reducing emissions and afforestation"
+      },
+      {
+        "label": "B",
+        "text": "Cooling of the Earth due to gases; major gases are O2, N2, Ar; mitigation includes increasing emissions"
+      },
+      {
+        "label": "C",
+        "text": "Trapping of heat by gases, leading to cooling; major gases are CO2, CH4, N2O; mitigation includes increasing emissions"
+      },
+      {
+        "label": "D",
+        "text": "Cooling of the Earth due to gases; major gases are CO2, CH4, N2O; mitigation includes reducing emissions and afforestation"
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "The greenhouse effect is the trapping of heat by greenhouse gases in the atmosphere, leading to global warming. Major greenhouse gases include carbon dioxide (CO2), methane (CH4), and nitrous oxide (N2O). Mitigation measures include reducing greenhouse gas emissions, afforestation, and developing renewable energy sources.",
+    "difficulty": "hard",
+    "marks": 5,
+    "section": "D"
+  }
+]

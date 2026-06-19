@@ -1,0 +1,271 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Services\RenflairOTPService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+
+class OTPAuthController extends Controller
+{
+    private RenflairOTPService $otpService;
+
+    public function __construct(RenflairOTPService $otpService)
+    {
+        $this->otpService = $otpService;
+    }
+
+    /**
+     * Send OTP to mobile number
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function sendOTP(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'mobile' => ['required', 'string', 'regex:/^[6-9]\d{9}$/']
+        ], [
+            'mobile.required' => 'Mobile number is required',
+            'mobile.regex' => 'Please enter a valid 10-digit mobile number'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+
+        $mobile = $request->mobile;
+        $ipAddress = $request->ip();
+        $userAgent = $request->userAgent();
+
+        // Send OTP via Renflair service
+        $result = $this->otpService->sendOTP($mobile, $ipAddress, $userAgent);
+
+        if ($result['success']) {
+            return response()->json([
+                'success' => true,
+                'message' => $result['message'],
+                'expires_in' => $result['expires_in']
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => $result['message']
+        ], 400);
+    }
+
+    /**
+     * Verify OTP and login user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verifyOTP(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'mobile' => ['required', 'string', 'regex:/^[6-9]\d{9}$/'],
+            'otp' => ['required', 'string', 'size:4']
+        ], [
+            'mobile.required' => 'Mobile number is required',
+            'mobile.regex' => 'Please enter a valid 10-digit mobile number',
+            'otp.required' => 'OTP is required',
+            'otp.size' => 'OTP must be 4 digits'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+
+        $mobile = $request->mobile;
+        $otp = $request->otp;
+
+        // Verify OTP
+        $result = $this->otpService->verifyOTP($mobile, $otp);
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message']
+            ], 400);
+        }
+
+        // OTP verified, now login or register user
+        $user = User::where('mobile', $mobile)->first();
+        $isNewUser = false;
+
+        if (!$user) {
+            // Create new user with mobile number
+            // Generate unique email to avoid conflicts
+            $uniqueEmail = $mobile . '_' . time() . '@mobile.user';
+
+            $user = User::create([
+                'name' => 'User ' . substr($mobile, -4), // Temporary name
+                'email' => $uniqueEmail, // Unique placeholder email
+                'mobile' => $mobile,
+                'mobile_verified_at' => Carbon::now(),
+                'password' => Hash::make(uniqid()), // Random password
+                'role' => 'user',
+                'plan_id' => 1, // Default free plan
+                'token_limit' => 150, // 150 free tokens for new users
+                'tokens_used' => 0, // Start with 0 tokens used
+                'is_active' => true, // Activate user immediately with free subscription
+            ]);
+            $isNewUser = true;
+        } else {
+            // Update mobile_verified_at if not already verified
+            if (!$user->mobile_verified_at) {
+                $user->mobile_verified_at = Carbon::now();
+                $user->save();
+            }
+        }
+
+        // Login the user
+        Auth::login($user, true); // true = remember me
+
+        // CRITICAL: Regenerate and save session to prevent session fixation
+        $request->session()->regenerate();
+        $request->session()->save();
+
+        // Check if user is admin - redirect to admin dashboard
+        if ($user->role === 'admin') {
+            $response = response()->json([
+                'success' => true,
+                'message' => 'Admin login successful!',
+                'redirect' => route('admin.dashboard'),
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'mobile' => $user->mobile,
+                    'email' => $user->email,
+                    'role' => $user->role,
+                ]
+            ]);
+
+            // Explicitly set the session cookie
+            return $response->withCookie(
+                cookie(
+                    config('session.cookie', 'laravel_session'),
+                    session()->getId(),
+                    config('session.lifetime', 120),
+                    config('session.path', '/'),
+                    config('session.domain', null),
+                    config('session.secure', false),
+                    config('session.http_only', true),
+                    false,
+                    config('session.same_site', 'lax')
+                )
+            );
+        }
+
+        // Redirect new users to class selection, others to chat
+        $redirectRoute = ($isNewUser || !$user->student_class) ? route('class.select') : route('chat');
+
+        $response = response()->json([
+            'success' => true,
+            'message' => 'Login successful!',
+            'redirect' => $redirectRoute,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'mobile' => $user->mobile,
+                'email' => $user->email,
+            ]
+        ]);
+
+        // Explicitly set the session cookie
+        return $response->withCookie(
+            cookie(
+                config('session.cookie', 'laravel_session'),
+                session()->getId(),
+                config('session.lifetime', 120),
+                config('session.path', '/'),
+                config('session.domain', null),
+                config('session.secure', false),
+                config('session.http_only', true),
+                false,
+                config('session.same_site', 'lax')
+            )
+        );
+    }
+
+    /**
+     * Logout user
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logged out successfully',
+            'redirect' => route('login')
+        ]);
+    }
+
+    /**
+     * Show OTP login page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showOTPLoginForm()
+    {
+        return view('auth.otp-login');
+    }
+
+    /**
+     * Show class selection page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showClassSelection()
+    {
+        return view('auth.select-class');
+    }
+
+    /**
+     * Update user's class
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function updateClass(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'student_class' => ['required', 'string']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+
+        $user = Auth::user();
+        $user->student_class = $request->student_class;
+        $user->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Class updated successfully!'
+        ]);
+    }
+}

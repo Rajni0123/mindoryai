@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlinkStudy — AI Study Companion for Indian Students</title>
+<meta name="description" content="India's smartest AI study app. Scan questions, get solutions, take quizzes, watch whiteboard videos. Built for JEE, NEET, CBSE, UPSC.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --teal: #0d9488; --teal-light: #14b8a6; --teal-dark: #0f766e;
+  --amber: #f59e0b; --blue: #3b82f6; --purple: #7c3aed; --pink: #ec4899;
+  --bg: #fafaf9; --text: #1c1917; --muted: #78716c; --light: #f5f5f4;
+  --card: #ffffff; --border: #e7e5e4;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5 { font-family: 'Outfit', sans-serif; line-height: 1.15; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ─── NAV ─── */
+nav { position: sticky; top: 0; z-index: 100; background: rgba(250,250,249,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+nav .inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; font-family: 'Outfit'; font-weight: 800; font-size: 22px; color: var(--text); }
+.logo-mark { width: 36px; height: 36px; background: linear-gradient(135deg, var(--teal), var(--teal-light)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; font-weight: 800; }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .2s; }
+.nav-links a:hover { color: var(--text); }
+.nav-cta { display: flex; gap: 8px; align-items: center; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 50px; font-size: 14px; font-weight: 600; transition: all .2s; cursor: pointer; border: none; }
+.btn-ghost { background: transparent; color: var(--text); }
+.btn-ghost:hover { background: var(--light); }
+.btn-primary { background: var(--teal); color: #fff; box-shadow: 0 2px 8px rgba(13,148,136,0.25); }
+.btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(13,148,136,0.3); }
+.btn-dark { background: var(--text); color: #fff; }
+.btn-dark:hover { background: #292524; }
+.btn-outline { background: #fff; border: 1.5px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+.btn-lg { padding: 14px 32px; font-size: 16px; }
+
+/* ─── HERO ─── */
+.hero { padding: 80px 0 60px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(13,148,136,0.06) 0%, transparent 70%); pointer-events: none; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.hero-content { text-align: left; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; background: linear-gradient(135deg, #f0fdfa, #ecfdf5); border: 1px solid #99f6e4; border-radius: 50px; font-size: 13px; font-weight: 600; color: var(--teal); margin-bottom: 28px; }
+.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.hero h1 { font-size: clamp(36px, 5vw, 64px); font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; }
+.hero h1 span { background: linear-gradient(135deg, var(--teal), var(--teal-light), var(--amber)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-sub { font-size: 18px; color: var(--muted); max-width: 520px; margin: 0 0 32px; line-height: 1.7; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+.hero-trust { display: flex; gap: 32px; align-items: center; flex-wrap: wrap; padding: 24px 0; border-top: 1px solid var(--border); }
+.hero-image { display: flex; justify-content: center; align-items: center; position: relative; }
+.hero-image-wrapper { position: relative; width: 340px; height: 440px; border-radius: 32px; overflow: hidden; background: linear-gradient(135deg, var(--teal), var(--teal-light)); box-shadow: 0 32px 64px -16px rgba(13,148,136,0.3); }
+.hero-image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+.hero-image-wrapper::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 120px; background: linear-gradient(to top, rgba(13,148,136,0.9), transparent); }
+.hero-cta-overlay { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 2; }
+.btn-start { display: inline-flex; align-items: center; gap: 10px; padding: 14px 36px; border-radius: 50px; background: #fff; color: var(--teal-dark); font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.15); transition: all .3s ease; text-decoration: none; white-space: nowrap; }
+.btn-start:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+.btn-start svg { transition: transform .3s; }
+.btn-start:hover svg { transform: translateX(4px); }
+.hero-float-badge { position: absolute; background: #fff; border-radius: 16px; padding: 10px 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; z-index: 2; animation: float 3s ease-in-out infinite; }
+.hero-float-badge.top-left { top: 20px; left: -20px; }
+.hero-float-badge.bottom-right { bottom: 100px; right: -20px; animation-delay: 1.5s; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.trust-item { text-align: center; }
+.trust-num { font-family: 'Outfit'; font-size: 24px; font-weight: 800; color: var(--text); }
+.trust-label { font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: .5px; text-transform: uppercase; }
+.trust-sep { width: 1px; height: 32px; background: var(--border); }
+
+/* ─── FEATURES BENTO ─── */
+.section { padding: 80px 0; }
+.section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--teal); margin-bottom: 12px; }
+.section-title { font-size: clamp(28px, 4vw, 44px); font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+.section-sub { font-size: 17px; color: var(--muted); max-width: 560px; line-height: 1.7; }
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-header .section-sub { margin: 0 auto; }
+
+.bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.bento-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 32px; transition: all .3s ease; position: relative; overflow: hidden; }
+.bento-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -12px rgba(0,0,0,0.08); }
+.bento-card.span-2 { grid-column: span 2; }
+.bento-card.featured { background: linear-gradient(135deg, #f0fdfa, #ecfdf5); border-color: #99f6e4; }
+.bento-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 24px; }
+.bento-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.bento-card p { font-size: 15px; color: var(--muted); line-height: 1.7; }
+.bento-card .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; margin-top: 16px; }
+
+/* ─── HOW IT WORKS ─── */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; counter-reset: step; }
+.step { text-align: center; position: relative; }
+.step::before { counter-increment: step; content: counter(step); font-family: 'Outfit'; font-size: 64px; font-weight: 900; color: var(--light); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); z-index: 0; }
+.step-icon { width: 56px; height: 56px; border-radius: 16px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 26px; position: relative; z-index: 1; }
+.step h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; position: relative; }
+.step p { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 280px; margin: 0 auto; }
+
+/* ─── EXAMS ─── */
+.exam-grid { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.exam-pill { display: flex; align-items: center; gap: 10px; padding: 16px 28px; border-radius: 16px; background: var(--card); border: 1px solid var(--border); transition: all .2s; }
+.exam-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -8px rgba(0,0,0,0.08); }
+.exam-pill .exam-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; font-family: 'Outfit'; }
+.exam-pill .exam-info h4 { font-size: 16px; font-weight: 700; }
+.exam-pill .exam-info span { font-size: 12px; color: var(--muted); }
+
+/* ─── SUBJECTS ─── */
+.subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+.subject-card { display: flex; align-items: center; gap: 12px; padding: 16px; background: var(--card); border: 1px solid var(--border); border-radius: 14px; transition: all .2s; }
+.subject-card:hover { border-color: var(--teal); background: #f0fdfa; }
+.subject-card .s-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.subject-card span { font-size: 14px; font-weight: 600; }
+
+/* ─── SOURCES ─── */
+.sources-bar { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.source-link { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 50px; font-size: 13px; font-weight: 500; color: var(--muted); transition: all .2s; }
+.source-link:hover { border-color: var(--teal); color: var(--teal); }
+
+/* ─── CTA ─── */
+.cta-section { background: var(--text); color: #fff; border-radius: 32px; padding: 80px 60px; text-align: center; margin: 0 24px; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(13,148,136,0.15), transparent 70%); }
+.cta-section::after { content: ''; position: absolute; bottom: -100px; left: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(245,158,11,0.1), transparent 70%); }
+.cta-section h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin-bottom: 16px; position: relative; }
+.cta-section p { color: #a8a29e; font-size: 17px; max-width: 500px; margin: 0 auto 32px; position: relative; }
+.cta-section .hero-actions { position: relative; }
+
+/* ─── FOOTER ─── */
+footer { padding: 60px 0 32px; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+.footer-brand p { font-size: 14px; color: var(--muted); margin: 8px 0 16px; max-width: 260px; line-height: 1.6; }
+.footer-col h5 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; color: var(--text); }
+.footer-col a { display: block; font-size: 14px; color: var(--muted); margin-bottom: 10px; transition: color .2s; }
+.footer-col a:hover { color: var(--teal); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); flex-wrap: wrap; gap: 12px; }
+.disclaimer { background: #fef3c7; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px 24px; font-size: 13px; color: #92400e; margin-top: 32px; line-height: 1.6; }
+
+/* ─── ANIMATIONS ─── */
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+.fade-in-delay-1 { transition-delay: .1s; }
+.fade-in-delay-2 { transition-delay: .2s; }
+.fade-in-delay-3 { transition-delay: .3s; }
+.fade-in-delay-4 { transition-delay: .4s; }
+.fade-in-delay-5 { transition-delay: .5s; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .nav-links, .nav-cta .btn-ghost { display: none; }
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  .hero-content { text-align: center; }
+  .hero-sub { margin: 0 auto 32px; }
+  .hero-actions { justify-content: center; }
+  .hero-trust { justify-content: center; }
+  .hero-image-wrapper { width: 280px; height: 360px; margin: 0 auto; }
+  .hero-float-badge { display: none; }
+  .bento { grid-template-columns: 1fr; }
+  .bento-card.span-2 { grid-column: span 1; }
+  .steps { grid-template-columns: 1fr; gap: 32px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .cta-section { margin: 0; border-radius: 0; padding: 60px 24px; }
+  .hero { padding: 48px 0 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container inner">
+    <a href="/" class="logo"><span class="logo-mark">B</span> BlinkStudy</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#exams">Exams</a>
+      <a href="#subjects">Subjects</a>
+    </div>
+    <div class="nav-cta">
+      <a href="/login" class="btn btn-ghost">Log in</a>
+      <a href="/login" class="btn btn-primary">Get started free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge fade-in"><span class="dot"></span> India's #1 AI Study Companion</div>
+        <h1 class="fade-in">Stuck on a question?<br><span>AI solves it instantly.</span></h1>
+        <p class="hero-sub fade-in">Scan any question from your textbook, get step-by-step solutions, practice with AI quizzes, and watch whiteboard explanations. Built for JEE, NEET, CBSE & UPSC students.</p>
+        <div class="hero-actions fade-in">
+          <a href="/login" class="btn btn-primary btn-lg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Start learning free</a>
+          <a href="#features" class="btn btn-outline btn-lg">Explore features</a>
+        </div>
+        <div class="hero-trust fade-in">
+          <div class="trust-item"><div class="trust-num">10,000+</div><div class="trust-label">Active Students</div></div>
+          <div class="trust-sep"></div>
+          <div class="trust-item"><div class="trust-num">4.8 &#9733;</div><div class="trust-label">Play Store</div></div>
+          <div class="trust-sep"></div>
+          <div class="trust-item"><div class="trust-num">1M+</div><div class="trust-label">Questions Solved</div></div>
+        </div>
+      </div>
+      <div class="hero-image fade-in">
+        <div class="hero-float-badge top-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Scan & Solve</div>
+        <div class="hero-float-badge bottom-right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> AI Powered</div>
+        <div class="hero-image-wrapper">
+          <img src="splash-student.png" alt="Student using BlinkStudy app" />
+          <div class="hero-cta-overlay">
+            <a href="/login" class="btn-start">Let's Start <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES BENTO -->
+<section id="features" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-in">Features</div>
+      <h2 class="section-title fade-in">Everything you need to ace your exams</h2>
+      <p class="section-sub fade-in">Six powerful AI tools in one app. No switching between apps — BlinkStudy does it all.</p>
+    </div>
+    <div class="bento">
+      <div class="bento-card span-2 featured fade-in">
+        <div class="bento-icon" style="background:#ccfbf1;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+        <h3>Scan & Solve</h3>
+        <p>Point your camera at any question — textbook, worksheet, or practice paper. Our AI reads the problem and gives you a detailed, step-by-step solution in seconds. Supports handwritten and printed text across Math, Physics, Chemistry & Biology.</p>
+        <span class="tag" style="background:#ccfbf1;color:#0d9488;">Most Popular</span>
+      </div>
+      <div class="bento-card fade-in">
+        <div class="bento-icon" style="background:#dbeafe;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>AI Tutor Chat</h3>
+        <p>24/7 AI tutor that explains concepts in your language. Ask follow-up questions, get examples, and dive deep into any topic. Like having a private tutor in your pocket.</p>
+      </div>
+      <div class="bento-card fade-in">
+        <div class="bento-icon" style="background:#fef3c7;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Smart Quizzes</h3>
+        <p>AI generates MCQ quizzes tailored to your syllabus and weak areas. Choose difficulty — Easy, Medium, or Hard. Track your score and improve over time.</p>
+      </div>
+      <div class="bento-card fade-in">
+        <div class="bento-icon" style="background:#fce7f3;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+        <h3>Whiteboard Videos</h3>
+        <p>Watch animated whiteboard explanations for complex topics. Visual learning that makes concepts stick. Generated by AI specifically for your question.</p>
+      </div>
+      <div class="bento-card span-2 fade-in">
+        <div style="display:flex;gap:32px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:200px;">
+            <div class="bento-icon" style="background:#f3e8ff;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+            <h3>PDF Analysis</h3>
+            <p>Upload study materials, previous year papers, or notes. AI extracts key points, creates summaries, and generates practice questions from your PDFs.</p>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div class="bento-icon" style="background:#e0e7ff;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+            <h3>Progress Tracking</h3>
+            <p>Monitor your learning with detailed analytics. See which topics you're strong in, where you need practice, and track your improvement over time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="section" style="background:var(--light);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-in">How it works</div>
+      <h2 class="section-title fade-in">Start learning in 30 seconds</h2>
+      <p class="section-sub fade-in">No signup walls. No complex setup. Just open and start solving.</p>
+    </div>
+    <div class="steps">
+      <div class="step fade-in">
+        <div class="step-icon" style="background:linear-gradient(135deg,#0d9488,#14b8a6);color:#fff;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+        <h3>Scan or type your question</h3>
+        <p>Take a photo of any problem from your textbook, worksheet, coaching material, or just type it out.</p>
+      </div>
+      <div class="step fade-in fade-in-delay-1">
+        <div class="step-icon" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#fff;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <h3>AI analyzes & solves</h3>
+        <p>Our AI identifies the subject, topic, and difficulty. Then generates a detailed step-by-step solution with explanations.</p>
+      </div>
+      <div class="step fade-in fade-in-delay-2">
+        <div class="step-icon" style="background:linear-gradient(135deg,#6366f1,#818cf8);color:#fff;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"/></svg></div>
+        <h3>Learn, practice, master</h3>
+        <p>Understand the concept, take a follow-up quiz, watch a whiteboard video, or ask the AI tutor for more help.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMS COVERED -->
+<section id="exams" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-in">Exam Coverage</div>
+      <h2 class="section-title fade-in">Built for every major Indian exam</h2>
+      <p class="section-sub fade-in">Our AI is trained on syllabus-specific content for all major competitive and board exams.</p>
+    </div>
+    <div class="exam-grid fade-in">
+      <div class="exam-pill">
+        <div class="exam-icon" style="background:#f0fdfa;color:#0d9488;">JEE</div>
+        <div class="exam-info"><h4>JEE Main & Advanced</h4><span>Physics, Chemistry, Maths</span></div>
+      </div>
+      <div class="exam-pill">
+        <div class="exam-icon" style="background:#fff7ed;color:#d97706;">N</div>
+        <div class="exam-info"><h4>NEET</h4><span>Physics, Chemistry, Biology</span></div>
+      </div>
+      <div class="exam-pill">
+        <div class="exam-icon" style="background:#eff6ff;color:#3b82f6;">CB</div>
+        <div class="exam-info"><h4>CBSE 9-12</h4><span>All subjects, NCERT based</span></div>
+      </div>
+      <div class="exam-pill">
+        <div class="exam-icon" style="background:#fdf2f8;color:#ec4899;">U</div>
+        <div class="exam-info"><h4>UPSC</h4><span>Prelims & Mains prep</span></div>
+      </div>
+      <div class="exam-pill">
+        <div class="exam-icon" style="background:#f5f3ff;color:#7c3aed;">NC</div>
+        <div class="exam-info"><h4>NCERT Solutions</h4><span>Class 6 to 12, all chapters</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBJECTS -->
+<section id="subjects" class="section" style="background:var(--light);">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-in">Subjects</div>
+      <h2 class="section-title fade-in">Every subject, every topic</h2>
+      <p class="section-sub fade-in">From algebra to zoology — ask any question in any subject and get expert-level solutions.</p>
+    </div>
+    <div class="subjects-grid fade-in">
+      <div class="subject-card"><div class="s-icon" style="background:#ccfbf1;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><span>Mathematics</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#dbeafe;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div><span>Physics</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#fef3c7;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v8L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45L14 10V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/><line x1="7" y1="16" x2="17" y2="16"/></svg></div><span>Chemistry</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#dcfce7;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-4 8-7.5 8-12a8 8 0 1 0-16 0c0 4.5 4 8 8 12z"/><circle cx="12" cy="10" r="3"/></svg></div><span>Biology</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#e0e7ff;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><span>Computer Science</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#fce7f3;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><span>English</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#f3e8ff;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><span>Social Science</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#fff7ed;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><span>Economics</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#f0fdfa;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div><span>Reasoning</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#fef2f2;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><span>Hindi</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#ecfdf5;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66L9 13"/><path d="M17 8c3 0 7-1 7-5-4 0-5 4-5 4"/><path d="M17 8c-3 0-7-1-7-5 4 0 5 4 5 4"/></svg></div><span>Environmental Sc.</span></div>
+      <div class="subject-card"><div class="s-icon" style="background:#eff6ff;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><span>Accountancy</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFICIAL SOURCES -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label fade-in">Official Sources</div>
+      <h2 class="section-title fade-in">Government exam information</h2>
+      <p class="section-sub fade-in">For official exam updates, visit these government websites directly.</p>
+    </div>
+    <div class="sources-bar fade-in">
+      <a href="https://jeemain.nta.nic.in/" target="_blank" class="source-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> JEE Main — jeemain.nta.nic.in</a>
+      <a href="https://neet.nta.nic.in/" target="_blank" class="source-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> NEET — neet.nta.nic.in</a>
+      <a href="https://www.cbse.gov.in/" target="_blank" class="source-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> CBSE — cbse.gov.in</a>
+      <a href="https://upsc.gov.in/" target="_blank" class="source-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> UPSC — upsc.gov.in</a>
+      <a href="https://ncert.nic.in/" target="_blank" class="source-link"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> NCERT — ncert.nic.in</a>
+    </div>
+    <div class="disclaimer fade-in">
+      <strong><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline;vertical-align:-2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Disclaimer:</strong> BlinkStudy is an <strong>independent educational technology platform</strong> and is NOT affiliated with, endorsed by, or representing any government body or official examination authority. We are a private entity providing AI-powered study assistance tools. All exam content is for educational purposes only.
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="padding-bottom:80px;">
+  <div class="cta-section container">
+    <h2 class="fade-in">Ready to study smarter?</h2>
+    <p class="fade-in">Join 10,000+ students already acing their exams with AI-powered learning.</p>
+    <div class="hero-actions fade-in">
+      <a href="/login" class="btn btn-primary btn-lg"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Start free — no card needed</a>
+      <a href="#features" class="btn btn-lg" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);">Learn more</a>
+    </div>
+    <div style="margin-top:24px;font-size:13px;color:#a8a29e;position:relative;" class="fade-in">
+      Free forever on basic plan &middot; Available on Android &middot; Hindi + English &middot; Made in India
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo"><span class="logo-mark">B</span> BlinkStudy</div>
+        <p>AI-powered study companion built for Indian students. Scan, learn, and conquer your exams.</p>
+        <a href="mailto:support@blinkstudy.in" style="font-size:14px;color:var(--teal);font-weight:500;">support@blinkstudy.in</a>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#exams">Exams</a>
+        <a href="#subjects">Subjects</a>
+        <a href="/login">Download App</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="/about">About Us</a>
+        <a href="/support">Support</a>
+        <a href="mailto:support@blinkstudy.in">Contact</a>
+        <a href="/plans">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-of-service">Terms of Service</a>
+        <a href="/about">Disclaimer</a>
+        <a href="/account-deletion">Delete Account</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 BlinkStudy. All rights reserved. Made in India.</span>
+      <span>Not affiliated with any government body.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

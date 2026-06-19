@@ -1,0 +1,677 @@
+[
+  {
+    "question_text": "Which of the following best describes the central theme of 'The Last Lesson'?",
+    "topic": "The Last Lesson",
+    "options": [
+      {
+        "label": "A",
+        "text": "The importance of learning French grammar."
+      },
+      {
+        "label": "B",
+        "text": "The regret and loss associated with linguistic and cultural identity."
+      },
+      {
+        "label": "C",
+        "text": "The strictness of Prussian schoolteachers."
+      },
+      {
+        "label": "D",
+        "text": "The beauty of the French countryside."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The story revolves around the loss of language and culture due to political changes, highlighting the characters' regret and the importance of preserving one's identity.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'Lost Spring', what does Saheb look for in the garbage dumps?",
+    "topic": "Lost Spring",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gold"
+      },
+      {
+        "label": "B",
+        "text": "Silver"
+      },
+      {
+        "label": "C",
+        "text": "Precious Stones"
+      },
+      {
+        "label": "D",
+        "text": "Anything of value"
+      }
+    ],
+    "correct_answer": "D",
+    "explanation": "Saheb scavenges through garbage dumps hoping to find anything of value that he can sell to earn a living.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the significance of the title 'Deep Water'?",
+    "topic": "Deep Water",
+    "options": [
+      {
+        "label": "A",
+        "text": "It refers to the depth of the ocean."
+      },
+      {
+        "label": "B",
+        "text": "It symbolizes the deep-seated fear of water that the narrator experiences."
+      },
+      {
+        "label": "C",
+        "text": "It represents the depth of the narrator's courage."
+      },
+      {
+        "label": "D",
+        "text": "It describes the depth of the swimming pool."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The title 'Deep Water' is symbolic, representing the narrator's profound and deeply rooted fear of water, stemming from a traumatic childhood experience.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'The Rattrap', how does the peddler make a living?",
+    "topic": "The Rattrap",
+    "options": [
+      {
+        "label": "A",
+        "text": "By selling newspapers"
+      },
+      {
+        "label": "B",
+        "text": "By working as a blacksmith"
+      },
+      {
+        "label": "C",
+        "text": "By selling rattraps and petty thievery"
+      },
+      {
+        "label": "D",
+        "text": "By begging"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The peddler sustains himself by selling the rattraps he makes and occasionally resorting to petty thievery.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the 'roadside stand' in the poem of the same name trying to achieve?",
+    "topic": "A Roadside Stand",
+    "options": [
+      {
+        "label": "A",
+        "text": "To provide a scenic view for travelers."
+      },
+      {
+        "label": "B",
+        "text": "To beg for money from city dwellers."
+      },
+      {
+        "label": "C",
+        "text": "To earn some extra income and improve the lives of the rural poor."
+      },
+      {
+        "label": "D",
+        "text": "To sell fruits and vegetables."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The roadside stand represents the rural poor's attempt to earn a little extra money and improve their living conditions by selling goods to passing city dwellers.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does Aunt Jennifer create in her embroidery panel in 'Aunt Jennifer's Tigers'?",
+    "topic": "Aunt Jennifer's Tigers",
+    "options": [
+      {
+        "label": "A",
+        "text": "A garden of roses"
+      },
+      {
+        "label": "B",
+        "text": "A flock of birds"
+      },
+      {
+        "label": "C",
+        "text": "Tigers prancing freely"
+      },
+      {
+        "label": "D",
+        "text": "A portrait of her husband"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Aunt Jennifer creates tigers on her embroidery panel, symbolizing freedom and strength, which contrasts with her own oppressed state.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "In 'Indigo', why did Gandhi object to the 25 percent refund to the farmers?",
+    "topic": "Indigo",
+    "options": [
+      {
+        "label": "A",
+        "text": "He thought it was too little money."
+      },
+      {
+        "label": "B",
+        "text": "He wanted a full refund."
+      },
+      {
+        "label": "C",
+        "text": "The amount of the refund was less important than the principle that the landlords had been forced to surrender part of their money and prestige."
+      },
+      {
+        "label": "D",
+        "text": "He didn't want any money for the farmers."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Gandhi considered the amount less important than the fact that the landlords had to return a portion of the money, which affected their prestige and showed the farmers their rights.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does Mr. Lamb teach Derry in 'On the Face of It'?",
+    "topic": "On the Face of It",
+    "options": [
+      {
+        "label": "A",
+        "text": "Gardening skills"
+      },
+      {
+        "label": "B",
+        "text": "How to overcome his physical disability"
+      },
+      {
+        "label": "C",
+        "text": "To not focus on his physical appearance and to embrace life."
+      },
+      {
+        "label": "D",
+        "text": "How to make apple jelly"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Mr. Lamb teaches Derry to look beyond his physical appearance, embrace life, and not let his disability define him.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'Memories of Childhood', what is Zitkala-Sa protesting against?",
+    "topic": "Memories of Childhood",
+    "options": [
+      {
+        "label": "A",
+        "text": "The food served at the school"
+      },
+      {
+        "label": "B",
+        "text": "The cutting of her hair, which is a symbol of her cultural identity."
+      },
+      {
+        "label": "C",
+        "text": "The strict rules of the school"
+      },
+      {
+        "label": "D",
+        "text": "The English language"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Zitkala-Sa protests against the cutting of her hair because it is a symbol of her cultural identity and a forced assimilation into a different culture.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the central theme of 'My Mother at Sixty-Six'?",
+    "topic": "My Mother at Sixty-Six",
+    "options": [
+      {
+        "label": "A",
+        "text": "The poet's love for nature."
+      },
+      {
+        "label": "B",
+        "text": "The poet's fear of losing her mother to old age and death."
+      },
+      {
+        "label": "C",
+        "text": "The beauty of old age."
+      },
+      {
+        "label": "D",
+        "text": "The importance of family vacations."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The poem explores the poet's anxiety and fear of losing her aging mother, reflecting on the inevitability of death and the preciousness of their bond.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What does the phrase 'sour cream walls' suggest about the setting in 'An Elementary School Classroom in a Slum'?",
+    "topic": "An Elementary School Classroom in a Slum",
+    "options": [
+      {
+        "label": "A",
+        "text": "The walls are painted in a bright, cheerful color."
+      },
+      {
+        "label": "B",
+        "text": "The walls are old, dirty, and decaying, reflecting the poverty and neglect of the classroom."
+      },
+      {
+        "label": "C",
+        "text": "The walls are decorated with cream-colored posters."
+      },
+      {
+        "label": "D",
+        "text": "The walls are freshly painted."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The phrase 'sour cream walls' suggests that the walls are old, dirty, and decaying, reflecting the poverty and neglect of the classroom environment.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the significance of the 'green worlds' mentioned in 'Keeping Quiet'?",
+    "topic": "Keeping Quiet",
+    "options": [
+      {
+        "label": "A",
+        "text": "They represent the beauty of nature."
+      },
+      {
+        "label": "B",
+        "text": "They symbolize the destructive nature of war and environmental exploitation."
+      },
+      {
+        "label": "C",
+        "text": "They refer to the poet's childhood memories."
+      },
+      {
+        "label": "D",
+        "text": "They represent the color of peace."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The 'green worlds' symbolize the destructive nature of war and environmental exploitation, highlighting the need for introspection and peace.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'The Third Level', what does Charley find at the third level that confirms its existence?",
+    "topic": "The Third Level",
+    "options": [
+      {
+        "label": "A",
+        "text": "A modern train."
+      },
+      {
+        "label": "B",
+        "text": "A newspaper dated June 11, 1894."
+      },
+      {
+        "label": "C",
+        "text": "A time machine."
+      },
+      {
+        "label": "D",
+        "text": "His grandfather."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Charley finds a newspaper dated June 11, 1894, which confirms to him that he has traveled back in time to that era.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the main conflict in 'Journey to the End of the Earth'?",
+    "topic": "Journey to the End of the Earth",
+    "options": [
+      {
+        "label": "A",
+        "text": "The harsh weather conditions in Antarctica."
+      },
+      {
+        "label": "B",
+        "text": "The impact of human activities on the environment, particularly Antarctica."
+      },
+      {
+        "label": "C",
+        "text": "The difficulty of traveling to Antarctica."
+      },
+      {
+        "label": "D",
+        "text": "The lack of resources in Antarctica."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The main conflict revolves around the impact of human activities on the fragile Antarctic environment and the need for conservation.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "In 'The Tiger King', why does the Maharaja decide to marry?",
+    "topic": "The Tiger King",
+    "options": [
+      {
+        "label": "A",
+        "text": "For love."
+      },
+      {
+        "label": "B",
+        "text": "To expand his kingdom."
+      },
+      {
+        "label": "C",
+        "text": "To find more tigers to hunt in his father-in-law's kingdom and fulfill his vow."
+      },
+      {
+        "label": "D",
+        "text": "To have an heir to the throne."
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The Maharaja marries to find more tigers to hunt in his father-in-law's kingdom, as tigers had become scarce in his own kingdom, and he needed to kill 100 tigers to disprove the prophecy.",
+    "difficulty": "medium",
+    "marks": 3,
+    "section": "B"
+  },
+  {
+    "question_text": "Write a notice for your school notice board informing students about an upcoming inter-school debate competition.",
+    "topic": "Notice Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A formal announcement detailing the date, time, venue, topic, and participation guidelines."
+      },
+      {
+        "label": "B",
+        "text": "An informal message to friends about a debate."
+      },
+      {
+        "label": "C",
+        "text": "A personal invitation to a debate."
+      },
+      {
+        "label": "D",
+        "text": "A reminder about a past debate."
+      }
+    ],
+    "correct_answer": "A",
+    "explanation": "A notice should be a formal announcement with all necessary details like date, time, venue, topic, and participation guidelines.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "You are the Secretary of the Literary Club of your school. Draft a formal invitation to a renowned author to be the chief guest at the annual literary event.",
+    "topic": "Invitation Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A casual email to the author."
+      },
+      {
+        "label": "B",
+        "text": "A formal letter expressing the school's honor to have them, detailing the event, date, time, and expectations."
+      },
+      {
+        "label": "C",
+        "text": "A text message to the author."
+      },
+      {
+        "label": "D",
+        "text": "A social media post inviting the author."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A formal invitation should express the school's honor, detail the event, date, time, and expectations, and be written in a polite and respectful tone.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Write a letter to the editor of a national newspaper expressing your concern about the increasing noise pollution in your city.",
+    "topic": "Letter to the Editor",
+    "options": [
+      {
+        "label": "A",
+        "text": "A personal complaint to a friend."
+      },
+      {
+        "label": "B",
+        "text": "A formal letter outlining the problem, its causes, effects, and suggesting possible solutions to raise public awareness."
+      },
+      {
+        "label": "C",
+        "text": "A thank you note to the editor."
+      },
+      {
+        "label": "D",
+        "text": "A request for a job at the newspaper."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A letter to the editor should formally outline the problem, its causes, effects, and suggest possible solutions to raise public awareness and encourage action.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "Write an article on the importance of reading books for a school magazine.",
+    "topic": "Article Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A short story about a book."
+      },
+      {
+        "label": "B",
+        "text": "An informative piece highlighting the benefits of reading, such as improved vocabulary, knowledge, and critical thinking skills."
+      },
+      {
+        "label": "C",
+        "text": "A book review."
+      },
+      {
+        "label": "D",
+        "text": "A list of favorite books."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "An article on the importance of reading should highlight the benefits of reading, such as improved vocabulary, knowledge, and critical thinking skills, and encourage students to read more.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "You are the President of the Environment Club of your school. Prepare a report on the activities conducted by the club in the past year.",
+    "topic": "Report Writing",
+    "options": [
+      {
+        "label": "A",
+        "text": "A personal diary entry."
+      },
+      {
+        "label": "B",
+        "text": "A formal document summarizing the club's activities, achievements, challenges, and future plans."
+      },
+      {
+        "label": "C",
+        "text": "A poster for the club."
+      },
+      {
+        "label": "D",
+        "text": "A thank you note to the club members."
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A report should be a formal document summarizing the club's activities, achievements, challenges, and future plans, providing a comprehensive overview of the club's work.",
+    "difficulty": "medium",
+    "marks": 5,
+    "section": "D"
+  },
+  {
+    "question_text": "What literary device is used in the line 'Life is like a box of chocolates'?",
+    "topic": "Literary Devices",
+    "options": [
+      {
+        "label": "A",
+        "text": "Metaphor"
+      },
+      {
+        "label": "B",
+        "text": "Simile"
+      },
+      {
+        "label": "C",
+        "text": "Personification"
+      },
+      {
+        "label": "D",
+        "text": "Alliteration"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "The line uses 'like' to compare life to a box of chocolates, making it a simile.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "Identify the figure of speech in the sentence: 'The wind whispered through the trees'.",
+    "topic": "Literary Devices",
+    "options": [
+      {
+        "label": "A",
+        "text": "Simile"
+      },
+      {
+        "label": "B",
+        "text": "Metaphor"
+      },
+      {
+        "label": "C",
+        "text": "Personification"
+      },
+      {
+        "label": "D",
+        "text": "Hyperbole"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "Personification is used as the wind is given the human quality of whispering.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  },
+  {
+    "question_text": "What is the rhyme scheme of a Shakespearean sonnet?",
+    "topic": "Poetry",
+    "options": [
+      {
+        "label": "A",
+        "text": "AABB CCDD EEFF GG"
+      },
+      {
+        "label": "B",
+        "text": "ABAB CDCD EFEF GG"
+      },
+      {
+        "label": "C",
+        "text": "ABBA CDDC EFFE GG"
+      },
+      {
+        "label": "D",
+        "text": "ABCDEF GHIJKL MN"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "A Shakespearean sonnet follows the rhyme scheme ABAB CDCD EFEF GG.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "What is the purpose of using alliteration in poetry?",
+    "topic": "Poetry",
+    "options": [
+      {
+        "label": "A",
+        "text": "To create a humorous effect"
+      },
+      {
+        "label": "B",
+        "text": "To emphasize certain words or phrases and create a musical effect"
+      },
+      {
+        "label": "C",
+        "text": "To confuse the reader"
+      },
+      {
+        "label": "D",
+        "text": "To make the poem longer"
+      }
+    ],
+    "correct_answer": "B",
+    "explanation": "Alliteration is used to emphasize certain words or phrases and create a musical effect by repeating the same consonant sounds at the beginning of words.",
+    "difficulty": "medium",
+    "marks": 2,
+    "section": "B"
+  },
+  {
+    "question_text": "Read the following lines and identify the poetic device used: 'The sun smiled down on the earth'.",
+    "topic": "Poetic Devices",
+    "options": [
+      {
+        "label": "A",
+        "text": "Simile"
+      },
+      {
+        "label": "B",
+        "text": "Metaphor"
+      },
+      {
+        "label": "C",
+        "text": "Personification"
+      },
+      {
+        "label": "D",
+        "text": "Hyperbole"
+      }
+    ],
+    "correct_answer": "C",
+    "explanation": "The poetic device used is personification, as the sun is given the human quality of smiling.",
+    "difficulty": "easy",
+    "marks": 1,
+    "section": "A"
+  }
+]
