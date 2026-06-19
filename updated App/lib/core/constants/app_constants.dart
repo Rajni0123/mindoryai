@@ -2,10 +2,10 @@ class AppConstants {
   static const String appName = 'BlinkStudy';
   static const String packageId = 'com.blinkstudy.app';
 
-  /// Override at build time: --dart-define=API_BASE_URL=https://yourdomain.com/api
+  /// Override at build time: --dart-define=API_BASE_URL=https://api.blinkstudy.in/api
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://blinkstudy.in/api',
+    defaultValue: 'https://api.blinkstudy.in/api',
   );
 
   static const String websiteUrl = String.fromEnvironment(

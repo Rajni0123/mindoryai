@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Main website routes for landing, login, register
-| Chat interface: chat.yourdomain.com
-| Admin panel: admin.yourdomain.com
-| API: api.yourdomain.com
+| Chat interface: chat.blinkstudy.in
+| Admin panel: admin.blinkstudy.in
+| API: api.blinkstudy.in
 |
 */
 

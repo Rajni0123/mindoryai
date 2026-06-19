@@ -18,15 +18,13 @@ return [
     'stateful' => explode(',', env(
         'SANCTUM_STATEFUL_DOMAINS',
         implode(',', array_filter([
-            // Production domains - always include main domain
+            // BlinkStudy production domains only (no mindory.in)
             'blinkstudy.in',
             'www.blinkstudy.in',
-            // Production domains (derived from env)
             env('MAIN_DOMAIN'),
             env('CHAT_SUBDOMAIN'),
             env('ADMIN_SUBDOMAIN'),
-            env('API_SUBDOMAIN'),
-            env('FILES_SUBDOMAIN'),
+            // Note: API subdomain (api.blinkstudy.in) uses bearer tokens, not session cookies
             // Include localhost only in local environment
             env('APP_ENV') === 'local' ? 'localhost' : null,
             env('APP_ENV') === 'local' ? 'localhost:3000' : null,
