@@ -5,6 +5,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/theme/dashboard_theme.dart';
 import '../../models/models.dart';
 import '../../providers/app_data_provider.dart';
 import '../../providers/providers.dart';
@@ -183,8 +184,10 @@ class _AiTutorScreenState extends ConsumerState<AiTutorScreen> {
 
     final reason = await showModalBottomSheet<String>(
       context: context,
+      backgroundColor: context.dash.card,
       showDragHandle: true,
       builder: (ctx) {
+        final sheetColors = ctx.dash;
         const options = [
           ('too_complex', 'Too complex / hard to understand'),
           ('wrong_answer', 'Wrong or incorrect answer'),
@@ -200,15 +203,25 @@ class _AiTutorScreenState extends ConsumerState<AiTutorScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'What went wrong?',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: sheetColors.textPrimary,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 ...options.map(
                   (opt) => ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: Text(opt.$2, style: const TextStyle(fontSize: 14)),
+                    title: Text(
+                      opt.$2,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: sheetColors.textSecondary,
+                      ),
+                    ),
                     onTap: () => Navigator.pop(ctx, opt.$1),
                   ),
                 ),
@@ -302,8 +315,13 @@ Where:
 
   @override
   Widget build(BuildContext context) {
+    final c = context.dash;
+
     return Scaffold(
+      backgroundColor: c.background,
       appBar: AppBar(
+        backgroundColor: c.background,
+        surfaceTintColor: Colors.transparent,
         title: Row(
           children: [
             Container(
@@ -316,11 +334,21 @@ Where:
               child: const Icon(Icons.smart_toy_rounded, color: Colors.white, size: 20),
             ),
             const SizedBox(width: 10),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('BlinkAI', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-                Text('AI Tutor', style: TextStyle(fontSize: 11, color: AppColors.textMuted)),
+                Text(
+                  'BlinkAI',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: c.textPrimary,
+                  ),
+                ),
+                Text(
+                  'AI Tutor',
+                  style: TextStyle(fontSize: 11, color: c.textMuted),
+                ),
               ],
             ),
           ],
@@ -335,18 +363,20 @@ Where:
               itemCount: _messages.length + (_loading ? 1 : 0),
               itemBuilder: (context, i) {
                 if (i == _messages.length) {
-                  return const Padding(
-                    padding: EdgeInsets.all(12),
+                  return Padding(
+                    padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         ),
-                        SizedBox(width: 12),
-                        Text('BlinkAI is thinking...',
-                            style: TextStyle(color: AppColors.textMuted)),
+                        const SizedBox(width: 12),
+                        Text(
+                          'BlinkAI is thinking...',
+                          style: TextStyle(color: c.textMuted),
+                        ),
                       ],
                     ),
                   );
@@ -363,9 +393,12 @@ Where:
   }
 
   Widget _buildBubble(ChatMessage msg) {
+    final c = context.dash;
     final isUser = msg.isUser;
     final liked = msg.feedback == 'like';
     final disliked = msg.feedback == 'dislike';
+    final aiTextColor = c.textPrimary;
+    final aiStrongColor = AppColors.primaryLight;
 
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -374,16 +407,17 @@ Where:
         padding: const EdgeInsets.all(14),
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.82),
         decoration: BoxDecoration(
-          color: isUser ? AppColors.purpleBubble : AppColors.aiBubble,
+          color: isUser ? AppColors.purpleBubble : c.card,
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(18),
             topRight: const Radius.circular(18),
             bottomLeft: Radius.circular(isUser ? 18 : 4),
             bottomRight: Radius.circular(isUser ? 4 : 18),
           ),
+          border: isUser ? null : Border.all(color: c.cardBorder),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: context.isDark ? 0.25 : 0.04),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -396,12 +430,12 @@ Where:
               data: msg.content,
               styleSheet: MarkdownStyleSheet(
                 p: TextStyle(
-                  color: isUser ? Colors.white : AppColors.textPrimary,
+                  color: isUser ? Colors.white : aiTextColor,
                   fontSize: 14,
                   height: 1.5,
                 ),
                 strong: TextStyle(
-                  color: isUser ? Colors.white : AppColors.primary,
+                  color: isUser ? Colors.white : aiStrongColor,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -445,9 +479,10 @@ Where:
     bool active = false,
     Color? activeColor,
   }) {
+    final c = context.dash;
     final color = active
         ? (activeColor ?? AppColors.primary)
-        : AppColors.textMuted;
+        : c.textMuted;
     return Padding(
       padding: const EdgeInsets.only(right: 12),
       child: InkWell(
@@ -477,25 +512,31 @@ Where:
   }
 
   Widget _chip(String label, VoidCallback onTap) {
+    final c = context.dash;
     return Padding(
       padding: const EdgeInsets.only(right: 8),
       child: ActionChip(
-        label: Text(label, style: const TextStyle(fontSize: 12)),
-        backgroundColor: Colors.white,
-        side: BorderSide(color: AppColors.primary.withOpacity(0.3)),
+        label: Text(
+          label,
+          style: TextStyle(fontSize: 12, color: c.textSecondary),
+        ),
+        backgroundColor: c.card,
+        side: BorderSide(color: c.cardBorder),
         onPressed: onTap,
       ),
     );
   }
 
   Widget _buildInput() {
+    final c = context.dash;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: c.surface,
+        border: Border(top: BorderSide(color: c.cardBorder)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: context.isDark ? 0.2 : 0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),
@@ -514,10 +555,26 @@ Where:
             Expanded(
               child: TextField(
                 controller: _controller,
-                decoration: const InputDecoration(
+                style: TextStyle(color: c.textPrimary),
+                cursorColor: AppColors.primary,
+                decoration: InputDecoration(
                   hintText: 'Ask anything...',
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12),
+                  hintStyle: TextStyle(color: c.textMuted),
+                  filled: true,
+                  fillColor: c.card,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: c.cardBorder),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: BorderSide(color: c.cardBorder),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(14),
+                    borderSide: const BorderSide(color: AppColors.primary),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 ),
                 onSubmitted: _send,
               ),

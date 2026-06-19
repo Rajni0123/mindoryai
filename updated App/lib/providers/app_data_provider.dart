@@ -86,7 +86,8 @@ class HomeDailyChallengeInfo {
 
   const HomeDailyChallengeInfo({
     this.title = 'Daily Challenge',
-    this.description = 'Solve today\'s questions and earn XP.',
+    this.description =
+        'Solve 10 questions in 10 mins\nWin 50 XP & climb the leaderboard',
     this.participants = 0,
     this.rewardXp = 50,
     this.available = false,
@@ -138,6 +139,8 @@ class HomeDashboardData {
   final String? examDateLabel;
   final List<HomeMission> missions;
   final List<HomePlanTask> todayPlan;
+  final int todayPlanTotal;
+  final String planCoachNote;
   final List<WeakTopicAlert> weakTopics;
   final HomeDailyChallengeInfo dailyChallenge;
   final HomeContinueLearning continueLearning;
@@ -162,6 +165,8 @@ class HomeDashboardData {
     this.examDateLabel,
     this.missions = const [],
     this.todayPlan = const [],
+    this.todayPlanTotal = 0,
+    this.planCoachNote = 'Your coach will map today\'s focus after your first session.',
     this.weakTopics = const [],
     this.dailyChallenge = const HomeDailyChallengeInfo(),
     this.continueLearning = const HomeContinueLearning(),
@@ -324,7 +329,7 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
         ),
         HomeMission(
           id: 'quiz',
-          title: 'Practice Quiz',
+          title: 'Mock Test',
           subtitle: '${stats['totalQuizzes'] ?? 0} done this week',
           route: '/quiz-topics',
           done: (stats['totalQuizzes'] as int? ?? 0) >= 3,
@@ -345,11 +350,13 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
         ),
       ];
 
-      final todayPlan = _buildTodayPlan(
+      final todayPlanFull = _buildTodayPlan(
         plan: revisionPlan,
         weak: weak,
         stats: stats,
       );
+      final todayPlan = todayPlanFull.take(3).toList();
+      final todayPlanTotal = todayPlanFull.length;
 
       int planCompleted = 0;
       int planTotal = 0;
@@ -363,9 +370,16 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
         dailyProgress = missions.isEmpty
             ? readiness.clamp(0, 100)
             : ((done / missions.length) * 100).round().clamp(0, 100);
-        planTotal = todayPlan.length;
-        planCompleted = todayPlan.where((t) => t.completed).length;
+        planTotal = todayPlanFull.length;
+        planCompleted = todayPlanFull.where((t) => t.completed).length;
       }
+
+      final planCoachNote = _coachSessionNote(
+        progress: dailyProgress,
+        completed: planCompleted,
+        total: planTotal,
+        hasRevisionPlan: revisionPlan != null && revisionPlan.days.isNotEmpty,
+      );
 
       final dailyChallenge = _buildDailyChallenge(daily, challengeMap, dailyDone);
 
@@ -399,6 +413,8 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
         examDateLabel: upcomingExam.examDate,
         missions: missions,
         todayPlan: todayPlan,
+        todayPlanTotal: todayPlanTotal,
+        planCoachNote: planCoachNote,
         weakTopics: weak,
         dailyChallenge: dailyChallenge,
         continueLearning: continueLearning,
@@ -422,12 +438,18 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
     if (plan != null && plan.days.isNotEmpty) {
       for (final day in plan.days) {
         if (day.action == 'mock_test') continue;
+        final title = switch (day.action) {
+          'revise' => 'Revise ${day.topic}',
+          'quiz' => 'Practice ${day.topic}',
+          'revision' => 'Revision: ${day.topic}',
+          _ => day.topic,
+        };
         tasks.add(HomePlanTask(
           id: 'plan_day_${day.day}',
           subject: day.subject,
-          title: day.topic,
+          title: title,
           subtitle: day.completed
-              ? 'Completed ✓'
+              ? 'Completed'
               : day.successRate != null
                   ? '${day.successRate!.round()}% accuracy · 15 min'
                   : '15 min session',
@@ -435,43 +457,90 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
           topic: day.topic,
           completed: day.completed,
         ));
-        if (tasks.length >= 2) break;
+        if (tasks.length >= 4) break;
       }
-    } else {
-      for (final w in weak.take(2)) {
-        tasks.add(HomePlanTask(
-          id: 'weak_${w.topic}',
-          subject: w.subject.isNotEmpty ? w.subject : 'General',
-          title: w.topic,
-          subtitle: '${w.accuracy}% accuracy · 15 min',
-          action: 'revise',
-          topic: w.topic,
-          completed: w.accuracy >= 70,
-        ));
-      }
+      if (tasks.isNotEmpty) return tasks;
+    }
+
+    final questionsToday =
+        (stats['questionsToday'] as num?)?.toInt() ??
+        (stats['totalQuestions'] as num?)?.toInt() ??
+        0;
+    const questionGoal = 10;
+
+    if (weak.isNotEmpty) {
+      final w = weak.first;
+      tasks.add(HomePlanTask(
+        id: 'weak_${w.topic}',
+        subject: w.subject.isNotEmpty ? w.subject : 'General',
+        title: 'Revise ${w.topic}',
+        subtitle: '${w.accuracy}% accuracy · 15 min',
+        action: 'revise',
+        topic: w.topic,
+        completed: w.accuracy >= 70,
+      ));
     }
 
     tasks.add(HomePlanTask(
-      id: 'quiz',
-      subject: 'Quiz',
-      title: '15 Questions Quiz',
-      subtitle: '${stats['totalQuizzes'] ?? 0} done this week',
+      id: 'quiz_daily',
+      subject: 'Practice',
+      title: 'Solve 10 Questions',
+      subtitle: '$questionsToday / $questionGoal',
       action: 'quiz',
-      completed: (stats['totalQuizzes'] as int? ?? 0) >= 1,
+      completed: questionsToday >= questionGoal,
     ));
 
+    if (weak.length > 1) {
+      final w = weak[1];
+      tasks.add(HomePlanTask(
+        id: 'weak_${w.topic}_2',
+        subject: w.subject.isNotEmpty ? w.subject : 'Physics',
+        title: 'Weak Topic: ${w.topic}',
+        subtitle: '${w.subject.isNotEmpty ? w.subject : 'Physics'} · 15 min',
+        action: 'revise',
+        topic: w.topic,
+        completed: w.accuracy >= 70,
+      ));
+    }
+
+    final battlesWon = (stats['battlesWon'] as num?)?.toInt() ?? 0;
     tasks.add(HomePlanTask(
-      id: 'revision',
-      subject: 'Revision',
-      title: 'Revise Weak Topics',
-      subtitle: weak.isNotEmpty
-          ? '${weak.length} weak topics'
-          : 'AI plan ready',
-      action: 'revision',
-      completed: false,
+      id: 'battle',
+      subject: 'Battle',
+      title: 'Daily Battle',
+      subtitle: 'Win 1 battle',
+      action: 'battle',
+      completed: battlesWon >= 1,
     ));
 
     return tasks;
+  }
+
+  String _coachSessionNote({
+    required int progress,
+    required int completed,
+    required int total,
+    required bool hasRevisionPlan,
+  }) {
+    if (!hasRevisionPlan && total == 0) {
+      return 'Complete a session to unlock your personalised daily game plan.';
+    }
+    if (total > 0 && completed >= total) {
+      return 'Session complete — disciplined effort wins the long game.';
+    }
+    if (progress >= 70) {
+      return 'Death overs — stay calm and finish today\'s targets.';
+    }
+    if (progress >= 40) {
+      return 'Building momentum — trust the process on weak areas.';
+    }
+    if (completed > 0) {
+      return 'Good start — one focused session at a time.';
+    }
+    if (hasRevisionPlan) {
+      return 'Mapped from your AI revision path and weak-topic analysis.';
+    }
+    return 'Tailored from your quiz stats, weak topics, and daily goals.';
   }
 
   HomeDailyChallengeInfo _buildDailyChallenge(
@@ -487,12 +556,12 @@ class HomeDashboardNotifier extends StateNotifier<HomeDashboardData> {
         0;
 
     return HomeDailyChallengeInfo(
-      title: challengeMap?['title']?.toString() ?? 'Daily Challenge',
+      title: 'Daily Challenge',
       description: daily['available'] == true
-          ? 'Solve $questionCount questions in ${timeLimit ~/ 60} mins.\nWin $reward XP & climb the leaderboard.'
+          ? 'Solve $questionCount questions in ${timeLimit ~/ 60} mins\nWin $reward XP & climb the leaderboard'
           : daily['message']?.toString() ??
-              'No challenge today. Check back tomorrow!',
-      participants: participants,
+              'Solve 10 questions in 10 mins\nWin 50 XP & climb the leaderboard',
+      participants: participants > 0 ? participants : 120,
       rewardXp: reward,
       available: daily['available'] == true,
       completed: dailyDone,

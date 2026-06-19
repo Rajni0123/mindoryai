@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +12,6 @@ import '../../core/theme/dashboard_theme.dart';
 import '../../models/user_badges.dart';
 import '../../providers/app_data_provider.dart';
 import '../../providers/providers.dart';
-import '../../widgets/dynamic_badge.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -38,7 +38,7 @@ class HomeScreen extends ConsumerWidget {
             _TopBar(
               name: name,
               onNotifications: () => AppRouter.go(context, AppRoutes.notifications),
-              onProfile: () => ref.read(navIndexProvider.notifier).state = 4,
+              onProfile: () => AppRouter.go(context, AppRoutes.profile),
             ),
             Expanded(
               child: RefreshIndicator(
@@ -53,44 +53,55 @@ class HomeScreen extends ConsumerWidget {
                     children: [
                       _GreetingBlock(name: name),
                       const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _StreakCard(
-                              streak: streak,
-                              badges: badges,
+                      IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: _StreakCard(
+                                streak: streak,
+                                badges: badges,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: _LevelCard(
-                              level: level,
-                              xp: xp,
-                              xpMax: xpMax,
-                              badges: badges,
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: _LevelCard(
+                                level: level,
+                                xp: xp,
+                                xpMax: xpMax,
+                                badges: badges,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 20),
                       _TodaysPlanSection(
                         tasks: dash.todayPlan,
+                        totalTasks: dash.todayPlanTotal,
+                        coachNote: dash.planCoachNote,
                         progress: dash.dailyProgress,
                         completed: dash.planCompleted,
                         total: dash.planTotal,
-                        onTaskTap: (task) => _onPlanTaskTap(context, task),
-                        onAnalytics: () =>
-                            ref.read(navIndexProvider.notifier).state = 1,
+                        onTaskTap: (task) => _onPlanTaskTap(context, ref, task),
+                        onViewAll: () => AppRouter.go(context, AppRoutes.revisionPlan),
+                        onStartBattle: () =>
+                            ref.read(navIndexProvider.notifier).state = 4,
                       ),
                       const SizedBox(height: 22),
                       _QuickActionsRow(
                         onScan: () => ref.read(navIndexProvider.notifier).state = 2,
-                        onAiTutor: () => AppRouter.go(context, AppRoutes.aiTutor),
+                        onAiTutor: () => ref.read(navIndexProvider.notifier).state = 1,
                         onQuiz: () => AppRouter.go(context, AppRoutes.quizTopics),
-                        onBattles: () => ref.read(navIndexProvider.notifier).state = 3,
+                        onBattles: () => ref.read(navIndexProvider.notifier).state = 4,
                         onRevision: () => AppRouter.go(context, AppRoutes.revision),
                       ),
-                      const SizedBox(height: 26),
+                      const SizedBox(height: 22),
+                      _DailyChallengeCard(
+                        info: dailyChallenge,
+                        onTap: () => AppRouter.go(context, AppRoutes.dailyChallenge),
+                      ),
+                      const SizedBox(height: 22),
                       _SectionHeader(
                         title: 'Continue Learning',
                         action: 'View all',
@@ -118,19 +129,15 @@ class HomeScreen extends ConsumerWidget {
                           }
                         },
                       ),
-                      const SizedBox(height: 22),
-                      _DailyChallengeCard(
-                        info: dailyChallenge,
-                        onTap: () => AppRouter.go(context, AppRoutes.dailyChallenge),
-                      ),
                       const SizedBox(height: 18),
-                      if (upcoming.daysLeft != null || upcoming.examDate != null)
-                        _UpcomingExamCard(
-                          examName: upcoming.examName,
-                          daysLeft: upcoming.daysLeft ?? 0,
-                          examDate: upcoming.examDate ?? 'Set your exam date',
-                          onTap: () => AppRouter.go(context, AppRoutes.examPrep),
-                        ),
+                      _UpcomingExamSection(
+                        examName: upcoming.examName.isNotEmpty
+                            ? upcoming.examName
+                            : continueData.examName,
+                        daysLeft: upcoming.daysLeft ?? 23,
+                        examDate: upcoming.examDate ?? '29 Jan 2025',
+                        onTap: () => AppRouter.go(context, AppRoutes.examPrep),
+                      ),
                     ],
                   ),
                 ),
@@ -147,7 +154,11 @@ class HomeScreen extends ConsumerWidget {
     return name.trim().split(' ').first;
   }
 
-  static void _onPlanTaskTap(BuildContext context, HomePlanTask task) {
+  static void _onPlanTaskTap(
+    BuildContext context,
+    WidgetRef ref,
+    HomePlanTask task,
+  ) {
     switch (task.action) {
       case 'quiz':
         if (task.topic != null && task.topic!.isNotEmpty) {
@@ -166,6 +177,9 @@ class HomeScreen extends ConsumerWidget {
         break;
       case 'mock_test':
         AppRouter.go(context, AppRoutes.examPrep);
+        break;
+      case 'battle':
+        ref.read(navIndexProvider.notifier).state = 4;
         break;
       case 'revise':
       default:
@@ -441,83 +455,73 @@ class _StreakCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.dash;
-    final badge = badges.streak;
-    final next = badges.streakProgress.nextBadge;
-    final progress = badges.streakProgress.percent / 100;
-    final milestoneLabel = next != null
-        ? '${badges.streakProgress.valueToNext} days to ${next.name}'
-        : 'Max streak tier!';
-
-    if (badge == null) {
-      return _StatCard(
-        child: Text(
-          'Start your streak today!',
-          style: TextStyle(fontSize: 13, color: c.textMuted),
-        ),
-      );
-    }
+    final progress = badges.streakProgress.percent > 0
+        ? badges.streakProgress.percent / 100
+        : streak > 0
+            ? (streak / 7).clamp(0.15, 1.0)
+            : 0.08;
+    final milestoneDays = badges.streakProgress.valueToNext > 0
+        ? badges.streakProgress.valueToNext
+        : 7;
+    final nextBadgeName =
+        badges.streakProgress.nextBadge?.name ?? 'Weekly Warrior';
 
     return _StatCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              DynamicBadge(badge: badge, size: 28),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  '$streak Day Streak',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                    color: c.textPrimary,
+          SizedBox(
+            height: 32,
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF97316).withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.local_fire_department_rounded,
+                    size: 20,
+                    color: Color(0xFFF97316),
                   ),
                 ),
-              ),
-              Text(
-                badge.name,
-                style: TextStyle(
-                  fontSize: 9,
-                  fontWeight: FontWeight.w800,
-                  color: badge.gradient.first,
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    streak > 0 ? '$streak Day Streak' : 'Start your streak!',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      color: c.textPrimary,
+                      height: 1.2,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 6),
-          Text(
-            streak > 0 ? badge.tagline : 'Start your streak today!',
-            style: TextStyle(fontSize: 11, color: c.textMuted, height: 1.3),
+          SizedBox(
+            height: 28,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                streak > 0
+                    ? '$milestoneDays days to $nextBadgeName badge'
+                    : 'Complete 1 task to begin',
+                style: TextStyle(fontSize: 11, color: c.textMuted, height: 1.3),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ),
-          if (streak > 0 && next != null)
-            Text(
-              milestoneLabel,
-              style: TextStyle(
-                fontSize: 10,
-                color: badge.gradient.first.withOpacity(0.85),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
           const SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: SizedBox(
-              height: 8,
-              child: Stack(
-                children: [
-                  Container(color: c.cardBorder),
-                  FractionallySizedBox(
-                    widthFactor: progress.clamp(0.0, 1.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: badge.gradient),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          _StatProgressBar(
+            progress: progress.clamp(0.0, 1.0),
+            colors: const [Color(0xFFF97316), Color(0xFF3B82F6)],
           ),
         ],
       ),
@@ -541,89 +545,63 @@ class _LevelCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.dash;
-    final badge = badges.league;
-    final next = badges.leagueProgress.nextBadge;
     final progress = xpMax > 0
         ? (xp / xpMax).clamp(0.0, 1.0)
         : badges.leagueProgress.percent / 100;
-
-    if (badge == null) {
-      return _StatCard(
-        child: Text(
-          'Level $level',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: c.textPrimary),
-        ),
-      );
-    }
 
     return _StatCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              DynamicBadge(badge: badge, size: 28),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  badge.name,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w800,
-                    color: c.textPrimary,
+          SizedBox(
+            height: 32,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Level $level',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      color: c.textPrimary,
+                      height: 1.2,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ),
-              Text(
-                'Lv $level',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: c.textMuted,
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFBBF24).withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
+                    Icons.shield_rounded,
+                    size: 18,
+                    color: Color(0xFFF59E0B),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 6),
-          Text(
-            badge.tagline,
-            style: TextStyle(fontSize: 11, color: c.textMuted),
-          ),
-          if (next != null)
-            Text(
-              badges.leagueProgress.valueToNext > 0
-                  ? '${badges.leagueProgress.valueToNext} levels to ${next.name}'
-                  : 'Next: ${next.name}',
-              style: TextStyle(
-                fontSize: 10,
-                color: badge.gradient.first.withOpacity(0.85),
-                fontWeight: FontWeight.w600,
+          SizedBox(
+            height: 28,
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'XP ${_formatXp(xp)} / ${_formatXp(xpMax)}',
+                style: TextStyle(fontSize: 11, color: c.textMuted, height: 1.3),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+          ),
           const SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(6),
-            child: SizedBox(
-              height: 8,
-              child: Stack(
-                children: [
-                  Container(color: c.cardBorder),
-                  FractionallySizedBox(
-                    widthFactor: progress,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: badge.gradient),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'XP ${_formatXp(xp)} / ${_formatXp(xpMax)}',
-            style: TextStyle(fontSize: 10, color: c.textMuted),
+          _StatProgressBar(
+            progress: progress.clamp(0.0, 1.0),
+            colors: const [AppColors.primary, AppColors.primaryLight],
           ),
         ],
       ),
@@ -631,7 +609,7 @@ class _LevelCard extends StatelessWidget {
   }
 
   static String _formatXp(int n) {
-    if (n >= 1000) return '${(n / 1000).toStringAsFixed(1)}k'.replaceAll('.0k', 'k');
+    if (n >= 1000) return '${(n / 1000).toStringAsFixed(0)}k';
     return '$n';
   }
 }
@@ -662,30 +640,72 @@ class _StatCard extends StatelessWidget {
   }
 }
 
-// ─── Today's Plan (horizontal: tasks + progress) ──────────────────────────────
+class _StatProgressBar extends StatelessWidget {
+  final double progress;
+  final List<Color> colors;
 
-class _TodaysPlanSection extends StatelessWidget {
-  final List<HomePlanTask> tasks;
-  final int progress;
-  final int completed;
-  final int total;
-  final void Function(HomePlanTask task) onTaskTap;
-  final VoidCallback onAnalytics;
-
-  const _TodaysPlanSection({
-    required this.tasks,
+  const _StatProgressBar({
     required this.progress,
-    required this.completed,
-    required this.total,
-    required this.onTaskTap,
-    required this.onAnalytics,
+    required this.colors,
   });
 
   @override
   Widget build(BuildContext context) {
     final c = context.dash;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(6),
+      child: SizedBox(
+        height: 8,
+        child: Stack(
+          children: [
+            Container(color: c.cardBorder),
+            FractionallySizedBox(
+              widthFactor: progress,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: colors),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Today's Plan (horizontal: tasks + progress) ──────────────────────────────
+
+class _TodaysPlanSection extends StatelessWidget {
+  final List<HomePlanTask> tasks;
+  final int totalTasks;
+  final String coachNote;
+  final int progress;
+  final int completed;
+  final int total;
+  final void Function(HomePlanTask task) onTaskTap;
+  final VoidCallback onViewAll;
+  final VoidCallback onStartBattle;
+
+  const _TodaysPlanSection({
+    required this.tasks,
+    required this.totalTasks,
+    required this.coachNote,
+    required this.progress,
+    required this.completed,
+    required this.total,
+    required this.onTaskTap,
+    required this.onViewAll,
+    required this.onStartBattle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.dash;
+    final remaining = totalTasks - tasks.length;
+
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: c.card,
         borderRadius: BorderRadius.circular(20),
@@ -711,49 +731,161 @@ class _TodaysPlanSection extends StatelessWidget {
                   color: c.textPrimary,
                 ),
               ),
-              const SizedBox(width: 8),
-              const Icon(Icons.auto_awesome, size: 16, color: AppColors.primary),
-              const SizedBox(width: 4),
-              Text(
-                'AI Generated',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primary.withValues(alpha: 0.8),
+              const Spacer(),
+              GestureDetector(
+                onTap: onViewAll,
+                child: const Text(
+                  'View all',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: tasks.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Text(
-                          'Your personalized plan is loading…',
-                          style: TextStyle(fontSize: 13, color: c.textMuted),
-                        ),
-                      )
-                    : Column(
-                        children: tasks
-                            .map((t) => _PlanTaskRow(
-                                  task: t,
-                                  onTap: () => onTaskTap(t),
-                                ))
-                            .toList(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.sports_cricket_rounded,
+                      size: 14,
+                      color: AppColors.primary.withValues(alpha: 0.9),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      "Coach's Plan",
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
                       ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(width: 12),
-              _DailyProgressPanel(
-                progress: progress,
-                completed: completed,
-                total: total,
-                onAnalytics: onAnalytics,
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  coachNote,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12,
+                    height: 1.35,
+                    color: c.textSecondary,
+                  ),
+                ),
               ),
             ],
+          ),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: LinearProgressIndicator(
+                    value: progress / 100,
+                    minHeight: 8,
+                    backgroundColor: c.cardBorder,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                '$progress%',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w800,
+                  color: c.textPrimary,
+                ),
+              ),
+              if (total > 0) ...[
+                const SizedBox(width: 6),
+                Text(
+                  '$completed/$total',
+                  style: TextStyle(fontSize: 11, color: c.textMuted),
+                ),
+              ],
+            ],
+          ),
+          const SizedBox(height: 14),
+          if (tasks.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                'Your session plan is loading…',
+                style: TextStyle(fontSize: 13, color: c.textMuted),
+              ),
+            )
+          else
+            ...tasks.map(
+              (t) => _PlanTaskRow(
+                task: t,
+                onTap: () => onTaskTap(t),
+                onStartBattle: onStartBattle,
+                compact: true,
+              ),
+            ),
+          if (remaining > 0) ...[
+            const SizedBox(height: 4),
+            GestureDetector(
+              onTap: onViewAll,
+              child: Text(
+                '+$remaining more in full plan',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.06),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.12)),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.emoji_events_outlined,
+                  size: 16,
+                  color: AppColors.primary.withValues(alpha: 0.85),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Next milestone: complete 3 tasks · +50 XP',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: c.textSecondary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -761,117 +893,38 @@ class _TodaysPlanSection extends StatelessWidget {
   }
 }
 
-class _DailyProgressPanel extends StatelessWidget {
-  final int progress;
-  final int completed;
-  final int total;
-  final VoidCallback onAnalytics;
-
-  const _DailyProgressPanel({
-    required this.progress,
-    required this.completed,
-    required this.total,
-    required this.onAnalytics,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.dash;
-    return SizedBox(
-      width: 100,
-      child: Column(
-        children: [
-          SizedBox(
-            width: 88,
-            height: 88,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                SizedBox(
-                  width: 88,
-                  height: 88,
-                  child: CircularProgressIndicator(
-                    value: progress / 100,
-                    strokeWidth: 8,
-                    backgroundColor: c.cardBorder,
-                    color: AppColors.primary,
-                    strokeCap: StrokeCap.round,
-                  ),
-                ),
-                Text(
-                  '$progress%',
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: c.textPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Daily Progress',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 11, color: c.textMuted),
-          ),
-          Text(
-            progress >= 70 ? 'Great Progress!' : 'Keep going!',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
-              color: AppColors.primary,
-            ),
-          ),
-          if (total > 0) ...[
-            const SizedBox(height: 4),
-            Text(
-              '$completed/$total',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 10, color: c.textMuted),
-            ),
-          ],
-          const SizedBox(height: 6),
-          TextButton(
-            onPressed: onAnalytics,
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-            child: const Text(
-              'View Analytics',
-              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class _PlanTaskRow extends StatelessWidget {
   final HomePlanTask task;
   final VoidCallback onTap;
+  final VoidCallback onStartBattle;
+  final bool compact;
 
-  const _PlanTaskRow({required this.task, required this.onTap});
+  const _PlanTaskRow({
+    required this.task,
+    required this.onTap,
+    required this.onStartBattle,
+    this.compact = false,
+  });
 
   Color get _color {
+    if (task.action == 'battle') return const Color(0xFFEF4444);
     final s = task.subject.toLowerCase();
-    if (s.contains('chem')) return const Color(0xFFEF4444);
-    if (s.contains('math')) return const Color(0xFF8B5CF6);
-    if (s.contains('bio')) return const Color(0xFF22C55E);
+    final t = task.title.toLowerCase();
+    if (s.contains('chem') || t.contains('chemical')) return const Color(0xFF22C55E);
+    if (s.contains('math') || t.contains('question')) return const Color(0xFF3B82F6);
+    if (t.contains('weak')) return const Color(0xFFEF4444);
     if (s.contains('quiz')) return const Color(0xFF3B82F6);
     if (s.contains('revision')) return const Color(0xFFF59E0B);
     return const Color(0xFF14B8A6);
   }
 
   IconData get _icon {
+    if (task.action == 'battle') return LucideIcons.swords;
     final s = task.subject.toLowerCase();
-    if (s.contains('chem')) return LucideIcons.flaskConical;
-    if (s.contains('math')) return LucideIcons.calculator;
-    if (s.contains('bio')) return LucideIcons.leaf;
+    final t = task.title.toLowerCase();
+    if (s.contains('chem') || t.contains('chemical')) return LucideIcons.flaskConical;
+    if (s.contains('math') || t.contains('question')) return LucideIcons.circleHelp;
+    if (t.contains('weak')) return LucideIcons.triangleAlert;
     if (s.contains('quiz')) return LucideIcons.circleHelp;
     if (s.contains('revision')) return LucideIcons.bookMarked;
     return LucideIcons.atom;
@@ -881,25 +934,27 @@ class _PlanTaskRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.dash;
     final color = _color;
+    final iconSize = compact ? 16.0 : 18.0;
+    final boxSize = compact ? 32.0 : 36.0;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: compact ? 8 : 12),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(12),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2),
+            padding: EdgeInsets.symmetric(vertical: compact ? 1 : 2),
             child: Row(
               children: [
                 Container(
-                  width: 36,
-                  height: 36,
+                  width: boxSize,
+                  height: boxSize,
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(compact ? 8 : 10),
                   ),
-                  child: Icon(_icon, size: 18, color: color),
+                  child: Icon(_icon, size: iconSize, color: color),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -907,25 +962,63 @@ class _PlanTaskRow extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${task.subject}: ${task.title}',
+                        task.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: compact ? 12 : 13,
                           fontWeight: FontWeight.w600,
                           color: c.textPrimary,
                         ),
                       ),
-                      Text(task.subtitle,
-                          style: TextStyle(fontSize: 11, color: c.textMuted)),
+                      Text(
+                        task.subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: compact ? 10 : 11,
+                          color: c.textMuted,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                if (task.completed)
-                  const Icon(Icons.check_circle_rounded,
-                      size: 20, color: Color(0xFF22C55E))
+                if (task.action == 'battle' && !task.completed)
+                  TextButton(
+                    onPressed: onStartBattle,
+                    style: TextButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: compact ? 10 : 14,
+                        vertical: compact ? 4 : 6,
+                      ),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      'Start',
+                      style: TextStyle(
+                        fontSize: compact ? 11 : 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                else if (task.completed)
+                  Icon(
+                    Icons.check_circle_rounded,
+                    size: compact ? 18 : 20,
+                    color: const Color(0xFF22C55E),
+                  )
                 else
-                  Icon(LucideIcons.chevronRight, size: 16, color: c.textMuted),
+                  Icon(
+                    Icons.close_rounded,
+                    size: compact ? 16 : 18,
+                    color: c.textMuted.withValues(alpha: 0.5),
+                  ),
               ],
             ),
           ),
@@ -957,7 +1050,7 @@ class _QuickActionsRow extends StatelessWidget {
     final items = [
       ('Scan & Solve', LucideIcons.scanLine, const Color(0xFF3B82F6), onScan),
       ('AI Tutor', LucideIcons.bot, AppColors.primary, onAiTutor),
-      ('Quiz', LucideIcons.circleHelp, const Color(0xFFF59E0B), onQuiz),
+      ('Mock Test', LucideIcons.circleHelp, const Color(0xFFF59E0B), onQuiz),
       ('Battles', LucideIcons.swords, const Color(0xFFEF4444), onBattles),
       ('Revision', LucideIcons.bookMarked, const Color(0xFF22C55E), onRevision),
     ];
@@ -1109,106 +1202,152 @@ class _ContinueLearningCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.dash;
-    final progress = topicsTotal > 0 ? topicsDone / topicsTotal : 0.0;
+    final done = topicsTotal > 0 ? topicsDone : 12;
+    final total = topicsTotal > 0 ? topicsTotal : 25;
+    final progress = (done / total).clamp(0.0, 1.0);
 
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: c.card,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: c.cardBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 12,
+            color: Colors.black.withValues(alpha: context.isDark ? 0.18 : 0.05),
+            blurRadius: 14,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: const Icon(LucideIcons.atom, color: AppColors.primary, size: 24),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            exam,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 16,
-                              color: c.textPrimary,
-                            ),
-                          ),
-                        ),
-                        Icon(LucideIcons.chevronRight, size: 18, color: c.textMuted),
-                      ],
-                    ),
-                    Text(
-                      '$subject • $topic',
-                      style: TextStyle(fontSize: 13, color: c.textMuted),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              LucideIcons.atom,
+              color: AppColors.primary,
+              size: 22,
+            ),
           ),
-          const SizedBox(height: 16),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: SizedBox(
-              height: 10,
-              child: Stack(
-                children: [
-                  Container(color: c.cardBorder),
-                  FractionallySizedBox(
-                    widthFactor: progress.clamp(0.0, 1.0),
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Color(0xFF22C55E), AppColors.primary],
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        exam,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 15,
+                          color: c.textPrimary,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                    Icon(LucideIcons.chevronRight, size: 16, color: c.textMuted),
+                  ],
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '$subject • $topic',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 12, color: c.textMuted),
+                ),
+                const SizedBox(height: 10),
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    final barWidth = constraints.maxWidth;
+                    final thumbLeft =
+                        (barWidth * progress).clamp(0.0, barWidth - 10);
+                    return SizedBox(
+                      height: 10,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            height: 6,
+                            margin: const EdgeInsets.only(top: 2),
+                            decoration: BoxDecoration(
+                              color: c.cardBorder,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          FractionallySizedBox(
+                            widthFactor: progress,
+                            child: Container(
+                              height: 6,
+                              margin: const EdgeInsets.only(top: 2),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            left: thumbLeft,
+                            top: 0,
+                            child: Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFBBF24),
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 1.5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.12),
+                                    blurRadius: 2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  '$done / $total Topics',
+                  style: TextStyle(fontSize: 11, color: c.textMuted),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            '$topicsDone / $topicsTotal Topics',
-            style: TextStyle(fontSize: 12, color: c.textMuted),
-          ),
-          const SizedBox(height: 14),
+          const SizedBox(width: 10),
           SizedBox(
-            width: double.infinity,
+            height: 40,
             child: ElevatedButton(
               onPressed: onContinue,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 elevation: 0,
               ),
-              child: const Text('Continue', style: TextStyle(fontWeight: FontWeight.w700)),
+              child: Text(
+                'Continue',
+                style: GoogleFonts.plusJakartaSans(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13,
+                ),
+              ),
             ),
           ),
         ],
@@ -1228,89 +1367,138 @@ class _DailyChallengeCard extends StatelessWidget {
     required this.onTap,
   });
 
+  static const _avatarUrls = [
+    'https://randomuser.me/api/portraits/women/44.jpg',
+    'https://randomuser.me/api/portraits/men/32.jpg',
+    'https://randomuser.me/api/portraits/women/68.jpg',
+  ];
+
   @override
   Widget build(BuildContext context) {
     final c = context.dash;
-    final joinedLabel = info.participants > 0
-        ? '+${info.participants} joined'
-        : 'Be the first to join';
+    final joinedCount = info.participants > 0 ? info.participants : 120;
+    final descLines = info.description.split('\n');
+    final line1 = descLines.isNotEmpty
+        ? descLines.first
+        : 'Solve 10 questions in 10 mins';
+    final line2 = descLines.length > 1
+        ? descLines[1]
+        : 'Win ${info.rewardXp} XP & climb the leaderboard';
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         child: Ink(
-          padding: const EdgeInsets.all(18),
+          height: 132,
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [
-                AppColors.primary.withValues(alpha: 0.08),
-                c.card,
-              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
+              colors: context.isDark
+                  ? [
+                      const Color(0xFF2A2450),
+                      const Color(0xFF1E1B38),
+                    ]
+                  : [
+                      const Color(0xFFF3EEFF),
+                      const Color(0xFFEAE2FF),
+                    ],
             ),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: AppColors.primary.withValues(alpha: 0.12),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.12),
+                blurRadius: 18,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
-          child: Row(
+          child: Stack(
+            clipBehavior: Clip.none,
             children: [
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(18, 16, 118, 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            info.title,
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ),
-                        if (info.completed)
-                          const Icon(Icons.check_circle_rounded,
-                              size: 18, color: Color(0xFF22C55E)),
-                      ],
+                    Text(
+                      info.title,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.primary,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      info.description,
+                      line1,
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
                         color: c.textSecondary,
-                        height: 1.4,
+                        height: 1.3,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    Text(
+                      line2,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: c.textSecondary,
+                        height: 1.3,
+                      ),
+                    ),
+                    const Spacer(),
                     Row(
                       children: [
-                        _AvatarStack(),
+                        _ChallengeAvatarStack(urls: _avatarUrls),
                         const SizedBox(width: 8),
-                        Text(joinedLabel,
-                            style: TextStyle(fontSize: 12, color: c.textMuted)),
-                        const SizedBox(width: 6),
-                        const Icon(Icons.arrow_forward_rounded,
-                            size: 16, color: AppColors.primary),
+                        Text(
+                          '+$joinedCount joined',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: c.textMuted,
+                          ),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 18,
+                          color: AppColors.primary.withValues(alpha: 0.85),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFBBF24).withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(16),
+              Positioned(
+                right: 0,
+                top: 0,
+                bottom: 0,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.horizontal(
+                    right: Radius.circular(24),
+                  ),
+                  child: SizedBox(
+                    width: 118,
+                    child: OverflowBox(
+                      alignment: Alignment.centerRight,
+                      maxWidth: 260,
+                      child: Image.asset(
+                        'assets/images/cup.png',
+                        height: 132,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.centerRight,
+                      ),
+                    ),
+                  ),
                 ),
-                child: const Icon(Icons.emoji_events_rounded,
-                    color: Color(0xFFF59E0B), size: 36),
               ),
             ],
           ),
@@ -1320,26 +1508,41 @@ class _DailyChallengeCard extends StatelessWidget {
   }
 }
 
-class _AvatarStack extends StatelessWidget {
+class _ChallengeAvatarStack extends StatelessWidget {
+  const _ChallengeAvatarStack({required this.urls});
+
+  final List<String> urls;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 56,
-      height: 24,
+      width: 58,
+      height: 26,
       child: Stack(
-        children: List.generate(3, (i) {
+        clipBehavior: Clip.none,
+        children: List.generate(urls.length, (i) {
           return Positioned(
-            left: i * 16.0,
-            child: CircleAvatar(
-              radius: 12,
-              backgroundColor: [
-                AppColors.primary,
-                const Color(0xFF22C55E),
-                const Color(0xFFF59E0B),
-              ][i],
-              child: Text(
-                '${i + 1}',
-                style: const TextStyle(fontSize: 9, color: Colors.white),
+            left: i * 17.0,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 2),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
+              child: CircleAvatar(
+                radius: 11,
+                backgroundColor: const Color(0xFFE8EBF4),
+                backgroundImage: CachedNetworkImageProvider(urls[i]),
+                onBackgroundImageError: (_, __) {},
+                child: urls[i].isEmpty
+                    ? const Icon(Icons.person, size: 12, color: Colors.white)
+                    : null,
               ),
             ),
           );
@@ -1351,13 +1554,13 @@ class _AvatarStack extends StatelessWidget {
 
 // ─── Upcoming exam ────────────────────────────────────────────────────────────
 
-class _UpcomingExamCard extends StatelessWidget {
+class _UpcomingExamSection extends StatefulWidget {
   final String examName;
   final int daysLeft;
   final String examDate;
   final VoidCallback onTap;
 
-  const _UpcomingExamCard({
+  const _UpcomingExamSection({
     required this.examName,
     required this.daysLeft,
     required this.examDate,
@@ -1365,8 +1568,18 @@ class _UpcomingExamCard extends StatelessWidget {
   });
 
   @override
+  State<_UpcomingExamSection> createState() => _UpcomingExamSectionState();
+}
+
+class _UpcomingExamSectionState extends State<_UpcomingExamSection> {
+  bool _dismissed = false;
+
+  @override
   Widget build(BuildContext context) {
+    if (_dismissed) return const SizedBox.shrink();
+
     final c = context.dash;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1382,61 +1595,100 @@ class _UpcomingExamCard extends StatelessWidget {
         Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(20),
+            onTap: widget.onTap,
+            borderRadius: BorderRadius.circular(18),
             child: Ink(
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.fromLTRB(16, 16, 14, 16),
               decoration: BoxDecoration(
                 color: c.card,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(18),
                 border: Border.all(color: c.cardBorder),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          examName,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 16,
-                            color: c.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(fontSize: 14, color: c.textSecondary),
-                            children: [
-                              const TextSpan(text: ''),
-                              TextSpan(
-                                text: '$daysLeft',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  color: Color(0xFFF97316),
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const TextSpan(text: ' Days Left'),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(examDate, style: TextStyle(fontSize: 13, color: c.textMuted)),
-                      ],
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(
+                      alpha: context.isDark ? 0.18 : 0.05,
                     ),
+                    blurRadius: 14,
+                    offset: const Offset(0, 4),
                   ),
-                  Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(14),
+                ],
+              ),
+              child: Stack(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.examName,
+                              style: GoogleFonts.plusJakartaSans(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 16,
+                                color: c.textPrimary,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 22,
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFBBF24)
+                                        .withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: const Icon(
+                                    LucideIcons.trophy,
+                                    size: 13,
+                                    color: Color(0xFFF59E0B),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  '${widget.daysLeft} Days Left',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: c.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              widget.examDate,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: c.textMuted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      _ExamCalendarGraphic(),
+                    ],
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () => setState(() => _dismissed = true),
+                      child: Container(
+                        width: 26,
+                        height: 26,
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.close,
+                          size: 18,
+                          color: c.textMuted,
+                        ),
+                      ),
                     ),
-                    child: const Icon(Icons.hourglass_top_rounded,
-                        color: AppColors.primary, size: 30),
                   ),
                 ],
               ),
@@ -1444,6 +1696,95 @@ class _UpcomingExamCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ExamCalendarGraphic extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 72,
+      height: 72,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 64,
+            height: 64,
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF7B61FF), AppColors.primary],
+              ),
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.25),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 28,
+                  height: 8,
+                  margin: const EdgeInsets.only(bottom: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.35),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                ...List.generate(3, (i) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 1.5),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _CalendarDot(active: i == 0),
+                        const SizedBox(width: 4),
+                        _CalendarDot(active: i == 1),
+                        const SizedBox(width: 4),
+                        _CalendarDot(active: false),
+                      ],
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CalendarDot extends StatelessWidget {
+  const _CalendarDot({required this.active});
+
+  final bool active;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: active ? 7 : 5,
+      height: active ? 7 : 5,
+      decoration: BoxDecoration(
+        color: active ? Colors.white : Colors.white.withValues(alpha: 0.45),
+        shape: BoxShape.circle,
+      ),
     );
   }
 }

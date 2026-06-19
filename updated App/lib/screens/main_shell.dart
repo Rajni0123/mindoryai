@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/theme/app_theme.dart';
 import '../core/theme/dashboard_theme.dart';
 import '../providers/providers.dart';
+import 'ai_tutor/ai_tutor_screen.dart';
 import 'battles/battles_screen.dart';
 import 'home/home_screen.dart';
 import 'performance/performance_screen.dart';
-import 'profile/profile_screen.dart';
 import 'scan_solve/scan_solve_screen.dart';
 
 class MainShell extends ConsumerStatefulWidget {
@@ -31,10 +31,10 @@ class _MainShellState extends ConsumerState<MainShell> {
 
     final screens = [
       const HomeScreen(),
-      const PerformanceScreen(),
+      const AiTutorScreen(),
       const ScanSolveScreen(),
+      const PerformanceScreen(),
       const BattlesScreen(),
-      const ProfileScreen(),
     ];
 
     return Scaffold(
@@ -71,10 +71,10 @@ class _BottomNav extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               _item(context, ref, Icons.home_rounded, 'Home', 0),
-              _item(context, ref, Icons.bar_chart_rounded, 'Progress', 1),
+              _item(context, ref, Icons.smart_toy_rounded, 'AI Tutor', 1),
               _scan(context, ref),
-              _item(context, ref, Icons.sports_esports_rounded, 'Battles', 3),
-              _item(context, ref, Icons.person_rounded, 'Profile', 4),
+              _item(context, ref, Icons.bar_chart_rounded, 'Progress', 3),
+              _item(context, ref, Icons.sports_esports_rounded, 'Battles', 4),
             ],
           ),
         ),
@@ -94,7 +94,21 @@ class _BottomNav extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: active ? AppColors.primary : c.textMuted, size: 22),
-            const SizedBox(height: 3),
+            const SizedBox(height: 2),
+            SizedBox(
+              height: 6,
+              child: active
+                  ? Container(
+                      width: 5,
+                      height: 5,
+                      decoration: const BoxDecoration(
+                        color: AppColors.primary,
+                        shape: BoxShape.circle,
+                      ),
+                    )
+                  : null,
+            ),
+            const SizedBox(height: 2),
             FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(

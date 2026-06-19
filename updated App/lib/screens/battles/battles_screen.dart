@@ -4,15 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../core/router/app_router.dart';
+import '../../core/theme/app_theme.dart';
 import '../../core/theme/dashboard_theme.dart';
 import '../../providers/providers.dart';
+import '../../providers/app_data_provider.dart';
 import 'battle_friends_section.dart';
 
 // Accent colors (work in light & dark)
 const _kPurple = Color(0xFF7B61FF);
 const _kBlue = Color(0xFF4D9FFF);
 const _kWinGold = Color(0xFFFFD700);
-const _kLossOrange = Color(0xFFFF7A00);
 const _kAvatarBlue = Color(0xFF5B8CFF);
 
 @immutable
@@ -68,33 +69,30 @@ class _BattlesScreenState extends ConsumerState<BattlesScreen> {
                       selected: _tab,
                       onSelect: (i) => setState(() => _tab = i),
                     ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.04, end: 0),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 18),
                     if (_tab == 0) ...[
                       BattleFriendsSection(
                         myName: myName,
                         onStartBattle: () => _startBattle(context),
                       ).animate(delay: 80.ms).fadeIn(duration: 500.ms).slideY(begin: 0.06, end: 0),
-                      const SizedBox(height: 28),
-                      Text(
-                        'Recent Battles',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: context.dash.textPrimary,
-                        ),
-                      ).animate(delay: 140.ms).fadeIn(duration: 400.ms),
-                      const SizedBox(height: 12),
-                      _RecentBattlesList()
-                          .animate(delay: 180.ms)
+                      const SizedBox(height: 22),
+                      _LiveBattlesSection(
+                        compact: true,
+                        onViewAll: () => setState(() => _tab = 2),
+                      ).animate(delay: 120.ms).fadeIn(duration: 450.ms),
+                      const SizedBox(height: 22),
+                      const _YourStatsCard()
+                          .animate(delay: 160.ms)
                           .fadeIn(duration: 450.ms)
-                          .slideY(begin: 0.05, end: 0),
+                          .slideY(begin: 0.04, end: 0),
                     ] else if (_tab == 1) ...[
                       _LeaderboardCta(
                         onTap: () => AppRouter.go(context, AppRoutes.leaderboard),
                       ),
                     ] else ...[
-                      _LiveRoomsList()
-                          .animate(delay: 80.ms).fadeIn(duration: 500.ms),
+                      _LiveBattlesSection(compact: false)
+                          .animate(delay: 80.ms)
+                          .fadeIn(duration: 500.ms),
                     ],
                   ],
                 ),
@@ -207,220 +205,447 @@ class _BattleTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = _BattleTheme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: t.tabBar,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: t.border),
-      ),
-      child: Row(
-        children: List.generate(_tabs.length, (i) {
-          final active = selected == i;
-          return Expanded(
-            child: GestureDetector(
-              onTap: () => onSelect(i),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 280),
-                curve: Curves.easeOutCubic,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: active
-                      ? LinearGradient(
-                          colors: [
-                            _kPurple.withValues(alpha: 0.35),
-                            _kBlue.withValues(alpha: 0.2),
-                          ],
-                        )
-                      : null,
-                  boxShadow: active
-                      ? [
-                          BoxShadow(
-                            color: _kPurple.withValues(alpha: 0.35),
-                            blurRadius: 16,
-                            offset: const Offset(0, 4),
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+    return Row(
+      children: List.generate(_tabs.length, (i) {
+        final active = selected == i;
+        final isLiveTab = i == 2;
+        return Expanded(
+          child: GestureDetector(
+            onTap: () => onSelect(i),
+            behavior: HitTestBehavior.opaque,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       _tabs[i],
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.plusJakartaSans(
                         fontSize: 14,
                         fontWeight: active ? FontWeight.w700 : FontWeight.w500,
-                        color: active ? t.textPrimary : t.textMuted,
+                        color: active ? AppColors.primary : t.textMuted,
                       ),
                     ),
-                    if (active) ...[
-                      const SizedBox(height: 6),
+                    if (isLiveTab) ...[
+                      const SizedBox(width: 5),
                       Container(
-                        width: 36,
-                        height: 3,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2),
-                          gradient: const LinearGradient(
-                            colors: [_kPurple, _kBlue],
+                          color: const Color(0xFFFF3B30),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Text(
+                          'Live',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: _kPurple.withValues(alpha: 0.8),
-                              blurRadius: 8,
-                            ),
-                          ],
                         ),
                       ),
                     ],
                   ],
                 ),
-              ),
+                const SizedBox(height: 10),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 220),
+                  height: 3,
+                  width: active ? 48 : 0,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ],
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
 
-// ─── Recent battles ───────────────────────────────────────────────────────────
+// ─── Live battles preview / full list ─────────────────────────────────────────
 
-class _RecentBattlesList extends ConsumerWidget {
+class _LiveBattlesSection extends ConsumerWidget {
+  const _LiveBattlesSection({
+    required this.compact,
+    this.onViewAll,
+  });
+
+  final bool compact;
+  final VoidCallback? onViewAll;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = _BattleTheme.of(context);
+
     return FutureBuilder(
-      future: ref.read(apiServiceProvider).getBattleHistory(),
+      future: ref.read(apiServiceProvider).getBattleRooms(),
       builder: (context, snap) {
-        final items = snap.data as List? ?? [];
-        if (items.isEmpty) {
-          return Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: t.card,
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Text('No battles yet — start one!',
-                style: GoogleFonts.inter(color: t.textMuted, fontSize: 13)),
-          );
-        }
-        return Container(
-          decoration: BoxDecoration(
-            color: t.card,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: t.border),
-          ),
-          child: Column(
-            children: items.take(5).map((raw) {
-              final m = Map<String, dynamic>.from(raw as Map);
-              final opponent = m['opponent_name']?.toString() ?? 'Student';
-              final won = m['result']?.toString() == 'won';
-              return _RecentRow(
-                opponent: opponent,
-                avatarColor: _kAvatarBlue,
-                result: won
-                    ? _BattleResult.won
-                    : _BattleResult.score(
-                        my: m['my_score'] as int? ?? 0,
-                        their: m['opponent_score'] as int? ?? 0,
+        final rooms = snap.data as List? ?? [];
+        final limit = compact ? 3 : rooms.length;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (compact)
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Live Battles',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: t.textPrimary,
                       ),
-              );
-            }).toList(),
-          ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: onViewAll,
+                    child: Text(
+                      'View all',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            else
+              Text(
+                'Live Battles',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: t.textPrimary,
+                ),
+              ),
+            const SizedBox(height: 12),
+            if (snap.connectionState == ConnectionState.waiting)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
+            else if (rooms.isEmpty)
+              _PlaceholderPanel(
+                icon: LucideIcons.zap,
+                title: 'No Live Battles',
+                subtitle: 'Start a battle or check back soon.',
+              )
+            else
+              ...rooms.take(limit).map((raw) {
+                final r = Map<String, dynamic>.from(raw as Map);
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: _LiveBattleRow(room: r),
+                );
+              }),
+          ],
         );
       },
     );
   }
 }
 
-enum _BattleResultType { won, score }
+class _LiveBattleRow extends StatelessWidget {
+  const _LiveBattleRow({required this.room});
 
-class _BattleResult {
-  final _BattleResultType type;
-  final int? myScore;
-  final int? theirScore;
+  final Map<String, dynamic> room;
 
-  const _BattleResult._(this.type, {this.myScore, this.theirScore});
-
-  static const won = _BattleResult._(_BattleResultType.won);
-  static _BattleResult score({required int my, required int their}) =>
-      _BattleResult._(_BattleResultType.score, myScore: my, theirScore: their);
-}
-
-class _RecentRow extends StatelessWidget {
-  final String opponent;
-  final Color avatarColor;
-  final _BattleResult result;
-
-  const _RecentRow({
-    required this.opponent,
-    required this.avatarColor,
-    required this.result,
-  });
+  String _firstName(String? name) {
+    if (name == null || name.trim().isEmpty) return 'Player';
+    return name.trim().split(' ').first;
+  }
 
   @override
   Widget build(BuildContext context) {
     final t = _BattleTheme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-      child: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: avatarColor.withValues(alpha: 0.25),
-              border: Border.all(color: avatarColor.withValues(alpha: 0.5)),
-            ),
-            child: Center(
-              child: Text(
-                opponent[0],
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
+    final host = _firstName(room['host_name']?.toString());
+    final players = room['current_players'] as int? ?? 1;
+    final opponent = players > 1 ? 'Riya' : 'Waiting';
+    final topic = room['topic']?.toString() ?? room['title']?.toString() ?? 'Physics';
+    final subject = topic.split('—').first.split('-').first.trim();
+    final qCount = room['question_count'] as int? ?? 10;
+    final watchers = ((room['current_players'] as int? ?? 1) * 21) + 12;
+    final code = room['room_code']?.toString();
+
+    return Material(
+      color: t.card,
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+        onTap: code != null
+            ? () => AppRouter.go(context, AppRoutes.battleLobby, args: {'code': code})
+            : null,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: t.border),
+          ),
+          child: Row(
+            children: [
+              _MiniAvatarPair(name1: host, name2: opponent),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '$host VS $opponent',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: t.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      '$subject • $qCount Qs',
+                      style: TextStyle(fontSize: 12, color: t.textMuted),
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Text(
-              'vs $opponent',
-              style: GoogleFonts.inter(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: t.textPrimary,
-              ),
-            ),
-          ),
-          if (result.type == _BattleResultType.won)
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(LucideIcons.trophy, size: 16, color: _kWinGold),
-                const SizedBox(width: 6),
-                Text(
-                  'You Won',
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: _kWinGold,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 6,
+                        height: 6,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFFF3B30),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Live',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFFFF3B30),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            )
-          else
+                  const SizedBox(height: 4),
+                  Text(
+                    '$watchers watching',
+                    style: TextStyle(fontSize: 11, color: t.textMuted),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _MiniAvatarPair extends StatelessWidget {
+  const _MiniAvatarPair({required this.name1, required this.name2});
+
+  final String name1;
+  final String name2;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 52,
+      height: 32,
+      child: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            child: _MiniAvatar(name: name1, color: _kAvatarBlue),
+          ),
+          Positioned(
+            left: 22,
+            child: _MiniAvatar(
+              name: name2,
+              color: const Color(0xFFFF9F5A),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MiniAvatar extends StatelessWidget {
+  const _MiniAvatar({required this.name, required this.color});
+
+  final String name;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final initial = name.isNotEmpty ? name[0].toUpperCase() : '?';
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color.withValues(alpha: 0.2),
+        border: Border.all(color: color, width: 1.5),
+      ),
+      child: Center(
+        child: Text(
+          initial,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+            color: color,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─── Your stats ───────────────────────────────────────────────────────────────
+
+class _YourStatsCard extends ConsumerWidget {
+  const _YourStatsCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dashboard = ref.watch(homeDashboardProvider);
+
+    return FutureBuilder(
+      future: ref.read(apiServiceProvider).getBattleHistory(),
+      builder: (context, snap) {
+        final items = snap.data as List? ?? [];
+        var won = 0;
+        var xpFromBattles = 0;
+        for (final raw in items) {
+          final m = Map<String, dynamic>.from(raw as Map);
+          if (m['result']?.toString() == 'won') won++;
+          xpFromBattles += (m['xp_earned'] as num?)?.toInt() ??
+              (m['xp'] as num?)?.toInt() ??
+              0;
+        }
+        final total = items.length;
+        final winRate = total > 0 ? ((won / total) * 100).round() : 0;
+        final xp = xpFromBattles > 0 ? xpFromBattles : dashboard.xp;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
-              'Score ${result.myScore} - ${result.theirScore}',
-              style: GoogleFonts.inter(
-                fontSize: 13,
+              'Your Stats',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 16,
                 fontWeight: FontWeight.w700,
-                color: _kLossOrange,
+                color: context.dash.textPrimary,
               ),
             ),
+            const SizedBox(height: 12),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(18, 20, 14, 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Color(0xFF7B61FF), Color(0xFF705CF6)],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.35),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        _StatColumn(
+                          value: won > 0 ? '$won' : '0',
+                          label: 'Battles Won',
+                        ),
+                        _StatColumn(
+                          value: total > 0 ? '$winRate%' : '—',
+                          label: 'Win Rate',
+                        ),
+                        _StatColumn(
+                          value: xp > 0 ? '$xp' : '0',
+                          label: 'XP Earned',
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      LucideIcons.shield,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _StatColumn extends StatelessWidget {
+  const _StatColumn({required this.value, required this.label});
+
+  final String value;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          Text(
+            value,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 20,
+              fontWeight: FontWeight.w800,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
+              color: Colors.white.withValues(alpha: 0.85),
+            ),
+          ),
         ],
       ),
     );
@@ -493,57 +718,6 @@ class _LeaderboardCta extends StatelessWidget {
         ),
       ),
     ).animate().fadeIn(duration: 400.ms);
-  }
-}
-
-// ─── Live rooms ───────────────────────────────────────────────────────────────
-
-class _LiveRoomsList extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final t = _BattleTheme.of(context);
-    return FutureBuilder(
-      future: ref.read(apiServiceProvider).getBattleRooms(),
-      builder: (context, snap) {
-        final rooms = snap.data as List? ?? [];
-        if (rooms.isEmpty) {
-          return _PlaceholderPanel(
-            icon: LucideIcons.zap,
-            title: 'No Live Rooms',
-            subtitle: 'Create a battle or check back soon.',
-          );
-        }
-        return Column(
-          children: rooms.map((raw) {
-            final r = Map<String, dynamic>.from(raw as Map);
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Material(
-                color: t.card,
-                borderRadius: BorderRadius.circular(16),
-                child: ListTile(
-                  title: Text(r['title']?.toString() ?? 'Battle',
-                      style: TextStyle(color: t.textPrimary)),
-                  subtitle: Text(
-                    '${r['topic']} · ${r['current_players']}/${r['max_players']} players',
-                    style: TextStyle(color: t.textMuted, fontSize: 12),
-                  ),
-                  trailing: Text(r['room_code']?.toString() ?? '',
-                      style: const TextStyle(
-                          color: _kPurple, fontWeight: FontWeight.w800)),
-                  onTap: () {
-                    final code = r['room_code']?.toString();
-                    if (code != null) {
-                      AppRouter.go(context, AppRoutes.battleLobby, args: {'code': code});
-                    }
-                  },
-                ),
-              ),
-            );
-          }).toList(),
-        );
-      },
-    );
   }
 }
 
