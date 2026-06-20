@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SystemSetting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use App\Support\StudyProfileCatalog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -99,9 +100,13 @@ class SocialAuthController extends Controller
 
     private function redirectAfterSocialLogin(User $user): RedirectResponse
     {
-        if (!$user->student_class) {
+        if (StudyProfileCatalog::needsStudySetup(
+            $user->target_exam,
+            $user->student_class,
+            $user->is_profile_complete
+        )) {
             return redirect()->route('class.select')
-                ->with('success', 'Welcome to BlinkStudy! Please select your class.');
+                ->with('success', 'Welcome! Complete your quick setup to get started.');
         }
 
         $chatUrl = rtrim((string) env('CHAT_SUBDOMAIN_URL', 'https://chat.blinkstudy.in'), '/');

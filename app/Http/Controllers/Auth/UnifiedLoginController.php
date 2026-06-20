@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\RenflairOTPService;
 use App\Services\EmailOTPService;
 use App\Support\AuthTokenService;
+use App\Support\StudyProfileCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -902,35 +903,70 @@ class UnifiedLoginController extends Controller
      */
     public function showClassSelection()
     {
-        return view('auth.select-class');
+        $user = Auth::user();
+        $defaultName = $user->name ?? '';
+        if (preg_match('/^User \d{4}$/', trim($defaultName))) {
+            $defaultName = '';
+        }
+
+        return view('auth.select-class', [
+            'defaultName' => $defaultName,
+            'popularExams' => StudyProfileCatalog::POPULAR_EXAMS,
+            'examCatalog' => StudyProfileCatalog::EXAM_CATALOG,
+            'setupClasses' => StudyProfileCatalog::SETUP_CLASSES,
+            'chatSkipUrl' => $this->getRedirectRoute($user, false),
+        ]);
     }
 
     /**
-     * Update user's class
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * Complete study profile (matches Flutter ProfileSetupScreen)
      */
     public function updateClass(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'student_class' => ['required', 'string']
+            'name' => ['required', 'string', 'min:2', 'max:50'],
+            'target_exam' => ['required', 'string', 'max:100'],
+            'student_class' => ['required', 'string', 'max:20'],
+            'subjects' => ['nullable', 'string', 'max:30'],
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => $validator->errors()->first()
+                'message' => $validator->errors()->first(),
             ], 422);
         }
 
+        $targetExam = StudyProfileCatalog::normalizeExam(trim($request->target_exam));
+        if (! StudyProfileCatalog::isKnownExam($targetExam)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Search and select your exam from the list',
+            ], 422);
+        }
+
+        $needsBoard = StudyProfileCatalog::requiresBoardSetup($targetExam);
+        $studentClass = $needsBoard
+            ? $request->student_class
+            : StudyProfileCatalog::defaultClassForExam($targetExam);
+        $subjects = $needsBoard
+            ? ($request->subjects ?: StudyProfileCatalog::defaultSubjectsForExam($targetExam))
+            : StudyProfileCatalog::defaultSubjectsForExam($targetExam);
+
         $user = Auth::user();
-        $user->student_class = $request->student_class;
+        $user->name = trim($request->name);
+        $user->target_exam = $targetExam;
+        $user->student_class = $studentClass;
+        $user->favorite_subject = $subjects;
+        $user->is_profile_complete = true;
+        $user->profile_completed = true;
+        $user->profile_completed_at = now();
         $user->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Class updated successfully!'
+            'message' => 'Profile saved! Starting your learning journey…',
+            'redirect' => $this->getRedirectRoute($user, false),
         ]);
     }
 
