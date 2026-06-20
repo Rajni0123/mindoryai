@@ -182,10 +182,14 @@ Route::get('/contact', function() {
             Route::post('/verify-payment', [\App\Http\Controllers\Api\RazorpayController::class, 'verifyPayment'])->name('verify-payment');
         });
 
-        // Legacy URL on main domain → chat subdomain
-        Route::get('/chat', function () {
-            return redirect()->away(\App\Support\ChatSubdomainUrl::appUrl());
-        })->middleware('subscription.active');
+        // Chat: subdomain in production, same host when CHAT_USE_MAIN_DOMAIN=true (local dev)
+        if (\App\Support\ChatSubdomainUrl::isEnabled()) {
+            Route::get('/chat', function () {
+                return redirect()->away(\App\Support\ChatSubdomainUrl::appUrl());
+            })->middleware('subscription.active');
+        } else {
+            require __DIR__ . '/includes/chat_application.php';
+        }
 
         // Admin Panel (require admin role)
         Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function () {

@@ -7,8 +7,25 @@ use Illuminate\Support\Facades\Cache;
 
 class ChatSubdomainUrl
 {
+    /**
+     * Production uses chat.blinkstudy.in. Local dev can set CHAT_USE_MAIN_DOMAIN=true
+     * so chat runs on the same host as php artisan serve (no separate subdomain).
+     */
+    public static function isEnabled(): bool
+    {
+        if (filter_var(env('CHAT_USE_MAIN_DOMAIN', false), FILTER_VALIDATE_BOOLEAN)) {
+            return false;
+        }
+
+        return filled(env('CHAT_SUBDOMAIN'));
+    }
+
     public static function baseUrl(): string
     {
+        if (! self::isEnabled()) {
+            return rtrim((string) (env('MAIN_DOMAIN_URL') ?: config('app.url')), '/');
+        }
+
         $url = env('CHAT_SUBDOMAIN_URL');
 
         if ($url) {
@@ -32,6 +49,10 @@ class ChatSubdomainUrl
 
     public static function transferUrl(User $user): string
     {
+        if (! self::isEnabled()) {
+            return self::appUrl();
+        }
+
         $expiresAt = AuthTokenService::expirationMinutes()
             ? now()->addMinutes(AuthTokenService::expirationMinutes())
             : null;
