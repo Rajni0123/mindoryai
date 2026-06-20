@@ -18,6 +18,9 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Cloudflare / reverse proxy — required for HTTPS sessions behind proxy
+        $middleware->trustProxies(at: '*');
+
         $middleware->alias([
             'ip.whitelist' => \App\Http\Middleware\IpWhitelistMiddleware::class,
             'access.check' => \App\Http\Middleware\CheckAccess::class,
