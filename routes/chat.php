@@ -8,7 +8,7 @@ Route::domain(env('CHAT_SUBDOMAIN', 'chat.' . env('MAIN_DOMAIN', 'localhost')))
     ->group(function () {
         // Redirect to main app chat interface
         Route::get('/', function () {
-            return redirect()->to(config('app.url') . '/notebooks/chat');
+            return app(\App\Http\Controllers\ChatSubdomainController::class)->handleRoot(request());
         })->name('chat.index');
 
         // Proxy other routes to main app

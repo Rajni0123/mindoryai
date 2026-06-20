@@ -12,15 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Add profile completion columns to users table
+        // Only add columns not created by earlier migrations (profile_completed_at,
+        // student_class, target_exam, exam_date already exist on fresh installs).
         if (!Schema::hasColumn('users', 'is_profile_complete')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->boolean('is_profile_complete')->default(false)->after('password');
-                $table->timestamp('profile_completed_at')->nullable()->after('is_profile_complete');
-                $table->integer('login_count')->default(0)->after('profile_completed_at');
-                $table->string('student_class')->nullable()->after('login_count');
-                $table->string('target_exam')->nullable()->after('student_class');
-                $table->date('exam_date')->nullable()->after('target_exam');
+                $table->boolean('is_profile_complete')->default(false);
+            });
+        }
+        if (!Schema::hasColumn('users', 'login_count')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->integer('login_count')->default(0);
             });
         }
 
@@ -73,15 +74,15 @@ return new class extends Migration
         Schema::dropIfExists('user_sessions');
         Schema::dropIfExists('otp_verifications');
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn([
-                'is_profile_complete',
-                'profile_completed_at',
-                'login_count',
-                'student_class',
-                'target_exam',
-                'exam_date'
-            ]);
-        });
+        if (Schema::hasColumn('users', 'login_count')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('login_count');
+            });
+        }
+        if (Schema::hasColumn('users', 'is_profile_complete')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn('is_profile_complete');
+            });
+        }
     }
 };

@@ -21,6 +21,11 @@ class PageController extends Controller
      */
     public function landing()
     {
+        $chatHost = env('CHAT_SUBDOMAIN');
+        if ($chatHost && request()->getHost() === $chatHost) {
+            return app(ChatSubdomainController::class)->handleRoot(request());
+        }
+
         // Use new Plan model and transform to match view expectations
         $plans = Plan::where('is_active', true)
             ->orderBy('sort_order')

@@ -10,13 +10,12 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
-        // Subdomain routes disabled for local development
-        // then: function () {
-        //     Route::middleware('web')
-        //         ->group(base_path('routes/chat.php'));
-        //     Route::middleware('web')
-        //         ->group(base_path('routes/admin.php'));
-        // },
+        then: function () {
+            if (env('CHAT_SUBDOMAIN')) {
+                Illuminate\Support\Facades\Route::middleware('web')
+                    ->group(base_path('routes/chat.php'));
+            }
+        },
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
