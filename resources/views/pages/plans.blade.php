@@ -570,6 +570,7 @@
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
+        const CHAT_APP_URL = @json(\App\Support\ChatSubdomainUrl::appUrl());
         let currentBilling = 'monthly';
 
         function toggleBilling(type) {
@@ -628,7 +629,7 @@
             .then(data => {
                 if (data.subscription) {
                     btn.textContent = 'Activated!';
-                    setTimeout(() => window.location.href = '/chat', 800);
+                    setTimeout(() => window.location.href = CHAT_APP_URL, 800);
                     return;
                 }
                 if (!data.success) {
@@ -668,7 +669,7 @@
                             if (verifyData.success) {
                                 btn.textContent = 'Activated!';
                                 btn.style.background = '#10b981';
-                                setTimeout(() => window.location.href = '/chat', 800);
+                                setTimeout(() => window.location.href = CHAT_APP_URL, 800);
                             } else {
                                 alert(verifyData.message || 'Verification failed');
                                 btn.disabled = false;
@@ -709,7 +710,7 @@
             .then(data => {
                 if (data.subscription) {
                     btn.textContent = 'Activated!';
-                    setTimeout(() => window.location.href = '/chat', 800);
+                    setTimeout(() => window.location.href = CHAT_APP_URL, 800);
                     return;
                 }
                 if (!data.success) {
@@ -750,7 +751,7 @@
                             if (verifyData.success) {
                                 btn.textContent = 'Activated!';
                                 btn.style.background = '#10b981';
-                                setTimeout(() => window.location.href = '/chat', 800);
+                                setTimeout(() => window.location.href = CHAT_APP_URL, 800);
                             } else {
                                 alert(verifyData.message || 'Verification failed');
                                 btn.disabled = false;

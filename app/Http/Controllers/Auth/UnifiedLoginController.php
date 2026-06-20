@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\RenflairOTPService;
 use App\Services\EmailOTPService;
 use App\Support\AuthTokenService;
+use App\Support\ChatSubdomainUrl;
 use App\Support\StudyProfileCatalog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -500,19 +501,7 @@ class UnifiedLoginController extends Controller
         }
 
         // Normal users redirect to chat subdomain with auth token
-        $chatUrl = env('CHAT_SUBDOMAIN_URL', 'https://chat.blinkstudy.in');
-
-        // Generate a one-time auth token for cross-domain transfer
-        $expiresAt = AuthTokenService::expirationMinutes()
-            ? now()->addMinutes(AuthTokenService::expirationMinutes())
-            : null;
-        $authToken = $user->createToken('web-chat-transfer', ['web-chat'], $expiresAt)->plainTextToken;
-
-        // Store token hash in cache for 5 minutes (one-time use)
-        $tokenHash = hash('sha256', $authToken);
-        \Illuminate\Support\Facades\Cache::put("chat_auth_transfer:{$tokenHash}", $user->id, now()->addMinutes(5));
-
-        return $chatUrl . '?auth_token=' . urlencode($authToken);
+        return ChatSubdomainUrl::transferUrl($user);
     }
 
     /**

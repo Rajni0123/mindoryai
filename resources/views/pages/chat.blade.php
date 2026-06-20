@@ -4250,51 +4250,77 @@ Example topics:
         </div>
     </div>
 <!-- Profile Completion Popup (first-time login) -->
-@if(auth()->check() && !auth()->user()->profile_completed)
+@if(auth()->check() && (!auth()->user()->hasCompletedProfile() || auth()->user()->needsPhoneCollection()))
+@php
+    $profileUser = auth()->user();
+    $needsPhone = $profileUser->needsPhoneCollection();
+    $profileEmail = $profileUser->profileEmail();
+    $profileName = $profileUser->name ?? '';
+    if (preg_match('/^User \d{4}$/', trim($profileName))) {
+        $profileName = '';
+    }
+@endphp
 <style>
-#pp-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:flex-end;justify-content:center;opacity:0;transition:opacity 0.3s ease}
-#pp-box{width:100%;max-width:420px;background:#1a1f2e;border-radius:16px 16px 0 0;box-shadow:0 -10px 40px rgba(0,0,0,0.4);transform:translateY(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1)}
-#pp-box .pp-handle{width:40px;height:4px;border-radius:4px;background:#4b5563;margin:12px auto 4px}
-#pp-box .pp-body{padding:16px 24px 32px}
+#pp-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity 0.25s ease}
+#pp-box{width:100%;max-width:420px;background:#1a1f2e;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.45);transform:scale(0.94) translateY(8px);opacity:0;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease}
+#pp-box .pp-body{padding:24px}
 #pp-box h2{font-size:20px;font-weight:700;color:#fff;text-align:center;margin:0}
 #pp-box .pp-sub{font-size:13px;color:#9ca3af;text-align:center;margin:4px 0 20px}
 #pp-box label{display:block;font-size:13px;font-weight:600;color:#d1d5db;margin-bottom:6px}
 #pp-box label span{font-weight:400;color:#6b7280}
-#pp-box input[type=text],#pp-box input[type=email]{width:100%;padding:12px 16px;border-radius:12px;border:1px solid #374151;background:#1f2937;color:#fff;font-size:14px;outline:none;box-sizing:border-box;transition:border-color 0.2s}
-#pp-box input:focus{border-color:#0d9488}
-#pp-box .pp-phone{display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid #374151;background:#111827}
-#pp-box .pp-phone span{font-size:13px;color:#9ca3af}
-#pp-box .pp-phone .pp-num{font-size:13px;color:#e5e7eb}
-#pp-box .pp-phone .pp-check{margin-left:auto;color:#22c55e;font-size:18px}
-#pp-box .pp-btn{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(13,148,136,0.3)}
-#pp-box .pp-btn:hover{transform:scale(1.02);box-shadow:0 4px 20px rgba(13,148,136,0.5)}
+#pp-box input[type=text],#pp-box input[type=email],#pp-box input[type=tel]{width:100%;padding:12px 16px;border-radius:12px;border:1px solid #374151;background:#1f2937;color:#fff;font-size:14px;outline:none;box-sizing:border-box;transition:border-color 0.2s}
+#pp-box input:focus{border-color:#705CF6}
+#pp-box input:read-only{background:#111827;color:#d1d5db;cursor:default}
+#pp-box .pp-phone-row{display:flex;align-items:center;gap:8px}
+#pp-box .pp-phone-prefix{padding:12px 14px;border-radius:12px;border:1px solid #374151;background:#111827;color:#9ca3af;font-size:13px;flex-shrink:0}
+#pp-box .pp-phone-row input{flex:1}
+#pp-box .pp-phone-verified{display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid #374151;background:#111827}
+#pp-box .pp-phone-verified span{font-size:13px;color:#9ca3af}
+#pp-box .pp-phone-verified .pp-num{font-size:13px;color:#e5e7eb}
+#pp-box .pp-phone-verified .pp-check{margin-left:auto;color:#22c55e;font-size:18px}
+#pp-box .pp-btn{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#705CF6,#5B8CFF);color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(112,92,246,0.35)}
+#pp-box .pp-btn:hover{transform:scale(1.02);box-shadow:0 4px 20px rgba(112,92,246,0.5)}
 #pp-box .pp-btn:disabled{opacity:0.7;cursor:not-allowed;transform:none}
 #pp-box .pp-field{margin-bottom:16px}
 </style>
 <div id="pp-overlay">
     <div id="pp-box">
-        <div class="pp-handle"></div>
         <div class="pp-body">
             <h2>Profile Information</h2>
-            <p class="pp-sub">Manage your basic profile details</p>
+            <p class="pp-sub">{{ $needsPhone ? 'Add your phone number to continue' : 'Manage your basic profile details' }}</p>
             <form id="pp-form">
+                @if(!$needsPhone)
                 <div class="pp-field">
                     <label>Full Name</label>
-                    <input type="text" id="pp-name" value="{{ auth()->user()->name }}" placeholder="Enter your name" required minlength="2" maxlength="50">
+                    <input type="text" id="pp-name" value="{{ $profileName }}" placeholder="Enter your name" required minlength="2" maxlength="50">
                 </div>
                 <div class="pp-field">
                     <label>Email <span>(optional)</span></label>
-                    <input type="email" id="pp-email" placeholder="your@email.com">
+                    <input type="email" id="pp-email" value="{{ $profileEmail }}" placeholder="your@email.com">
                 </div>
                 <div class="pp-field">
                     <label>Phone</label>
-                    <div class="pp-phone">
+                    <div class="pp-phone-verified">
                         <span>+91</span>
-                        <span class="pp-num">{{ auth()->user()->mobile }}</span>
+                        <span class="pp-num">{{ $profileUser->mobile }}</span>
                         <span class="pp-check material-icons">verified</span>
                     </div>
                 </div>
-                <button type="submit" id="pp-btn" class="pp-btn">Update Profile</button>
+                @else
+                <input type="hidden" id="pp-name" value="{{ $profileName ?: $profileUser->name }}">
+                <div class="pp-field">
+                    <label>Email</label>
+                    <input type="email" id="pp-email" value="{{ $profileEmail }}" readonly>
+                </div>
+                <div class="pp-field">
+                    <label>Phone</label>
+                    <div class="pp-phone-row">
+                        <span class="pp-phone-prefix">+91</span>
+                        <input type="tel" id="pp-mobile" inputmode="numeric" maxlength="10" placeholder="Enter 10-digit mobile number" required pattern="[6-9][0-9]{9}">
+                    </div>
+                </div>
+                @endif
+                <button type="submit" id="pp-btn" class="pp-btn">{{ $needsPhone ? 'Continue' : 'Update Profile' }}</button>
             </form>
         </div>
     </div>
@@ -4303,22 +4329,34 @@ Example topics:
 (function(){
     var ov = document.getElementById('pp-overlay');
     var box = document.getElementById('pp-box');
+    var needsPhone = @json($needsPhone);
     if(!ov||!box) return;
     setTimeout(function(){
         ov.style.opacity='1';
-        setTimeout(function(){ box.style.transform='translateY(0)'; },100);
-    },800);
+        box.style.transform='scale(1) translateY(0)';
+        box.style.opacity='1';
+    },500);
     document.getElementById('pp-form').addEventListener('submit',function(e){
         e.preventDefault();
         var btn=document.getElementById('pp-btn');
-        var name=document.getElementById('pp-name').value.trim();
-        var email=document.getElementById('pp-email').value.trim();
-        if(name.length<2) return;
+        var nameEl=document.getElementById('pp-name');
+        var name=nameEl ? nameEl.value.trim() : '';
+        var emailEl=document.getElementById('pp-email');
+        var email=emailEl ? emailEl.value.trim() : '';
+        var mobileEl=document.getElementById('pp-mobile');
+        var mobile=mobileEl ? mobileEl.value.replace(/\D/g,'') : '';
+        if(name.length<2){ return; }
+        if(needsPhone && !/^[6-9]\d{9}$/.test(mobile)){
+            alert('Enter a valid 10-digit mobile number');
+            return;
+        }
         btn.disabled=true; btn.textContent='Updating...';
+        var payload={name:name,email:email||null};
+        if(needsPhone){ payload.mobile=mobile; }
         fetch('/profile/complete',{
             method:'POST',
             headers:{'Content-Type':'application/json','X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content,'Accept':'application/json'},
-            body:JSON.stringify({name:name,email:email||null})
+            body:JSON.stringify(payload)
         })
         .then(function(r){return r.json();})
         .then(function(d){
@@ -4326,13 +4364,21 @@ Example topics:
                 btn.textContent='Done!';
                 btn.style.background='#22c55e';
                 setTimeout(function(){
-                    box.style.transform='translateY(100%)';
+                    box.style.transform='scale(0.94) translateY(8px)';
+                    box.style.opacity='0';
                     ov.style.opacity='0';
-                    setTimeout(function(){ov.remove();},400);
+                    setTimeout(function(){ov.remove();},350);
                 },500);
-            } else {btn.disabled=false;btn.textContent='Update Profile';}
+            } else {
+                alert(d.message||'Could not update profile');
+                btn.disabled=false;
+                btn.textContent=needsPhone?'Continue':'Update Profile';
+            }
         })
-        .catch(function(){btn.disabled=false;btn.textContent='Update Profile';});
+        .catch(function(){
+            btn.disabled=false;
+            btn.textContent=needsPhone?'Continue':'Update Profile';
+        });
     });
 })();
 </script>

@@ -163,22 +163,8 @@ Route::get('/contact', function() {
             ->name('profile.password');
 
         // First-time profile completion (popup after OTP login)
-        Route::post('/profile/complete', function (\Illuminate\Http\Request $request) {
-            $validated = $request->validate([
-                'name' => 'required|string|min:2|max:50',
-                'email' => 'nullable|email|max:255|unique:users,email,' . auth()->id(),
-            ]);
-
-            $user = auth()->user();
-            $user->name = $validated['name'];
-            if (!empty($validated['email'])) {
-                $user->email = $validated['email'];
-            }
-            $user->save();
-            $user->markProfileCompleted();
-
-            return response()->json(['success' => true, 'message' => 'Profile updated!']);
-        })->name('profile.complete');
+        Route::post('/profile/complete', [\App\Http\Controllers\ProfileCompletionController::class, 'store'])
+            ->name('profile.complete');
 
         // Payment routes
         Route::get('/payment/{plan}', [\App\Http\Controllers\PaymentController::class, 'showPayment'])->name('payment.show');
@@ -196,81 +182,10 @@ Route::get('/contact', function() {
             Route::post('/verify-payment', [\App\Http\Controllers\Api\RazorpayController::class, 'verifyPayment'])->name('verify-payment');
         });
 
-        // AI Chat interface (for users only) - requires active subscription
-        Route::get('/chat', [HomeController::class, 'index'])->middleware('subscription.active')->name('chat');
-
-        // Web Chat API Routes (Claude-style) - uses web auth
-        Route::prefix('api/chat')->group(function () {
-            Route::get('/history', [\App\Http\Controllers\Api\ChatController::class, 'history']);
-            Route::get('/{id}', [\App\Http\Controllers\Api\ChatController::class, 'show']);
-            Route::post('/send', [\App\Http\Controllers\Api\ChatController::class, 'send']);
-            Route::delete('/{id}', [\App\Http\Controllers\Api\ChatController::class, 'destroy']);
-            Route::put('/{id}', [\App\Http\Controllers\Api\ChatController::class, 'update']);
-        });
-
-        // Image analysis endpoint with rate limiting and AI access control
-        // Rate limit: 10 requests per minute per IP
-        Route::post('/analyze-image', [ImageAnalysisController::class, 'analyze'])
-            ->middleware(['throttle:ai', 'throttle:upload', 'ai.access'])
-            ->name('analyze.image');
-
-        // PDF analysis endpoint with rate limiting and AI access control
-        // Rate limit: 10 requests per minute per IP
-        Route::post('/analyze-pdf', [ImageAnalysisController::class, 'analyzePdf'])
-            ->middleware(['throttle:ai', 'throttle:upload', 'ai.access'])
-            ->name('analyze.pdf');
-
-        // Text question endpoint with rate limiting and AI access control
-        Route::post('/ask-question', [ImageAnalysisController::class, 'askQuestion'])
-            ->middleware(['throttle:ai', 'ai.access'])
-            ->name('ask.question');
-
-        // Streaming chat endpoint with rate limiting and AI access control
-        Route::post('/chat/stream', [ImageAnalysisController::class, 'stream'])
-            ->middleware(['throttle:ai', 'ai.access'])
-            ->name('chat.stream');
-
-        // AI Chat endpoint
-        Route::post('/ask-ai', [AiController::class, 'chat']);
-
-        // Clear chat history
-        Route::post('/chat/clear', [ImageAnalysisController::class, 'clearChat'])
-            ->name('chat.clear');
-
-        // ========================================
-        // CONVERSATION ROUTES (ChatGPT-style)
-        // ========================================
-        Route::prefix('conversations')->name('conversations.')->group(function () {
-            // Get or create active conversation
-            Route::get('/active', [\App\Http\Controllers\ConversationController::class, 'getOrCreateConversation'])
-                ->name('active');
-
-            // Send message in conversation (with AI response streaming)
-            Route::post('/message', [\App\Http\Controllers\ConversationController::class, 'sendMessage'])
-                ->middleware(['throttle:ai', 'throttle:upload', 'ai.access'])
-                ->name('message');
-
-            // Create new conversation (New Chat button)
-            Route::post('/new', [\App\Http\Controllers\ConversationController::class, 'createNewConversation'])
-                ->name('new');
-
-            // Get all user conversations (for sidebar)
-            Route::get('/list', [\App\Http\Controllers\ConversationController::class, 'getUserConversations'])
-                ->name('list');
-
-            // Load specific conversation
-            Route::get('/{conversation}', [\App\Http\Controllers\ConversationController::class, 'loadConversation'])
-                ->name('load');
-
-            // Delete conversation
-            Route::delete('/{conversation}', [\App\Http\Controllers\ConversationController::class, 'deleteConversation'])
-                ->name('delete');
-        });
-
-        // Prompt enhancement endpoint
-        Route::post('/enhance-prompt', [ImageAnalysisController::class, 'enhancePrompt'])
-            ->middleware(['throttle:20,1'])
-            ->name('enhance.prompt');
+        // Legacy URL on main domain → chat subdomain
+        Route::get('/chat', function () {
+            return redirect()->away(\App\Support\ChatSubdomainUrl::appUrl());
+        })->middleware('subscription.active');
 
         // Admin Panel (require admin role)
         Route::prefix('admin')->name('admin.')->middleware(['admin'])->group(function () {

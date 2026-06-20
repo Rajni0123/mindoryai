@@ -127,50 +127,73 @@
     @stack('scripts')
 
     <!-- Profile Completion Popup (first-time login) -->
-    @if(session('show_profile_popup') && auth()->check() && !auth()->user()->profile_completed)
-    <div id="profile-popup-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-end justify-center transition-opacity duration-300" style="opacity:0">
-        <div id="profile-popup" class="w-full max-w-md bg-white dark:bg-[#1a1f2e] rounded-t-2xl shadow-2xl transform translate-y-full transition-transform duration-500 ease-out">
-            <!-- Handle bar -->
-            <div class="flex justify-center pt-3 pb-1">
-                <div class="w-10 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></div>
-            </div>
+    @if(session('show_profile_popup') && auth()->check() && (!auth()->user()->hasCompletedProfile() || auth()->user()->needsPhoneCollection()))
+    @php
+        $profileUser = auth()->user();
+        $needsPhone = $profileUser->needsPhoneCollection();
+        $profileEmail = $profileUser->profileEmail();
+        $profileName = $profileUser->name ?? '';
+        if (preg_match('/^User \d{4}$/', trim($profileName))) {
+            $profileName = '';
+        }
+    @endphp
+    <div id="profile-popup-overlay" class="fixed inset-0 bg-black/55 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 transition-opacity duration-300" style="opacity:0">
+        <div id="profile-popup" class="w-full max-w-md bg-white dark:bg-[#1a1f2e] rounded-2xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300 ease-out">
 
-            <div class="px-6 pb-8 pt-4">
+            <div class="px-6 py-6">
                 <h2 class="text-xl font-bold text-gray-900 dark:text-white text-center">Profile Information</h2>
-                <p class="text-sm text-gray-500 dark:text-gray-400 text-center mt-1 mb-6">Manage your basic profile details</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center mt-1 mb-6">
+                    {{ $needsPhone ? 'Add your phone number to continue' : 'Manage your basic profile details' }}
+                </p>
 
                 <form id="profile-popup-form" class="space-y-4">
-                    <!-- Name -->
+                    @if(!$needsPhone)
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Full Name</label>
-                        <input type="text" id="popup-name" name="name" value="{{ auth()->user()->name }}"
+                        <input type="text" id="popup-name" name="name" value="{{ $profileName }}"
                             placeholder="Enter your name"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition text-sm"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition text-sm"
                             required minlength="2" maxlength="50">
                     </div>
 
-                    <!-- Email (optional) -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Email <span class="text-gray-400 font-normal">(optional)</span></label>
-                        <input type="email" id="popup-email" name="email"
+                        <input type="email" id="popup-email" name="email" value="{{ $profileEmail }}"
                             placeholder="your@email.com"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition text-sm">
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition text-sm">
                     </div>
 
-                    <!-- Phone (read-only) -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Phone</label>
                         <div class="flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-700">
                             <span class="text-sm text-gray-500 dark:text-gray-400">+91</span>
-                            <span class="text-sm text-gray-700 dark:text-gray-200">{{ auth()->user()->mobile }}</span>
+                            <span class="text-sm text-gray-700 dark:text-gray-200">{{ $profileUser->mobile }}</span>
                             <span class="ml-auto material-symbols-outlined text-green-500 text-base">verified</span>
                         </div>
                     </div>
+                    @else
+                    <input type="hidden" id="popup-name" value="{{ $profileName ?: $profileUser->name }}">
 
-                    <!-- Submit Button -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+                        <input type="email" id="popup-email" value="{{ $profileEmail }}" readonly
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 outline-none text-sm cursor-default">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Phone</label>
+                        <div class="flex items-center gap-2">
+                            <span class="px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-900 text-sm text-gray-500 dark:text-gray-400">+91</span>
+                            <input type="tel" id="popup-mobile" inputmode="numeric" maxlength="10"
+                                placeholder="Enter 10-digit mobile number" required pattern="[6-9][0-9]{9}"
+                                class="flex-1 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none transition text-sm">
+                        </div>
+                    </div>
+                    @endif
+
                     <button type="submit" id="popup-submit-btn"
-                        class="w-full py-3.5 mt-2 rounded-full bg-gradient-to-r from-teal-500 to-teal-600 text-white font-bold text-sm shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                        Update Profile
+                        class="w-full py-3.5 mt-2 rounded-full bg-gradient-to-r from-violet-500 to-indigo-500 text-white font-bold text-sm shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                        {{ $needsPhone ? 'Continue' : 'Update Profile' }}
                     </button>
                 </form>
             </div>
@@ -181,27 +204,36 @@
     (function() {
         var overlay = document.getElementById('profile-popup-overlay');
         var popup = document.getElementById('profile-popup');
+        var needsPhone = @json($needsPhone);
         if (!overlay || !popup) return;
 
-        // Animate in after short delay
         setTimeout(function() {
             overlay.style.opacity = '1';
-            setTimeout(function() {
-                popup.style.transform = 'translateY(0)';
-            }, 100);
+            popup.style.transform = 'scale(1)';
+            popup.style.opacity = '1';
         }, 500);
 
-        // Handle form submit
         document.getElementById('profile-popup-form').addEventListener('submit', function(e) {
             e.preventDefault();
             var btn = document.getElementById('popup-submit-btn');
-            var name = document.getElementById('popup-name').value.trim();
-            var email = document.getElementById('popup-email').value.trim();
+            var nameEl = document.getElementById('popup-name');
+            var name = nameEl ? nameEl.value.trim() : '';
+            var emailEl = document.getElementById('popup-email');
+            var email = emailEl ? emailEl.value.trim() : '';
+            var mobileEl = document.getElementById('popup-mobile');
+            var mobile = mobileEl ? mobileEl.value.replace(/\D/g, '') : '';
 
             if (name.length < 2) return;
+            if (needsPhone && !/^[6-9]\d{9}$/.test(mobile)) {
+                alert('Enter a valid 10-digit mobile number');
+                return;
+            }
 
             btn.disabled = true;
             btn.textContent = 'Updating...';
+
+            var payload = { name: name, email: email || null };
+            if (needsPhone) payload.mobile = mobile;
 
             fetch('/profile/complete', {
                 method: 'POST',
@@ -210,30 +242,32 @@
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({ name: name, email: email || null })
+                body: JSON.stringify(payload)
             })
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (data.success) {
                     btn.textContent = 'Done!';
-                    btn.classList.remove('from-teal-500', 'to-teal-600');
+                    btn.classList.remove('from-violet-500', 'to-indigo-500');
                     btn.classList.add('bg-green-500');
                     setTimeout(function() {
-                        popup.style.transform = 'translateY(100%)';
+                        popup.style.transform = 'scale(0.95)';
+                        popup.style.opacity = '0';
                         overlay.style.opacity = '0';
                         setTimeout(function() {
                             overlay.remove();
-                            window.location.href = '/chat';
-                        }, 400);
+                            window.location.href = @json(\App\Support\ChatSubdomainUrl::appUrl());
+                        }, 350);
                     }, 500);
                 } else {
+                    alert(data.message || 'Could not update profile');
                     btn.disabled = false;
-                    btn.textContent = 'Update Profile';
+                    btn.textContent = needsPhone ? 'Continue' : 'Update Profile';
                 }
             })
             .catch(function() {
                 btn.disabled = false;
-                btn.textContent = 'Update Profile';
+                btn.textContent = needsPhone ? 'Continue' : 'Update Profile';
             });
         });
     })();

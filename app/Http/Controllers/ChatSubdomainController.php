@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\ChatSubdomainUrl;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class ChatSubdomainController extends Controller
         }
 
         if (Auth::check()) {
-            return redirect('/chat');
+            return redirect(ChatSubdomainUrl::appPath());
         }
 
         return redirect()->away(rtrim((string) config('app.url'), '/') . '/login');

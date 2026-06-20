@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\SystemSetting;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use App\Support\ChatSubdomainUrl;
 use App\Support\StudyProfileCatalog;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -109,11 +109,6 @@ class SocialAuthController extends Controller
                 ->with('success', 'Welcome! Complete your quick setup to get started.');
         }
 
-        $chatUrl = rtrim((string) env('CHAT_SUBDOMAIN_URL', 'https://chat.blinkstudy.in'), '/');
-        $authToken = $user->createToken('web-chat-transfer', ['web-chat'])->plainTextToken;
-        $tokenHash = hash('sha256', $authToken);
-        Cache::put("chat_auth_transfer:{$tokenHash}", $user->id, now()->addMinutes(5));
-
-        return redirect($chatUrl . '?auth_token=' . urlencode($authToken));
+        return redirect()->away(ChatSubdomainUrl::transferUrl($user));
     }
 }

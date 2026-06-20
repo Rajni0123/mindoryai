@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\PaymentGateway;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
+use App\Support\ChatSubdomainUrl;
 use App\Support\ResourceAuthorizer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -618,7 +619,7 @@ class PaymentController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Payment successful! Your plan has been activated.',
-            'redirect_url' => '/chat',
+            'redirect_url' => ChatSubdomainUrl::appUrl(),
         ]);
     }
 
