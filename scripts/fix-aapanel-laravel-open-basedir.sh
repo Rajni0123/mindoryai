@@ -12,18 +12,24 @@ PROJECT="/www/wwwroot/blinkstudy.in"
 PUBLIC="${PROJECT}/public"
 BASEDIR="${PROJECT}/:/tmp/:/proc/:/sys/"
 
-PHP_VER="${PHP_VER:-82}"
-ENABLE_PHP="/www/server/nginx/conf/enable-php-${PHP_VER}.conf"
-LARAVEL_PHP="/www/server/nginx/conf/enable-php-${PHP_VER}-laravel.conf"
+PHP_VER="${PHP_VER:-}"
 VHOST_DIR="/www/server/panel/vhost/nginx"
 
-if [[ ! -f "${ENABLE_PHP}" ]]; then
-  echo "ERROR: ${ENABLE_PHP} not found. Set PHP_VER (e.g. 81, 82, 83)."
-  exit 1
+# Auto-detect PHP version from blinkstudy vhosts (default 82)
+if [[ -z "${PHP_VER}" ]]; then
+  PHP_VER=$(grep -ohE 'enable-php-([0-9]+)\.conf' "${VHOST_DIR}"/*blinkstudy*.conf 2>/dev/null | grep -oE '[0-9]+' | sort -u | tail -1)
+  PHP_VER="${PHP_VER:-82}"
 fi
 
+ENABLE_PHP="/www/server/nginx/conf/enable-php-${PHP_VER}.conf"
+LARAVEL_PHP="/www/server/nginx/conf/enable-php-${PHP_VER}-laravel.conf"
+
 echo "==> Project: ${PROJECT}"
+echo "==> PHP version: ${PHP_VER}"
 echo "==> open_basedir: ${BASEDIR}"
+  echo "ERROR: ${ENABLE_PHP} not found. Set PHP_VER manually (e.g. PHP_VER=82)."
+  exit 1
+fi
 
 # 1) .user.ini (backup; nginx fastcgi usually overrides this)
 chattr -i "${PUBLIC}/.user.ini" 2>/dev/null || true
