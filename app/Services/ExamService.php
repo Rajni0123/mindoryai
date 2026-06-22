@@ -280,7 +280,10 @@ class ExamService
             'completed_at' => now(),
         ]);
 
-        return $mockTest->fresh();
+        $completed = $mockTest->fresh();
+        LearningAnalyticsService::recordMockTestResults($completed);
+
+        return $completed;
     }
 
     public function getMockTestResult(MockTest $mockTest): array

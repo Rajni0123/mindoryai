@@ -309,6 +309,12 @@ PROMPT;
                             'options' => $q['options'] ?? [],
                             'correct_answer' => $q['correct_answer'] ?? '',
                             'explanation' => $q['explanation'] ?? '',
+                            'source_url' => $q['source_url'] ?? '',
+                            'pdf_name' => $q['pdf_name'] ?? '',
+                            'exam' => $q['exam'] ?? '',
+                            'year' => $q['year'] ?? null,
+                            'topic' => $q['topic'] ?? '',
+                            'difficulty' => $q['difficulty'] ?? $difficulty,
                         ];
                     }, $retrieved['questions']),
                 ];
@@ -317,8 +323,23 @@ PROMPT;
 
                 return json_encode($payload, JSON_UNESCAPED_UNICODE);
             }
+
+            $allowAiGeneration = (bool) app(\App\Services\Retrieval\RetrievalSettingsService::class)->isAiQuizFallbackEnabled();
+            if (! $allowAiGeneration) {
+                return json_encode([
+                    'message' => 'No verified questions found.',
+                    'questions' => [],
+                ], JSON_UNESCAPED_UNICODE);
+            }
         } catch (\Throwable $e) {
             Log::warning('Quiz retrieval engine skipped', ['error' => $e->getMessage()]);
+        }
+
+        if (! app(\App\Services\Retrieval\RetrievalSettingsService::class)->isAiQuizFallbackEnabled()) {
+            return json_encode([
+                'message' => 'No verified questions found.',
+                'questions' => [],
+            ], JSON_UNESCAPED_UNICODE);
         }
 
         // Extract metadata from topic

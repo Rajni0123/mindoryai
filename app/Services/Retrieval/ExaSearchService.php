@@ -39,6 +39,78 @@ class ExaSearchService
         }, config('retrieval.cache.ttl.search'));
     }
 
+    /**
+     * Retrieve only real-question candidate documents for quiz extraction.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function searchQuizDocuments(string $topic, ?string $subject, int $maxResults = 10): array
+    {
+        if (! $this->settings->isExaEnabled()) {
+            return [];
+        }
+
+        $apiKey = \App\Models\FrontendConfig::getValue('retrieval.exa_api_key')
+            ?: config('retrieval.exa.api_key');
+        if (! $apiKey) {
+            return [];
+        }
+
+        $query = trim(implode(' ', array_filter([
+            $topic,
+            $subject,
+            'official pdf previous year paper sample paper question bank exam mcq',
+        ])));
+
+        try {
+            $payload = [
+                'query' => $query,
+                'type' => $this->resolveSearchType(new RetrievalQuery(question: $topic, subject: $subject, topic: $topic, feature: 'quiz')),
+                'numResults' => min(max($maxResults, 5), (int) config('retrieval.exa.max_results', 10)),
+                'contents' => ['text' => ['maxCharacters' => 500]],
+            ];
+
+            $response = Http::withHeaders([
+                'x-api-key' => $apiKey,
+                'Content-Type' => 'application/json',
+            ])
+                ->timeout((int) config('retrieval.exa.timeout', 30))
+                ->retry(2, 500)
+                ->post(rtrim(config('retrieval.exa.base_url'), '/') . '/search', $payload);
+
+            if (! $response->successful()) {
+                return [];
+            }
+
+            $results = $response->json('results') ?? [];
+            if (! is_array($results) || $results === []) {
+                return [];
+            }
+
+            return collect($results)
+                ->map(function (array $item) {
+                    $url = (string) ($item['url'] ?? '');
+                    $title = (string) ($item['title'] ?? '');
+                    $pdfName = $title !== '' ? $title : basename(parse_url($url, PHP_URL_PATH) ?: '');
+
+                    return [
+                        'url' => $url,
+                        'title' => $title,
+                        'pdf_name' => $pdfName,
+                        'exam' => $this->inferExamFromTitle($title),
+                        'year' => $this->inferYear($title . ' ' . $url),
+                    ];
+                })
+                ->filter(fn (array $item) => $this->isQuestionDocument($item['url'], $item['title']))
+                ->values()
+                ->all();
+        } catch (\Throwable $e) {
+            Log::warning('Exa quiz document search failed', ['error' => $e->getMessage()]);
+
+            return [];
+        }
+    }
+
     protected function performSearch(RetrievalQuery $query, string $apiKey, int $maxResults): RetrievalResult
     {
         try {
@@ -204,5 +276,43 @@ class ExaSearchService
         }
 
         return implode(' ', $parts);
+    }
+
+    protected function isQuestionDocument(string $url, string $title): bool
+    {
+        $haystack = mb_strtolower($url . ' ' . $title);
+        $looksPdf = str_contains(mb_strtolower($url), '.pdf') || str_contains($haystack, 'pdf');
+        if (! $looksPdf) {
+            return false;
+        }
+
+        foreach (['previous year', 'sample paper', 'question bank', 'exam paper', 'official', 'mcq'] as $needle) {
+            if (str_contains($haystack, $needle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected function inferExamFromTitle(string $text): string
+    {
+        $lower = mb_strtolower($text);
+        foreach (['jee', 'neet', 'upsc', 'ssc', 'cbse', 'icse', 'gate', 'cat'] as $exam) {
+            if (str_contains($lower, $exam)) {
+                return strtoupper($exam);
+            }
+        }
+
+        return '';
+    }
+
+    protected function inferYear(string $text): ?int
+    {
+        if (preg_match('/\b(19|20)\d{2}\b/', $text, $m) === 1) {
+            return (int) $m[0];
+        }
+
+        return null;
     }
 }

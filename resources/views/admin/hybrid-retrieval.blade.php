@@ -46,7 +46,7 @@
                 <div class="p-3 bg-green-500/10 border border-green-500/30 rounded-lg text-sm text-green-300">{{ session('success') }}</div>
             @endif
 
-            <form method="POST" action="{{ $settingsUrl ?? url('/admin/hybrid-retrieval/settings') }}" class="card rounded-lg p-4 space-y-4">
+            <form method="POST" action="{{ $settingsUrl }}" class="card rounded-lg p-4 space-y-4" data-admin-csrf-form>
                 @csrf
                 <h3 class="text-sm font-semibold text-white">Feature Toggles</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
@@ -90,7 +90,7 @@
                 <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs rounded">Save Settings</button>
             </form>
 
-            <form method="POST" action="{{ $storeUrl ?? url('/admin/hybrid-retrieval/sources') }}" enctype="multipart/form-data" class="card rounded-lg p-4 space-y-3">
+            <form method="POST" action="{{ $storeUrl }}" enctype="multipart/form-data" class="card rounded-lg p-4 space-y-3" data-admin-csrf-form>
                 @csrf
                 <h3 class="text-sm font-semibold text-white">Add New Knowledge Source</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -123,7 +123,7 @@
                                 <div class="text-white">{{ $source->name }}</div>
                                 <div class="text-gray-500">{{ $source->provider_key }} · {{ $source->type }} · {{ $source->chunk_count }} chunks</div>
                             </div>
-                            <form method="POST" action="{{ url('/admin/hybrid-retrieval/sources/' . $source->id . '/toggle') }}">
+                            <form method="POST" action="{{ \App\Support\AdminUrl::route('admin.hybrid-retrieval.sources.toggle', $source) }}" data-admin-csrf-form>
                                 @csrf
                                 <button class="px-2 py-1 rounded {{ $source->is_active ? 'bg-green-500/20 text-green-300' : 'bg-gray-700 text-gray-300' }}">
                                     {{ $source->is_active ? 'Enabled' : 'Disabled' }}
@@ -138,5 +138,70 @@
         </div>
     </main>
 </div>
+<script>
+(function () {
+    function xsrfFromCookie() {
+        const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/);
+        return match ? decodeURIComponent(match[1]) : '';
+    }
+
+    async function ensureAdminCsrf() {
+        await fetch('/sanctum/csrf-cookie', {
+            credentials: 'same-origin',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+    }
+
+    async function submitAdminForm(form, retried) {
+        const submitter = form.querySelector('[type="submit"]');
+        if (submitter) submitter.disabled = true;
+
+        try {
+            await ensureAdminCsrf();
+            const headers = {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html,application/json',
+            };
+            const xsrf = xsrfFromCookie();
+            const meta = document.querySelector('meta[name="csrf-token"]')?.content;
+            if (meta) headers['X-CSRF-TOKEN'] = meta;
+            if (xsrf) headers['X-XSRF-TOKEN'] = xsrf;
+
+            const response = await fetch(form.action, {
+                method: (form.method || 'POST').toUpperCase(),
+                body: new FormData(form),
+                credentials: 'same-origin',
+                headers,
+                redirect: 'follow',
+            });
+
+            if (response.status === 419 && !retried) {
+                await ensureAdminCsrf();
+                return submitAdminForm(form, true);
+            }
+
+            if (!response.ok && response.status !== 419) {
+                window.location.reload();
+                return;
+            }
+
+            window.location.href = response.url || window.location.href;
+        } catch (e) {
+            form.submit();
+        } finally {
+            if (submitter) submitter.disabled = false;
+        }
+    }
+
+    document.querySelectorAll('[data-admin-csrf-form]').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            submitAdminForm(form, false);
+        });
+    });
+
+    ensureAdminCsrf();
+})();
+</script>
 </body>
 </html>

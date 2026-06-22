@@ -7,6 +7,7 @@ use App\Models\FrontendConfig;
 use App\Models\KnowledgeSource;
 use App\Services\Retrieval\KnowledgeSourceIngestionService;
 use App\Services\Retrieval\RetrievalSettingsService;
+use App\Support\AdminUrl;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,8 +45,8 @@ class HybridRetrievalController extends Controller
             'quizPriority' => $quizPriority,
             'migrationRequired' => $migrationRequired,
             'pageError' => $pageError ?? null,
-            'settingsUrl' => $this->adminPath('/hybrid-retrieval/settings'),
-            'storeUrl' => $this->adminPath('/hybrid-retrieval/sources'),
+            'settingsUrl' => AdminUrl::route('admin.hybrid-retrieval.settings'),
+            'storeUrl' => AdminUrl::route('admin.hybrid-retrieval.sources.store'),
         ]);
     }
 
@@ -151,15 +152,6 @@ class HybridRetrievalController extends Controller
         }
 
         return [];
-    }
-
-    private function adminPath(string $path): string
-    {
-        try {
-            return url('/admin' . $path);
-        } catch (\Throwable) {
-            return '/admin' . $path;
-        }
     }
 
     private function hybridTablesReady(): bool

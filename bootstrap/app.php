@@ -61,6 +61,15 @@ return Application::configure(basePath: dirname(__DIR__))
         \App\Providers\RetrievalServiceProvider::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->renderable(function (\Illuminate\Session\TokenMismatchException $e, \Illuminate\Http\Request $request) {
+            if ($request->is('admin/*')) {
+                return redirect()
+                    ->back()
+                    ->withInput($request->except('_token', 'password', 'exa_api_key'))
+                    ->with('error', 'Session expired. Refresh the page and try again.');
+            }
+        });
+
         $exceptions->renderable(function (\Illuminate\Validation\ValidationException $e, \Illuminate\Http\Request $request) {
             if ($request->is('api/*') || $request->expectsJson()) {
                 \App\Support\ApiValidator::logFailure($request, $e->errors());

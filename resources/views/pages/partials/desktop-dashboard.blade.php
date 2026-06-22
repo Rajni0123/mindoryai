@@ -785,7 +785,7 @@
                     </div>
                     <div class="dash-xp-bar"><div class="dash-xp-fill" style="width:${Math.min(100, xpPct)}%"></div></div>
                     <p style="font-size:12px;color:var(--text-secondary);margin:12px 0 0;">Target: ${escapeHtml(data.user.target_exam || 'Set your exam')}</p>
-                    ${data.quiz_stats?.totalQuizzes != null ? `<p style="font-size:11px;color:var(--text-secondary);margin-top:6px;">${data.quiz_stats.totalQuizzes} quizzes · best ${data.quiz_stats.bestScore || 0}%</p>` : ''}
+                    ${data.quiz_stats?.totalQuizzes != null ? `<p style="font-size:11px;color:var(--text-secondary);margin-top:6px;">${data.quiz_stats.mockTestsThisWeek || 0} mock · ${data.quiz_stats.totalQuizzes} total · best ${data.quiz_stats.bestScore || 0}%</p>` : ''}
                 </div>
 
                 <div class="dash-card dash-weakness">

@@ -6,6 +6,8 @@ use App\Models\DailyChallenge;
 use App\Models\DailyChallengeAttempt;
 use App\Models\DynamicAppConfig;
 use App\Models\Exam;
+use App\Models\ExamQuestion;
+use App\Models\MockTest;
 use App\Models\QuizAttempt;
 use App\Models\User;
 use Carbon\Carbon;
@@ -16,10 +18,15 @@ class WebDashboardService
     {
         $userId = $user->id;
 
+        $this->syncMockTestAnalytics($userId);
+        $user->refresh();
+
         $revisionProfile = LearningAnalyticsService::getRevisionProfile($userId);
         $dashboardData = LearningAnalyticsService::getDashboardData($userId);
         $revisionPlan = LearningAnalyticsService::buildRevisionPlan($userId);
         $quizStats = $this->weeklyQuizStats($userId);
+        $latestMock = MockTest::where('user_id', $userId)->completed()->latest('completed_at')->first();
+        $mockAccuracy = $latestMock ? (int) round($latestMock->accuracy) : 0;
         $usageSummary = app(UsageLimitService::class)->getUsageSummary($user);
         $dailyChallenge = $this->dailyChallengeData($user);
         $badges = $revisionProfile['badges'] ?? BadgeService::getUserBadges($userId);
@@ -30,6 +37,13 @@ class WebDashboardService
         $dailyProgress = (int) round(($planCompleted / $planTotal) * 100);
 
         $weakTopics = array_slice($revisionProfile['weak_topics'] ?? [], 0, 6);
+        $weakTopics = array_values(array_filter(
+            $weakTopics,
+            fn ($topic) => ($topic['source'] ?? '') !== 'default'
+        ));
+        if ($weakTopics === []) {
+            $weakTopics = LearningAnalyticsService::getWeakTopicsFromMockTests($userId, 6);
+        }
         $weaknessMap = $this->buildWeaknessMap($weakTopics, $userId);
 
         $leaderboard = app(StudyBattleService::class)->getLeaderboard(7);
@@ -46,7 +60,13 @@ class WebDashboardService
         $xp = (int) ($revisionProfile['profile']['total_xp'] ?? $user->total_xp ?? 0);
         $quizAccuracy = $quizStats['totalQuizzes'] > 0
             ? (int) $quizStats['averageScore']
-            : (int) round($revisionProfile['overall_accuracy'] ?? 0);
+            : ($mockAccuracy > 0
+                ? $mockAccuracy
+                : (int) round($revisionProfile['overall_accuracy'] ?? 0));
+        $strengthScore = (int) ($revisionProfile['strength_score'] ?? 0);
+        if ($strengthScore <= 0 && $mockAccuracy > 0) {
+            $strengthScore = $mockAccuracy;
+        }
 
         $continueLearning = $this->continueLearning($user, $revisionPlan, $weakTopics, $quizStats, (int) ($revisionProfile['strength_score'] ?? 0));
         $upcomingExam = $this->upcomingExam($user);
@@ -78,12 +98,12 @@ class WebDashboardService
             'level' => $level,
             'xp' => $xp,
             'level_progress' => $revisionProfile['level_progress'] ?? [],
-            'accuracy' => (int) round($revisionProfile['overall_accuracy'] ?? 0),
+            'accuracy' => $quizAccuracy > 0 ? $quizAccuracy : (int) round($revisionProfile['overall_accuracy'] ?? 0),
             'quiz_accuracy' => $quizAccuracy,
-            'strength_score' => (int) ($revisionProfile['strength_score'] ?? 0),
+            'strength_score' => $strengthScore,
             'accuracy_rings' => [
                 ['label' => 'Quizzes', 'value' => $quizAccuracy, 'color' => '#528dff'],
-                ['label' => 'Strength', 'value' => (int) ($revisionProfile['strength_score'] ?? 0), 'color' => '#afc6ff'],
+                ['label' => 'Strength', 'value' => $strengthScore, 'color' => '#afc6ff'],
             ],
             'daily_progress' => $dailyProgress,
             'plan_completed' => $planCompleted,
@@ -101,6 +121,14 @@ class WebDashboardService
             'upcoming_exam' => $upcomingExam,
             'today_stats' => $dashboardData['today_stats'] ?? [],
             'quiz_stats' => $quizStats,
+            'latest_mock_test' => $latestMock ? [
+                'id' => $latestMock->id,
+                'title' => $latestMock->title,
+                'accuracy' => $mockAccuracy,
+                'correct' => $latestMock->correct_answers,
+                'total' => $latestMock->total_questions,
+                'completed_at' => $latestMock->completed_at?->toIso8601String(),
+            ] : null,
             'peer_comparison' => $revisionProfile['peer_comparison'] ?? [],
             'badges' => $badges,
             'usage' => $usageSummary,
@@ -121,22 +149,54 @@ class WebDashboardService
         $start = now()->startOfWeek();
         $end = now()->endOfWeek();
 
-        $attempts = QuizAttempt::where('user_id', $userId)
+        $quizAttempts = QuizAttempt::where('user_id', $userId)
             ->completed()
             ->whereBetween('created_at', [$start, $end])
             ->get();
 
-        $total = $attempts->count();
+        $mockTests = MockTest::where('user_id', $userId)
+            ->completed()
+            ->whereBetween('completed_at', [$start, $end])
+            ->get();
+
+        $total = $quizAttempts->count() + $mockTests->count();
+
+        $scores = $quizAttempts->map(fn ($attempt) => (float) $attempt->score);
+        $mockScores = $mockTests->map(fn ($test) => (float) $test->accuracy);
+        $allScores = $scores->merge($mockScores);
+
+        $totalSeconds = (int) $quizAttempts->sum('time_taken_seconds') + (int) $mockTests->sum('time_taken_seconds');
+
+        return [
+            'totalQuizzes' => $total,
+            'mockTestsThisWeek' => $mockTests->count(),
+            'quizAttemptsThisWeek' => $quizAttempts->count(),
+            'averageScore' => $allScores->isNotEmpty() ? (int) round($allScores->avg()) : 0,
+            'bestScore' => $allScores->isNotEmpty() ? (int) round($allScores->max()) : 0,
+            'totalQuestions' => (int) $quizAttempts->sum('total_questions') + (int) $mockTests->sum('total_questions'),
+            'totalTimeSeconds' => $totalSeconds,
+            'studyHoursWeek' => round($totalSeconds / 3600, 1),
+            'dayStreak' => $this->computeDayStreak($userId),
+        ];
+    }
+
+    private function computeDayStreak(int $userId): int
+    {
         $dayStreak = 0;
         $checkDate = now()->copy()->startOfDay();
 
         while ($dayStreak < 366) {
-            $hasActivity = QuizAttempt::where('user_id', $userId)
+            $hasQuiz = QuizAttempt::where('user_id', $userId)
                 ->completed()
                 ->whereDate('created_at', $checkDate)
                 ->exists();
 
-            if (! $hasActivity) {
+            $hasMock = MockTest::where('user_id', $userId)
+                ->completed()
+                ->whereDate('completed_at', $checkDate)
+                ->exists();
+
+            if (! $hasQuiz && ! $hasMock) {
                 break;
             }
 
@@ -144,17 +204,7 @@ class WebDashboardService
             $checkDate->subDay();
         }
 
-        $totalSeconds = (int) $attempts->sum('time_taken_seconds');
-
-        return [
-            'totalQuizzes' => $total,
-            'averageScore' => $total > 0 ? (int) round($attempts->avg('score')) : 0,
-            'bestScore' => $total > 0 ? (int) round($attempts->max('score')) : 0,
-            'totalQuestions' => (int) $attempts->sum('total_questions'),
-            'totalTimeSeconds' => $totalSeconds,
-            'studyHoursWeek' => round($totalSeconds / 3600, 1),
-            'dayStreak' => $dayStreak,
-        ];
+        return $dayStreak;
     }
 
     private function dailyChallengeData(User $user): array
@@ -244,6 +294,27 @@ class WebDashboardService
             ->completed()
             ->latest()
             ->first();
+
+        $lastMock = MockTest::where('user_id', $user->id)
+            ->completed()
+            ->latest('completed_at')
+            ->first();
+
+        if ($lastMock) {
+            $weakFromMock = LearningAnalyticsService::getWeakTopicsFromMockTests($user->id, 1);
+            if (! empty($weakFromMock)) {
+                $subject = $weakFromMock[0]['subject'] ?? $subject;
+                $topic = $weakFromMock[0]['topic'] ?? $topic;
+            } elseif (! empty($lastMock->config['subject'])) {
+                $subject = $lastMock->config['subject'];
+            }
+
+            if ($topic === 'Continue your prep') {
+                $topic = $lastMock->title ?: 'Mock Test Review';
+            }
+
+            $topicsDone = max($topicsDone, (int) ($lastMock->correct_answers ?? 0));
+        }
 
         if ($lastQuiz) {
             $subject = $lastQuiz->subject ?: $subject;
@@ -423,7 +494,9 @@ class WebDashboardService
                 'label' => 'Mock Test',
                 'icon' => 'quiz',
                 'action' => 'mock_test',
-                'subtitle' => ($quizStats['totalQuizzes'] ?? 0) . ' this week',
+                'subtitle' => ($quizStats['mockTestsThisWeek'] ?? 0) > 0
+                    ? ($quizStats['mockTestsThisWeek'] ?? 0) . ' this week'
+                    : (($quizStats['totalQuizzes'] ?? 0) . ' this week'),
             ],
             [
                 'id' => 'battle',
@@ -464,5 +537,24 @@ class WebDashboardService
         }
 
         return null;
+    }
+
+    private function syncMockTestAnalytics(int $userId): void
+    {
+        MockTest::where('user_id', $userId)
+            ->completed()
+            ->orderByDesc('completed_at')
+            ->limit(10)
+            ->get()
+            ->each(function (MockTest $test) {
+                if (empty($test->config['analytics_recorded'])) {
+                    LearningAnalyticsService::recordMockTestResults($test);
+                }
+            });
+
+        $user = User::find($userId);
+        if ($user) {
+            $user->refresh();
+        }
     }
 }

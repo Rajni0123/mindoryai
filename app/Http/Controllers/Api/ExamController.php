@@ -542,6 +542,7 @@ class ExamController extends Controller
             'question_text' => (string) ($q->question_text ?? ''),
             'type' => (string) ($q->type ?? 'mcq'),
             'options' => $normalizedOptions,
+            'correct_answer' => strtoupper(trim((string) ($q->correct_answer ?? ''))),
             'subject' => (string) ($q->subject ?? ''),
             'topic' => (string) ($q->topic ?? ''),
             'difficulty' => (string) ($q->difficulty ?? 'medium'),

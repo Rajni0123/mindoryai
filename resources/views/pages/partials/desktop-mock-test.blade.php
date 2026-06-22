@@ -138,7 +138,10 @@
     }
 
     .mock-q-dot.current { border-color: #528dff; color: #afc6ff; background: rgba(82, 141, 255, 0.15); }
-    .mock-q-dot.answered { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.4); color: #86efac; }
+    .mock-q-dot.correct { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.4); color: #86efac; }
+    .mock-q-dot.wrong { background: rgba(239, 68, 68, 0.22); border-color: rgba(239, 68, 68, 0.45); color: #fca5a5; }
+    .mock-q-dot.correct.current { background: rgba(34, 197, 94, 0.28); color: #bbf7d0; }
+    .mock-q-dot.wrong.current { background: rgba(239, 68, 68, 0.28); color: #fecaca; }
 
     .mock-option {
         display: block;
@@ -907,13 +910,28 @@
         }
     }
 
+    function getQuestionAnswerStatus(question) {
+        const selected = state.answers[question.id];
+        if (selected == null || selected === '') {
+            return 'unanswered';
+        }
+
+        const correct = String(question.correct_answer || '').toUpperCase().trim();
+        if (!correct) {
+            return 'answered';
+        }
+
+        return String(selected).toUpperCase().trim() === correct ? 'correct' : 'wrong';
+    }
+
     function renderQuestionNav() {
         const nav = document.getElementById('mockQNav');
         if (!nav) return;
         nav.innerHTML = state.questions.map((q, i) => {
-            const answered = state.answers[q.id] != null;
+            const status = getQuestionAnswerStatus(q);
             const current = i === state.currentIndex;
-            return `<button type="button" class="mock-q-dot ${current ? 'current' : ''} ${answered ? 'answered' : ''}" data-idx="${i}">${i + 1}</button>`;
+            const statusClass = status === 'correct' ? 'correct' : (status === 'wrong' ? 'wrong' : '');
+            return `<button type="button" class="mock-q-dot ${current ? 'current' : ''} ${statusClass}" data-idx="${i}">${i + 1}</button>`;
         }).join('');
         nav.querySelectorAll('.mock-q-dot').forEach(btn => {
             btn.addEventListener('click', () => {

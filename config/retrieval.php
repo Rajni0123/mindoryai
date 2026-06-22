@@ -41,6 +41,7 @@ return [
         'prefix' => 'retrieval:',
         'ttl' => [
             'search' => (int) env('RETRIEVAL_CACHE_SEARCH_TTL', 3600),
+            'quiz_questions' => (int) env('RETRIEVAL_CACHE_QUIZ_QUESTIONS_TTL', 86400),
             'pdf' => (int) env('RETRIEVAL_CACHE_PDF_TTL', 1800),
             'chunks' => (int) env('RETRIEVAL_CACHE_CHUNKS_TTL', 86400),
             'embeddings' => (int) env('RETRIEVAL_CACHE_EMBEDDINGS_TTL', 604800),

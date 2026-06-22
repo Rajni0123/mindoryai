@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\ExamQuestion;
+use App\Models\MockTest;
+use App\Models\QuizAttempt;
 use App\Models\User;
 use App\Models\UserLearningAnalytics;
 use App\Models\TopicPerformance;
@@ -902,11 +905,153 @@ class LearningAnalyticsService
     // ==========================================
 
     /**
+     * Record mock test answers into performance tracking, XP, and streak.
+     */
+    public static function recordMockTestResults(MockTest $mockTest): array
+    {
+        if (! $mockTest->isCompleted()) {
+            return ['success' => false];
+        }
+
+        $config = $mockTest->config ?? [];
+        if (! empty($config['analytics_recorded'])) {
+            return ['success' => true, 'skipped' => true];
+        }
+
+        $userId = (int) $mockTest->user_id;
+        $questionIds = $mockTest->question_ids ?? [];
+        $answers = $mockTest->answers ?? [];
+        $questions = ExamQuestion::whereIn('id', $questionIds)->get()->keyBy('id');
+
+        $correct = 0;
+        $timePerQuestion = $mockTest->time_taken_seconds && count($questionIds) > 0
+            ? (int) ($mockTest->time_taken_seconds / count($questionIds))
+            : 0;
+
+        foreach ($questionIds as $qId) {
+            $question = $questions->get($qId);
+            if (! $question) {
+                continue;
+            }
+
+            $topic = trim($question->topic ?: $question->subject ?: 'General');
+            $subject = trim($question->subject ?: 'General');
+            $userAnswer = $answers[$qId] ?? $answers[(string) $qId] ?? null;
+            $isCorrect = $userAnswer !== null && $userAnswer !== '' && $question->isCorrect($userAnswer);
+
+            if ($isCorrect) {
+                $correct++;
+            }
+
+            self::trackPerformance($userId, $topic, $subject, $isCorrect, $timePerQuestion);
+        }
+
+        $user = User::find($userId);
+        if ($user) {
+            $today = now()->toDateString();
+            $yesterday = now()->subDay()->toDateString();
+
+            if ($user->last_study_date === $yesterday) {
+                $user->current_streak = ($user->current_streak ?? 0) + 1;
+            } elseif ($user->last_study_date !== $today) {
+                $user->current_streak = 1;
+            }
+
+            $user->last_study_date = $today;
+            $user->save();
+        }
+
+        $xp = ($correct * 5) + 25;
+        $xpResult = self::awardXP($userId, $xp, 'mock_test');
+        self::recordSessionActivity($userId, 'Mock Test');
+
+        $mockTest->update([
+            'config' => array_merge($config, ['analytics_recorded' => true]),
+        ]);
+
+        return [
+            'success' => true,
+            'xp_awarded' => $xp,
+            'leveled_up' => $xpResult['leveled_up'] ?? false,
+            'new_level' => $xpResult['new_level'] ?? null,
+        ];
+    }
+
+    /**
+     * Weak topics derived from completed mock test answers.
+     */
+    public static function getWeakTopicsFromMockTests(int $userId, int $limit = 5): array
+    {
+        $tests = MockTest::where('user_id', $userId)
+            ->completed()
+            ->orderByDesc('completed_at')
+            ->limit(5)
+            ->get();
+
+        if ($tests->isEmpty()) {
+            return [];
+        }
+
+        $topicStats = [];
+
+        foreach ($tests as $test) {
+            $questionIds = $test->question_ids ?? [];
+            $answers = $test->answers ?? [];
+            $questions = ExamQuestion::whereIn('id', $questionIds)->get()->keyBy('id');
+
+            foreach ($questionIds as $qId) {
+                $question = $questions->get($qId);
+                if (! $question) {
+                    continue;
+                }
+
+                $topic = trim($question->topic ?: $question->subject ?: 'General');
+                $subject = trim($question->subject ?: 'General');
+                $key = $subject . '|' . $topic;
+
+                if (! isset($topicStats[$key])) {
+                    $topicStats[$key] = [
+                        'topic' => $topic,
+                        'subject' => $subject,
+                        'correct' => 0,
+                        'total' => 0,
+                    ];
+                }
+
+                $topicStats[$key]['total']++;
+                $userAnswer = $answers[$qId] ?? $answers[(string) $qId] ?? null;
+                if ($userAnswer !== null && $userAnswer !== '' && $question->isCorrect($userAnswer)) {
+                    $topicStats[$key]['correct']++;
+                }
+            }
+        }
+
+        return collect($topicStats)
+            ->map(function ($stats) {
+                $rate = $stats['total'] > 0
+                    ? round(($stats['correct'] / $stats['total']) * 100, 1)
+                    : 0;
+
+                return [
+                    'topic' => $stats['topic'],
+                    'subject' => $stats['subject'],
+                    'success_rate' => $rate,
+                    'attempts' => $stats['total'],
+                    'source' => 'mock_test',
+                ];
+            })
+            ->sortBy('success_rate')
+            ->take($limit)
+            ->values()
+            ->all();
+    }
+
+    /**
      * Weak topics from recent low-scoring quiz attempts.
      */
     public static function getWeakTopicsFromQuizHistory(int $userId, int $limit = 5): array
     {
-        $attempts = \App\Models\QuizAttempt::where('user_id', $userId)
+        $attempts = QuizAttempt::where('user_id', $userId)
             ->completed()
             ->whereNotNull('topic')
             ->orderByDesc('created_at')
@@ -938,12 +1083,24 @@ class LearningAnalyticsService
             );
         }
 
+        $fromMock = self::getWeakTopicsFromMockTests($userId, $limit);
+        if (! empty($fromMock)) {
+            return $fromMock;
+        }
+
         $fromQuiz = self::getWeakTopicsFromQuizHistory($userId, $limit);
-        if (!empty($fromQuiz)) {
+        if (! empty($fromQuiz)) {
             return $fromQuiz;
         }
 
-        return self::getDefaultStarterTopics();
+        $hasHistory = MockTest::where('user_id', $userId)->completed()->exists()
+            || QuizAttempt::where('user_id', $userId)->completed()->exists();
+
+        if (! $hasHistory) {
+            return self::getDefaultStarterTopics();
+        }
+
+        return [];
     }
 
     /**

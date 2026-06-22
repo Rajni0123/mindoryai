@@ -13,6 +13,16 @@ use App\Services\Retrieval\Providers\ChunkRagProvider;
 use App\Services\Retrieval\Providers\ExaSearchProvider;
 use App\Services\Retrieval\Providers\NcertRagProvider;
 use App\Services\Retrieval\Providers\PyqRagProvider;
+use App\Services\Retrieval\Questions\DuplicateRemover;
+use App\Services\Retrieval\Questions\MCQDetector;
+use App\Services\Retrieval\Questions\PDFQuestionExtractor;
+use App\Services\Retrieval\Questions\QuestionExtractionEngine;
+use App\Services\Retrieval\Questions\QuestionNormalizer;
+use App\Services\Retrieval\Questions\QuestionParser;
+use App\Services\Retrieval\Questions\QuestionRanker;
+use App\Services\Retrieval\Questions\QuestionRepository;
+use App\Services\Retrieval\Questions\QuizService;
+use App\Services\Retrieval\Questions\RetrievalEngine;
 use App\Services\Retrieval\QuizRetrievalEngine;
 use App\Services\Retrieval\RetrievalCacheService;
 use App\Services\Retrieval\RetrievalOrchestrator;
@@ -33,6 +43,16 @@ class RetrievalServiceProvider extends ServiceProvider
         $this->app->singleton(TemporaryPdfRetriever::class);
         $this->app->singleton(ExaSearchService::class);
         $this->app->singleton(KnowledgeSourceIngestionService::class);
+        $this->app->singleton(RetrievalEngine::class);
+        $this->app->singleton(PDFQuestionExtractor::class);
+        $this->app->singleton(MCQDetector::class);
+        $this->app->singleton(QuestionParser::class);
+        $this->app->singleton(QuestionNormalizer::class);
+        $this->app->singleton(DuplicateRemover::class);
+        $this->app->singleton(QuestionRanker::class);
+        $this->app->singleton(QuestionRepository::class);
+        $this->app->singleton(QuestionExtractionEngine::class);
+        $this->app->singleton(QuizService::class);
         $this->app->singleton(QuizRetrievalEngine::class);
 
         $this->app->singleton(ProviderRegistry::class, function ($app) {
