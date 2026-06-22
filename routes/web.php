@@ -55,13 +55,16 @@ Route::get('/auth/google/callback', [\App\Http\Controllers\Auth\SocialAuthContro
 // ========================================
 // LEGACY ROUTES - Redirect to unified login
 // ========================================
-// Old admin login URL → redirect to /login
-Route::get('/secure-admin/access', function () {
-    return redirect()->route('login');
+// Admin login (email or mobile + password)
+Route::get('/admin/login', [\App\Http\Controllers\Auth\AdminAuthController::class, 'showLoginForm'])->name('admin.login');
+Route::middleware('throttle:auth')->group(function () {
+    Route::post('/admin/login', [\App\Http\Controllers\Auth\AdminAuthController::class, 'login'])->name('admin.login.submit');
 });
-Route::get('/admin/login', function () {
-    return redirect()->route('login');
-})->name('admin.login');
+
+// Legacy admin URL → admin login
+Route::get('/secure-admin/access', function () {
+    return redirect()->route('admin.login');
+});
 // Old user OTP login → redirect to /login
 Route::get('/auth/otp', function () {
     return redirect()->route('login');

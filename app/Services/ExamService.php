@@ -188,6 +188,8 @@ class ExamService
                 'negative_marking' => $exam->config['negative_marking'] ?? true,
                 'is_real_pyq' => $hasRealPYQ,
                 'source' => $hasRealPYQ ? 'cbse-board-paper' : 'ai-generated',
+                'subject' => $subject !== 'all' ? $subject : null,
+                'language' => $options['language'] ?? null,
             ],
             'status' => 'pending',
         ]);

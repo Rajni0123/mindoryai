@@ -159,6 +159,7 @@ class ExamController extends Controller
         $request->validate([
             'exam_id' => 'required|exists:exams,id',
             'subject' => 'nullable|string',
+            'language' => 'nullable|string|max:50',
             'difficulty' => 'nullable|in:easy,medium,hard',
             'year' => 'nullable|integer',
             'question_count' => 'nullable|integer|min:5|max:200',
@@ -183,6 +184,7 @@ class ExamController extends Controller
 
             $mockTest = $this->examService->generateMockTest($user, $request->exam_id, [
                 'subject' => $request->subject,
+                'language' => $request->language,
                 'difficulty' => $request->difficulty,
                 'year' => $request->year,
                 'question_count' => $request->question_count,

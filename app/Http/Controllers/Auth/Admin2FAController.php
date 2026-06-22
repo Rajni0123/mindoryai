@@ -25,8 +25,8 @@ class Admin2FAController extends Controller
      */
     public function showVerify(Request $request)
     {
-        // Check if admin mobile is verified in session
-        if (!session('admin_mobile_verified') || !session('admin_id_pending_2fa')) {
+        // Check if admin completed first auth step (password / OTP)
+        if (!session('admin_id_pending_2fa')) {
             return redirect()->route('admin.login')->with('error', 'Session expired. Please login again.');
         }
 
@@ -111,7 +111,7 @@ class Admin2FAController extends Controller
         $request->session()->regenerate();
 
         // Clear session data
-        session()->forget(['admin_mobile_verified', 'admin_id_pending_2fa']);
+        session()->forget(['admin_mobile_verified', 'admin_email_verified', 'admin_id_pending_2fa']);
 
         // CRITICAL: Save session before responding
         // This ensures the session is persisted before the redirect happens

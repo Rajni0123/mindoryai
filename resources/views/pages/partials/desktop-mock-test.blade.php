@@ -36,6 +36,23 @@
         .mock-home-grid { grid-template-columns: 1fr; }
     }
 
+    .mock-settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+        .mock-settings-grid { grid-template-columns: 1fr; }
+    }
+
+    .mock-field-label {
+        display: block;
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+    }
+
     .mock-card {
         background: rgba(29, 31, 39, 0.72);
         border: 1px solid rgba(255, 255, 255, 0.08);
@@ -43,33 +60,6 @@
         padding: 20px;
         margin-bottom: 14px;
     }
-
-    .mock-hero {
-        background: linear-gradient(135deg, #7b61ff, #528dff);
-        border-radius: 20px;
-        padding: 28px 32px;
-        display: flex;
-        align-items: center;
-        gap: 24px;
-        text-align: left;
-        color: #fff;
-    }
-
-    @media (max-width: 640px) {
-        .mock-hero {
-            flex-direction: column;
-            text-align: center;
-            padding: 24px 20px;
-        }
-    }
-
-    .mock-hero h3 {
-        margin: 12px 0 6px;
-        font-size: 20px;
-        font-weight: 800;
-    }
-
-    .mock-hero p { margin: 0; opacity: 0.85; font-size: 14px; }
 
     .mock-info-row {
         display: flex;
@@ -82,31 +72,6 @@
     }
 
     .mock-info-row .material-symbols-outlined { color: #afc6ff; }
-
-    .mock-exam-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 10px;
-        margin: 12px 0;
-    }
-
-    .mock-exam-chip {
-        padding: 14px 12px;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(11, 14, 21, 0.5);
-        color: var(--text-primary);
-        cursor: pointer;
-        text-align: center;
-        font-size: 13px;
-        font-weight: 600;
-        transition: all 0.2s;
-    }
-
-    .mock-exam-chip:hover, .mock-exam-chip.selected {
-        border-color: rgba(175, 198, 255, 0.45);
-        background: rgba(175, 198, 255, 0.1);
-    }
 
     .mock-field {
         width: 100%;
@@ -260,6 +225,21 @@
     body.app-view-mock_test .sidebar-chat-tools { display: none; }
 </style>
 
+@php
+    $webMockExams = \App\Models\Exam::active()
+        ->orderBy('order')
+        ->get(['id', 'name', 'slug', 'subjects', 'category'])
+        ->map(fn ($exam) => [
+            'id' => $exam->id,
+            'name' => $exam->name,
+            'slug' => $exam->slug,
+            'subjects' => $exam->subjects ?? [],
+            'category' => $exam->category,
+        ])
+        ->values();
+    $webUserTargetExam = auth()->user()?->target_exam;
+@endphp
+
 <div id="appMockTestView" class="mock-shell hidden">
     <div class="dash-topbar">
         <div>
@@ -281,26 +261,36 @@
         <div class="mock-page">
             <div id="mockHomeView">
                 <div class="mock-home-grid">
-                    <div class="mock-hero mock-full-span">
-                        <span class="material-symbols-outlined" style="font-size:52px;flex-shrink:0">assignment</span>
-                        <div>
-                            <h3 id="mockHeroTitle">AI Mock Test</h3>
-                            <p id="mockHeroSub">Select your exam and start a timed full mock</p>
-                        </div>
-                    </div>
-
                     <div class="mock-column">
                         <div class="mock-card">
-                            <h3 style="font-size:15px;font-weight:700;margin:0 0 10px;color:var(--text-primary)">Select Exam</h3>
-                            <div class="mock-exam-grid" id="mockExamGrid"></div>
-                        </div>
+                            <h3 style="font-size:15px;font-weight:700;margin:0 0 14px;color:var(--text-primary)">Test Configuration</h3>
 
-                        <div class="mock-card">
-                            <h3 style="font-size:15px;font-weight:700;margin:0 0 10px;color:var(--text-primary)">Test Settings</h3>
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                            <label class="mock-field-label" for="mockExamSelect">Select Exam</label>
+                            <select id="mockExamSelect" class="mock-field">
+                                <option value="">Loading exams...</option>
+                            </select>
+
+                            <div class="mock-settings-grid">
                                 <div>
-                                    <label style="font-size:12px;color:var(--text-secondary)">Questions</label>
-                                    <select id="mockQuestionCount" class="mock-field">
+                                    <label class="mock-field-label" for="mockSubjectSelect">Subject</label>
+                                    <select id="mockSubjectSelect" class="mock-field" style="margin-bottom:0">
+                                        <option value="">All Subjects</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="mock-field-label" for="mockLanguage">Language</label>
+                                    <select id="mockLanguage" class="mock-field" style="margin-bottom:0">
+                                        <option value="English" selected>English</option>
+                                        <option value="Hindi">Hindi</option>
+                                        <option value="Hinglish">Hinglish</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mock-settings-grid" style="margin-top:12px">
+                                <div>
+                                    <label class="mock-field-label" for="mockQuestionCount">Questions</label>
+                                    <select id="mockQuestionCount" class="mock-field" style="margin-bottom:0">
                                         <option value="10">10 Questions</option>
                                         <option value="20">20 Questions</option>
                                         <option value="30" selected>30 Questions</option>
@@ -308,8 +298,8 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label style="font-size:12px;color:var(--text-secondary)">Duration (minutes)</label>
-                                    <select id="mockDuration" class="mock-field">
+                                    <label class="mock-field-label" for="mockDuration">Duration (minutes)</label>
+                                    <select id="mockDuration" class="mock-field" style="margin-bottom:0">
                                         <option value="15">15 min</option>
                                         <option value="30">30 min</option>
                                         <option value="45" selected>45 min</option>
@@ -318,8 +308,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <label style="font-size:12px;color:var(--text-secondary)">Subject (optional)</label>
-                            <input type="text" id="mockSubject" class="mock-field" placeholder="e.g. Physics, All subjects">
                         </div>
 
                         <button type="button" class="mock-btn" id="mockStartBtn">Start Mock Test</button>
@@ -400,6 +388,10 @@
 <script>
 (function () {
     const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+    const MOCK_BOOTSTRAP = {
+        exams: @json($webMockExams),
+        targetExam: @json($webUserTargetExam),
+    };
 
     const state = {
         exams: [],
@@ -475,46 +467,85 @@
         state.timerInterval = setInterval(tick, 1000);
     }
 
+    function normalizeExamName(value) {
+        return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    }
+
+    function findDefaultExamId(exams) {
+        if (!exams.length) return null;
+        const target = normalizeExamName(MOCK_BOOTSTRAP.targetExam);
+        if (target) {
+            const matched = exams.find(exam => {
+                const name = normalizeExamName(exam.name);
+                const slug = normalizeExamName(exam.slug);
+                return name.includes(target) || target.includes(name) || slug.includes(target.replace(/\s+/g, '-'));
+            });
+            if (matched) return matched.id;
+        }
+        return exams[0].id;
+    }
+
+    function renderSubjectOptions() {
+        const select = document.getElementById('mockSubjectSelect');
+        if (!select) return;
+
+        const exam = state.exams.find(item => item.id === state.selectedExamId);
+        const subjects = Array.isArray(exam?.subjects) ? exam.subjects.filter(Boolean) : [];
+        const previous = select.value;
+
+        select.innerHTML = '<option value="">All Subjects</option>' + subjects.map(subject =>
+            `<option value="${subject}">${subject}</option>`
+        ).join('');
+
+        if (previous && subjects.includes(previous)) {
+            select.value = previous;
+        }
+    }
+
+    function renderExamSelect() {
+        const select = document.getElementById('mockExamSelect');
+        if (!select) return;
+
+        if (!state.exams.length) {
+            select.innerHTML = '<option value="">No exams available</option>';
+            select.disabled = true;
+            document.getElementById('mockStartBtn').disabled = true;
+            return;
+        }
+
+        select.disabled = false;
+        document.getElementById('mockStartBtn').disabled = false;
+        select.innerHTML = '<option value="">Select exam</option>' + state.exams.map(exam =>
+            `<option value="${exam.id}" ${state.selectedExamId === exam.id ? 'selected' : ''}>${exam.name}</option>`
+        ).join('');
+
+        if (state.selectedExamId) {
+            select.value = String(state.selectedExamId);
+        }
+
+        renderSubjectOptions();
+    }
+
     async function loadExams() {
         try {
             const res = await mockApi('/');
-            state.exams = res.data || [];
-            const grid = document.getElementById('mockExamGrid');
-            if (!grid) return;
-
-            if (!state.exams.length) {
-                grid.innerHTML = '<p style="grid-column:1/-1;font-size:13px;color:var(--text-secondary)">No exams configured yet.</p>';
-                return;
+            const apiExams = res.data || [];
+            if (apiExams.length) {
+                state.exams = apiExams;
             }
-
-            grid.innerHTML = state.exams.map(exam => `
-                <button type="button" class="mock-exam-chip ${state.selectedExamId === exam.id ? 'selected' : ''}" data-id="${exam.id}">
-                    ${exam.name || exam.slug}
-                </button>
-            `).join('');
-
-            grid.querySelectorAll('.mock-exam-chip').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    state.selectedExamId = parseInt(btn.dataset.id, 10);
-                    const exam = state.exams.find(e => e.id === state.selectedExamId);
-                    if (exam) {
-                        document.getElementById('mockHeroTitle').textContent = exam.name + ' — Mock Test';
-                        document.getElementById('mockHeroSub').textContent =
-                            (state.selectedExamId ? '' : '') + 'Timed full-length practice';
-                    }
-                    loadExams();
-                });
-            });
-
-            if (!state.selectedExamId && state.exams[0]) {
-                state.selectedExamId = state.exams[0].id;
-                document.getElementById('mockHeroTitle').textContent = state.exams[0].name + ' — Mock Test';
-                loadExams();
-            }
-        } catch (e) {
-            document.getElementById('mockExamGrid').innerHTML =
-                '<p style="color:var(--text-secondary);font-size:13px">Could not load exams.</p>';
+        } catch (_) {
+            // Fall back to server-rendered exam list below.
         }
+
+        if (!state.exams.length && MOCK_BOOTSTRAP.exams?.length) {
+            state.exams = MOCK_BOOTSTRAP.exams;
+        }
+
+        if (!state.selectedExamId) {
+            state.selectedExamId = findDefaultExamId(state.exams);
+        }
+
+        renderExamSelect();
     }
 
     async function loadHistory() {
@@ -554,7 +585,8 @@
         try {
             const qCount = parseInt(document.getElementById('mockQuestionCount').value, 10);
             const duration = parseInt(document.getElementById('mockDuration').value, 10);
-            const subject = document.getElementById('mockSubject').value.trim();
+            const subject = document.getElementById('mockSubjectSelect').value.trim();
+            const language = document.getElementById('mockLanguage').value;
 
             const gen = await mockApi('/mock-test/generate', {
                 method: 'POST',
@@ -563,6 +595,7 @@
                     question_count: qCount,
                     duration_minutes: duration,
                     subject: subject || null,
+                    language: language,
                 }),
             });
 
@@ -684,6 +717,11 @@
     }
 
     document.getElementById('mockStartBtn')?.addEventListener('click', startMockTest);
+    document.getElementById('mockExamSelect')?.addEventListener('change', (event) => {
+        const value = parseInt(event.target.value, 10);
+        state.selectedExamId = Number.isNaN(value) ? null : value;
+        renderSubjectOptions();
+    });
     document.getElementById('mockPrevBtn')?.addEventListener('click', () => {
         if (state.currentIndex > 0) {
             state.currentIndex--;
