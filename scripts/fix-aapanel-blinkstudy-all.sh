@@ -35,6 +35,11 @@ write_laravel_rewrite() {
   printf '%s\n' "${LARAVEL_LOCATION}" > "${file}"
 }
 
+strip_inline_location() {
+  local conf="$1"
+  perl -i -0777 -pe 's/\s*location\s+\/\s*\{\s*try_files\s+\$uri\s+\$uri\/\s+\/index\.php\?\$query_string;\s*\}\s*//gs' "${conf}" 2>/dev/null || true
+}
+
 fix_vhost() {
   local conf="$1"
   local site
@@ -76,21 +81,26 @@ fix_vhost() {
     echo "  rewrite include: ADDED to vhost"
   fi
 
-  # 4) Extension fallback (aaPanel loads extension/SITENAME/*.conf)
+  # 4) Extension fallback — only if rewrite include missing (avoid duplicate location /)
   local ext_site_dir="${EXT_DIR}/${site}"
-  mkdir -p "${ext_site_dir}"
-  write_laravel_rewrite "${ext_site_dir}/00-laravel.conf"
-  echo "  extension: ${ext_site_dir}/00-laravel.conf"
-
-  if grep -q "extension/${site}/" "${conf}"; then
-    echo "  extension include: already in vhost"
-  elif grep -q '#REWRITE-END' "${conf}"; then
-    sed -i "/#REWRITE-END/a\\    include ${ext_site_dir}/*.conf;" "${conf}"
-    echo "  extension include: ADDED"
+  if ! grep -q 'vhost/rewrite/' "${conf}"; then
+    mkdir -p "${ext_site_dir}"
+    write_laravel_rewrite "${ext_site_dir}/00-laravel.conf"
+    echo "  extension: ${ext_site_dir}/00-laravel.conf"
+    if grep -q '#REWRITE-END' "${conf}"; then
+      sed -i "/#REWRITE-END/a\\    include ${ext_site_dir}/*.conf;" "${conf}"
+      echo "  extension include: ADDED"
+    fi
+  else
+    rm -rf "${ext_site_dir}" 2>/dev/null || true
+    echo "  extension: skipped (using rewrite file)"
   fi
 
-  # 5) Inline try_files in main vhost if still missing
-  if ! grep -q 'try_files' "${conf}" && ! grep -q 'try_files' "${rewrite_file}"; then
+  # Remove inline location / if rewrite file is used (prevents duplicate location /)
+  strip_inline_location "${conf}"
+
+  # 5) Inline try_files ONLY when no rewrite include and no try_files anywhere
+  if ! grep -q 'vhost/rewrite/' "${conf}" && ! grep -q 'try_files' "${conf}" && ! grep -q 'try_files' "${rewrite_file}" 2>/dev/null; then
     if grep -q '#PHP-INFO-START' "${conf}"; then
       sed -i "/#PHP-INFO-START/i\\    location / {\\n        try_files \$uri \$uri/ /index.php?\$query_string;\\n    }\\n" "${conf}"
       echo "  inline location /: ADDED"
