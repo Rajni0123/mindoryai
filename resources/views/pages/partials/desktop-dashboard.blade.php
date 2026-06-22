@@ -163,19 +163,25 @@
     }
 
     .dash-accuracy {
-        grid-row: span 2;
+        grid-row: span 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 320px;
+        padding: 16px 18px;
+    }
+
+    .dash-accuracy .dash-card-title {
+        margin-bottom: 8px;
+        align-self: flex-start;
+        width: 100%;
     }
 
     .accuracy-rings {
         position: relative;
-        width: 220px;
-        height: 220px;
-        margin: 8px auto 20px;
+        width: 148px;
+        height: 148px;
+        margin: 0 auto 10px;
     }
 
     .accuracy-rings svg {
@@ -195,7 +201,7 @@
 
     .accuracy-center .pct {
         font-family: Manrope, sans-serif;
-        font-size: 3rem;
+        font-size: 1.75rem;
         font-weight: 800;
         background: linear-gradient(135deg, #afc6ff, #ddb8ff);
         -webkit-background-clip: text;
@@ -205,15 +211,15 @@
     }
 
     .accuracy-center .lbl {
-        font-size: 12px;
+        font-size: 10px;
         color: var(--text-secondary);
-        margin-top: 4px;
+        margin-top: 2px;
     }
 
     .accuracy-legend {
         display: flex;
-        gap: 20px;
-        font-size: 12px;
+        gap: 14px;
+        font-size: 11px;
         color: var(--text-secondary);
     }
 
@@ -285,11 +291,21 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 200px;
+        min-height: 130px;
+        padding: 4px 0;
     }
 
     .dash-radar-wrap canvas {
         max-width: 100%;
+        height: auto;
+    }
+
+    .dash-weakness {
+        padding: 16px 18px;
+    }
+
+    .dash-weakness .dash-card-title {
+        margin-bottom: 6px;
     }
 
     .dash-revision-list {
@@ -414,7 +430,7 @@
 
     .dash-quick-row {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 12px;
         margin-bottom: 18px;
         max-width: 1400px;
@@ -499,12 +515,8 @@
     <div class="dash-scroll scrollbar-thin">
         <div class="dash-quick-row">
             <button type="button" class="dash-quick-btn" onclick="window.switchAppView('chat'); createNewChat();">
-                <span class="material-symbols-outlined">chat</span>
+                <span class="material-symbols-outlined">smart_toy</span>
                 <span>AI Tutor</span>
-            </button>
-            <button type="button" class="dash-quick-btn" onclick="window.switchAppView('chat');">
-                <span class="material-symbols-outlined">document_scanner</span>
-                <span>Scan & Solve</span>
             </button>
             <button type="button" class="dash-quick-btn" onclick="document.getElementById('dashRevisionSection')?.scrollIntoView({behavior:'smooth'})">
                 <span class="material-symbols-outlined">menu_book</span>
@@ -604,9 +616,9 @@
                     <p style="font-size:12px;color:var(--text-secondary);margin:12px 0 0;">Target: ${escapeHtml(data.user.target_exam || 'Your exam')}</p>
                 </div>
 
-                <div class="dash-card">
+                <div class="dash-card dash-weakness">
                     <div class="dash-card-title">Neural Weakness Map</div>
-                    <div class="dash-radar-wrap"><canvas id="weakRadar" width="260" height="220"></canvas></div>
+                    <div class="dash-radar-wrap"><canvas id="weakRadar" width="200" height="160"></canvas></div>
                 </div>
 
                 <div class="dash-card" id="dashRevisionSection">
@@ -629,8 +641,8 @@
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
         const w = canvas.width, h = canvas.height;
-        const cx = w / 2, cy = h / 2 + 8;
-        const radius = Math.min(w, h) * 0.32;
+        const cx = w / 2, cy = h / 2 + 4;
+        const radius = Math.min(w, h) * 0.28;
 
         ctx.clearRect(0, 0, w, h);
 
@@ -680,12 +692,12 @@
         ctx.stroke();
 
         ctx.fillStyle = '#c2c6d6';
-        ctx.font = '11px Inter, sans-serif';
+        ctx.font = '10px Inter, sans-serif';
         ctx.textAlign = 'center';
         labels.forEach((item, i) => {
             const a = i * angleStep - Math.PI / 2;
-            const x = cx + Math.cos(a) * (radius + 22);
-            const y = cy + Math.sin(a) * (radius + 22);
+            const x = cx + Math.cos(a) * (radius + 16);
+            const y = cy + Math.sin(a) * (radius + 16);
             ctx.fillText(item.label, x, y + 4);
         });
     }

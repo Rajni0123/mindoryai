@@ -1643,8 +1643,8 @@
                     <span class="sidebar-item-text text-sm">Dashboard</span>
                 </button>
                 <button type="button" data-view="chat" class="app-nav-item" onclick="window.switchAppView('chat')">
-                    <span class="material-symbols-outlined">chat</span>
-                    <span class="sidebar-item-text text-sm">AI Chat</span>
+                    <span class="material-symbols-outlined">smart_toy</span>
+                    <span class="sidebar-item-text text-sm">AI Tutor</span>
                 </button>
                 <button type="button" data-view="dashboard" class="app-nav-item" onclick="window.switchAppView('dashboard'); setTimeout(()=>document.getElementById('dashRevisionSection')?.scrollIntoView({behavior:'smooth'}), 200);">
                     <span class="material-symbols-outlined">menu_book</span>
@@ -1659,8 +1659,8 @@
             <!-- Dashboard quick tools -->
             <div class="sidebar-dash-tools px-3 pb-3 space-y-1">
                 <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-primary)]" onclick="window.switchAppView('chat'); createNewChat();">
-                    <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">add_comment</span>
-                    <span class="sidebar-item-text text-sm">Start new chat</span>
+                    <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">smart_toy</span>
+                    <span class="sidebar-item-text text-sm">Ask AI Tutor</span>
                 </button>
             </div>
 
@@ -1690,8 +1690,8 @@
             <div class="sidebar-dash-tools flex-1 px-3 pt-2">
                 <p class="text-xs uppercase tracking-wide text-[var(--text-secondary)] px-2 mb-2">Quick access</p>
                 <div class="space-y-1">
-                    <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.switchAppView('chat')">
-                        <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">psychology</span>
+                    <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.switchAppView('chat'); createNewChat();">
+                        <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">smart_toy</span>
                         <span class="sidebar-item-text text-sm">AI Tutor</span>
                     </button>
                     <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.switchAppView('dashboard'); setTimeout(()=>document.getElementById('dashRevisionSection')?.scrollIntoView({behavior:'smooth'}), 200);">
