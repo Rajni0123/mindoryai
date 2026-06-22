@@ -179,17 +179,265 @@
         margin-bottom: 16px;
     }
 
+    .mock-results-wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 8px 0 32px;
+    }
+
+    .mock-results-hero {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .mock-results-hero h3 {
+        margin: 0 0 6px;
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        letter-spacing: -0.02em;
+    }
+
+    .mock-results-hero p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
+
     .mock-results-grid {
         display: grid;
-        grid-template-columns: minmax(260px, 0.85fr) 1.15fr;
-        gap: 18px;
-        align-items: start;
+        grid-template-columns: 1fr 1.35fr;
+        gap: 20px;
+        align-items: stretch;
+    }
+
+    .mock-results-score-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 28px 24px 24px;
+        text-align: center;
+        background: linear-gradient(160deg, rgba(82, 141, 255, 0.12) 0%, rgba(29, 31, 39, 0.9) 45%);
+        border: 1px solid rgba(82, 141, 255, 0.22);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .mock-score-ring-wrap {
+        position: relative;
+        width: 148px;
+        height: 148px;
+        margin: 0 auto 18px;
+    }
+
+    .mock-score-ring-svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+    }
+
+    .mock-score-ring-bg {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.08);
+        stroke-width: 10;
+    }
+
+    .mock-score-ring-progress {
+        fill: none;
+        stroke: url(#mockScoreGradient);
+        stroke-width: 10;
+        stroke-linecap: round;
+        stroke-dasharray: 326.7;
+        stroke-dashoffset: 326.7;
+        transition: stroke-dashoffset 1s ease-out;
+    }
+
+    .mock-score-ring-label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+    }
+
+    .mock-score-ring-label span:first-child {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #e8efff;
+        line-height: 1;
+    }
+
+    .mock-score-ring-label span:last-child {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #7b9cff;
+    }
+
+    .mock-result-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 14px;
+        border: 1px solid transparent;
+    }
+
+    .mock-result-badge.great {
+        background: rgba(34, 197, 94, 0.12);
+        border-color: rgba(34, 197, 94, 0.35);
+        color: #86efac;
+    }
+
+    .mock-result-badge.good {
+        background: rgba(82, 141, 255, 0.12);
+        border-color: rgba(82, 141, 255, 0.35);
+        color: #afc6ff;
+    }
+
+    .mock-result-badge.low {
+        background: rgba(251, 191, 36, 0.12);
+        border-color: rgba(251, 191, 36, 0.35);
+        color: #fcd34d;
+    }
+
+    .mock-result-summary-line {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin: 0 0 20px;
+        line-height: 1.5;
+    }
+
+    .mock-result-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .mock-result-actions .mock-btn {
+        width: 100%;
+    }
+
+    .mock-btn-ghost {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: var(--text-secondary);
+    }
+
+    .mock-btn-ghost:hover {
+        color: var(--text-primary);
+        border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .mock-stats-panel {
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .mock-stats-panel h4 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+    }
+
+    .mock-stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .mock-stat-tile {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px;
+        border-radius: 14px;
+        background: rgba(11, 14, 21, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .mock-stat-tile.wide {
+        grid-column: 1 / -1;
+    }
+
+    .mock-stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .mock-stat-icon .material-symbols-outlined {
+        font-size: 22px;
+    }
+
+    .mock-stat-icon.correct { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+    .mock-stat-icon.wrong { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+    .mock-stat-icon.skipped { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+    .mock-stat-icon.time { background: rgba(82, 141, 255, 0.15); color: #93c5fd; }
+    .mock-stat-icon.score { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+
+    .mock-stat-body label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        margin-bottom: 4px;
+    }
+
+    .mock-stat-body strong {
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        line-height: 1.2;
+    }
+
+    .mock-stat-body small {
+        display: block;
+        margin-top: 2px;
+        font-size: 12px;
+        color: var(--text-secondary);
+    }
+
+    .mock-accuracy-bar {
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+        margin-top: 4px;
+    }
+
+    .mock-accuracy-bar-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #528dff, #7b61ff);
+        width: 0%;
+        transition: width 1s ease-out;
     }
 
     @media (max-width: 900px) {
         .mock-exam-layout,
         .mock-results-grid { grid-template-columns: 1fr; }
         .mock-exam-side { position: static; }
+        .mock-stats-grid { grid-template-columns: 1fr; }
+        .mock-stat-tile.wide { grid-column: auto; }
     }
 
     .mock-history-item {
@@ -208,18 +456,7 @@
     }
 
     .mock-score-ring {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, rgba(123, 97, 255, 0.3), rgba(82, 141, 255, 0.2));
-        border: 3px solid #528dff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 16px;
-        font-size: 28px;
-        font-weight: 800;
-        color: #afc6ff;
+        display: none;
     }
 
     body.app-view-mock_test .sidebar-chat-tools { display: none; }
@@ -372,14 +609,43 @@
                 </aside>
             </div>
 
-            <div id="mockResultsView" style="display:none" class="mock-results-grid">
-                <div class="mock-card" style="text-align:center">
-                    <div class="mock-score-ring" id="mockScoreRing">0%</div>
-                    <h3 style="margin:0 0 6px;color:var(--text-primary)">Test Completed!</h3>
-                    <p id="mockResultSummary" style="font-size:14px;color:var(--text-secondary);margin:0 0 16px"></p>
-                    <button type="button" class="mock-btn" id="mockBackHomeBtn">Take Another Mock Test</button>
+            <div id="mockResultsView" style="display:none">
+                <div class="mock-results-wrap">
+                    <div class="mock-results-hero">
+                        <h3>Test Completed</h3>
+                        <p>Here’s how you performed on this mock test</p>
+                    </div>
+                    <div class="mock-results-grid">
+                        <div class="mock-card mock-results-score-card">
+                            <div id="mockResultBadge" class="mock-result-badge good">
+                                <span class="material-symbols-outlined" style="font-size:16px">emoji_events</span>
+                                <span id="mockResultBadgeText">Good effort</span>
+                            </div>
+                            <div class="mock-score-ring-wrap">
+                                <svg class="mock-score-ring-svg" viewBox="0 0 120 120" aria-hidden="true">
+                                    <defs>
+                                        <linearGradient id="mockScoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#528dff"/>
+                                            <stop offset="100%" stop-color="#7b61ff"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle class="mock-score-ring-bg" cx="60" cy="60" r="52"/>
+                                    <circle id="mockScoreRingProgress" class="mock-score-ring-progress" cx="60" cy="60" r="52"/>
+                                </svg>
+                                <div class="mock-score-ring-label">
+                                    <span id="mockScoreRing">0%</span>
+                                    <span>Accuracy</span>
+                                </div>
+                            </div>
+                            <p id="mockResultSummary" class="mock-result-summary-line"></p>
+                            <div class="mock-result-actions">
+                                <button type="button" class="mock-btn" id="mockBackHomeBtn">Take Another Mock Test</button>
+                                <button type="button" class="mock-btn mock-btn-ghost" onclick="window.switchAppView('dashboard')">Back to Dashboard</button>
+                            </div>
+                        </div>
+                        <div class="mock-card mock-stats-panel" id="mockResultDetails"></div>
+                    </div>
                 </div>
-                <div class="mock-card" id="mockResultDetails"></div>
             </div>
         </div>
     </div>
@@ -440,7 +706,7 @@
             mockHomeView: 'block',
             mockLoadingView: 'block',
             mockExamView: 'grid',
-            mockResultsView: 'grid',
+            mockResultsView: 'block',
         };
         ['mockHomeView', 'mockLoadingView', 'mockExamView', 'mockResultsView'].forEach(id => {
             const el = document.getElementById(id);
@@ -695,6 +961,94 @@
         renderQuestionNav();
     }
 
+    function renderResultsUI(d, total) {
+        const correct = d.correct_answers ?? 0;
+        const wrong = d.wrong_answers ?? 0;
+        const skipped = d.unanswered ?? 0;
+        const score = d.score ?? 0;
+        const accuracy = d.accuracy ?? (total ? Math.round((correct / total) * 100) : 0);
+        const timeTaken = d.time_taken || '—';
+
+        document.getElementById('mockScoreRing').textContent = accuracy + '%';
+
+        const ring = document.getElementById('mockScoreRingProgress');
+        if (ring) {
+            const offset = 326.7 - (326.7 * Math.min(100, Math.max(0, accuracy)) / 100);
+            ring.style.strokeDashoffset = String(offset);
+        }
+
+        const badge = document.getElementById('mockResultBadge');
+        const badgeText = document.getElementById('mockResultBadgeText');
+        if (badge && badgeText) {
+            badge.classList.remove('great', 'good', 'low');
+            if (accuracy >= 75) {
+                badge.classList.add('great');
+                badgeText.textContent = 'Excellent work!';
+            } else if (accuracy >= 45) {
+                badge.classList.add('good');
+                badgeText.textContent = 'Good effort — keep practicing';
+            } else {
+                badge.classList.add('low');
+                badgeText.textContent = 'Room to improve';
+            }
+        }
+
+        document.getElementById('mockResultSummary').textContent =
+            `You scored ${score} points from ${total} questions · ${correct} correct, ${wrong} wrong, ${skipped} skipped.`;
+
+        document.getElementById('mockResultDetails').innerHTML = `
+            <h4>Performance breakdown</h4>
+            <div class="mock-stats-grid">
+                <div class="mock-stat-tile">
+                    <div class="mock-stat-icon correct"><span class="material-symbols-outlined">check_circle</span></div>
+                    <div class="mock-stat-body">
+                        <label>Correct</label>
+                        <strong>${correct}</strong>
+                        <small>${total ? Math.round((correct / total) * 100) : 0}% of paper</small>
+                    </div>
+                </div>
+                <div class="mock-stat-tile">
+                    <div class="mock-stat-icon wrong"><span class="material-symbols-outlined">cancel</span></div>
+                    <div class="mock-stat-body">
+                        <label>Wrong</label>
+                        <strong>${wrong}</strong>
+                        <small>Review these topics</small>
+                    </div>
+                </div>
+                <div class="mock-stat-tile">
+                    <div class="mock-stat-icon skipped"><span class="material-symbols-outlined">help</span></div>
+                    <div class="mock-stat-body">
+                        <label>Skipped</label>
+                        <strong>${skipped}</strong>
+                        <small>Unanswered questions</small>
+                    </div>
+                </div>
+                <div class="mock-stat-tile">
+                    <div class="mock-stat-icon score"><span class="material-symbols-outlined">military_tech</span></div>
+                    <div class="mock-stat-body">
+                        <label>Total score</label>
+                        <strong>${score}</strong>
+                        <small>After marking scheme</small>
+                    </div>
+                </div>
+                <div class="mock-stat-tile wide">
+                    <div class="mock-stat-icon time"><span class="material-symbols-outlined">schedule</span></div>
+                    <div class="mock-stat-body" style="flex:1">
+                        <label>Time taken</label>
+                        <strong>${timeTaken}</strong>
+                        <div class="mock-accuracy-bar"><div class="mock-accuracy-bar-fill" id="mockAccuracyBar"></div></div>
+                        <small>${accuracy}% accuracy overall</small>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        requestAnimationFrame(() => {
+            const bar = document.getElementById('mockAccuracyBar');
+            if (bar) bar.style.width = accuracy + '%';
+        });
+    }
+
     async function submitMockTest(auto = false) {
         if (!auto && !confirm('Submit your mock test?')) return;
 
@@ -710,18 +1064,8 @@
 
             const d = res.data || {};
             const total = state.questions.length;
-            const accuracy = d.accuracy ?? (total ? Math.round((d.correct_answers / total) * 100) : 0);
 
-            document.getElementById('mockScoreRing').textContent = accuracy + '%';
-            document.getElementById('mockResultSummary').textContent =
-                `Score: ${d.score ?? 0} · ${d.correct_answers ?? 0} correct · ${d.wrong_answers ?? 0} wrong · ${d.unanswered ?? 0} skipped`;
-
-            document.getElementById('mockResultDetails').innerHTML = `
-                <div class="mock-info-row"><span class="material-symbols-outlined">check_circle</span><div>Correct: <strong>${d.correct_answers ?? 0}</strong></div></div>
-                <div class="mock-info-row"><span class="material-symbols-outlined">cancel</span><div>Wrong: <strong>${d.wrong_answers ?? 0}</strong></div></div>
-                <div class="mock-info-row"><span class="material-symbols-outlined">schedule</span><div>Time: <strong>${d.time_taken || '—'}</strong></div></div>
-            `;
-
+            renderResultsUI(d, total);
             showView('mockResultsView');
             loadHistory();
         } catch (e) {
