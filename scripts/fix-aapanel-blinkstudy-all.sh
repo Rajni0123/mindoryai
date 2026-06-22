@@ -1,10 +1,7 @@
 #!/bin/bash
-# Fix aaPanel nginx 404 + open_basedir for all BlinkStudy Laravel subdomains.
+# Fix aaPanel nginx 404 + open_basedir for BlinkStudy Laravel (all subdomains).
 #
-# Run as root on server:
-#   cd /www/wwwroot/blinkstudy.in
-#   git pull origin main
-#   bash scripts/fix-aapanel-blinkstudy-all.sh
+#   cd /www/wwwroot/blinkstudy.in && git pull && bash scripts/fix-aapanel-blinkstudy-all.sh
 
 set -euo pipefail
 
@@ -12,120 +9,165 @@ PROJECT="/www/wwwroot/blinkstudy.in"
 PUBLIC="${PROJECT}/public"
 NGINX_DIR="/www/server/panel/vhost/nginx"
 REWRITE_DIR="/www/server/panel/vhost/rewrite"
+EXT_DIR="/www/server/panel/vhost/nginx/extension"
 
-LARAVEL_REWRITE='location / {
+LARAVEL_LOCATION='location / {
     try_files $uri $uri/ /index.php?$query_string;
 }'
 
 echo "=============================================="
-echo " BlinkStudy aaPanel fix (nginx 404 + PHP paths)"
+echo " BlinkStudy aaPanel fix v2"
 echo "=============================================="
-echo ""
 
 if [[ ! -f "${PUBLIC}/index.php" ]]; then
-  echo "ERROR: Laravel public not found at ${PUBLIC}/index.php"
+  echo "ERROR: Missing ${PUBLIC}/index.php"
   exit 1
 fi
 
-echo "==> STEP 1: Diagnose current vhosts"
+is_files_site() {
+  local site="$1"
+  [[ "${site}" == *files* ]]
+}
+
+write_laravel_rewrite() {
+  local file="$1"
+  mkdir -p "$(dirname "${file}")"
+  printf '%s\n' "${LARAVEL_LOCATION}" > "${file}"
+}
+
+fix_vhost() {
+  local conf="$1"
+  local site
+  site=$(basename "${conf}" .conf)
+
+  if is_files_site "${site}"; then
+    echo "  SKIP files site: ${site}"
+    return
+  fi
+
+  echo ""
+  echo ">>> Fixing: ${site}"
+
+  # 1) Document root must be Laravel public/
+  if grep -q "root ${PUBLIC};" "${conf}"; then
+    echo "  root: already ${PUBLIC}"
+  else
+    sed -i "s|^\(\s*root\s\+\)[^;]*;|\1${PUBLIC};|g" "${conf}"
+    echo "  root: set to ${PUBLIC}"
+  fi
+
+  # 2) Rewrite file — use path from include line if present, else default name
+  local rewrite_file="${REWRITE_DIR}/${site}.conf"
+  if grep -q 'include.*vhost/rewrite/' "${conf}"; then
+    rewrite_file=$(grep -oE '/www/server/panel/vhost/rewrite/[^ ;]+\.conf' "${conf}" | head -1)
+  fi
+  write_laravel_rewrite "${rewrite_file}"
+  echo "  rewrite file: ${rewrite_file}"
+
+  # 3) Ensure vhost includes rewrite (add before PHP block if missing)
+  if grep -q 'include.*vhost/rewrite/' "${conf}"; then
+    echo "  rewrite include: present"
+  else
+    if grep -q '#PHP-INFO-START' "${conf}"; then
+      sed -i "/#PHP-INFO-START/i\\    include ${rewrite_file};" "${conf}"
+    else
+      sed -i "/include enable-php/i\\    include ${rewrite_file};" "${conf}"
+    fi
+    echo "  rewrite include: ADDED to vhost"
+  fi
+
+  # 4) Extension fallback (aaPanel loads extension/SITENAME/*.conf)
+  local ext_site_dir="${EXT_DIR}/${site}"
+  mkdir -p "${ext_site_dir}"
+  write_laravel_rewrite "${ext_site_dir}/00-laravel.conf"
+  echo "  extension: ${ext_site_dir}/00-laravel.conf"
+
+  if grep -q "extension/${site}/" "${conf}"; then
+    echo "  extension include: already in vhost"
+  elif grep -q '#REWRITE-END' "${conf}"; then
+    sed -i "/#REWRITE-END/a\\    include ${ext_site_dir}/*.conf;" "${conf}"
+    echo "  extension include: ADDED"
+  fi
+
+  # 5) Inline try_files in main vhost if still missing
+  if ! grep -q 'try_files' "${conf}" && ! grep -q 'try_files' "${rewrite_file}"; then
+    if grep -q '#PHP-INFO-START' "${conf}"; then
+      sed -i "/#PHP-INFO-START/i\\    location / {\\n        try_files \$uri \$uri/ /index.php?\$query_string;\\n    }\\n" "${conf}"
+      echo "  inline location /: ADDED"
+    fi
+  fi
+
+  # 6) Remove .user.ini open_basedir lock (aaPanel Anti-XSS) — also turn OFF in panel UI
+  for ini in "${PROJECT}/.user.ini" "${PUBLIC}/.user.ini"; do
+    if [[ -f "${ini}" ]]; then
+      chattr -i "${ini}" 2>/dev/null || true
+      rm -f "${ini}"
+      echo "  removed: ${ini}"
+    fi
+  done
+}
+
 echo ""
+echo "==> STEP 1: Diagnose"
 shopt -s nullglob
 for conf in "${NGINX_DIR}"/*blinkstudy*.conf; do
   site=$(basename "${conf}" .conf)
   echo "--- ${site} ---"
-  grep -E '^\s*root ' "${conf}" || echo "  (no root line)"
-  grep 'rewrite/' "${conf}" || echo "  (no rewrite include)"
-  rew="${REWRITE_DIR}/${site}.conf"
-  if [[ -f "${rew}" ]] && [[ -s "${rew}" ]]; then
-    if grep -q try_files "${rew}"; then
-      echo "  rewrite file: OK (has try_files)"
-    else
-      echo "  rewrite file: EXISTS but missing try_files"
-    fi
-  else
-    echo "  rewrite file: MISSING or EMPTY"
-  fi
-  echo ""
+  grep -E '^\s*root ' "${conf}" || true
+  grep -E 'rewrite/|extension/' "${conf}" || echo "  NO rewrite/extension include"
+  grep -E 'try_files' "${conf}" "${REWRITE_DIR}/${site}.conf" 2>/dev/null || echo "  NO try_files found"
 done
 
-echo "==> STEP 2: Set document root to ${PUBLIC} for all blinkstudy sites"
+echo ""
+echo "==> STEP 2: Patch all blinkstudy vhosts"
 for conf in "${NGINX_DIR}"/*blinkstudy*.conf; do
-  site=$(basename "${conf}" .conf)
-  # files.* serves storage — skip
-  if [[ "${site}" == files.blinkstudy.in ]] || [[ "${site}" == files_blinkstudy_in ]]; then
-    echo "  SKIP root (files CDN): ${site}"
-    continue
-  fi
-  if grep -q "root ${PUBLIC};" "${conf}"; then
-    echo "  root already OK: ${site}"
-  else
-    sed -i "s|root [^;]*;|root ${PUBLIC};|g" "${conf}"
-    echo "  FIXED root: ${site}"
-  fi
+  fix_vhost "${conf}"
 done
-echo ""
 
-echo "==> STEP 3: Install Laravel URL rewrite (try_files -> index.php)"
-for conf in "${NGINX_DIR}"/*blinkstudy*.conf; do
-  site=$(basename "${conf}" .conf)
-  if [[ "${site}" == files.blinkstudy.in ]] || [[ "${site}" == files_blinkstudy_in ]]; then
-    continue
-  fi
-  rew="${REWRITE_DIR}/${site}.conf"
-  if [[ -f "${rew}" ]] && grep -q try_files "${rew}"; then
-    echo "  rewrite OK: ${site}"
-  else
-    printf '%s\n' "${LARAVEL_REWRITE}" > "${rew}"
-    echo "  WROTE rewrite: ${rew}"
-  fi
-  # Ensure vhost includes rewrite file
-  if ! grep -q "rewrite/${site}.conf" "${conf}"; then
-    echo "  WARNING: ${conf} may not include rewrite/${site}.conf — fix in aaPanel → URL rewrite"
-  fi
+echo ""
+echo "==> STEP 3: Remove stray public/admin directories"
+for dir in "${PUBLIC}/admin" /www/wwwroot/ad.blinkstudy.in/public/admin /www/wwwroot/ad.blinkstudy.in/admin; do
+  [[ -d "${dir}" ]] && rm -rf "${dir}" && echo "  removed ${dir}"
 done
-echo ""
 
-echo "==> STEP 4: Remove stray public/admin folders (cause nginx 404)"
-for dir in \
-  "${PUBLIC}/admin" \
-  "/www/wwwroot/ad.blinkstudy.in/public/admin" \
-  "/www/wwwroot/ad.blinkstudy.in/admin"; do
-  if [[ -d "${dir}" ]]; then
-    rm -rf "${dir}"
-    echo "  REMOVED: ${dir}"
-  fi
-done
 echo ""
-
-echo "==> STEP 5: Fix open_basedir (vendor/storage access)"
+echo "==> STEP 4: open_basedir (vendor/storage)"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-bash "${SCRIPT_DIR}/fix-aapanel-laravel-open-basedir.sh"
-echo ""
+if [[ -f "${SCRIPT_DIR}/fix-aapanel-laravel-open-basedir.sh" ]]; then
+  bash "${SCRIPT_DIR}/fix-aapanel-laravel-open-basedir.sh" || echo "  (open_basedir script warning — continue)"
+fi
 
-echo "==> STEP 6: Test URLs"
+echo ""
+echo "==> STEP 5: nginx test + reload"
+nginx -t
+nginx -s reload
+PHP_VER=$(ls /www/server/nginx/conf/enable-php-*.conf 2>/dev/null | grep -oE '[0-9]+' | tail -1 || echo 82)
+[[ -x "/etc/init.d/php-fpm-${PHP_VER}" ]] && /etc/init.d/php-fpm-${PHP_VER} reload
+
+echo ""
+echo "==> STEP 6: Tests"
 test_url() {
   local url="$1"
-  local code
-  code=$(curl -sI -o /dev/null -w "%{http_code}" "${url}" 2>/dev/null || echo "ERR")
-  local body
-  body=$(curl -s "${url}" 2>/dev/null | head -c 120 | tr '\n' ' ')
-  if echo "${body}" | grep -qi "open_basedir\|Fatal error"; then
-    echo "  FAIL ${url} → HTTP ${code} (PHP error in body)"
-  elif [[ "${code}" == "404" ]] && echo "${body}" | grep -qi "nginx"; then
-    echo "  FAIL ${url} → HTTP 404 (nginx — not Laravel)"
+  local code body
+  code=$(curl -skI -o /dev/null -w "%{http_code}" "${url}" || echo ERR)
+  body=$(curl -sk "${url}" 2>/dev/null | head -c 80)
+  if echo "${body}" | grep -qi 'open_basedir\|Fatal error'; then
+    echo "  FAIL ${url} → PHP error (turn OFF Anti-XSS in aaPanel)"
+  elif [[ "${code}" == "404" ]] && echo "${body}" | grep -qi 'nginx'; then
+    echo "  FAIL ${url} → nginx 404 (rewrite still broken)"
   else
     echo "  OK   ${url} → HTTP ${code}"
   fi
 }
-
 test_url "https://blinkstudy.in/"
+test_url "https://blinkstudy.in/admin/users"
 test_url "https://ad.blinkstudy.in/admin/login"
 test_url "https://ad.blinkstudy.in/admin/homepage-settings"
-test_url "https://ad.blinkstudy.in/admin/users"
+
 echo ""
-echo "Done. Expected: 200 or 302 on admin URLs (not nginx 404, not PHP errors)."
-echo ""
-echo "If ad.* still 404: aaPanel → ad.blinkstudy.in → Settings"
-echo "  Document root: ${PUBLIC}"
-echo "  URL rewrite:   Laravel"
-echo "  Site directory → UNCHECK Anti-XSS (open_basedir)"
+echo "=============================================="
+echo " MANUAL (required if still FAIL):"
+echo " aaPanel → ad.blinkstudy.in + blinkstudy.in"
+echo "   Directory → Anti-XSS OFF → Save"
+echo "   URL rewrite → Laravel → Save"
+echo "=============================================="
