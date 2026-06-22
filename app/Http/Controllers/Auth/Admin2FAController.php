@@ -125,7 +125,7 @@ class Admin2FAController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Login successful!',
-            'redirect' => route('admin.dashboard')
+            'redirect' => '/admin/dashboard'
         ]);
     }
 

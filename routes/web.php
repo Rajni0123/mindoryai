@@ -5,6 +5,7 @@ use App\Http\Controllers\AiController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ImageAnalysisController;
 use App\Http\Controllers\PageController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,14 +23,32 @@ use Illuminate\Support\Facades\Route;
 // Main routes - Public website
 // Production URL: yourdomain.com
 
-// Landing page
-Route::get('/', [PageController::class, 'landing'])->name('home');
+// Landing page (admin subdomain → admin login)
+Route::get('/', function (Request $request) {
+    $host = strtolower((string) $request->getHost());
+    if (str_starts_with($host, 'ad.') || str_starts_with($host, 'admin.')) {
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            return redirect('/admin/dashboard');
+        }
+
+        return redirect('/admin/login');
+    }
+
+    return app(PageController::class)->landing();
+})->name('home');
 
 // ========================================
 // UNIFIED LOGIN SYSTEM (Single URL for Admin & Users)
 // ========================================
-// IMPORTANT: Only ONE login URL - role detection is automatic
-Route::get('/login', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'showLoginForm'])->name('login');
+// IMPORTANT: Only ONE login URL for users; admin subdomain uses password login
+Route::get('/login', function (Request $request) {
+    $host = strtolower((string) $request->getHost());
+    if (str_starts_with($host, 'ad.') || str_starts_with($host, 'admin.')) {
+        return redirect('/admin/login');
+    }
+
+    return app(\App\Http\Controllers\Auth\UnifiedLoginController::class)->showLoginForm($request);
+})->name('login');
 Route::middleware('throttle:auth')->group(function () {
     Route::post('/login/send-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'sendOTP'])->name('otp.send');
     Route::post('/login/verify-otp', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'verifyOTP'])->name('otp.verify');

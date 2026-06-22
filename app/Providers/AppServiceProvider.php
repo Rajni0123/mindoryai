@@ -24,6 +24,13 @@ class AppServiceProvider extends ServiceProvider
             'openai.model' => config('ai.chat_model', 'gpt-4o-mini'),
         ]);
 
+        if (! $this->app->runningInConsole()) {
+            $request = request();
+            if ($request && $request->getHost()) {
+                \Illuminate\Support\Facades\URL::forceRootUrl($request->getSchemeAndHttpHost());
+            }
+        }
+
         if ($this->app->environment('production')) {
             $appKey = (string) config('app.key');
             $minLength = (int) config('auth-security.app_key_min_length', 32);

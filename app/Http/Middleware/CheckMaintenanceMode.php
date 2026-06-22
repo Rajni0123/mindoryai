@@ -30,6 +30,7 @@ class CheckMaintenanceMode
             // Exclude admin routes, login routes, and API health checks
             $excludedPaths = [
                 'admin/*',
+                'admin/login',
                 'login',
                 'admin-login',
                 'logout',
