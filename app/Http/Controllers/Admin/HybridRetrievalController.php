@@ -9,6 +9,7 @@ use App\Services\Retrieval\KnowledgeSourceIngestionService;
 use App\Services\Retrieval\RetrievalSettingsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
@@ -16,21 +17,42 @@ class HybridRetrievalController extends Controller
 {
     public function index(RetrievalSettingsService $settings): View
     {
-        $config = FrontendConfig::getAllConfigs();
-        $migrationRequired = ! Schema::hasTable('knowledge_sources');
-        $sources = $migrationRequired
-            ? collect()
-            : KnowledgeSource::orderByDesc('created_at')->get();
-        $providerPriority = $settings->providerPriority();
-        $quizPriority = $settings->quizPriority();
+        try {
+            $config = FrontendConfig::getAllConfigs();
+            $migrationRequired = ! Schema::hasTable('knowledge_sources');
+            $sources = $migrationRequired
+                ? collect()
+                : KnowledgeSource::orderByDesc('created_at')->get();
+            $providerPriority = $this->normalizeJsonArray($settings->providerPriority());
+            $quizPriority = $this->normalizeJsonArray($settings->quizPriority());
+            $pageError = null;
+        } catch (\Throwable $e) {
+            Log::error('Hybrid retrieval admin page failed', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
 
-        return view('admin.hybrid-retrieval', compact(
-            'config',
-            'sources',
-            'providerPriority',
-            'quizPriority',
-            'migrationRequired'
-        ));
+            $config = [];
+            $sources = collect();
+            $providerPriority = config('retrieval.provider_priority', []);
+            $quizPriority = config('retrieval.quiz_priority', []);
+            $migrationRequired = true;
+            $pageError = config('app.debug')
+                ? $e->getMessage()
+                : 'Setup incomplete. Run: php artisan migrate --force && php artisan route:clear && php artisan view:clear';
+        }
+
+        return view('admin.hybrid-retrieval', [
+            'config' => $config,
+            'sources' => $sources,
+            'providerPriority' => $providerPriority,
+            'quizPriority' => $quizPriority,
+            'migrationRequired' => $migrationRequired,
+            'pageError' => $pageError ?? null,
+            'settingsUrl' => $this->adminPath('/hybrid-retrieval/settings'),
+            'storeUrl' => $this->adminPath('/hybrid-retrieval/sources'),
+        ]);
     }
 
     public function updateSettings(Request $request): RedirectResponse
@@ -115,5 +137,78 @@ class HybridRetrievalController extends Controller
         $knowledgeSource->update(['is_active' => ! $knowledgeSource->is_active]);
 
         return back()->with('success', 'Knowledge source updated.');
+    }
+
+    /**
+     * @param  mixed  $value
+     * @return array<mixed>
+     */
+    private function normalizeJsonArray(mixed $value): array
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (is_string($value) && $value !== '') {
+            $decoded = json_decode($value, true);
+            if (is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        return [];
+    }
+
+    private function adminPath(string $path): string
+    {
+        try {
+            return url('/admin' . $path);
+        } catch (\Throwable) {
+            return '/admin' . $path;
+        }
+    }
+
+    public static function retrievalFlag(array $config, string $field): bool
+    {
+        $value = $config['retrieval.' . $field] ?? false;
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_array($value) || is_object($value)) {
+            return ! empty($value);
+        }
+
+        return in_array(strtolower((string) $value), ['1', 'true', 'yes', 'on'], true);
+    }
+
+    public static function retrievalFlagChecked(array $config, string $field): bool
+    {
+        $old = old($field);
+
+        if ($old !== null) {
+            return (bool) $old;
+        }
+
+        return self::retrievalFlag($config, $field);
+    }
+
+    public static function retrievalString(array $config, string $key, string $default = ''): string
+    {
+        $value = $config[$key] ?? $default;
+
+        return is_scalar($value) ? (string) $value : $default;
+    }
+
+    public static function jsonForTextarea(mixed $data): string
+    {
+        if (! is_array($data)) {
+            $data = [];
+        }
+
+        $encoded = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE);
+
+        return $encoded !== false ? $encoded : '[]';
     }
 }

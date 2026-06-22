@@ -25,6 +25,12 @@
         </header>
 
         <div class="p-6 space-y-4">
+            @if(!empty($pageError))
+                <div class="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-sm text-red-300">
+                    {{ $pageError }}
+                </div>
+            @endif
+
             @if(!empty($migrationRequired))
                 <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-sm text-amber-200">
                     Database tables missing. Run on server:
@@ -40,7 +46,7 @@
                 <div class="p-3 bg-green-500/10 border border-green-500/30 rounded-lg text-sm text-green-300">{{ session('success') }}</div>
             @endif
 
-            <form method="POST" action="{{ route('admin.hybrid-retrieval.settings') }}" class="card rounded-lg p-4 space-y-4">
+            <form method="POST" action="{{ $settingsUrl ?? url('/admin/hybrid-retrieval/settings') }}" class="card rounded-lg p-4 space-y-4">
                 @csrf
                 <h3 class="text-sm font-semibold text-white">Feature Toggles</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
@@ -56,7 +62,7 @@
                     ] as $field => $label)
                         <label class="flex items-center gap-2">
                             <input type="checkbox" name="{{ $field }}" value="1"
-                                   {{ old($field, $config['retrieval.' . $field] ?? false) ? 'checked' : '' }}
+                                   {{ \App\Http\Controllers\Admin\HybridRetrievalController::retrievalFlagChecked($config, $field) ? 'checked' : '' }}
                                    class="rounded bg-gray-800 border-gray-700">
                             <span>{{ $label }}</span>
                         </label>
@@ -65,26 +71,26 @@
 
                 <div>
                     <label class="text-xs text-gray-400">Exa API Key</label>
-                    <input type="password" name="exa_api_key" value="{{ old('exa_api_key', $config['retrieval.exa_api_key'] ?? '') }}"
+                    <input type="password" name="exa_api_key" value="{{ old('exa_api_key', \App\Http\Controllers\Admin\HybridRetrievalController::retrievalString($config, 'retrieval.exa_api_key')) }}"
                            class="w-full mt-1 px-3 py-2 rounded bg-gray-900 border border-gray-800 text-sm">
                 </div>
 
                 <div>
                     <label class="text-xs text-gray-400">Provider Priority (JSON)</label>
                     <textarea name="provider_priority" rows="4"
-                              class="w-full mt-1 px-3 py-2 rounded bg-gray-900 border border-gray-800 text-sm font-mono">{{ old('provider_priority', json_encode($providerPriority, JSON_PRETTY_PRINT)) }}</textarea>
+                              class="w-full mt-1 px-3 py-2 rounded bg-gray-900 border border-gray-800 text-sm font-mono">{{ old('provider_priority', \App\Http\Controllers\Admin\HybridRetrievalController::jsonForTextarea($providerPriority)) }}</textarea>
                 </div>
 
                 <div>
                     <label class="text-xs text-gray-400">Quiz Priority (JSON array)</label>
                     <textarea name="quiz_priority" rows="3"
-                              class="w-full mt-1 px-3 py-2 rounded bg-gray-900 border border-gray-800 text-sm font-mono">{{ old('quiz_priority', json_encode($quizPriority, JSON_PRETTY_PRINT)) }}</textarea>
+                              class="w-full mt-1 px-3 py-2 rounded bg-gray-900 border border-gray-800 text-sm font-mono">{{ old('quiz_priority', \App\Http\Controllers\Admin\HybridRetrievalController::jsonForTextarea($quizPriority)) }}</textarea>
                 </div>
 
                 <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs rounded">Save Settings</button>
             </form>
 
-            <form method="POST" action="{{ route('admin.hybrid-retrieval.sources.store') }}" enctype="multipart/form-data" class="card rounded-lg p-4 space-y-3">
+            <form method="POST" action="{{ $storeUrl ?? url('/admin/hybrid-retrieval/sources') }}" enctype="multipart/form-data" class="card rounded-lg p-4 space-y-3">
                 @csrf
                 <h3 class="text-sm font-semibold text-white">Add New Knowledge Source</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -117,7 +123,7 @@
                                 <div class="text-white">{{ $source->name }}</div>
                                 <div class="text-gray-500">{{ $source->provider_key }} · {{ $source->type }} · {{ $source->chunk_count }} chunks</div>
                             </div>
-                            <form method="POST" action="{{ route('admin.hybrid-retrieval.sources.toggle', $source) }}">
+                            <form method="POST" action="{{ url('/admin/hybrid-retrieval/sources/' . $source->id . '/toggle') }}">
                                 @csrf
                                 <button class="px-2 py-1 rounded {{ $source->is_active ? 'bg-green-500/20 text-green-300' : 'bg-gray-700 text-gray-300' }}">
                                     {{ $source->is_active ? 'Enabled' : 'Disabled' }}
