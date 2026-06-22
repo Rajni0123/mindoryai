@@ -1,134 +1,305 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark scroll-smooth" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Quick Setup - BlinkStudy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+    <meta name="theme-color" content="#11131a"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
 
     <style>
         :root {
-            --primary: #705CF6;
-            --primary-light: #7B61FF;
-            --secondary: #5B8CFF;
-            --background: #F7F8FC;
-            --card: #FFFFFF;
-            --card-border: #E8EBF4;
-            --text-primary: #0F1222;
-            --text-muted: #9CA3AF;
-            --error: #EF4444;
-            --success: #22C55E;
+            --bg: #0b0e15;
+            --surface: #11131a;
+            --surface-low: #191b22;
+            --surface-card: #1d1f27;
+            --surface-high: #272a31;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.12);
+            --text: #e1e2ec;
+            --text-muted: #c2c6d6;
+            --text-dim: #8b92a8;
+            --primary: #afc6ff;
+            --primary-dark: #002d6c;
+            --secondary: #ddb8ff;
+            --outline: #424753;
+            --success: #4ade80;
+            --error: #f87171;
         }
 
         * { box-sizing: border-box; }
 
-        body {
+        html, body {
             margin: 0;
             min-height: 100vh;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--background);
-            color: var(--text-primary);
+            font-family: Inter, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
         }
 
-        .page {
+        .ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .ambient::before,
+        .ambient::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+        }
+
+        .ambient::before {
+            width: 420px;
+            height: 420px;
+            top: 10%;
+            left: 15%;
+            background: rgba(175, 198, 255, 0.12);
+        }
+
+        .ambient::after {
+            width: 360px;
+            height: 360px;
+            bottom: 10%;
+            right: 12%;
+            background: rgba(221, 184, 255, 0.1);
+        }
+
+        .shell {
+            position: relative;
+            z-index: 1;
             min-height: 100vh;
-            max-width: 520px;
-            margin: 0 auto;
-            padding: 12px 20px 16px;
             display: flex;
             flex-direction: column;
         }
 
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+        .topbar {
+            border-bottom: 1px solid var(--border);
+            background: rgba(17, 19, 26, 0.85);
+            backdrop-filter: blur(16px);
         }
 
-        .header-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+        .topbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--primary);
+            font-family: Manrope, sans-serif;
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .brand .material-symbols-outlined { font-size: 24px; }
+
+        .main {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            padding: 32px 24px 48px;
         }
 
-        .header-icon svg { width: 22px; height: 22px; fill: white; }
-
-        .header-title {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 800;
-            line-height: 1.2;
+        .layout {
+            width: 100%;
+            max-width: 1080px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+            align-items: center;
         }
 
-        .header-subtitle {
-            margin: 2px 0 0;
+        @media (min-width: 900px) {
+            .layout {
+                grid-template-columns: 1fr 480px;
+                gap: 64px;
+            }
+        }
+
+        .hero-copy {
+            display: none;
+        }
+
+        @media (min-width: 900px) {
+            .hero-copy { display: block; }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(175, 198, 255, 0.2);
+            background: rgba(175, 198, 255, 0.08);
             font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-family: Manrope, sans-serif;
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin: 0 0 16px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #afc6ff, #ddb8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            line-height: 1.65;
+            color: var(--text-muted);
+            max-width: 420px;
+            margin: 0 0 28px;
+        }
+
+        .hero-points {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hero-points li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
             color: var(--text-muted);
         }
 
-        .card {
-            flex: 1;
-            background: var(--card);
-            border: 1px solid var(--card-border);
+        .hero-points .material-symbols-outlined {
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .mobile-header {
+            margin-bottom: 8px;
+        }
+
+        @media (min-width: 900px) {
+            .mobile-header { display: none; }
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-top-color: rgba(255, 255, 255, 0.12);
+            border-left-color: rgba(255, 255, 255, 0.12);
             border-radius: 20px;
-            padding: 16px;
-            overflow: auto;
+            padding: 28px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+        }
+
+        .panel-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .panel-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(175, 198, 255, 0.25), rgba(221, 184, 255, 0.2));
+            border: 1px solid rgba(175, 198, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .panel-icon .material-symbols-outlined {
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        .panel-title {
+            margin: 0;
+            font-family: Manrope, sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .panel-sub {
+            margin: 2px 0 0;
+            font-size: 13px;
+            color: var(--text-dim);
         }
 
         .field-label {
             display: block;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 600;
             color: var(--text-muted);
-            letter-spacing: 0.3px;
-            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+            margin-bottom: 8px;
         }
 
-        .field-group { margin-bottom: 16px; }
+        .field-group { margin-bottom: 18px; }
 
-        .input-wrap {
-            position: relative;
-        }
+        .input-wrap { position: relative; }
 
         .input-icon {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            color: var(--text-muted);
+            color: var(--text-dim);
+            font-size: 20px;
             pointer-events: none;
         }
 
         .input {
             width: 100%;
-            padding: 12px 14px 12px 42px;
-            border: 1px solid var(--card-border);
+            padding: 13px 14px 13px 44px;
             border-radius: 12px;
-            background: var(--background);
+            border: 1px solid var(--outline);
+            background: var(--surface-low);
+            color: var(--text);
             font-family: inherit;
             font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
+            font-weight: 500;
             outline: none;
-            transition: border-color 0.15s;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
+
+        .input::placeholder { color: var(--text-dim); }
 
         .input:focus {
-            border-color: var(--primary);
-            border-width: 1.5px;
-            padding: 11.5px 13.5px 11.5px 41.5px;
+            border-color: rgba(175, 198, 255, 0.5);
+            box-shadow: 0 0 0 3px rgba(175, 198, 255, 0.12);
         }
 
-        .input.has-suffix { padding-right: 42px; }
+        .input.has-suffix { padding-right: 44px; }
 
         .input-suffix {
             position: absolute;
@@ -141,12 +312,14 @@
 
         .input-suffix.visible { display: block; }
 
+        .input-suffix .material-symbols-outlined { font-size: 20px; }
+
         .suggestions {
             margin-top: 8px;
-            background: var(--background);
-            border: 1px solid var(--card-border);
+            background: var(--surface-low);
+            border: 1px solid var(--outline);
             border-radius: 12px;
-            max-height: 260px;
+            max-height: 240px;
             overflow-y: auto;
             display: none;
         }
@@ -165,20 +338,19 @@
             text-align: left;
             font-family: inherit;
             font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
+            font-weight: 500;
+            color: var(--text);
         }
 
         .suggestion-item + .suggestion-item {
-            border-top: 1px solid var(--card-border);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .suggestion-item:hover,
         .suggestion-item.selected {
+            background: rgba(175, 198, 255, 0.08);
             color: var(--primary);
         }
-
-        .suggestion-item.selected { font-weight: 700; }
 
         .exam-chip {
             display: none;
@@ -187,8 +359,8 @@
             margin-top: 8px;
             padding: 8px 12px;
             border-radius: 10px;
-            background: rgba(112, 92, 246, 0.08);
-            border: 1px solid rgba(112, 92, 246, 0.25);
+            background: rgba(175, 198, 255, 0.08);
+            border: 1px solid rgba(175, 198, 255, 0.2);
         }
 
         .exam-chip.visible { display: flex; }
@@ -204,15 +376,15 @@
             border: none;
             background: none;
             cursor: pointer;
-            color: var(--text-muted);
+            color: var(--text-dim);
             padding: 0;
             display: flex;
         }
 
         .board-row {
             display: none;
-            gap: 10px;
-            margin-top: 16px;
+            gap: 12px;
+            margin-top: 4px;
         }
 
         .board-row.visible {
@@ -222,175 +394,201 @@
 
         .select {
             width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--card-border);
+            padding: 12px 14px;
             border-radius: 12px;
-            background: var(--background);
+            border: 1px solid var(--outline);
+            background: var(--surface-low);
+            color: var(--text);
             font-family: inherit;
             font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
+            font-weight: 500;
             outline: none;
+        }
+
+        .select option {
+            background: var(--surface-card);
+            color: var(--text);
         }
 
         .board-hint {
             display: none;
             margin-top: 8px;
             font-size: 11px;
-            color: var(--text-muted);
+            color: var(--text-dim);
         }
 
         .board-hint.visible { display: block; }
 
         .alert {
             display: none;
-            margin-bottom: 12px;
-            padding: 10px 12px;
-            border-radius: 10px;
+            margin-bottom: 16px;
+            padding: 12px 14px;
+            border-radius: 12px;
             font-size: 13px;
             font-weight: 600;
         }
 
         .alert.error {
             display: block;
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(248, 113, 113, 0.1);
             color: var(--error);
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(248, 113, 113, 0.25);
         }
 
         .alert.success {
             display: block;
-            background: rgba(34, 197, 94, 0.1);
+            background: rgba(74, 222, 128, 0.1);
             color: var(--success);
-            border: 1px solid rgba(34, 197, 94, 0.2);
-        }
-
-        .actions {
-            margin-top: 14px;
+            border: 1px solid rgba(74, 222, 128, 0.25);
         }
 
         .btn-primary {
             width: 100%;
-            height: 50px;
+            height: 52px;
+            margin-top: 8px;
             border: none;
-            border-radius: 16px;
+            border-radius: 12px;
             background: var(--primary);
-            color: white;
-            font-family: inherit;
+            color: var(--primary-dark);
+            font-family: Manrope, sans-serif;
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            transition: opacity 0.15s, transform 0.15s;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 0 20px rgba(175, 198, 255, 0.2);
         }
 
         .btn-primary:hover:not(:disabled) {
             transform: translateY(-1px);
+            box-shadow: 0 0 28px rgba(175, 198, 255, 0.35);
         }
 
         .btn-primary:disabled {
-            opacity: 0.65;
+            opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
         }
 
         .skip-link {
             display: block;
             width: 100%;
-            margin-top: 12px;
+            margin-top: 14px;
             border: none;
             background: none;
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-family: inherit;
             font-size: 13px;
             cursor: pointer;
             text-align: center;
         }
 
-        .skip-link:hover { color: var(--text-primary); }
+        .skip-link:hover { color: var(--text-muted); }
 
         @media (max-width: 480px) {
             .board-row.visible { grid-template-columns: 1fr; }
+            .panel { padding: 22px 18px; }
+            .main { padding: 24px 16px 32px; }
         }
     </style>
 </head>
 <body>
-    <div class="page" id="page">
-        <div class="header">
-            <div class="header-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 11.08L5.16 11 12 7.25 18.84 11 12 14.08zM3 13.5V18c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4.5l-8 4.36-8-4.36z"/>
-                </svg>
-            </div>
-            <div>
-                <h1 class="header-title">Quick Setup</h1>
-                <p class="header-subtitle">Personalize BlinkStudy in 30 seconds</p>
-            </div>
-        </div>
+    <div class="ambient"></div>
 
-        <div id="alert" class="alert"></div>
-
-        <div class="card">
-            <div class="field-group">
-                <label class="field-label" for="name">Your name</label>
-                <div class="input-wrap">
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
-                    </svg>
-                    <input id="name" class="input" type="text" placeholder="Enter your name" value="{{ $defaultName }}" autocomplete="name">
-                </div>
+    <div class="shell">
+        <header class="topbar">
+            <div class="topbar-inner">
+                <a href="{{ route('home') }}" class="brand">
+                    <span class="material-symbols-outlined">auto_stories</span>
+                    BlinkStudy
+                </a>
+                <a href="{{ route('home') }}" class="skip-link" style="width:auto;margin:0;font-size:14px;">Back to home</a>
             </div>
+        </header>
 
-            <div class="field-group">
-                <label class="field-label" for="exam-search">What are you preparing for?</label>
-                <div class="input-wrap">
-                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="m21 21-4.3-4.3"/>
-                    </svg>
-                    <input id="exam-search" class="input has-suffix" type="text" placeholder="Search — JEE, UPSC, SSC, RRB, IBPS..." autocomplete="off">
-                    <span id="exam-check" class="input-suffix">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                    </span>
+        <main class="main">
+            <div class="layout">
+                <div class="hero-copy">
+                    <div class="hero-badge">
+                        <span class="material-symbols-outlined" style="font-size:16px">bolt</span>
+                        30-second setup
+                    </div>
+                    <h1 class="hero-title">
+                        Personalize your<br/>
+                        <span>AI study journey</span>
+                    </h1>
+                    <p class="hero-desc">
+                        Tell us your exam goal once — BlinkStudy will tailor quizzes, doubt solving, and revision to your syllabus.
+                    </p>
+                    <ul class="hero-points">
+                        <li><span class="material-symbols-outlined">check_circle</span> JEE, NEET, UPSC, SSC &amp; 50+ exams</li>
+                        <li><span class="material-symbols-outlined">check_circle</span> Smart AI tutor matched to your level</li>
+                        <li><span class="material-symbols-outlined">check_circle</span> One profile — syncs with mobile app</li>
+                    </ul>
                 </div>
 
-                <div id="suggestions" class="suggestions"></div>
+                <div class="panel" id="page">
+                    <div class="mobile-header panel-head">
+                        <div class="panel-icon">
+                            <span class="material-symbols-outlined">school</span>
+                        </div>
+                        <div>
+                            <h2 class="panel-title">Quick Setup</h2>
+                            <p class="panel-sub">Personalize BlinkStudy in 30 seconds</p>
+                        </div>
+                    </div>
 
-                <div id="exam-chip" class="exam-chip">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: var(--primary); flex-shrink: 0;">
-                        <path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
-                    </svg>
-                    <span id="exam-chip-text" class="exam-chip-text"></span>
-                    <button type="button" id="exam-clear" class="exam-chip-clear" aria-label="Clear exam">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                        </svg>
-                    </button>
+                    <div id="alert" class="alert"></div>
+
+                    <div class="field-group">
+                        <label class="field-label" for="name">Your name</label>
+                        <div class="input-wrap">
+                            <span class="material-symbols-outlined input-icon">person</span>
+                            <input id="name" class="input" type="text" placeholder="Enter your name" value="{{ $defaultName }}" autocomplete="name">
+                        </div>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label" for="exam-search">What are you preparing for?</label>
+                        <div class="input-wrap">
+                            <span class="material-symbols-outlined input-icon">search</span>
+                            <input id="exam-search" class="input has-suffix" type="text" placeholder="Search — JEE, UPSC, SSC, RRB, IBPS..." autocomplete="off">
+                            <span id="exam-check" class="input-suffix">
+                                <span class="material-symbols-outlined">check_circle</span>
+                            </span>
+                        </div>
+
+                        <div id="suggestions" class="suggestions"></div>
+
+                        <div id="exam-chip" class="exam-chip">
+                            <span class="material-symbols-outlined" style="font-size:16px;color:var(--primary)">verified</span>
+                            <span id="exam-chip-text" class="exam-chip-text"></span>
+                            <button type="button" id="exam-clear" class="exam-chip-clear" aria-label="Clear exam">
+                                <span class="material-symbols-outlined" style="font-size:16px">close</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="board-row" class="board-row">
+                        <div>
+                            <label class="field-label" for="student-class">Class</label>
+                            <select id="student-class" class="select">
+                                @foreach($setupClasses as $class)
+                                    <option value="{{ $class }}" @selected($class === '12')>Class {{ $class }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
+                            <label class="field-label" for="subjects">Subjects</label>
+                            <select id="subjects" class="select"></select>
+                        </div>
+                    </div>
+                    <p id="board-hint" class="board-hint">Select your class and subject stream</p>
+
+                    <button type="button" id="submit-btn" class="btn-primary">Start Learning</button>
+                    <button type="button" id="skip-btn" class="skip-link">Skip for now</button>
                 </div>
             </div>
-
-            <div id="board-row" class="board-row">
-                <div>
-                    <label class="field-label" for="student-class">Class</label>
-                    <select id="student-class" class="select">
-                        @foreach($setupClasses as $class)
-                            <option value="{{ $class }}" @selected($class === '12')>Class {{ $class }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label class="field-label" for="subjects">Subjects</label>
-                    <select id="subjects" class="select"></select>
-                </div>
-            </div>
-            <p id="board-hint" class="board-hint">Select your class and subject stream</p>
-        </div>
-
-        <div class="actions">
-            <button type="button" id="submit-btn" class="btn-primary">Start Learning</button>
-            <button type="button" id="skip-btn" class="skip-link">Skip for now</button>
-        </div>
+        </main>
     </div>
 
     <script>
@@ -537,11 +735,9 @@
 
             suggestionsEl.innerHTML = exams.map(exam => `
                 <button type="button" class="suggestion-item${selectedExam === exam ? ' selected' : ''}" data-exam="${exam.replace(/"/g, '&quot;')}">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: ${selectedExam === exam ? 'var(--primary)' : 'var(--text-muted)'}">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                    </svg>
+                    <span class="material-symbols-outlined" style="font-size:18px;color:${selectedExam === exam ? 'var(--primary)' : 'var(--text-dim)'}">school</span>
                     <span>${exam}</span>
-                    ${selectedExam === exam ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color: var(--primary); margin-left: auto;"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' : ''}
+                    ${selectedExam === exam ? '<span class="material-symbols-outlined" style="font-size:18px;color:var(--primary);margin-left:auto">check</span>' : ''}
                 </button>
             `).join('');
 
