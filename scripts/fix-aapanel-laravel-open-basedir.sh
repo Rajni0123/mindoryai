@@ -27,6 +27,8 @@ LARAVEL_PHP="/www/server/nginx/conf/enable-php-${PHP_VER}-laravel.conf"
 echo "==> Project: ${PROJECT}"
 echo "==> PHP version: ${PHP_VER}"
 echo "==> open_basedir: ${BASEDIR}"
+
+if [[ ! -f "${ENABLE_PHP}" ]]; then
   echo "ERROR: ${ENABLE_PHP} not found. Set PHP_VER manually (e.g. PHP_VER=82)."
   exit 1
 fi
