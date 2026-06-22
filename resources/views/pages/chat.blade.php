@@ -1694,6 +1694,10 @@
                         <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">smart_toy</span>
                         <span class="sidebar-item-text text-sm">AI Tutor</span>
                     </button>
+                    <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.openMockTest()">
+                        <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">quiz</span>
+                        <span class="sidebar-item-text text-sm">Mock Test</span>
+                    </button>
                     <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.switchAppView('dashboard'); setTimeout(()=>document.getElementById('dashRevisionSection')?.scrollIntoView({behavior:'smooth'}), 200);">
                         <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">event_note</span>
                         <span class="sidebar-item-text text-sm">Today's plan</span>
