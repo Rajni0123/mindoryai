@@ -3,31 +3,48 @@
 
     .battle-shell {
         flex: 1;
+        width: 100%;
         display: flex;
         flex-direction: column;
         min-width: 0;
         overflow: hidden;
     }
 
-    .battle-topbar {
-        flex-shrink: 0;
-        padding: 20px 28px 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .battle-topbar h2 {
-        font-family: Manrope, sans-serif;
-        font-size: 1.75rem;
-        font-weight: 800;
-        margin: 0;
-        color: var(--text-primary);
-    }
-
     .battle-scroll {
         flex: 1;
         overflow-y: auto;
         padding: 20px 28px 28px;
-        max-width: 900px;
+        width: 100%;
+    }
+
+    .battle-page {
+        max-width: 1400px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .battle-friends-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        align-items: start;
+    }
+
+    .battle-full-span { grid-column: 1 / -1; }
+
+    @media (max-width: 900px) {
+        .battle-friends-grid { grid-template-columns: 1fr; }
+    }
+
+    .battle-play-grid {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 18px;
+        align-items: start;
+    }
+
+    @media (max-width: 900px) {
+        .battle-play-grid { grid-template-columns: 1fr; }
     }
 
     .battle-tabs {
@@ -268,12 +285,24 @@
 </style>
 
 <div id="appBattleView" class="battle-shell hidden">
-    <div class="battle-topbar">
-        <p class="dash-greeting">Compete with friends</p>
-        <h2>Study Battle</h2>
+    <div class="dash-topbar">
+        <div>
+            <p class="dash-greeting">Compete with friends</p>
+            <h2>Study Battle</h2>
+        </div>
+        <div class="dash-topbar-actions">
+            <div class="dash-search">
+                <span class="material-symbols-outlined text-[18px] text-[var(--text-secondary)]">search</span>
+                <input type="text" placeholder="Search battles, topics..." onkeydown="if(event.key==='Enter'){window.switchAppView('chat');}">
+            </div>
+            <button type="button" class="dash-icon-btn" title="Back to Dashboard" onclick="window.switchAppView('dashboard')">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+            </button>
+        </div>
     </div>
 
     <div class="battle-scroll">
+        <div class="battle-page">
         <div id="battleHomeView">
             <div class="battle-tabs">
                 <button type="button" class="battle-tab active" data-btab="friends">Friends</button>
@@ -281,7 +310,7 @@
                 <button type="button" class="battle-tab" data-btab="live">Live</button>
             </div>
 
-            <div id="battlePanelFriends">
+            <div id="battlePanelFriends" class="battle-friends-grid">
                 <div class="battle-card">
                     <h3>Start a Battle</h3>
                     <p class="sub">Create a room and share the code with your friend</p>
@@ -302,8 +331,8 @@
                         <button type="button" class="battle-btn battle-btn-primary" id="battleJoinBtn">Join</button>
                     </div>
                 </div>
-                <div id="battleLivePreview"></div>
-                <div id="battleStatsBlock"></div>
+                <div id="battleLivePreview" class="battle-full-span"></div>
+                <div id="battleStatsBlock" class="battle-full-span"></div>
             </div>
 
             <div id="battlePanelTopper" style="display:none">
@@ -335,7 +364,7 @@
             </div>
         </div>
 
-        <div id="battlePlayView" style="display:none">
+        <div id="battlePlayView" style="display:none" class="battle-play-grid">
             <div class="battle-card">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
                     <span id="battleQProgress" style="font-size:12px;color:var(--text-secondary)">Q 1/10</span>
@@ -362,6 +391,7 @@
                 <div id="battleFinalLb"></div>
             </div>
             <button type="button" class="battle-btn battle-btn-primary" style="width:100%" id="battleBackHome">Back to Battles</button>
+        </div>
         </div>
     </div>
 </div>
@@ -414,9 +444,15 @@
     }
 
     function showBattleView(name) {
+        const displays = {
+            battleHomeView: 'block',
+            battleLobbyView: 'block',
+            battlePlayView: 'grid',
+            battleResultsView: 'block',
+        };
         ['battleHomeView', 'battleLobbyView', 'battlePlayView', 'battleResultsView'].forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.style.display = id === name ? 'block' : 'none';
+            if (el) el.style.display = id === name ? (displays[id] || 'block') : 'none';
         });
     }
 
@@ -748,7 +784,7 @@
         document.querySelectorAll('.battle-tab').forEach(t => {
             t.classList.toggle('active', t.dataset.btab === tab);
         });
-        document.getElementById('battlePanelFriends').style.display = tab === 'friends' ? 'block' : 'none';
+        document.getElementById('battlePanelFriends').style.display = tab === 'friends' ? 'grid' : 'none';
         document.getElementById('battlePanelTopper').style.display = tab === 'topper' ? 'block' : 'none';
         document.getElementById('battlePanelLive').style.display = tab === 'live' ? 'block' : 'none';
         if (tab === 'topper') loadLeaderboard();

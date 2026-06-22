@@ -38,11 +38,25 @@ class RetrievalOrchestrator
         ]);
 
         return match ($route) {
-            'exa_only' => $this->exaSearchService->search($query),
-            'hybrid' => $this->retrieveHybrid($query),
+            'exa_only' => $this->exaSearchService->search($this->withIntent($query, $intent)),
+            'hybrid' => $this->retrieveHybrid($query, $intent),
             'rag_only' => $this->retrieveFromRagProviders($query),
             default => RetrievalResult::empty('none', 'Retrieval disabled.'),
         };
+    }
+
+    protected function withIntent(RetrievalQuery $query, \App\Services\Retrieval\DTO\IntentResult $intent): RetrievalQuery
+    {
+        return new RetrievalQuery(
+            question: $query->question,
+            classLevel: $query->classLevel,
+            subject: $query->subject,
+            exam: $query->exam,
+            topic: $query->topic,
+            userId: $query->userId,
+            feature: $query->feature,
+            metadata: array_merge($query->metadata, ['intent' => $intent->intent]),
+        );
     }
 
     protected function legacyRagOnly(RetrievalQuery $query): RetrievalResult
@@ -55,10 +69,10 @@ class RetrievalOrchestrator
         return RetrievalResult::empty('ncert', 'RAG not available.');
     }
 
-    protected function retrieveHybrid(RetrievalQuery $query): RetrievalResult
+    protected function retrieveHybrid(RetrievalQuery $query, \App\Services\Retrieval\DTO\IntentResult $intent): RetrievalResult
     {
         $rag = $this->retrieveFromRagProviders($query);
-        $exa = $this->exaSearchService->search($query);
+        $exa = $this->exaSearchService->search($this->withIntent($query, $intent));
 
         return $this->merger->merge([$rag, $exa]);
     }

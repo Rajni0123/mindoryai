@@ -26,7 +26,15 @@ return [
         'api_key' => env('EXA_API_KEY'),
         'base_url' => env('EXA_BASE_URL', 'https://api.exa.ai'),
         'timeout' => (int) env('EXA_TIMEOUT', 30),
-        'max_results' => (int) env('EXA_MAX_RESULTS', 5),
+        'max_results' => (int) env('EXA_MAX_RESULTS', 10),
+        // auto | fast | instant | deep-lite | deep | deep-reasoning (see Exa search API guide)
+        'search_type' => env('EXA_SEARCH_TYPE', 'auto'),
+        // Token-efficient excerpts for LLM/RAG (preferred over raw text)
+        'use_highlights' => env('EXA_USE_HIGHLIGHTS', true),
+        // Optional: 24 = daily fresh, 0 = always livecrawl, -1 = cache only (omit = default)
+        'max_age_hours' => env('EXA_MAX_AGE_HOURS'),
+        'include_domains' => array_filter(explode(',', env('EXA_INCLUDE_DOMAINS', ''))),
+        'exclude_domains' => array_filter(explode(',', env('EXA_EXCLUDE_DOMAINS', ''))),
     ],
 
     'cache' => [

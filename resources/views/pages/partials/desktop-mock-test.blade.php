@@ -3,31 +3,37 @@
 
     .mock-shell {
         flex: 1;
+        width: 100%;
         display: flex;
         flex-direction: column;
         min-width: 0;
         overflow: hidden;
     }
 
-    .mock-topbar {
-        flex-shrink: 0;
-        padding: 20px 28px 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .mock-topbar h2 {
-        font-family: Manrope, sans-serif;
-        font-size: 1.75rem;
-        font-weight: 800;
-        margin: 0;
-        color: var(--text-primary);
-    }
-
     .mock-scroll {
         flex: 1;
         overflow-y: auto;
         padding: 20px 28px 28px;
-        max-width: 820px;
+        width: 100%;
+    }
+
+    .mock-page {
+        max-width: 1400px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .mock-home-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 18px;
+        align-items: start;
+    }
+
+    .mock-full-span { grid-column: 1 / -1; }
+
+    @media (max-width: 1024px) {
+        .mock-home-grid { grid-template-columns: 1fr; }
     }
 
     .mock-card {
@@ -41,10 +47,20 @@
     .mock-hero {
         background: linear-gradient(135deg, #7b61ff, #528dff);
         border-radius: 20px;
-        padding: 28px 24px;
-        text-align: center;
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        text-align: left;
         color: #fff;
-        margin-bottom: 18px;
+    }
+
+    @media (max-width: 640px) {
+        .mock-hero {
+            flex-direction: column;
+            text-align: center;
+            padding: 24px 20px;
+        }
     }
 
     .mock-hero h3 {
@@ -175,12 +191,40 @@
 
     .mock-option.selected { border-color: #528dff; background: rgba(82, 141, 255, 0.12); }
 
+    .mock-exam-layout {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 18px;
+        align-items: start;
+    }
+
+    .mock-exam-side {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
     .mock-exam-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
         margin-bottom: 16px;
+    }
+
+    .mock-results-grid {
+        display: grid;
+        grid-template-columns: minmax(260px, 0.85fr) 1.15fr;
+        gap: 18px;
+        align-items: start;
+    }
+
+    @media (max-width: 900px) {
+        .mock-exam-layout,
+        .mock-results-grid { grid-template-columns: 1fr; }
+        .mock-exam-side { position: static; }
     }
 
     .mock-history-item {
@@ -217,101 +261,138 @@
 </style>
 
 <div id="appMockTestView" class="mock-shell hidden">
-    <div class="mock-topbar">
-        <p class="dash-greeting">Full-length practice tests</p>
-        <h2>Mock Test</h2>
+    <div class="dash-topbar">
+        <div>
+            <p class="dash-greeting">Full-length practice tests</p>
+            <h2>Mock Test</h2>
+        </div>
+        <div class="dash-topbar-actions">
+            <div class="dash-search">
+                <span class="material-symbols-outlined text-[18px] text-[var(--text-secondary)]">search</span>
+                <input type="text" placeholder="Search exams, subjects..." id="mockSearchInput" onkeydown="if(event.key==='Enter'){window.switchAppView('chat');}">
+            </div>
+            <button type="button" class="dash-icon-btn" title="Back to Dashboard" onclick="window.switchAppView('dashboard')">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+            </button>
+        </div>
     </div>
 
     <div class="mock-scroll">
-        <div id="mockHomeView">
-            <div class="mock-hero">
-                <span class="material-symbols-outlined" style="font-size:48px">assignment</span>
-                <h3 id="mockHeroTitle">AI Mock Test</h3>
-                <p id="mockHeroSub">Select your exam and start a timed full mock</p>
-            </div>
+        <div class="mock-page">
+            <div id="mockHomeView">
+                <div class="mock-home-grid">
+                    <div class="mock-hero mock-full-span">
+                        <span class="material-symbols-outlined" style="font-size:52px;flex-shrink:0">assignment</span>
+                        <div>
+                            <h3 id="mockHeroTitle">AI Mock Test</h3>
+                            <p id="mockHeroSub">Select your exam and start a timed full mock</p>
+                        </div>
+                    </div>
 
-            <div class="mock-card">
-                <h3 style="font-size:15px;font-weight:700;margin:0 0 10px;color:var(--text-primary)">Select Exam</h3>
-                <div class="mock-exam-grid" id="mockExamGrid"></div>
-            </div>
+                    <div class="mock-column">
+                        <div class="mock-card">
+                            <h3 style="font-size:15px;font-weight:700;margin:0 0 10px;color:var(--text-primary)">Select Exam</h3>
+                            <div class="mock-exam-grid" id="mockExamGrid"></div>
+                        </div>
 
-            <div class="mock-card">
-                <h3 style="font-size:15px;font-weight:700;margin:0 0 10px;color:var(--text-primary)">Test Settings</h3>
-                <label style="font-size:12px;color:var(--text-secondary)">Questions</label>
-                <select id="mockQuestionCount" class="mock-field">
-                    <option value="10">10 Questions</option>
-                    <option value="20">20 Questions</option>
-                    <option value="30" selected>30 Questions</option>
-                    <option value="50">50 Questions</option>
-                </select>
-                <label style="font-size:12px;color:var(--text-secondary)">Duration (minutes)</label>
-                <select id="mockDuration" class="mock-field">
-                    <option value="15">15 min</option>
-                    <option value="30">30 min</option>
-                    <option value="45" selected>45 min</option>
-                    <option value="60">60 min</option>
-                    <option value="90">90 min</option>
-                </select>
-                <label style="font-size:12px;color:var(--text-secondary)">Subject (optional)</label>
-                <input type="text" id="mockSubject" class="mock-field" placeholder="e.g. Physics, All subjects">
-            </div>
+                        <div class="mock-card">
+                            <h3 style="font-size:15px;font-weight:700;margin:0 0 10px;color:var(--text-primary)">Test Settings</h3>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                                <div>
+                                    <label style="font-size:12px;color:var(--text-secondary)">Questions</label>
+                                    <select id="mockQuestionCount" class="mock-field">
+                                        <option value="10">10 Questions</option>
+                                        <option value="20">20 Questions</option>
+                                        <option value="30" selected>30 Questions</option>
+                                        <option value="50">50 Questions</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size:12px;color:var(--text-secondary)">Duration (minutes)</label>
+                                    <select id="mockDuration" class="mock-field">
+                                        <option value="15">15 min</option>
+                                        <option value="30">30 min</option>
+                                        <option value="45" selected>45 min</option>
+                                        <option value="60">60 min</option>
+                                        <option value="90">90 min</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <label style="font-size:12px;color:var(--text-secondary)">Subject (optional)</label>
+                            <input type="text" id="mockSubject" class="mock-field" placeholder="e.g. Physics, All subjects">
+                        </div>
 
-            <div class="mock-card">
-                <div class="mock-info-row">
-                    <span class="material-symbols-outlined">quiz</span>
-                    <div><strong>Real PYQ + AI mix</strong><br><span style="font-size:12px;color:var(--text-secondary)">Previous year questions when available</span></div>
+                        <button type="button" class="mock-btn" id="mockStartBtn">Start Mock Test</button>
+                    </div>
+
+                    <div class="mock-column">
+                        <div class="mock-card">
+                            <div class="mock-info-row">
+                                <span class="material-symbols-outlined">quiz</span>
+                                <div><strong>Real PYQ + AI mix</strong><br><span style="font-size:12px;color:var(--text-secondary)">Previous year questions when available</span></div>
+                            </div>
+                            <div class="mock-info-row">
+                                <span class="material-symbols-outlined">timer</span>
+                                <div><strong>Timed exam</strong><br><span style="font-size:12px;color:var(--text-secondary)">Auto-submit when time runs out</span></div>
+                            </div>
+                            <div class="mock-info-row" style="margin-bottom:0">
+                                <span class="material-symbols-outlined">analytics</span>
+                                <div><strong>Instant analysis</strong><br><span style="font-size:12px;color:var(--text-secondary)">Score, accuracy & review</span></div>
+                            </div>
+                        </div>
+
+                        <div class="mock-card">
+                            <h3 style="font-size:15px;font-weight:700;margin:0 0 12px;color:var(--text-primary)">Recent Mock Tests</h3>
+                            <div id="mockHistoryList"><p style="font-size:13px;color:var(--text-secondary)">Loading history...</p></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mock-info-row">
-                    <span class="material-symbols-outlined">timer</span>
-                    <div><strong>Timed exam</strong><br><span style="font-size:12px;color:var(--text-secondary)">Auto-submit when time runs out</span></div>
+            </div>
+
+            <div id="mockLoadingView" style="display:none">
+                <div class="mock-loading">
+                    <span class="material-symbols-outlined" style="font-size:40px;animation:spin 1s linear infinite">progress_activity</span>
+                    <p style="margin-top:14px;font-weight:600;color:var(--text-primary)">Generating your mock test...</p>
+                    <p style="font-size:13px">This may take up to a minute</p>
                 </div>
-                <div class="mock-info-row">
-                    <span class="material-symbols-outlined">analytics</span>
-                    <div><strong>Instant analysis</strong><br><span style="font-size:12px;color:var(--text-secondary)">Score, accuracy & review</span></div>
+            </div>
+
+            <div id="mockExamView" style="display:none" class="mock-exam-layout">
+                <div class="mock-exam-main">
+                    <div class="mock-exam-header">
+                        <button type="button" class="mock-btn mock-btn-outline" id="mockExitExam">← Exit</button>
+                    </div>
+                    <div class="mock-card">
+                        <p id="mockQProgress" style="font-size:12px;color:var(--text-secondary);margin:0 0 8px">Question 1 of 30</p>
+                        <p id="mockQuestionText" style="font-size:16px;font-weight:600;line-height:1.5;color:var(--text-primary);margin:0 0 16px"></p>
+                        <div id="mockOptions"></div>
+                    </div>
+                    <div style="display:flex;gap:10px;margin-top:12px">
+                        <button type="button" class="mock-btn mock-btn-outline" id="mockPrevBtn" style="flex:1">Previous</button>
+                        <button type="button" class="mock-btn" id="mockNextBtn" style="flex:2">Next</button>
+                    </div>
                 </div>
+                <aside class="mock-exam-side">
+                    <div class="mock-card" style="text-align:center;margin-bottom:0">
+                        <p style="font-size:12px;color:var(--text-secondary);margin:0 0 6px">Time remaining</p>
+                        <div class="mock-timer" id="mockExamTimer" style="display:inline-block">45:00</div>
+                    </div>
+                    <div class="mock-card" style="margin-bottom:0">
+                        <p style="font-size:12px;font-weight:600;color:var(--text-secondary);margin:0 0 10px;text-transform:uppercase;letter-spacing:0.05em">Questions</p>
+                        <div class="mock-q-nav" id="mockQNav"></div>
+                    </div>
+                </aside>
             </div>
 
-            <button type="button" class="mock-btn" id="mockStartBtn">Start Mock Test</button>
-
-            <div class="mock-card" style="margin-top:18px">
-                <h3 style="font-size:15px;font-weight:700;margin:0 0 12px;color:var(--text-primary)">Recent Mock Tests</h3>
-                <div id="mockHistoryList"><p style="font-size:13px;color:var(--text-secondary)">Loading history...</p></div>
+            <div id="mockResultsView" style="display:none" class="mock-results-grid">
+                <div class="mock-card" style="text-align:center">
+                    <div class="mock-score-ring" id="mockScoreRing">0%</div>
+                    <h3 style="margin:0 0 6px;color:var(--text-primary)">Test Completed!</h3>
+                    <p id="mockResultSummary" style="font-size:14px;color:var(--text-secondary);margin:0 0 16px"></p>
+                    <button type="button" class="mock-btn" id="mockBackHomeBtn">Take Another Mock Test</button>
+                </div>
+                <div class="mock-card" id="mockResultDetails"></div>
             </div>
-        </div>
-
-        <div id="mockLoadingView" style="display:none">
-            <div class="mock-loading">
-                <span class="material-symbols-outlined" style="font-size:40px;animation:spin 1s linear infinite">progress_activity</span>
-                <p style="margin-top:14px;font-weight:600;color:var(--text-primary)">Generating your mock test...</p>
-                <p style="font-size:13px">This may take up to a minute</p>
-            </div>
-        </div>
-
-        <div id="mockExamView" style="display:none">
-            <div class="mock-exam-header">
-                <button type="button" class="mock-btn mock-btn-outline" id="mockExitExam">← Exit</button>
-                <div class="mock-timer" id="mockExamTimer">45:00</div>
-            </div>
-            <div class="mock-q-nav" id="mockQNav"></div>
-            <div class="mock-card">
-                <p id="mockQProgress" style="font-size:12px;color:var(--text-secondary);margin:0 0 8px">Question 1 of 30</p>
-                <p id="mockQuestionText" style="font-size:16px;font-weight:600;line-height:1.5;color:var(--text-primary);margin:0 0 16px"></p>
-                <div id="mockOptions"></div>
-            </div>
-            <div style="display:flex;gap:10px;margin-top:12px">
-                <button type="button" class="mock-btn mock-btn-outline" id="mockPrevBtn" style="flex:1">Previous</button>
-                <button type="button" class="mock-btn" id="mockNextBtn" style="flex:2">Next</button>
-            </div>
-        </div>
-
-        <div id="mockResultsView" style="display:none">
-            <div class="mock-card" style="text-align:center">
-                <div class="mock-score-ring" id="mockScoreRing">0%</div>
-                <h3 style="margin:0 0 6px;color:var(--text-primary)">Test Completed!</h3>
-                <p id="mockResultSummary" style="font-size:14px;color:var(--text-secondary);margin:0"></p>
-            </div>
-            <div class="mock-card" id="mockResultDetails"></div>
-            <button type="button" class="mock-btn" id="mockBackHomeBtn">Take Another Mock Test</button>
         </div>
     </div>
 </div>
@@ -349,9 +430,15 @@
     }
 
     function showView(name) {
+        const displays = {
+            mockHomeView: 'block',
+            mockLoadingView: 'block',
+            mockExamView: 'grid',
+            mockResultsView: 'grid',
+        };
         ['mockHomeView', 'mockLoadingView', 'mockExamView', 'mockResultsView'].forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.style.display = id === name ? 'block' : 'none';
+            if (el) el.style.display = id === name ? (displays[id] || 'block') : 'none';
         });
     }
 

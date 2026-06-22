@@ -47,6 +47,21 @@ Registered via `ProviderRegistry` (strategy pattern):
 - `IntentClassifierInterface` — swap rule-based classifier for LLM
 - `config/retrieval.php` — defaults and TTLs
 
+## Exa API (web search)
+
+Set in `.env` or Admin → Hybrid Retrieval:
+
+```env
+EXA_API_KEY=your_key
+EXA_SEARCH_TYPE=auto
+EXA_USE_HIGHLIGHTS=true
+EXA_MAX_RESULTS=10
+```
+
+Uses `POST https://api.exa.ai/search` with `type: auto` and `contents.highlights` per [Exa search API guide](https://docs.exa.ai/reference/search-api-guide-for-coding-agents). Deprecated `useAutoprompt` is not sent.
+
+Optional: `EXA_MAX_AGE_HOURS`, `EXA_INCLUDE_DOMAINS`, `EXA_EXCLUDE_DOMAINS`.
+
 ## Commands
 
 ```bash
