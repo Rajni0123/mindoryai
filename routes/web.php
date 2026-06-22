@@ -37,7 +37,7 @@ Route::middleware('throttle:auth')->group(function () {
         return redirect()->route('login');
     })->name('register.submit');
 });
-Route::post('/logout', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/logout', [\App\Http\Controllers\Auth\UnifiedLoginController::class, 'logout'])->name('logout');
 
 // Admin 2FA (After OTP verification, only for admin with 2FA enabled)
 Route::get('/admin/verify-2fa', [\App\Http\Controllers\Auth\Admin2FAController::class, 'showVerify'])->name('admin.2fa.verify');

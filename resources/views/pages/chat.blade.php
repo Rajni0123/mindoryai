@@ -1749,12 +1749,15 @@
                     </div>
 
                     <div class="popup-divider"></div>
-                    <a href="/logout" class="popup-item text-red-500">
+                    <form method="POST" action="{{ route('logout') }}" class="m-0">
+                        @csrf
+                        <button type="submit" class="popup-item text-red-500 w-full text-left border-0 bg-transparent cursor-pointer flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
                         <span>Log out</span>
-                    </a>
+                        </button>
+                    </form>
                 </div>
             </div>
         </aside>
@@ -1914,7 +1917,9 @@
                                 </svg>
                             </a>
 
-                            <a href="{{ route('logout') }}" class="flex items-center justify-between p-4 bg-[var(--bg-secondary)] rounded-lg hover:bg-red-500/10 transition-colors group">
+                            <form method="POST" action="{{ route('logout') }}" class="m-0">
+                                @csrf
+                                <button type="submit" class="w-full flex items-center justify-between p-4 bg-[var(--bg-secondary)] rounded-lg hover:bg-red-500/10 transition-colors group border-0 cursor-pointer text-left">
                                 <div class="flex items-center gap-3">
                                     <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -1924,7 +1929,8 @@
                                 <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                 </svg>
-                            </a>
+                                </button>
+                            </form>
                         </div>
                     </div>
 
