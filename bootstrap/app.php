@@ -38,6 +38,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'throttle.upload' => \Illuminate\Routing\Middleware\ThrottleRequests::class . ':upload',
         ]);
 
+        $middleware->web(prepend: [
+            \App\Http\Middleware\RedirectAdminToSubdomain::class,
+            \App\Http\Middleware\ConfigureAdminSubdomain::class,
+        ]);
+
         // Apply maintenance mode check globally to web routes
         $middleware->web(append: [
             \App\Http\Middleware\CheckMaintenanceMode::class,

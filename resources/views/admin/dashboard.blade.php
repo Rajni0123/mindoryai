@@ -196,19 +196,19 @@
                         <div class="card rounded-lg p-4">
                             <h2 class="text-sm font-semibold text-white mb-3">Quick Actions</h2>
                             <div class="grid grid-cols-2 gap-2">
-                                <a href="{{ route('admin.users') }}" class="flex items-center gap-2 px-3 py-2 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 rounded text-xs font-medium transition-colors">
+                                <a href="{{ \App\Support\AdminUrl::route('admin.users') }}" class="flex items-center gap-2 px-3 py-2 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 rounded text-xs font-medium transition-colors">
                                     <span class="material-icons-outlined" style="font-size: 14px;">people</span>
                                     <span>Users</span>
                                 </a>
-                                <a href="{{ route('admin.auth-settings.index') }}" class="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 rounded text-xs font-medium transition-colors">
+                                <a href="{{ \App\Support\AdminUrl::route('admin.auth-settings.index') }}" class="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 rounded text-xs font-medium transition-colors">
                                     <span class="material-icons-outlined" style="font-size: 14px;">login</span>
                                     <span>Login Methods</span>
                                 </a>
-                                <a href="{{ route('admin.homepage-settings.index') }}" class="flex items-center gap-2 px-3 py-2 bg-gray-800/50 text-gray-400 hover:bg-gray-800 rounded text-xs font-medium transition-colors">
+                                <a href="{{ \App\Support\AdminUrl::route('admin.homepage-settings.index') }}" class="flex items-center gap-2 px-3 py-2 bg-gray-800/50 text-gray-400 hover:bg-gray-800 rounded text-xs font-medium transition-colors">
                                     <span class="material-icons-outlined" style="font-size: 14px;">home</span>
                                     <span>Homepage</span>
                                 </a>
-                                <a href="{{ route('admin.ai-settings') }}" class="flex items-center gap-2 px-3 py-2 bg-gray-800/50 text-gray-400 hover:bg-gray-800 rounded text-xs font-medium transition-colors">
+                                <a href="{{ \App\Support\AdminUrl::route('admin.ai-settings') }}" class="flex items-center gap-2 px-3 py-2 bg-gray-800/50 text-gray-400 hover:bg-gray-800 rounded text-xs font-medium transition-colors">
                                     <span class="material-icons-outlined" style="font-size: 14px;">psychology</span>
                                     <span>AI Models</span>
                                 </a>

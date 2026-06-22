@@ -62,7 +62,7 @@
                 <p class="px-3 mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-600">{{ $section['label'] }}</p>
                 <div class="space-y-0.5">
                     @foreach($section['items'] as $item)
-                        <a href="{{ route($item['route']) }}"
+                        <a href="{{ \App\Support\AdminUrl::route($item['route']) }}"
                            class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium border-l-2 transition-colors {{ request()->routeIs($item['match']) ? 'bg-blue-500/10 text-blue-300 border-blue-400' : 'text-gray-400 hover:text-gray-100 hover:bg-white/5 border-transparent' }}">
                             <span class="material-icons-outlined text-[18px]">{{ $item['icon'] }}</span>
                             <span>{{ $item['label'] }}</span>
@@ -74,7 +74,7 @@
     </nav>
 
     <div class="px-3 py-4 border-t border-gray-800/60 space-y-0.5">
-        <a href="{{ route('admin.profile.edit') }}"
+        <a href="{{ \App\Support\AdminUrl::route('admin.profile.edit') }}"
            class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium border-l-2 transition-colors {{ request()->routeIs('admin.profile.*') ? 'bg-blue-500/10 text-blue-300 border-blue-400' : 'text-gray-400 hover:text-gray-100 hover:bg-white/5 border-transparent' }}">
             <span class="material-icons-outlined text-[18px]">person</span>
             <span>Profile</span>
@@ -84,7 +84,7 @@
             <span class="material-icons-outlined text-[18px]">open_in_new</span>
             <span>View Site</span>
         </a>
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ \App\Support\AdminUrl::path('/logout') }}">
             @csrf
             <button type="submit" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-gray-400 hover:text-red-300 hover:bg-red-500/10 border-l-2 border-transparent transition-colors text-[13px] font-medium">
                 <span class="material-icons-outlined text-[18px]">logout</span>

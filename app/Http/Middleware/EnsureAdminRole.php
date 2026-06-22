@@ -33,8 +33,8 @@ class EnsureAdminRole
                 'url' => $request->url(),
                 'session_id' => session()->getId(),
             ]);
-            // Show 404 page for unauthorized access (hidden route protection)
-            return response()->view('errors.404-redirect', [], 404);
+
+            return redirect()->guest('/admin/login');
         }
 
         $user = auth()->user();
