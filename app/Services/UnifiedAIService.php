@@ -631,7 +631,10 @@ class UnifiedAIService
         $this->currentFeature = $feature;
         $requestStartedAt = microtime(true);
 
-        $this->maybeAttachRetrievalContext($message, $feature, $userId);
+        $parsed = $this->parseChatModePrefix($message);
+        $message = $parsed['message'];
+
+        $this->maybeAttachRetrievalContext($message, $feature, $userId, $parsed['mode']);
 
         // Get user's plan for feature gating
         $planSlug = $this->getUserPlanSlug($userId);
@@ -1141,7 +1144,7 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
         }
     }
 
-    protected function maybeAttachRetrievalContext(string $message, string $feature, ?int $userId): void
+    protected function maybeAttachRetrievalContext(string $message, string $feature, ?int $userId, string $mode = 'default'): void
     {
         $this->retrievalContext = '';
         $this->retrievalMeta = [];
@@ -1153,12 +1156,18 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             }
 
             $user = $userId ? User::find($userId) : null;
+            $metadata = [];
+            if ($mode === 'search') {
+                $metadata['force_route'] = 'exa_only';
+            }
+
             $query = new \App\Services\Retrieval\DTO\RetrievalQuery(
                 question: $message,
                 classLevel: $user?->student_class,
                 subject: null,
                 userId: $userId,
                 feature: $feature,
+                metadata: $metadata,
             );
 
             $result = app(\App\Services\Retrieval\RetrievalOrchestrator::class)->retrieve($query);
@@ -1168,10 +1177,33 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
                     'provider' => $result->provider,
                     'sources' => $result->sources,
                 ];
+
+                Log::info('Hybrid retrieval attached', [
+                    'provider' => $result->provider,
+                    'mode' => $mode,
+                    'sources' => count($result->sources),
+                ]);
             }
         } catch (\Throwable $e) {
             Log::warning('Hybrid retrieval skipped', ['error' => $e->getMessage()]);
         }
+    }
+
+    /**
+     * Strip PromptInputBox mode prefixes ([Search: ...], [Think: ...], [Canvas: ...]).
+     *
+     * @return array{mode: string, message: string}
+     */
+    protected function parseChatModePrefix(string $message): array
+    {
+        if (preg_match('/^\[(Search|Think|Canvas):\s*(.+)\]$/su', trim($message), $matches)) {
+            return [
+                'mode' => strtolower($matches[1]),
+                'message' => trim($matches[2]),
+            ];
+        }
+
+        return ['mode' => 'default', 'message' => $message];
     }
 
     protected function formatRetrievalContextBlock(): string

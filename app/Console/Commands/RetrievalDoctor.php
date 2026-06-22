@@ -3,13 +3,15 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Admin\HybridRetrievalController;
+use App\Services\Retrieval\DTO\RetrievalQuery;
+use App\Services\Retrieval\ExaSearchService;
 use App\Services\Retrieval\RetrievalSettingsService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
 
 class RetrievalDoctor extends Command
 {
-    protected $signature = 'retrieval:doctor {--render : Render the admin page HTML to catch Blade errors}';
+    protected $signature = 'retrieval:doctor {--render : Render the admin page HTML to catch Blade errors} {--exa= : Run a live Exa search with this query}';
 
     protected $description = 'Diagnose hybrid retrieval setup (tables, config, routes)';
 
@@ -48,6 +50,38 @@ class RetrievalDoctor extends Command
             }
         }
 
+        $settings = app(RetrievalSettingsService::class);
+        $this->newLine();
+        $this->line(sprintf('  [%s] hybrid_enabled', $settings->isHybridEnabled() ? 'ON' : 'OFF'));
+        $this->line(sprintf('  [%s] exa_enabled', $settings->isExaEnabled() ? 'ON' : 'OFF'));
+        $this->line(sprintf('  [%s] hybrid_mode', $settings->isHybridModeEnabled() ? 'ON' : 'OFF'));
+        $exaKey = \App\Models\FrontendConfig::getValue('retrieval.exa_api_key')
+            ?: config('retrieval.exa.api_key');
+        $this->line(sprintf('  [%s] exa_api_key', $exaKey ? 'SET' : 'MISSING'));
+
+        if ($exaQuery = $this->option('exa')) {
+            $this->newLine();
+            $this->info('Live Exa search: ' . $exaQuery);
+            $result = app(ExaSearchService::class)->search(new RetrievalQuery(
+                question: $exaQuery,
+                feature: 'doctor',
+                metadata: ['force_route' => 'exa_only'],
+            ));
+
+            if (! $result->success) {
+                $this->error('  [FAIL] ' . ($result->message ?? 'Exa search failed'));
+
+                return self::FAILURE;
+            }
+
+            $this->line(sprintf('  [OK] provider=%s sources=%d', $result->provider, count($result->sources)));
+            foreach (array_slice($result->sources, 0, 3) as $source) {
+                $this->line('    • ' . $source);
+            }
+            $preview = mb_substr($result->context, 0, 280);
+            $this->line('  Preview: ' . $preview . (mb_strlen($result->context) > 280 ? '…' : ''));
+        }
+
         if ($this->option('render')) {
             $this->newLine();
             $this->info('Rendering admin page…');
@@ -66,7 +100,7 @@ class RetrievalDoctor extends Command
         $this->newLine();
         $this->comment('If tables are missing: php artisan migrate --force');
         $this->comment('If routes fail: php artisan route:clear && php artisan config:clear && php artisan view:clear');
-        $this->comment('To test the view: php artisan retrieval:doctor --render');
+        $this->comment('To test Exa: php artisan retrieval:doctor --exa="NEET 2026 exam date"');
 
         return self::SUCCESS;
     }

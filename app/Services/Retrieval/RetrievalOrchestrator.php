@@ -27,6 +27,19 @@ class RetrievalOrchestrator
             return $this->legacyRagOnly($query);
         }
 
+        $forcedRoute = $query->metadata['force_route'] ?? null;
+        if ($forcedRoute === 'exa_only' && $this->settings->isExaEnabled()) {
+            Log::info('Hybrid retrieval route', [
+                'intent' => 'web_search',
+                'strategy' => 'exa_only',
+                'route' => 'exa_only',
+                'feature' => $query->feature,
+                'forced' => true,
+            ]);
+
+            return $this->exaSearchService->search($query);
+        }
+
         $intent = $this->intentClassifier->classify($query);
         $route = $this->router->resolveRoute($intent);
 
