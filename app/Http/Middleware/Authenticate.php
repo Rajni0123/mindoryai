@@ -16,9 +16,9 @@ class Authenticate extends Middleware
             return null;
         }
 
-        // Redirect to admin login if accessing admin routes
+        // Redirect to admin login if accessing admin routes (relative URL keeps ad.* subdomain)
         if ($request->is('admin/*') || $request->is('admin')) {
-            return route('admin.login');
+            return '/admin/login';
         }
 
         // Otherwise redirect to user login
