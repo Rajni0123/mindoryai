@@ -2,7 +2,13 @@
 
 Perplexity-style orchestration layer extending the existing RAG without replacing it.
 
-## Architecture
+## Full stack (see [AI_ARCHITECTURE.md](./AI_ARCHITECTURE.md))
+
+```
+Flutter / Web → Laravel API → AI Orchestrator → RAG | Exa | OpenAI → Final Response
+```
+
+## Retrieval sub-flow
 
 ```
 User Query → IntentClassifier → RetrievalRouter → Providers → HybridContextMerger → LLM
