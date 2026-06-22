@@ -45,8 +45,13 @@ class UnifiedLoginController extends Controller
     /**
      * Show unified login form (single URL for both admin and users)
      */
-    public function showLoginForm()
+    public function showLoginForm(Request $request)
     {
+        $host = strtolower((string) $request->getHost());
+        if (str_starts_with($host, 'admin.') || str_starts_with($host, 'ad.')) {
+            return redirect()->route('admin.login');
+        }
+
         try {
             $googleLoginEnabled = \App\Models\SystemSetting::get('auth.google_login_enabled', true);
         } catch (\Throwable $e) {
