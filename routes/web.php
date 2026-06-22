@@ -182,11 +182,13 @@ Route::get('/contact', function() {
             Route::post('/verify-payment', [\App\Http\Controllers\Api\RazorpayController::class, 'verifyPayment'])->name('verify-payment');
         });
 
-        // Chat: subdomain in production, same host when CHAT_USE_MAIN_DOMAIN=true (local dev)
+        // Main domain only — chat.blinkstudy.in serves /chat via routes/chat.php
         if (\App\Support\ChatSubdomainUrl::isEnabled()) {
-            Route::get('/chat', function () {
-                return redirect()->away(\App\Support\ChatSubdomainUrl::appUrl());
-            })->middleware('subscription.active');
+            Route::domain(config('domains.main'))->group(function () {
+                Route::get('/chat', function () {
+                    return redirect()->away(\App\Support\ChatSubdomainUrl::appUrl());
+                })->middleware('subscription.active');
+            });
         } else {
             require __DIR__ . '/includes/chat_application.php';
         }
