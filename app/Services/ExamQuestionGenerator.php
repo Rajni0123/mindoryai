@@ -4,25 +4,15 @@ namespace App\Services;
 
 use App\Models\Exam;
 use App\Models\ExamQuestion;
+use App\Models\FrontendConfig;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Generates PYQ-style exam questions using Gemini AI.
- *
- * Flow: Select Exam → AI generates previous-year-pattern questions → Save to DB → Use in mock tests
+ * Generates PYQ-style exam questions using admin-enabled AI (OpenAI/GPT first, Gemini fallback).
  */
 class ExamQuestionGenerator
 {
-    /**
-     * Generate questions for an exam using AI.
-     *
-     * @param Exam $exam
-     * @param string $subject  Specific subject or 'all'
-     * @param int $year        Target year (e.g., 2024, 2023)
-     * @param int $count       Number of questions to generate
-     * @param string $difficulty  easy|medium|hard|mixed
-     * @return int Number of questions saved
-     */
     public function generate(Exam $exam, string $subject = 'all', int $year = 2024, int $count = 10, string $difficulty = 'mixed'): int
     {
         $subjects = $subject === 'all'
@@ -47,23 +37,70 @@ class ExamQuestionGenerator
         return $totalSaved;
     }
 
-    /**
-     * Generate questions for a specific subject using Gemini.
-     */
     private function generateForSubject(Exam $exam, string $subject, int $year, int $count, string $difficulty): array
     {
-        $gemini = new GeminiService(
-            feature: 'exam_prep',
-            modelName: 'gemini-2.0-flash',
-            userId: null
-        );
+        $prompt = $this->buildPrompt($exam, $subject, $year, $count, $difficulty);
+        $errors = [];
 
+        if ($this->isOpenAiEnabled()) {
+            try {
+                $content = $this->generateWithOpenAi($prompt, $count);
+                $questions = $this->parseResponse($content);
+                if ($questions !== []) {
+                    Log::info('ExamQuestionGenerator: OpenAI generation succeeded', [
+                        'exam' => $exam->name,
+                        'subject' => $subject,
+                        'count' => count($questions),
+                    ]);
+
+                    return $questions;
+                }
+                $errors[] = 'openai: empty or invalid JSON';
+            } catch (\Throwable $e) {
+                $errors[] = 'openai: ' . $e->getMessage();
+                Log::warning('ExamQuestionGenerator: OpenAI failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        if ($this->isGeminiEnabled()) {
+            try {
+                $content = $this->generateWithGemini($prompt, $count);
+                $questions = $this->parseResponse($content);
+                if ($questions !== []) {
+                    Log::info('ExamQuestionGenerator: Gemini generation succeeded', [
+                        'exam' => $exam->name,
+                        'subject' => $subject,
+                        'count' => count($questions),
+                    ]);
+
+                    return $questions;
+                }
+                $errors[] = 'gemini: empty or invalid JSON';
+            } catch (\Throwable $e) {
+                $errors[] = 'gemini: ' . $e->getMessage();
+                Log::warning('ExamQuestionGenerator: Gemini failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        if ($errors !== []) {
+            Log::error('ExamQuestionGenerator: no AI provider produced questions', [
+                'exam' => $exam->name,
+                'subject' => $subject,
+                'errors' => $errors,
+            ]);
+        }
+
+        return [];
+    }
+
+    private function buildPrompt(Exam $exam, string $subject, int $year, int $count, string $difficulty): string
+    {
         $markingScheme = $exam->config['marking_scheme'] ?? ['correct' => 4, 'wrong' => -1];
         $difficultyInstruction = $difficulty === 'mixed'
-            ? "Mix of easy (20%), medium (60%), and hard (20%) questions."
+            ? 'Mix of easy (20%), medium (60%), and hard (20%) questions.'
             : "All questions should be {$difficulty} difficulty.";
 
-        $prompt = <<<PROMPT
+        return <<<PROMPT
 You are an expert Indian competitive exam question paper setter.
 
 Generate exactly {$count} MCQ questions for the **{$exam->name}** exam.
@@ -99,42 +136,108 @@ Return ONLY valid JSON in this exact format, no other text:
   ]
 }
 PROMPT;
+    }
+
+    private function generateWithOpenAi(string $prompt, int $count): string
+    {
+        $apiKey = $this->resolveOpenAiApiKey();
+        if ($apiKey === '') {
+            throw new \RuntimeException('OpenAI API key not configured');
+        }
+
+        $model = (string) (FrontendConfig::getValue('ai.openai_model', '')
+            ?: config('ai.quiz_model', 'gpt-4o-mini'));
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $apiKey,
+            'Content-Type' => 'application/json',
+        ])
+            ->withOptions(['verify' => config('app.env') !== 'local'])
+            ->connectTimeout(8)
+            ->timeout(60)
+            ->post('https://api.openai.com/v1/chat/completions', [
+                'model' => $model,
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You generate Indian competitive exam MCQs. Return ONLY valid JSON with a top-level "questions" array. No markdown.',
+                    ],
+                    ['role' => 'user', 'content' => $prompt],
+                ],
+                'temperature' => 0.75,
+                'max_tokens' => max(4096, $count * 600),
+                'response_format' => ['type' => 'json_object'],
+            ]);
+
+        if (! $response->successful()) {
+            $error = $response->json('error.message') ?? $response->body();
+            throw new \RuntimeException('OpenAI API error: ' . $error);
+        }
+
+        return (string) ($response->json('choices.0.message.content') ?? '');
+    }
+
+    private function generateWithGemini(string $prompt, int $count): string
+    {
+        $gemini = new GeminiService(
+            feature: 'exam_prep',
+            modelName: (string) (FrontendConfig::getValue('ai.gemini_model', '') ?: 'gemini-2.0-flash'),
+            userId: null
+        );
 
         $response = $gemini->generateContent($prompt, [
             'temperature' => 0.8,
             'maxOutputTokens' => max(4096, $count * 500),
             'jsonMode' => true,
-            'timeout' => 45,  // Faster timeout for question generation
+            'timeout' => 45,
             'connect_timeout' => 8,
         ]);
 
-        $content = $response['content'] ?? '';
-        return $this->parseResponse($content);
+        return (string) ($response['content'] ?? '');
+    }
+
+    private function isOpenAiEnabled(): bool
+    {
+        return FrontendConfig::getValue('ai.openai_enabled', '0') === '1'
+            && $this->resolveOpenAiApiKey() !== '';
+    }
+
+    private function isGeminiEnabled(): bool
+    {
+        return FrontendConfig::getValue('ai.gemini_enabled', '0') === '1'
+            && (string) FrontendConfig::getValue('ai.gemini_api_key', '') !== '';
+    }
+
+    private function resolveOpenAiApiKey(): string
+    {
+        $apiKey = (string) FrontendConfig::getValue('ai.openai_api_key', '');
+        if ($apiKey !== '') {
+            return $apiKey;
+        }
+
+        return (string) config('ai.openai.api_key', env('OPENAI_API_KEY', ''));
     }
 
     /**
-     * Parse Gemini JSON response into question array.
+     * @return list<array<string, mixed>>
      */
     private function parseResponse(string $content): array
     {
-        // Try direct JSON decode
         $data = json_decode($content, true);
-        if ($data && isset($data['questions'])) {
+        if (is_array($data) && isset($data['questions']) && is_array($data['questions'])) {
             return $data['questions'];
         }
 
-        // Try extracting JSON from markdown code blocks
         if (preg_match('/```(?:json)?\s*(\{[\s\S]*?\})\s*```/', $content, $m)) {
             $data = json_decode($m[1], true);
-            if ($data && isset($data['questions'])) {
+            if (is_array($data) && isset($data['questions'])) {
                 return $data['questions'];
             }
         }
 
-        // Try finding JSON object with balanced braces
         if (preg_match('/\{[\s\S]*"questions"[\s\S]*\}/', $content, $m)) {
             $data = json_decode($m[0], true);
-            if ($data && isset($data['questions'])) {
+            if (is_array($data) && isset($data['questions'])) {
                 return $data['questions'];
             }
         }
@@ -147,9 +250,6 @@ PROMPT;
         return [];
     }
 
-    /**
-     * Save parsed questions to the database.
-     */
     private function saveQuestions(Exam $exam, array $questions, string $subject, int $year): int
     {
         $saved = 0;
@@ -159,7 +259,6 @@ PROMPT;
                 continue;
             }
 
-            // Convert options from {A: "...", B: "..."} to [{label: "A", text: "..."}, ...]
             $options = [];
             if (isset($q['options']) && is_array($q['options'])) {
                 foreach ($q['options'] as $label => $text) {
@@ -172,7 +271,7 @@ PROMPT;
             }
 
             $difficulty = $q['difficulty'] ?? 'medium';
-            if (!in_array($difficulty, ['easy', 'medium', 'hard'])) {
+            if (! in_array($difficulty, ['easy', 'medium', 'hard'], true)) {
                 $difficulty = 'medium';
             }
 
@@ -184,7 +283,7 @@ PROMPT;
                 'type' => 'mcq',
                 'question_text' => $q['question'],
                 'options' => $options,
-                'correct_answer' => strtoupper(trim($q['correct_answer'])),
+                'correct_answer' => strtoupper(trim((string) $q['correct_answer'])),
                 'explanation' => $q['explanation'] ?? null,
                 'difficulty' => $difficulty,
                 'language' => 'english',
