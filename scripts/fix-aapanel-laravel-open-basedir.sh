@@ -17,7 +17,7 @@ VHOST_DIR="/www/server/panel/vhost/nginx"
 
 # Auto-detect PHP version from blinkstudy vhosts (default 82)
 if [[ -z "${PHP_VER}" ]]; then
-  PHP_VER=$(grep -ohE 'enable-php-([0-9]+)\.conf' "${VHOST_DIR}"/*blinkstudy*.conf 2>/dev/null | grep -oE '[0-9]+' | sort -u | tail -1)
+  PHP_VER=$(grep -ohE 'enable-php-([0-9]+)(-laravel)?\.conf' "${VHOST_DIR}"/*blinkstudy*.conf 2>/dev/null | grep -oE '[0-9]+' | sort -u | tail -1)
   PHP_VER="${PHP_VER:-82}"
 fi
 
@@ -51,13 +51,13 @@ echo "==> Created ${LARAVEL_PHP}"
 # 3) Point all blinkstudy vhosts at the Laravel PHP config
 shopt -s nullglob
 for conf in "${VHOST_DIR}"/*blinkstudy*.conf; do
-  if grep -q "include enable-php-${PHP_VER}.conf;" "${conf}"; then
-    sed -i "s|include enable-php-${PHP_VER}.conf;|include enable-php-${PHP_VER}-laravel.conf;|g" "${conf}"
-    echo "==> Patched vhost: $(basename "${conf}")"
-  elif grep -q "include enable-php-${PHP_VER}-laravel.conf;" "${conf}"; then
+  if grep -q "include enable-php-${PHP_VER}-laravel.conf;" "${conf}"; then
     echo "==> Already patched: $(basename "${conf}")"
+  elif grep -qE "include enable-php-${PHP_VER}(-wpfastcgi)?\.conf;" "${conf}"; then
+    sed -i "s|include enable-php-${PHP_VER}\(-wpfastcgi\)\?\.conf;|include enable-php-${PHP_VER}-laravel.conf;|g" "${conf}"
+    echo "==> Patched vhost: $(basename "${conf}")"
   else
-    echo "==> SKIP (no enable-php-${PHP_VER}.conf): $(basename "${conf}")"
+    echo "==> SKIP (no enable-php-${PHP_VER}): $(basename "${conf}")"
   fi
 done
 

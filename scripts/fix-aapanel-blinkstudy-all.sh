@@ -115,7 +115,13 @@ for conf in "${NGINX_DIR}"/*blinkstudy*.conf; do
   echo "--- ${site} ---"
   grep -E '^\s*root ' "${conf}" || true
   grep -E 'rewrite/|extension/' "${conf}" || echo "  NO rewrite/extension include"
-  grep -E 'try_files' "${conf}" "${REWRITE_DIR}/${site}.conf" 2>/dev/null || echo "  NO try_files found"
+  if grep -q try_files "${conf}" 2>/dev/null; then
+    echo "  try_files: in vhost"
+  elif [[ -f "${REWRITE_DIR}/${site}.conf" ]] && grep -q try_files "${REWRITE_DIR}/${site}.conf" 2>/dev/null; then
+    echo "  try_files: in rewrite file"
+  else
+    echo "  NO try_files found"
+  fi
 done
 
 echo ""
@@ -163,6 +169,7 @@ test_url "https://blinkstudy.in/"
 test_url "https://blinkstudy.in/admin/users"
 test_url "https://ad.blinkstudy.in/admin/login"
 test_url "https://ad.blinkstudy.in/admin/homepage-settings"
+test_url "https://ad.blinkstudy.in/admin/ai-settings"
 
 echo ""
 echo "=============================================="
