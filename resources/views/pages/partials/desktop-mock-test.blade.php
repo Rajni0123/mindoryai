@@ -351,7 +351,7 @@
                         <button type="button" class="mock-btn mock-btn-outline" id="mockExitExam">← Exit</button>
                     </div>
                     <div class="mock-card">
-                        <p id="mockQProgress" style="font-size:12px;color:var(--text-secondary);margin:0 0 8px">Question 1 of 30</p>
+                        <p id="mockQProgress" style="font-size:12px;color:var(--text-secondary);margin:0 0 8px">—</p>
                         <p id="mockQuestionText" style="font-size:16px;font-weight:600;line-height:1.5;color:var(--text-primary);margin:0 0 16px"></p>
                         <div id="mockOptions"></div>
                     </div>
@@ -403,6 +403,16 @@
         timeLeftSec: 0,
         startedAt: null,
     };
+
+    function normalizeQuestions(raw) {
+        if (Array.isArray(raw)) {
+            return raw.filter(Boolean);
+        }
+        if (raw && typeof raw === 'object') {
+            return Object.values(raw).filter(Boolean);
+        }
+        return [];
+    }
 
     async function mockApi(path, options = {}) {
         const fetcher = window.blinkApiFetch || (async (url, opts) => {
@@ -609,7 +619,11 @@
             const start = await mockApi('/mock-test/' + mockTest.id + '/start', { method: 'POST' });
             const payload = start.data || start;
 
-            state.questions = payload.questions || [];
+            state.questions = normalizeQuestions(payload.questions);
+            if (!state.questions.length) {
+                throw new Error('No questions loaded for this mock test. Try another exam or subject.');
+            }
+
             state.answers = {};
             state.currentIndex = 0;
             state.startedAt = Date.now();
@@ -619,6 +633,7 @@
             startTimer(durationMin * 60);
             renderQuestion();
         } catch (e) {
+            stopTimer();
             alert(e.message || 'Failed to start mock test');
             showView('mockHomeView');
         } finally {
@@ -644,11 +659,18 @@
 
     function renderQuestion() {
         const q = state.questions[state.currentIndex];
-        if (!q) return;
+        const total = state.questions.length;
 
         document.getElementById('mockQProgress').textContent =
-            `Question ${state.currentIndex + 1} of ${state.questions.length}`;
-        document.getElementById('mockQuestionText').textContent = q.question_text || '';
+            total ? `Question ${state.currentIndex + 1} of ${total}` : 'No questions';
+
+        if (!q) {
+            document.getElementById('mockQuestionText').textContent = 'Question unavailable.';
+            document.getElementById('mockOptions').innerHTML = '';
+            return;
+        }
+
+        document.getElementById('mockQuestionText').textContent = q.question_text || 'Question text missing.';
 
         const selected = state.answers[q.id];
         const opts = q.options || [];

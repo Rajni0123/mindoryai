@@ -60,6 +60,9 @@ class ExamService
 
         $questionCount = $options['question_count'] ?? $exam->config['total_questions'] ?? 50;
         $subject = $options['subject'] ?? 'all';
+        if ($subject === null || trim((string) $subject) === '') {
+            $subject = 'all';
+        }
         $year = $options['year'] ?? (int) date('Y');
         $difficulty = $options['difficulty'] ?? 'mixed';
         $isBoardExam = in_array($exam->category, ['board']);
@@ -156,6 +159,38 @@ class ExamService
         }
 
         $questions = $query->inRandomOrder()->limit($questionCount)->get();
+
+        if ($questions->isEmpty() && ! $isBoardExam && ($exam->config['auto_generate'] ?? true)) {
+            $fallbackSubject = $subject !== 'all'
+                ? $subject
+                : (($exam->subjects[0] ?? null) ?: 'General');
+
+            Log::info('ExamService: no questions in pool, forcing AI generation', [
+                'exam' => $exam->name,
+                'subject' => $fallbackSubject,
+                'requested' => $questionCount,
+            ]);
+
+            try {
+                $this->questionGenerator->generate(
+                    $exam,
+                    $fallbackSubject,
+                    $year,
+                    min(30, max(10, $questionCount)),
+                    $difficulty
+                );
+            } catch (\Exception $e) {
+                Log::error('ExamService: forced generation failed', ['error' => $e->getMessage()]);
+            }
+
+            $questions = (clone $query)->inRandomOrder()->limit($questionCount)->get();
+        }
+
+        if ($questions->isEmpty()) {
+            throw new \RuntimeException(
+                'No questions available for this exam yet. Try another subject or wait a moment and retry.'
+            );
+        }
 
         // DYNAMIC TIME CALCULATION based on question count
         // Priority: 1) Custom option, 2) Calculate from questions, 3) Exam default

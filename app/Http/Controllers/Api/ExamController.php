@@ -204,14 +204,14 @@ class ExamController extends Controller
             ]);
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to generate mock test. Please try again.',
+                'message' => $e->getMessage() ?: 'Failed to generate mock test. Please try again.',
             ], 400);
         }
     }
 
-    public function startMockTest(int $mockTestId): JsonResponse
+    public function startMockTest(int $mockTest): JsonResponse
     {
-        $mockTest = ResourceAuthorizer::ownedMockTest(auth()->user(), $mockTestId);
+        $mockTest = ResourceAuthorizer::ownedMockTest(auth()->user(), $mockTest);
 
         if ($mockTest->status !== 'pending') {
             return response()->json([
@@ -222,78 +222,14 @@ class ExamController extends Controller
 
         $mockTest = $this->examService->startMockTest($mockTest);
 
-        // Load the questions for the test
-        $questions = \App\Models\ExamQuestion::whereIn('id', $mockTest->question_ids)
-            ->get()
-            ->map(function ($q) {
-                $isRealPYQ = is_array($q->tags) && in_array('real-paper', $q->tags);
+        $questions = $this->loadOrderedMockQuestions($mockTest);
 
-                // Normalize options format to [{label: "A", text: "..."}, ...]
-                $options = $q->options ?? [];
-                $normalizedOptions = [];
-
-                // Check if options is in old format {A: "...", B: "..."} vs new [{label, text}]
-                if (is_array($options) && !empty($options)) {
-                    // Check first element to determine format
-                    $first = reset($options);
-                    $firstKey = key($options);
-
-                    if (is_string($first) && is_string($firstKey) && strlen($firstKey) === 1) {
-                        // Old format: {A: "text", B: "text", ...}
-                        foreach ($options as $label => $text) {
-                            $normalizedOptions[] = [
-                                'label' => (string) $label,
-                                'text' => (string) $text,
-                            ];
-                        }
-                    } elseif (isset($first['label']) && isset($first['text'])) {
-                        // Already in new format - but ensure strings
-                        foreach ($options as $opt) {
-                            $normalizedOptions[] = [
-                                'label' => (string) ($opt['label'] ?? ''),
-                                'text' => (string) ($opt['text'] ?? ''),
-                            ];
-                        }
-                    } elseif (is_string($first)) {
-                        // Plain array of strings format: ["Option 1", "Option 2", ...]
-                        $labels = ['A', 'B', 'C', 'D', 'E', 'F'];
-                        foreach (array_values($options) as $i => $text) {
-                            $normalizedOptions[] = [
-                                'label' => $labels[$i] ?? chr(65 + $i),
-                                'text' => (string) $text,
-                            ];
-                        }
-                    } else {
-                        // Unknown format, try to extract
-                        foreach ($options as $key => $value) {
-                            if (is_array($value)) {
-                                $normalizedOptions[] = [
-                                    'label' => (string) ($value['label'] ?? $key),
-                                    'text' => (string) ($value['text'] ?? $value['option'] ?? ''),
-                                ];
-                            } else {
-                                $normalizedOptions[] = [
-                                    'label' => is_numeric($key) ? chr(65 + $key) : (string) $key,
-                                    'text' => (string) $value,
-                                ];
-                            }
-                        }
-                    }
-                }
-
-                return [
-                    'id' => (int) $q->id,
-                    'question_text' => (string) ($q->question_text ?? ''),
-                    'type' => (string) ($q->type ?? 'mcq'),
-                    'options' => $normalizedOptions,
-                    'subject' => (string) ($q->subject ?? ''),
-                    'topic' => (string) ($q->topic ?? ''),
-                    'difficulty' => (string) ($q->difficulty ?? 'medium'),
-                    'year' => $q->year ? (int) $q->year : null,
-                    'is_real_pyq' => (bool) $isRealPYQ,
-                    'source' => (string) ($isRealPYQ ? 'CBSE Board Paper' : 'AI Generated'),
-                ];
-            });
+        if ($questions->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Could not load questions for this mock test. Please start a new test.',
+            ], 422);
+        }
 
         return response()->json([
             'success' => true,
@@ -304,13 +240,13 @@ class ExamController extends Controller
         ]);
     }
 
-    public function submitMockTest(Request $request, int $mockTestId): JsonResponse
+    public function submitMockTest(Request $request, int $mockTest): JsonResponse
     {
         $request->validate([
             'answers' => 'required|array',
         ]);
 
-        $mockTest = ResourceAuthorizer::ownedMockTest($request->user(), $mockTestId);
+        $mockTest = ResourceAuthorizer::ownedMockTest($request->user(), $mockTest);
 
         if ($mockTest->status === 'completed') {
             return response()->json([
@@ -335,9 +271,9 @@ class ExamController extends Controller
         ]);
     }
 
-    public function getMockTestResult(int $mockTestId): JsonResponse
+    public function getMockTestResult(int $mockTest): JsonResponse
     {
-        $mockTest = ResourceAuthorizer::ownedMockTest(auth()->user(), $mockTestId);
+        $mockTest = ResourceAuthorizer::ownedMockTest(auth()->user(), $mockTest);
 
         $result = $this->examService->getMockTestResult($mockTest);
 
@@ -527,5 +463,91 @@ class ExamController extends Controller
                 'message' => 'Failed to generate questions: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection<int, array<string, mixed>>
+     */
+    private function loadOrderedMockQuestions(\App\Models\MockTest $mockTest): \Illuminate\Support\Collection
+    {
+        $ids = array_values(array_filter((array) ($mockTest->question_ids ?? []), static fn ($id) => $id !== null && $id !== ''));
+
+        if ($ids === []) {
+            return collect();
+        }
+
+        $byId = \App\Models\ExamQuestion::whereIn('id', $ids)->get()->keyBy('id');
+
+        return collect($ids)
+            ->map(static fn ($id) => $byId->get((int) $id))
+            ->filter()
+            ->values()
+            ->map(fn (\App\Models\ExamQuestion $question) => $this->formatMockQuestion($question));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function formatMockQuestion(\App\Models\ExamQuestion $q): array
+    {
+        $isRealPYQ = is_array($q->tags) && in_array('real-paper', $q->tags);
+        $options = $q->options ?? [];
+        $normalizedOptions = [];
+
+        if (is_array($options) && $options !== []) {
+            $first = reset($options);
+            $firstKey = key($options);
+
+            if (is_string($first) && is_string($firstKey) && strlen($firstKey) === 1) {
+                foreach ($options as $label => $text) {
+                    $normalizedOptions[] = [
+                        'label' => (string) $label,
+                        'text' => (string) $text,
+                    ];
+                }
+            } elseif (is_array($first) && isset($first['label'], $first['text'])) {
+                foreach ($options as $opt) {
+                    $normalizedOptions[] = [
+                        'label' => (string) ($opt['label'] ?? ''),
+                        'text' => (string) ($opt['text'] ?? ''),
+                    ];
+                }
+            } elseif (is_string($first)) {
+                $labels = ['A', 'B', 'C', 'D', 'E', 'F'];
+                foreach (array_values($options) as $i => $text) {
+                    $normalizedOptions[] = [
+                        'label' => $labels[$i] ?? chr(65 + $i),
+                        'text' => (string) $text,
+                    ];
+                }
+            } else {
+                foreach ($options as $key => $value) {
+                    if (is_array($value)) {
+                        $normalizedOptions[] = [
+                            'label' => (string) ($value['label'] ?? $key),
+                            'text' => (string) ($value['text'] ?? $value['option'] ?? ''),
+                        ];
+                    } else {
+                        $normalizedOptions[] = [
+                            'label' => is_numeric($key) ? chr(65 + (int) $key) : (string) $key,
+                            'text' => (string) $value,
+                        ];
+                    }
+                }
+            }
+        }
+
+        return [
+            'id' => (int) $q->id,
+            'question_text' => (string) ($q->question_text ?? ''),
+            'type' => (string) ($q->type ?? 'mcq'),
+            'options' => $normalizedOptions,
+            'subject' => (string) ($q->subject ?? ''),
+            'topic' => (string) ($q->topic ?? ''),
+            'difficulty' => (string) ($q->difficulty ?? 'medium'),
+            'year' => $q->year ? (int) $q->year : null,
+            'is_real_pyq' => (bool) $isRealPYQ,
+            'source' => (string) ($isRealPYQ ? 'CBSE Board Paper' : 'AI Generated'),
+        ];
     }
 }
