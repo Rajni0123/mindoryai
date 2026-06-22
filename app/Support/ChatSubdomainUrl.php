@@ -13,28 +13,37 @@ class ChatSubdomainUrl
      */
     public static function isEnabled(): bool
     {
-        if (filter_var(env('CHAT_USE_MAIN_DOMAIN', false), FILTER_VALIDATE_BOOLEAN)) {
+        if (config('domains.chat_use_main_domain')) {
             return false;
         }
 
-        return filled(env('CHAT_SUBDOMAIN'));
+        return filled(config('domains.chat'));
+    }
+
+    public static function isChatHost(?string $host = null): bool
+    {
+        $chatHost = config('domains.chat');
+
+        if (! $chatHost) {
+            return false;
+        }
+
+        return strcasecmp($host ?? request()->getHost(), $chatHost) === 0;
     }
 
     public static function baseUrl(): string
     {
         if (! self::isEnabled()) {
-            return rtrim((string) (env('MAIN_DOMAIN_URL') ?: config('app.url')), '/');
+            return rtrim((string) (config('domains.main_url') ?: config('app.url')), '/');
         }
 
-        $url = env('CHAT_SUBDOMAIN_URL');
+        $url = config('domains.chat_url');
 
         if ($url) {
             return rtrim((string) $url, '/');
         }
 
-        $subdomain = env('CHAT_SUBDOMAIN', 'chat.' . env('MAIN_DOMAIN', 'localhost'));
-
-        return 'https://' . $subdomain;
+        return 'https://' . config('domains.chat');
     }
 
     public static function appPath(): string

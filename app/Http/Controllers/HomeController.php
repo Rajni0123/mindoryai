@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AiModel;
+use App\Support\ChatSubdomainUrl;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -14,6 +15,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (ChatSubdomainUrl::isEnabled() && ! ChatSubdomainUrl::isChatHost()) {
+            return redirect()->away(ChatSubdomainUrl::appUrl());
+        }
+
         // Check if chat feature is enabled by admin
         $chatEnabled = \App\Models\DynamicAppConfig::getValue('features.chat_enabled', true);
         if (!$chatEnabled) {

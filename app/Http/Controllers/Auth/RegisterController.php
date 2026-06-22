@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\SystemSetting;
 use App\Models\User;
+use App\Support\ChatSubdomainUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,7 +21,7 @@ class RegisterController extends Controller
         // If already logged in, redirect to appropriate dashboard
         if (Auth::check()) {
             if (Auth::user()->isUser()) {
-                return redirect()->route('chat');
+                return redirect()->away(ChatSubdomainUrl::appUrl());
             } elseif (Auth::user()->isAdmin()) {
                 return redirect()->route('admin.dashboard');
             }

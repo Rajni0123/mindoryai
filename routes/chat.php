@@ -3,7 +3,7 @@
 use App\Http\Controllers\ChatSubdomainController;
 use Illuminate\Support\Facades\Route;
 
-$chatDomain = env('CHAT_SUBDOMAIN', 'chat.' . env('MAIN_DOMAIN', 'localhost'));
+$chatDomain = config('domains.chat', 'chat.' . config('domains.main', 'localhost'));
 
 Route::domain($chatDomain)
     ->middleware(['web', 'ip.whitelist'])

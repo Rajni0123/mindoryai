@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('chat') }}" class="inline-block px-8 py-3 bg-primary text-background-dark font-bold rounded-lg hover:bg-primary/90 transition-colors">
+                    <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="inline-block px-8 py-3 bg-primary text-background-dark font-bold rounded-lg hover:bg-primary/90 transition-colors">
                         Start Using AI
                     </a>
 

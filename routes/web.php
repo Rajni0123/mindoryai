@@ -74,7 +74,7 @@ Route::middleware('auth')->group(function () {
 
         // Redirect if profile already complete
         if ($user->name && $user->name !== 'User' && !str_starts_with($user->name, 'User ')) {
-            return redirect()->route('chat');
+            return redirect()->away(\App\Support\ChatSubdomainUrl::appUrl());
         }
 
         return view('auth.profile-setup', compact('user'));
@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
 
         $user->save();
 
-        return redirect()->route('chat')->with('success', 'Profile updated successfully!');
+        return redirect()->away(\App\Support\ChatSubdomainUrl::appUrl())->with('success', 'Profile updated successfully!');
     })->name('profile.setup.update');
 });
 

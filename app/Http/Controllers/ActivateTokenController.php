@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserActivationToken;
+use App\Support\ChatSubdomainUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -18,7 +19,7 @@ class ActivateTokenController extends Controller
 
         // If user is already activated, redirect to chat
         if ($user && $user->token_activated) {
-            return redirect()->route('chat');
+            return redirect()->away(ChatSubdomainUrl::appUrl());
         }
 
         return view('activate-token');
@@ -50,7 +51,7 @@ class ActivateTokenController extends Controller
 
         // Check if already activated
         if ($user->token_activated) {
-            return redirect()->route('chat')
+            return redirect()->away(ChatSubdomainUrl::appUrl())
                 ->with('success', 'Your account is already activated!');
         }
 
@@ -81,7 +82,7 @@ class ActivateTokenController extends Controller
         // Clear rate limiting
         Cache::forget($key);
 
-        return redirect()->route('chat')
+        return redirect()->away(ChatSubdomainUrl::appUrl())
             ->with('success', 'Your account has been activated successfully with the ' . $plan->name . ' plan!');
     }
 }

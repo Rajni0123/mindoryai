@@ -504,7 +504,7 @@
                     showMessage(data.message, 'success');
                     // Use window.location.replace for full page reload to ensure session cookie is sent
                     setTimeout(() => {
-                        window.location.replace(data.redirect || '{{ route("chat") }}');
+                        window.location.replace(data.redirect || @json(\App\Support\ChatSubdomainUrl::appUrl()));
                     }, 1500); // Increased to 1.5 seconds for session persistence
                 } else {
                     showMessage(data.message);

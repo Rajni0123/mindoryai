@@ -85,7 +85,7 @@
                     <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-1">Ask Any Doubt</h2>
                     <p class="text-sm text-gray-600 dark:text-gray-400">Type or upload image for instant answers</p>
                 </div>
-                <a href="{{ route('chat') }}" class="shrink-0 bg-primary hover:bg-primary/90 text-white px-5 py-3 rounded-xl font-semibold text-sm flex items-center gap-2 transition-colors shadow-lg shadow-primary/20">
+                <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="shrink-0 bg-primary hover:bg-primary/90 text-white px-5 py-3 rounded-xl font-semibold text-sm flex items-center gap-2 transition-colors shadow-lg shadow-primary/20">
                     <span class="material-symbols-outlined text-lg">chat</span>
                     <span class="hidden sm:inline">Start Chat</span>
                 </a>
@@ -96,25 +96,25 @@
         <div class="mb-6 sm:mb-8">
             <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">Quick Actions</h3>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <a href="{{ route('chat') }}" class="action-card glass-card rounded-xl p-4 text-center">
+                <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="action-card glass-card rounded-xl p-4 text-center">
                     <div class="w-11 h-11 mx-auto mb-3 rounded-xl bg-gradient-to-br from-primary to-teal-400 flex items-center justify-center shadow-lg shadow-primary/20">
                         <span class="material-symbols-outlined text-white text-xl">edit_note</span>
                     </div>
                     <span class="text-sm font-semibold text-gray-800 dark:text-white">Ask Doubt</span>
                 </a>
-                <a href="{{ route('chat') }}" class="action-card glass-card rounded-xl p-4 text-center">
+                <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="action-card glass-card rounded-xl p-4 text-center">
                     <div class="w-11 h-11 mx-auto mb-3 rounded-xl bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center shadow-lg shadow-amber-500/20">
                         <span class="material-symbols-outlined text-white text-xl">photo_camera</span>
                     </div>
                     <span class="text-sm font-semibold text-gray-800 dark:text-white">Scan Image</span>
                 </a>
-                <a href="{{ route('chat') }}" class="action-card glass-card rounded-xl p-4 text-center">
+                <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="action-card glass-card rounded-xl p-4 text-center">
                     <div class="w-11 h-11 mx-auto mb-3 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
                         <span class="material-symbols-outlined text-white text-xl">quiz</span>
                     </div>
                     <span class="text-sm font-semibold text-gray-800 dark:text-white">AI Quiz</span>
                 </a>
-                <a href="{{ route('chat') }}" class="action-card glass-card rounded-xl p-4 text-center">
+                <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="action-card glass-card rounded-xl p-4 text-center">
                     <div class="w-11 h-11 mx-auto mb-3 rounded-xl bg-gradient-to-br from-pink-500 to-rose-400 flex items-center justify-center shadow-lg shadow-pink-500/20">
                         <span class="material-symbols-outlined text-white text-xl">videocam</span>
                     </div>
@@ -127,7 +127,7 @@
         <div class="mb-6 sm:mb-8">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Subjects</h3>
-                <a href="{{ route('chat') }}" class="text-xs font-medium text-primary hover:underline">View All</a>
+                <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="text-xs font-medium text-primary hover:underline">View All</a>
             </div>
             <div class="grid grid-cols-4 sm:grid-cols-8 gap-2 sm:gap-3">
                 @php
@@ -143,7 +143,7 @@
                     ];
                 @endphp
                 @foreach($subjects as $subject)
-                <a href="{{ route('chat') }}" class="subject-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
+                <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="subject-btn flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
                     <div class="subject-icon w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br {{ $subject['color'] }} flex items-center justify-center shadow-md transition-transform">
                         <span class="material-symbols-outlined text-white text-lg sm:text-xl">{{ $subject['icon'] }}</span>
                     </div>

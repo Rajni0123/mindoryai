@@ -184,7 +184,7 @@
     <!-- Mobile-First Bottom Navigation -->
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-white/10 safe-area-bottom">
         <div class="grid grid-cols-3 h-16">
-            <a href="{{ route('chat') }}" class="flex flex-col items-center justify-center gap-0.5 text-gray-400 hover:text-primary transition-all active:scale-95">
+            <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="flex flex-col items-center justify-center gap-0.5 text-gray-400 hover:text-primary transition-all active:scale-95">
                 <span class="material-symbols-rounded text-2xl">chat_bubble</span>
                 <span class="text-[10px] font-medium">Chat</span>
             </a>
@@ -216,7 +216,7 @@
                 <span class="material-symbols-rounded">dashboard</span>
                 <span>Dashboard</span>
             </a>
-            <a href="{{ route('chat') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all">
+            <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all">
                 <span class="material-symbols-rounded">chat_bubble</span>
                 <span>AI Chat</span>
             </a>
@@ -322,7 +322,7 @@
                 <h2 class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3 px-1">Quick Actions</h2>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     <!-- AI Chat -->
-                    <a href="{{ route('chat') }}" class="group glass rounded-2xl p-4 sm:p-5 hover:bg-white/5 transition-all active:scale-95">
+                    <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="group glass rounded-2xl p-4 sm:p-5 hover:bg-white/5 transition-all active:scale-95">
                         <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform border border-primary/20">
                             <span class="material-symbols-rounded text-primary text-2xl sm:text-3xl">chat_bubble</span>
                         </div>

@@ -104,7 +104,7 @@
         <!-- Header with Close Button -->
         <div class="p-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
             <h1 class="text-xl font-semibold">Settings</h1>
-            <a href="{{ route('chat') }}" class="w-8 h-8 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="w-8 h-8 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg transition-colors text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                 <span class="material-symbols-outlined text-xl">close</span>
             </a>
         </div>

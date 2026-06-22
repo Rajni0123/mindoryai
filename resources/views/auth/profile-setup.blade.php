@@ -99,7 +99,7 @@
     <script>
         function skipProfile() {
             if (confirm('Are you sure you want to skip profile setup? You can complete it later from settings.')) {
-                window.location.href = '{{ route('chat') }}';
+                window.location.href = @json(\App\Support\ChatSubdomainUrl::appUrl());
             }
         }
 

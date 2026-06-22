@@ -433,7 +433,7 @@
 
                 if (data.success) {
                     showMessage(data.message, 'success');
-                    const redirectUrl = data.redirect || '{{ route("chat") }}';
+                    const redirectUrl = data.redirect || @json(\App\Support\ChatSubdomainUrl::appUrl());
                     setTimeout(() => window.location.replace(redirectUrl), 1000);
                 } else {
                     showMessage(data.message);

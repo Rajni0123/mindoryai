@@ -11,7 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            if (env('CHAT_SUBDOMAIN') && ! filter_var(env('CHAT_USE_MAIN_DOMAIN', false), FILTER_VALIDATE_BOOLEAN)) {
+            if (config('domains.chat') && ! config('domains.chat_use_main_domain')) {
                 Illuminate\Support\Facades\Route::middleware('web')
                     ->group(base_path('routes/chat.php'));
             }

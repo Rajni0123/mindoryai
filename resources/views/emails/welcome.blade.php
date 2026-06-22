@@ -102,7 +102,7 @@
                             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td align="center" style="padding-bottom:24px;">
-                                        <a href="{{ config('app.url') }}/chat"
+                                        <a href="{{ config('domains.chat_url', config('app.url')) }}/chat"
                                            style="display:inline-block; background:linear-gradient(135deg,#0D9488 0%,#0f766e 100%); color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; padding:14px 40px; border-radius:12px; text-align:center;">
                                             Start Learning Now
                                         </a>

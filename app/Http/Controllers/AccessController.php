@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccessCode;
+use App\Support\ChatSubdomainUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -15,7 +16,7 @@ class AccessController extends Controller
     {
         // If already has access, redirect to chat
         if (Session::has('access_granted')) {
-            return redirect()->route('chat');
+            return redirect()->away(ChatSubdomainUrl::appUrl());
         }
 
         return view('auth.verify-access');
@@ -43,7 +44,7 @@ class AccessController extends Controller
             Session::put('access_code', $code);
             Session::put('access_plan', $accessCode->plan);
 
-            return redirect()->route('chat')->with('success', 'Access granted! Welcome to BlinkStudy.');
+            return redirect()->away(ChatSubdomainUrl::appUrl())->with('success', 'Access granted! Welcome to BlinkStudy.');
         }
 
         return back()->withErrors([

@@ -28,7 +28,7 @@
 
             <div class="flex items-center gap-2.5">
                 @if(auth()->check())
-                    <a href="{{ route('chat') }}" class="hidden sm:inline-flex items-center justify-center px-5 h-9 rounded-xl bg-gradient-to-r from-brand to-secondary text-white text-xs font-bold shadow-blinkstudy hover:shadow-blinkstudy-lg hover:-translate-y-0.5 transition-all">
+                    <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="hidden sm:inline-flex items-center justify-center px-5 h-9 rounded-xl bg-gradient-to-r from-brand to-secondary text-white text-xs font-bold shadow-blinkstudy hover:shadow-blinkstudy-lg hover:-translate-y-0.5 transition-all">
                         Open App
                     </a>
                 @else
@@ -48,7 +48,7 @@
             <a href="{{ route('plans') }}" class="block py-2.5 text-sm font-semibold text-slate-600 hover:text-brand">Plans</a>
             <a href="{{ route('support') }}" class="block py-2.5 text-sm font-semibold text-slate-600 hover:text-brand">Support</a>
             @if(auth()->check())
-                <a href="{{ route('chat') }}" class="block py-3 mt-2 text-center text-sm font-bold bg-gradient-to-r from-brand to-secondary text-white rounded-xl">Open App</a>
+                <a href="{{ \App\Support\ChatSubdomainUrl::appUrl() }}" class="block py-3 mt-2 text-center text-sm font-bold bg-gradient-to-r from-brand to-secondary text-white rounded-xl">Open App</a>
             @else
                 <a href="{{ route('login') }}" class="block py-3 mt-2 text-center text-sm font-bold bg-gradient-to-r from-brand to-secondary text-white rounded-xl">Get Started</a>
             @endif

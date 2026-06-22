@@ -21,7 +21,7 @@ class PageController extends Controller
      */
     public function landing()
     {
-        $chatHost = env('CHAT_SUBDOMAIN');
+        $chatHost = config('domains.chat');
         if ($chatHost && request()->getHost() === $chatHost) {
             return app(ChatSubdomainController::class)->handleRoot(request());
         }
