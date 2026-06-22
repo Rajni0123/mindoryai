@@ -29,7 +29,7 @@ class CleanupStudyBattles extends Command
         try {
             // 1. Cleanup disconnected participants and check for abandoned rooms
             $cleanedUp = $battleService->cleanup();
-            $this->info("Cleaned up {$cleanedUp} disconnected participants");
+            $this->info("Cleaned up {$cleanedUp['disconnected']} disconnected participants");
 
             // 2. Mark expired waiting rooms as cancelled
             $expiredCount = StudyBattleRoom::expired()
@@ -67,7 +67,7 @@ class CleanupStudyBattles extends Command
             $this->info("Deleted {$deletedCount} old rooms");
 
             Log::info('Study Battle cleanup completed', [
-                'disconnected_participants' => $cleanedUp,
+                'cleanup_stats' => $cleanedUp,
                 'expired_rooms' => $expiredCount,
                 'stuck_battles' => $stuckBattles->count(),
                 'deleted_old_rooms' => $deletedCount,

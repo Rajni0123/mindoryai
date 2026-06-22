@@ -2,12 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\Admin\HybridRetrievalController;
+use App\Services\Retrieval\RetrievalSettingsService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
 
 class RetrievalDoctor extends Command
 {
-    protected $signature = 'retrieval:doctor';
+    protected $signature = 'retrieval:doctor {--render : Render the admin page HTML to catch Blade errors}';
 
     protected $description = 'Diagnose hybrid retrieval setup (tables, config, routes)';
 
@@ -46,9 +48,25 @@ class RetrievalDoctor extends Command
             }
         }
 
+        if ($this->option('render')) {
+            $this->newLine();
+            $this->info('Rendering admin page…');
+            try {
+                $view = app(HybridRetrievalController::class)->index(app(RetrievalSettingsService::class));
+                $html = $view->render();
+                $this->line(sprintf('  [OK] Blade rendered (%d bytes)', strlen($html)));
+            } catch (\Throwable $e) {
+                $this->error('  [FAIL] Blade render — ' . $e->getMessage());
+                $this->line('  at ' . $e->getFile() . ':' . $e->getLine());
+
+                return self::FAILURE;
+            }
+        }
+
         $this->newLine();
         $this->comment('If tables are missing: php artisan migrate --force');
         $this->comment('If routes fail: php artisan route:clear && php artisan config:clear && php artisan view:clear');
+        $this->comment('To test the view: php artisan retrieval:doctor --render');
 
         return self::SUCCESS;
     }
