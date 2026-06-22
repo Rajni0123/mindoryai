@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Providers;
+
+use App\Contracts\Retrieval\IntentClassifierInterface;
+use App\Models\KnowledgeSource;
+use App\Services\Retrieval\ExaSearchService;
+use App\Services\Retrieval\HybridContextMerger;
+use App\Services\Retrieval\IntentClassifier;
+use App\Services\Retrieval\KnowledgeSourceIngestionService;
+use App\Services\Retrieval\ProviderRegistry;
+use App\Services\Retrieval\Providers\ChunkRagProvider;
+use App\Services\Retrieval\Providers\ExaSearchProvider;
+use App\Services\Retrieval\Providers\NcertRagProvider;
+use App\Services\Retrieval\Providers\PyqRagProvider;
+use App\Services\Retrieval\QuizRetrievalEngine;
+use App\Services\Retrieval\RetrievalCacheService;
+use App\Services\Retrieval\RetrievalOrchestrator;
+use App\Services\Retrieval\RetrievalRouter;
+use App\Services\Retrieval\RetrievalSettingsService;
+use App\Services\Retrieval\TemporaryPdfRetriever;
+use Illuminate\Support\ServiceProvider;
+
+class RetrievalServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this->app->singleton(RetrievalSettingsService::class);
+        $this->app->singleton(RetrievalCacheService::class);
+        $this->app->singleton(IntentClassifierInterface::class, IntentClassifier::class);
+        $this->app->singleton(RetrievalRouter::class);
+        $this->app->singleton(HybridContextMerger::class);
+        $this->app->singleton(TemporaryPdfRetriever::class);
+        $this->app->singleton(ExaSearchService::class);
+        $this->app->singleton(KnowledgeSourceIngestionService::class);
+        $this->app->singleton(QuizRetrievalEngine::class);
+
+        $this->app->singleton(ProviderRegistry::class, function ($app) {
+            $registry = new ProviderRegistry();
+            $settings = $app->make(RetrievalSettingsService::class);
+
+            $registry->register($app->make(NcertRagProvider::class));
+            $registry->register($app->make(PyqRagProvider::class));
+            $registry->register(new ChunkRagProvider($settings, $app->make(\App\Services\RAGService::class), 'teacher_notes', 'Teacher Notes'));
+            $registry->register(new ChunkRagProvider($settings, $app->make(\App\Services\RAGService::class), 'formula', 'Formula Sheets'));
+            $registry->register($app->make(ExaSearchProvider::class));
+
+            try {
+                foreach (KnowledgeSource::where('is_active', true)->get() as $source) {
+                    $registry->register(new ChunkRagProvider(
+                        $settings,
+                        $app->make(\App\Services\RAGService::class),
+                        $source->provider_key,
+                        $source->name,
+                    ));
+                }
+            } catch (\Throwable) {
+                // DB may be unavailable during install/migrate.
+            }
+
+            return $registry;
+        });
+
+        $this->app->singleton(RetrievalOrchestrator::class);
+    }
+
+    public function boot(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \App\Console\Commands\PurgeExpiredTemporaryPdfs::class,
+            ]);
+        }
+    }
+}

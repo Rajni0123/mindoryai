@@ -9,6 +9,9 @@ use App\Services\RAGService;
 use App\Services\FileStorageService;
 use App\Services\UsageTrackingService;
 use App\Services\UsageLimitService;
+use App\Services\Retrieval\DTO\RetrievalQuery;
+use App\Services\Retrieval\RetrievalOrchestrator;
+use App\Services\Retrieval\RetrievalSettingsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,14 +26,25 @@ class ImageAnalysisController extends Controller
     protected RAGService $ragService;
     protected FileStorageService $fileStorageService;
     protected UsageLimitService $usageLimitService;
+    protected RetrievalOrchestrator $retrievalOrchestrator;
+    protected RetrievalSettingsService $retrievalSettings;
 
-    public function __construct(OpenAIService $openAIService, ImageService $imageService, RAGService $ragService, FileStorageService $fileStorageService, UsageLimitService $usageLimitService)
-    {
+    public function __construct(
+        OpenAIService $openAIService,
+        ImageService $imageService,
+        RAGService $ragService,
+        FileStorageService $fileStorageService,
+        UsageLimitService $usageLimitService,
+        RetrievalOrchestrator $retrievalOrchestrator,
+        RetrievalSettingsService $retrievalSettings,
+    ) {
         $this->openAIService = $openAIService;
         $this->imageService = $imageService;
         $this->ragService = $ragService;
         $this->fileStorageService = $fileStorageService;
         $this->usageLimitService = $usageLimitService;
+        $this->retrievalOrchestrator = $retrievalOrchestrator;
+        $this->retrievalSettings = $retrievalSettings;
     }
 
     /**
@@ -371,14 +385,31 @@ class ImageAnalysisController extends Controller
             $user = Auth::user();
             $classLevel = $user && $user->student_class ? $user->student_class : null;
 
-            // Step 1: Retrieve relevant context from NCERT materials using RAG
-            $ragResult = $this->ragService->getRelevantContext(
-                $question,
-                $classLevel,
-                $subject,
-                5, // Top 5 most relevant chunks
-                0.6 // Similarity threshold (60%)
-            );
+            // Step 1: Retrieve relevant context (hybrid when enabled, legacy RAG otherwise)
+            if ($this->retrievalSettings->isHybridEnabled()) {
+                $retrieval = $this->retrievalOrchestrator->retrieve(new RetrievalQuery(
+                    question: $question,
+                    classLevel: $classLevel,
+                    subject: $subject,
+                    userId: $user?->id,
+                    feature: 'ask_question',
+                ));
+
+                $ragResult = [
+                    'success' => $retrieval->success,
+                    'context' => $retrieval->context,
+                    'sources' => $retrieval->sources,
+                    'message' => $retrieval->message ?? ($retrieval->success ? null : 'No relevant context found.'),
+                ];
+            } else {
+                $ragResult = $this->ragService->getRelevantContext(
+                    $question,
+                    $classLevel,
+                    $subject,
+                    5,
+                    0.6
+                );
+            }
 
             // Step 2: Check if context was found
             if (!$ragResult['success']) {

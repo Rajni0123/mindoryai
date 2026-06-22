@@ -426,6 +426,13 @@ class WebDashboardService
                 'subtitle' => ($quizStats['totalQuizzes'] ?? 0) . ' this week',
             ],
             [
+                'id' => 'battle',
+                'label' => 'Battle',
+                'icon' => 'bolt',
+                'action' => 'battle',
+                'subtitle' => 'Live quiz duels',
+            ],
+            [
                 'id' => 'revision',
                 'label' => 'Revision',
                 'icon' => 'menu_book',

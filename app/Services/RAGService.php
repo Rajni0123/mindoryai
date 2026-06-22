@@ -35,6 +35,28 @@ class RAGService
         float $similarityThreshold = 0.6
     ): array
     {
+        return $this->getRelevantContextForProvider(
+            $question,
+            null,
+            $classLevel,
+            $subject,
+            $topK,
+            $similarityThreshold
+        );
+    }
+
+    /**
+     * Provider-scoped retrieval for modular RAG sources.
+     */
+    public function getRelevantContextForProvider(
+        string $question,
+        ?string $providerKey = null,
+        ?string $classLevel = null,
+        ?string $subject = null,
+        int $topK = 5,
+        float $similarityThreshold = 0.6
+    ): array
+    {
         try {
             // Generate embedding for the question
             $questionEmbedding = $this->generateEmbedding($question);
@@ -54,7 +76,8 @@ class RAGService
                 $classLevel,
                 $subject,
                 $topK,
-                $similarityThreshold
+                $similarityThreshold,
+                $providerKey
             );
 
             if (empty($relevantChunks)) {
@@ -160,11 +183,16 @@ class RAGService
         ?string $classLevel,
         ?string $subject,
         int $topK,
-        float $similarityThreshold
+        float $similarityThreshold,
+        ?string $providerKey = null
     ): array
     {
         // Start with chunks that have embeddings
         $query = DocumentChunk::whereNotNull('embedding');
+
+        if ($providerKey) {
+            $query->where('provider_key', $providerKey);
+        }
 
         // STRICT FILTERING: Only return chunks matching class AND subject
         if ($classLevel || $subject) {

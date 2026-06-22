@@ -33,6 +33,7 @@
     .sidebar-chat-tools { display: none; }
     body.app-view-chat .sidebar-chat-tools { display: block; }
     body.app-view-chat .sidebar-dash-tools { display: none; }
+    body:not(.app-view-chat) .sidebar-dash-tools { display: flex; }
 
     .dash-shell {
         flex: 1;
@@ -589,6 +590,8 @@
 
     #appChatView.hidden { display: none !important; }
     #appDashboardView.hidden { display: none !important; }
+    #appBattleView.hidden { display: none !important; }
+    #appMockTestView.hidden { display: none !important; }
 </style>
 
 <div id="appDashboardView" class="dash-shell">
@@ -883,17 +886,20 @@
                 window.switchAppView('chat');
                 if (typeof createNewChat === 'function') createNewChat();
                 break;
+            case 'battle':
+                window.switchAppView('battle');
+                break;
             case 'mock_test':
-                window.openMockTest();
+                window.switchAppView('mock_test');
                 break;
             case 'revision':
-                document.getElementById('dashRevisionSection')?.scrollIntoView({ behavior: 'smooth' });
+                window.openRevision();
                 break;
             case 'upgrade':
                 window.open(url || dashData?.upgrade_url || '/pricing', '_blank');
                 break;
             case 'continue':
-                window.openMockTest();
+                window.switchAppView('mock_test');
                 break;
             default:
                 break;
@@ -901,16 +907,28 @@
     };
 
     window.handlePlanTask = function (action) {
-        if (action === 'quiz' || action === 'mock_test') {
-            window.openMockTest();
+        if (action === 'quiz') {
+            if (typeof openQuizModal === 'function') openQuizModal();
+        } else if (action === 'mock_test') {
+            window.switchAppView('mock_test');
         } else {
             window.switchAppView('chat');
         }
     };
 
+    window.openRevision = function () {
+        window.switchAppView('dashboard');
+        document.querySelectorAll('.app-nav-item').forEach(el => {
+            el.classList.toggle('active', el.dataset.view === 'revision');
+        });
+        setTimeout(() => {
+            document.getElementById('dashRevisionSection')?.scrollIntoView({ behavior: 'smooth' });
+        }, 250);
+    };
+
     window.openMockTest = function () {
-        if (typeof openQuizModal === 'function') {
-            openQuizModal();
+        if (typeof window.switchAppView === 'function') {
+            window.switchAppView('mock_test');
         }
     };
 
@@ -934,20 +952,35 @@
     window.switchAppView = function (view) {
         const dash = document.getElementById('appDashboardView');
         const chat = document.getElementById('appChatView');
+        const battle = document.getElementById('appBattleView');
+        const mockTest = document.getElementById('appMockTestView');
+
         document.querySelectorAll('.app-nav-item').forEach(el => {
             el.classList.toggle('active', el.dataset.view === view);
         });
 
-        document.body.classList.remove('app-view-dashboard', 'app-view-chat');
-        document.body.classList.add(view === 'chat' ? 'app-view-chat' : 'app-view-dashboard');
+        document.body.classList.remove('app-view-dashboard', 'app-view-chat', 'app-view-battle', 'app-view-mock_test');
+        const bodyClass = view === 'chat' ? 'app-view-chat'
+            : (view === 'battle' ? 'app-view-battle'
+            : (view === 'mock_test' ? 'app-view-mock_test' : 'app-view-dashboard'));
+        document.body.classList.add(bodyClass);
+
+        dash?.classList.add('hidden');
+        chat?.classList.add('hidden');
+        battle?.classList.add('hidden');
+        mockTest?.classList.add('hidden');
 
         if (view === 'chat') {
-            dash?.classList.add('hidden');
             chat?.classList.remove('hidden');
+        } else if (view === 'battle') {
+            battle?.classList.remove('hidden');
+            if (typeof window.loadWebBattle === 'function') window.loadWebBattle();
+        } else if (view === 'mock_test') {
+            mockTest?.classList.remove('hidden');
+            if (typeof window.loadWebMockTest === 'function') window.loadWebMockTest();
         } else {
-            chat?.classList.add('hidden');
             dash?.classList.remove('hidden');
-            if (view === 'dashboard') {
+            if (view === 'dashboard' && typeof window.loadWebDashboard === 'function') {
                 window.loadWebDashboard();
             }
         }

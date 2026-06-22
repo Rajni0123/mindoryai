@@ -297,6 +297,30 @@ PROMPT;
         // Limit questions to prevent timeout/truncation
         $numberOfQuestions = min($numberOfQuestions, 15);
 
+        try {
+            $quizEngine = app(\App\Services\Retrieval\QuizRetrievalEngine::class);
+            $retrieved = $quizEngine->retrieveQuestions($topic, $subject, $numberOfQuestions, $difficulty);
+
+            if (! empty($retrieved['questions']) && ! $retrieved['used_ai_fallback']) {
+                $payload = [
+                    'questions' => array_map(function (array $q) {
+                        return [
+                            'question' => $q['question'] ?? '',
+                            'options' => $q['options'] ?? [],
+                            'correct_answer' => $q['correct_answer'] ?? '',
+                            'explanation' => $q['explanation'] ?? '',
+                        ];
+                    }, $retrieved['questions']),
+                ];
+
+                Log::info('Quiz served from retrieval engine', ['source' => $retrieved['source']]);
+
+                return json_encode($payload, JSON_UNESCAPED_UNICODE);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Quiz retrieval engine skipped', ['error' => $e->getMessage()]);
+        }
+
         // Extract metadata from topic
         $cleanTopic = $topic;
         $language = "english";

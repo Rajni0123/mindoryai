@@ -28,6 +28,7 @@
             'label' => 'AI & Content',
             'items' => [
                 ['route' => 'admin.ai-settings', 'match' => 'admin.ai-settings*', 'icon' => 'psychology', 'label' => 'AI Models'],
+                ['route' => 'admin.hybrid-retrieval', 'match' => 'admin.hybrid-retrieval*', 'icon' => 'travel_explore', 'label' => 'Hybrid Retrieval'],
                 ['route' => 'admin.exams.index', 'match' => 'admin.exams.*', 'icon' => 'school', 'label' => 'Exams'],
                 ['route' => 'admin.daily-challenges.index', 'match' => 'admin.daily-challenges.*', 'icon' => 'emoji_events', 'label' => 'Daily Challenges'],
                 ['route' => 'admin.notifications.index', 'match' => 'admin.notifications.*', 'icon' => 'notifications', 'label' => 'Notifications'],

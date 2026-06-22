@@ -215,6 +215,12 @@ Route::get('/contact', function() {
             Route::get('/ai-settings', [\App\Http\Controllers\Admin\DashboardController::class, 'aiSettings'])->name('ai-settings');
             Route::post('/ai-settings', [\App\Http\Controllers\Admin\DashboardController::class, 'updateAiSettings'])->name('ai-settings.update');
 
+            // Hybrid Retrieval Engine
+            Route::get('/hybrid-retrieval', [\App\Http\Controllers\Admin\HybridRetrievalController::class, 'index'])->name('hybrid-retrieval');
+            Route::post('/hybrid-retrieval/settings', [\App\Http\Controllers\Admin\HybridRetrievalController::class, 'updateSettings'])->name('hybrid-retrieval.settings');
+            Route::post('/hybrid-retrieval/sources', [\App\Http\Controllers\Admin\HybridRetrievalController::class, 'storeKnowledgeSource'])->name('hybrid-retrieval.sources.store');
+            Route::post('/hybrid-retrieval/sources/{knowledgeSource}/toggle', [\App\Http\Controllers\Admin\HybridRetrievalController::class, 'toggleKnowledgeSource'])->name('hybrid-retrieval.sources.toggle');
+
             // Storage Settings (Cloudflare R2, S3, etc.)
             Route::prefix('storage-settings')->name('storage-settings.')->group(function () {
                 Route::get('/', [\App\Http\Controllers\Admin\StorageSettingsController::class, 'index'])->name('index');

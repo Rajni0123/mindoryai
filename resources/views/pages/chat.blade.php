@@ -194,6 +194,22 @@
             justify-content: center;
         }
 
+        .sidebar.collapsed .app-nav-item {
+            justify-content: center;
+            padding: 10px 8px;
+            gap: 0;
+        }
+
+        .sidebar.collapsed .app-nav-section {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .sidebar.collapsed .sidebar-dash-tools,
+        .sidebar.collapsed .sidebar-spacer-label {
+            display: none !important;
+        }
+
         .sidebar-collapse-btn {
             width: 28px;
             height: 28px;
@@ -1637,34 +1653,34 @@
             </div>
 
             <!-- App Navigation -->
-            <div class="px-3 pb-2 space-y-1">
-                <button type="button" data-view="dashboard" class="app-nav-item active" onclick="window.switchAppView('dashboard')">
+            <nav class="app-nav-section px-3 pb-2 space-y-1" aria-label="Main navigation">
+                <button type="button" data-view="dashboard" class="app-nav-item active" onclick="window.switchAppView('dashboard')" title="Dashboard">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="sidebar-item-text text-sm">Dashboard</span>
                 </button>
-                <button type="button" data-view="chat" class="app-nav-item" onclick="window.switchAppView('chat')">
+                <button type="button" data-view="chat" class="app-nav-item" onclick="window.switchAppView('chat')" title="AI Tutor">
                     <span class="material-symbols-outlined">smart_toy</span>
                     <span class="sidebar-item-text text-sm">AI Tutor</span>
                 </button>
-                <button type="button" data-view="dashboard" class="app-nav-item" onclick="window.switchAppView('dashboard'); setTimeout(()=>document.getElementById('dashRevisionSection')?.scrollIntoView({behavior:'smooth'}), 200);">
+                <button type="button" data-view="battle" class="app-nav-item" onclick="window.switchAppView('battle')" title="Study Battle">
+                    <span class="material-symbols-outlined">bolt</span>
+                    <span class="sidebar-item-text text-sm">Battle</span>
+                </button>
+                <button type="button" data-view="mock_test" class="app-nav-item" onclick="window.switchAppView('mock_test')" title="Mock Test">
+                    <span class="material-symbols-outlined">quiz</span>
+                    <span class="sidebar-item-text text-sm">Mock Test</span>
+                </button>
+                <button type="button" data-view="revision" class="app-nav-item" onclick="window.openRevision()" title="Revision">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="sidebar-item-text text-sm">Revision</span>
                 </button>
-                <button type="button" class="app-nav-item" onclick="openSettings()">
+                <button type="button" data-view="settings" class="app-nav-item" onclick="openSettings()" title="Settings">
                     <span class="material-symbols-outlined">settings</span>
                     <span class="sidebar-item-text text-sm">Settings</span>
                 </button>
-            </div>
+            </nav>
 
-            <!-- Dashboard quick tools -->
-            <div class="sidebar-dash-tools px-3 pb-3 space-y-1">
-                <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-primary)]" onclick="window.switchAppView('chat'); createNewChat();">
-                    <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">smart_toy</span>
-                    <span class="sidebar-item-text text-sm">Ask AI Tutor</span>
-                </button>
-            </div>
-
-            <!-- Chat tools (visible in chat mode) -->
+            <!-- Chat tools (visible in chat mode only) -->
             <div class="sidebar-chat-tools px-3 pb-3 space-y-1">
                 <button onclick="createNewChat()" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-primary)]">
                     <svg class="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1681,29 +1697,14 @@
             </div>
 
             <!-- Chat History -->
-            <div class="sidebar-chat-tools flex-1 overflow-y-auto scrollbar-thin px-2 pt-2">
+            <div class="sidebar-chat-tools flex-1 overflow-y-auto scrollbar-thin px-2 pt-2 min-h-0">
                 <div id="chatHistory" class="space-y-1">
                     <!-- Chat items will be loaded here -->
                 </div>
             </div>
 
-            <div class="sidebar-dash-tools flex-1 px-3 pt-2">
-                <p class="text-xs uppercase tracking-wide text-[var(--text-secondary)] px-2 mb-2">Quick access</p>
-                <div class="space-y-1">
-                    <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.switchAppView('chat'); createNewChat();">
-                        <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">smart_toy</span>
-                        <span class="sidebar-item-text text-sm">AI Tutor</span>
-                    </button>
-                    <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.openMockTest()">
-                        <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">quiz</span>
-                        <span class="sidebar-item-text text-sm">Mock Test</span>
-                    </button>
-                    <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.switchAppView('dashboard'); setTimeout(()=>document.getElementById('dashRevisionSection')?.scrollIntoView({behavior:'smooth'}), 200);">
-                        <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">event_note</span>
-                        <span class="sidebar-item-text text-sm">Today's plan</span>
-                    </button>
-                </div>
-            </div>
+            <!-- Spacer (dashboard / battle / mock — pushes profile to bottom) -->
+            <div class="sidebar-dash-tools flex-1 min-h-0" aria-hidden="true"></div>
 
             <!-- User Section -->
             <div class="sidebar-user p-3 border-t border-[var(--border-color)] relative">
@@ -2044,6 +2045,8 @@
         </div>
 
         @include('pages.partials.desktop-dashboard')
+        @include('pages.partials.desktop-battle')
+        @include('pages.partials.desktop-mock-test')
 
         <!-- Main Chat Area -->
         <main id="appChatView" class="flex-1 flex flex-col bg-transparent hidden">
@@ -3350,13 +3353,11 @@
 
         // Quiz Modal Functions
         let quizState = {
-            activeTab: 'topic', // 'topic' or 'scan'
             selectedExam: null,
             selectedSubject: null,
             selectedTopic: null,
             selectedLanguage: null,
             selectedDuration: null,
-            selectedFile: null
         };
 
         // Quiz Taking State
@@ -3387,19 +3388,16 @@
             document.body.style.overflow = '';
             // Reset quiz state
             quizState = {
-                activeTab: 'topic',
                 selectedExam: null,
                 selectedSubject: null,
                 selectedTopic: null,
                 selectedLanguage: null,
                 selectedDuration: null,
-                selectedFile: null
             };
             renderQuizContent();
         }
 
         function switchQuizTab(tab) {
-            quizState.activeTab = tab;
             renderQuizContent();
         }
 
@@ -3438,36 +3436,8 @@
                 return;
             }
 
-            const tabs = document.querySelectorAll('.quiz-tab');
-
-            // Update tab states
-            tabs.forEach(tab => {
-                if (tab.dataset.tab === quizState.activeTab) {
-                    tab.classList.add('active');
-                } else {
-                    tab.classList.remove('active');
-                }
-            });
-
-            if (quizState.activeTab === 'scan') {
-                container.innerHTML = `
-                    <div class="file-upload-area" onclick="document.getElementById('quizFileInput').click()">
-                        <div class="file-upload-icon">
-                            <span class="material-icons" style="font-size: 32px; color: var(--accent-color);">upload_file</span>
-                        </div>
-                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Upload your notes</h3>
-                        <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">Upload images or PDF documents to generate quiz</p>
-                        <p style="font-size: 12px; color: var(--text-secondary);">Supports: JPG, PNG, PDF (Max 10MB)</p>
-                    </div>
-                    <input type="file" id="quizFileInput" accept="image/*,.pdf" style="display: none;" onchange="handleQuizFileSelect(event)">
-                    <button class="quiz-generate-btn" disabled>
-                        <span class="material-icons">quiz</span>
-                        Generate Quiz from Notes
-                    </button>
-                `;
-            } else {
-                // Topic-based quiz
-                let html = '';
+            // Topic-based quiz only
+            let html = '';
 
                 // Step 1: Exam Selection
                 html += `<div class="selection-step">
@@ -3606,15 +3576,6 @@
                 `;
 
                 container.innerHTML = html;
-            }
-        }
-
-        function handleQuizFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                quizState.selectedFile = file;
-                renderQuizContent();
-            }
         }
 
         function generateQuiz() {
@@ -4199,23 +4160,11 @@ Make sure to follow this format precisely for all ${questionCount} questions.`;
             <!-- Header -->
             <div class="quiz-modal-header">
                 <h2 style="font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                    <span class="material-icons" style="color: var(--accent-color);">quiz</span>
-                    Quiz Generator
+                    <span class="material-icons" style="color: var(--accent-color);">school</span>
+                    Quiz by Topic
                 </h2>
                 <button onclick="closeQuizModal()" style="padding: 8px; border-radius: 8px; border: none; background: var(--bg-hover); cursor: pointer; transition: all 0.2s ease;">
                     <span class="material-icons" style="font-size: 20px; color: var(--text-primary);">close</span>
-                </button>
-            </div>
-
-            <!-- Tabs -->
-            <div class="quiz-tabs">
-                <button class="quiz-tab active" data-tab="topic" onclick="switchQuizTab('topic')">
-                    <span class="material-icons">school</span>
-                    Quiz by Topic
-                </button>
-                <button class="quiz-tab" data-tab="scan" onclick="switchQuizTab('scan')">
-                    <span class="material-icons">document_scanner</span>
-                    Scan Notes
                 </button>
             </div>
 

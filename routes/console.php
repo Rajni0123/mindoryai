@@ -98,7 +98,11 @@ Schedule::command('notifications:plan-expiry')
         \Log::info('Plan expiry push notifications sent');
     });
 
-// Recalculate Topper Rankings - runs every hour
+// Purge expired temporary PDF retrievals hourly
+Schedule::command('retrieval:purge-temp-pdfs')
+    ->hourly()
+    ->description('Purge expired temporary PDF retrieval cache rows')
+    ->withoutOverlapping();
 // Auto-promotes top 10 users to topper status based on performance
 Schedule::command('toppers:recalculate')
     ->hourly()

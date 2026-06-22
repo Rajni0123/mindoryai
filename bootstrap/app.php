@@ -53,6 +53,7 @@ return Application::configure(basePath: dirname(__DIR__))
         \App\Providers\RateLimitServiceProvider::class,
         \App\Providers\OAuthConfigServiceProvider::class,
         \App\Providers\SmartCacheServiceProvider::class,
+        \App\Providers\RetrievalServiceProvider::class,
     ])
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (\Illuminate\Validation\ValidationException $e, \Illuminate\Http\Request $request) {

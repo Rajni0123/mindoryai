@@ -318,18 +318,30 @@ class StudyBattleController extends Controller
         $request->validate([
             'room_id' => 'required|integer|exists:study_battle_rooms,id',
             'question_index' => 'required|integer|min:0',
-            'answer' => 'required|string|in:A,B,C,D',
+            'answer' => 'nullable|string|in:A,B,C,D',
+            'answer_index' => 'nullable|integer|min:0|max:3',
         ]);
 
         $user = $request->user();
 
+        $selected = $request->input('answer');
+        if (! $selected && $request->has('answer_index')) {
+            $selected = ['A', 'B', 'C', 'D'][$request->integer('answer_index')] ?? null;
+        }
+
+        if (! $selected) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Answer is required (A, B, C, or D).',
+            ], 422);
+        }
+
         try {
-            $result = $this->battleService->submitAnswer(
-                $user,
-                $request->room_id,
-                $request->question_index,
-                $request->answer
-            );
+            $result = $this->battleService->submitAnswer($user, [
+                'room_id' => $request->integer('room_id'),
+                'question_index' => $request->integer('question_index'),
+                'selected_answer' => strtoupper($selected),
+            ]);
 
             return response()->json([
                 'success' => true,

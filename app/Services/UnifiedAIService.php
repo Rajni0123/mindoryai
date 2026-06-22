@@ -47,6 +47,13 @@ class UnifiedAIService
      */
     protected static array $userPlanSlugCache = [];
 
+    /**
+     * Optional retrieval context injected by hybrid engine for current request.
+     */
+    protected string $retrievalContext = '';
+
+    protected array $retrievalMeta = [];
+
     // =========================================================================
     // FAILOVER & ADAPTIVE MODEL SELECTION SYSTEM
     // =========================================================================
@@ -624,6 +631,8 @@ class UnifiedAIService
         $this->currentFeature = $feature;
         $requestStartedAt = microtime(true);
 
+        $this->maybeAttachRetrievalContext($message, $feature, $userId);
+
         // Get user's plan for feature gating
         $planSlug = $this->getUserPlanSlug($userId);
 
@@ -1101,34 +1110,78 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
     public function getPersonalizedSystemPrompt(?int $userId, ?string $message = null): string
     {
         $languageInstruction = $this->getLanguageInstruction();
+        $retrievalBlock = $this->formatRetrievalContextBlock();
 
         // Fast mode: skip heavy analytics DB work before AI call (GPT-like speed)
         if (config('ai.chat_fast_mode', true) && $this->isChatFeature($this->currentFeature)) {
-            return $this->getSystemPrompt() . "\n\n" . $languageInstruction;
+            return $this->getSystemPrompt() . $retrievalBlock . "\n\n" . $languageInstruction;
         }
 
         // If no user, return default cached prompt with language instruction
         if (!$userId) {
-            return $this->getSystemPrompt() . "\n\n" . $languageInstruction;
+            return $this->getSystemPrompt() . $retrievalBlock . "\n\n" . $languageInstruction;
         }
 
         try {
             $user = User::find($userId);
             if (!$user) {
-                return $this->getSystemPrompt() . "\n\n" . $languageInstruction;
+                return $this->getSystemPrompt() . $retrievalBlock . "\n\n" . $languageInstruction;
             }
 
             // If message provided, use comprehensive prompt with learning analytics
             if ($message) {
-                return AIPersonalityService::generateComprehensivePrompt($user, $message) . "\n\n" . $languageInstruction;
+                return AIPersonalityService::generateComprehensivePrompt($user, $message) . $retrievalBlock . "\n\n" . $languageInstruction;
             }
 
             // Otherwise use basic personalized prompt
-            return AIPersonalityService::generateDynamicPrompt($user) . "\n\n" . $languageInstruction;
+            return AIPersonalityService::generateDynamicPrompt($user) . $retrievalBlock . "\n\n" . $languageInstruction;
         } catch (\Exception $e) {
             Log::warning('Failed to generate personalized prompt', ['error' => $e->getMessage()]);
-            return $this->getSystemPrompt() . "\n\n" . $languageInstruction;
+            return $this->getSystemPrompt() . $retrievalBlock . "\n\n" . $languageInstruction;
         }
+    }
+
+    protected function maybeAttachRetrievalContext(string $message, string $feature, ?int $userId): void
+    {
+        $this->retrievalContext = '';
+        $this->retrievalMeta = [];
+
+        try {
+            $settings = app(\App\Services\Retrieval\RetrievalSettingsService::class);
+            if (! $settings->isHybridEnabled()) {
+                return;
+            }
+
+            $user = $userId ? User::find($userId) : null;
+            $query = new \App\Services\Retrieval\DTO\RetrievalQuery(
+                question: $message,
+                classLevel: $user?->student_class,
+                subject: null,
+                userId: $userId,
+                feature: $feature,
+            );
+
+            $result = app(\App\Services\Retrieval\RetrievalOrchestrator::class)->retrieve($query);
+            if ($result->success && $result->context !== '') {
+                $this->retrievalContext = $result->context;
+                $this->retrievalMeta = [
+                    'provider' => $result->provider,
+                    'sources' => $result->sources,
+                ];
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Hybrid retrieval skipped', ['error' => $e->getMessage()]);
+        }
+    }
+
+    protected function formatRetrievalContextBlock(): string
+    {
+        if ($this->retrievalContext === '') {
+            return '';
+        }
+
+        return "\n\nRETRIEVED KNOWLEDGE (use when relevant, cite sources when possible):\n"
+            . $this->retrievalContext;
     }
 
     /**
