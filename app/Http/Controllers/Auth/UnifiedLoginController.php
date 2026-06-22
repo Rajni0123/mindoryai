@@ -887,6 +887,11 @@ class UnifiedLoginController extends Controller
             'role' => $userRole,
         ]);
 
+        $host = strtolower((string) $request->getHost());
+        if (str_starts_with($host, 'ad.') || str_starts_with($host, 'admin.')) {
+            return redirect('/admin/login')->with('success', 'Logged out successfully');
+        }
+
         return redirect()->route('home')->with('success', 'Logged out successfully');
     }
 

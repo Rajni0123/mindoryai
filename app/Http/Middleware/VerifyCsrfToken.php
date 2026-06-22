@@ -15,5 +15,6 @@ class VerifyCsrfToken extends Middleware
         'login/*',             // All login routes (OTP send/verify)
         'admin/verify-2fa',    // Admin 2FA verification
         'api/*',               // All API routes
+        'logout',              // Allow logout when session/CSRF token expired
     ];
 }

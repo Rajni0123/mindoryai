@@ -84,12 +84,10 @@
             <span class="material-icons-outlined text-[18px]">open_in_new</span>
             <span>View Site</span>
         </a>
-        <form method="POST" action="{{ \App\Support\AdminUrl::path('/logout') }}">
-            @csrf
-            <button type="submit" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-gray-400 hover:text-red-300 hover:bg-red-500/10 border-l-2 border-transparent transition-colors text-[13px] font-medium">
-                <span class="material-icons-outlined text-[18px]">logout</span>
-                <span>Logout</span>
-            </button>
-        </form>
+        <a href="{{ \App\Support\AdminUrl::path('/logout') }}"
+           class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-gray-400 hover:text-red-300 hover:bg-red-500/10 border-l-2 border-transparent transition-colors text-[13px] font-medium">
+            <span class="material-icons-outlined text-[18px]">logout</span>
+            <span>Logout</span>
+        </a>
     </div>
 </aside>
