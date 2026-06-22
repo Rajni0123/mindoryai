@@ -43,7 +43,7 @@ class FrontendConfig extends Model
 
                 return $result;
             });
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::warning('FrontendConfig: Could not load configs', ['error' => $e->getMessage()]);
             return [];
         }

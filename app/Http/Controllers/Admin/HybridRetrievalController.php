@@ -9,6 +9,7 @@ use App\Services\Retrieval\KnowledgeSourceIngestionService;
 use App\Services\Retrieval\RetrievalSettingsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
@@ -17,31 +18,24 @@ class HybridRetrievalController extends Controller
 {
     public function index(RetrievalSettingsService $settings): View
     {
-        try {
-            $config = FrontendConfig::getAllConfigs();
-            $migrationRequired = ! Schema::hasTable('knowledge_sources');
-            $sources = $migrationRequired
-                ? collect()
-                : KnowledgeSource::orderByDesc('created_at')->get();
-            $providerPriority = $this->normalizeJsonArray($settings->providerPriority());
-            $quizPriority = $this->normalizeJsonArray($settings->quizPriority());
-            $pageError = null;
-        } catch (\Throwable $e) {
-            Log::error('Hybrid retrieval admin page failed', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-            ]);
+        $pageError = null;
+        $config = FrontendConfig::getAllConfigs();
+        $migrationRequired = ! $this->hybridTablesReady();
 
-            $config = [];
-            $sources = collect();
-            $providerPriority = config('retrieval.provider_priority', []);
-            $quizPriority = config('retrieval.quiz_priority', []);
-            $migrationRequired = true;
-            $pageError = config('app.debug')
-                ? $e->getMessage()
-                : 'Setup incomplete. Run: php artisan migrate --force && php artisan route:clear && php artisan view:clear';
+        $sources = collect();
+        if (! $migrationRequired) {
+            try {
+                $sources = KnowledgeSource::orderByDesc('created_at')->get();
+            } catch (\Throwable $e) {
+                Log::warning('Hybrid retrieval: could not list knowledge sources', [
+                    'message' => $e->getMessage(),
+                ]);
+                $pageError = 'Could not load knowledge sources: ' . $e->getMessage();
+            }
         }
+
+        $providerPriority = $this->normalizeJsonArray($settings->providerPriority());
+        $quizPriority = $this->normalizeJsonArray($settings->quizPriority());
 
         return view('admin.hybrid-retrieval', [
             'config' => $config,
@@ -165,6 +159,21 @@ class HybridRetrievalController extends Controller
             return url('/admin' . $path);
         } catch (\Throwable) {
             return '/admin' . $path;
+        }
+    }
+
+    private function hybridTablesReady(): bool
+    {
+        if (Schema::hasTable('knowledge_sources')) {
+            return true;
+        }
+
+        try {
+            DB::select('SELECT 1 FROM knowledge_sources LIMIT 1');
+
+            return true;
+        } catch (\Throwable) {
+            return false;
         }
     }
 

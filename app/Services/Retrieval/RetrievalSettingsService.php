@@ -54,10 +54,14 @@ class RetrievalSettingsService
      */
     public function providerPriority(): array
     {
-        $json = FrontendConfig::getValue('retrieval.provider_priority', '');
+        $stored = FrontendConfig::getValue('retrieval.provider_priority', '');
 
-        if ($json) {
-            $decoded = json_decode($json, true);
+        if (is_array($stored)) {
+            return $stored;
+        }
+
+        if (is_string($stored) && $stored !== '') {
+            $decoded = json_decode($stored, true);
             if (is_array($decoded)) {
                 return $decoded;
             }
@@ -71,10 +75,14 @@ class RetrievalSettingsService
      */
     public function quizPriority(): array
     {
-        $json = FrontendConfig::getValue('retrieval.quiz_priority', '');
+        $stored = FrontendConfig::getValue('retrieval.quiz_priority', '');
 
-        if ($json) {
-            $decoded = json_decode($json, true);
+        if (is_array($stored)) {
+            return array_values($stored);
+        }
+
+        if (is_string($stored) && $stored !== '') {
+            $decoded = json_decode($stored, true);
             if (is_array($decoded)) {
                 return array_values($decoded);
             }
