@@ -47,6 +47,7 @@ class QuestionExtractionEngine
                     'year' => $doc['year'] ?? null,
                     'topic' => $topic,
                     'difficulty' => 'medium',
+                    'search_provider' => (string) ($doc['search_provider'] ?? ''),
                 ]);
 
                 if ($normalized['question'] !== '' && count($normalized['options']) >= 2) {

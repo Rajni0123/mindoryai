@@ -315,6 +315,7 @@ PROMPT;
                             'year' => $q['year'] ?? null,
                             'topic' => $q['topic'] ?? '',
                             'difficulty' => $q['difficulty'] ?? $difficulty,
+                            'search_provider' => $q['search_provider'] ?? '',
                         ];
                     }, $retrieved['questions']),
                 ];

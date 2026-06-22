@@ -934,19 +934,38 @@
     };
 
     window.loadWebDashboard = async function () {
+        const container = document.getElementById('dashContent');
+        const showError = (message) => {
+            if (container) {
+                container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:40px;">' + (message || 'Could not load dashboard. Refresh to try again.') + '</p>';
+            }
+        };
+
         try {
-            const res = await fetch('/api/web/dashboard', {
-                headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-                credentials: 'same-origin',
+            const fetcher = window.blinkApiFetch || (async (url, opts) => {
+                const res = await fetch(url, {
+                    credentials: 'same-origin',
+                    ...opts,
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        ...(opts?.headers || {}),
+                    },
+                });
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    throw new Error(data.message || ('Request failed (' + res.status + ')'));
+                }
+                return data;
             });
-            const data = await res.json();
-            if (!data.success) throw new Error('Failed');
+
+            const data = await fetcher('/api/web/dashboard', { method: 'GET' });
+            if (!data.success) {
+                throw new Error(data.message || 'Failed');
+            }
             renderDashboard(data);
         } catch (e) {
-            const container = document.getElementById('dashContent');
-            if (container) {
-                container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:40px;">Could not load dashboard. Refresh to try again.</p>';
-            }
+            showError(e?.message || null);
         }
     };
 

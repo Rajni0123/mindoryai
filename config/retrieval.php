@@ -80,6 +80,44 @@ return [
         'ai_generation',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Quiz document search router (real PYQ / sample paper PDFs)
+    |--------------------------------------------------------------------------
+    | User → Search Router → providers → best PDF → extractor → Redis → quiz
+    */
+    'quiz_search' => [
+        'provider_priority' => [
+            'official',
+            'exa',
+            'google',
+            'brave',
+            'bing',
+        ],
+        'google' => [
+            'api_key' => env('GOOGLE_CUSTOM_SEARCH_API_KEY'),
+            'cx' => env('GOOGLE_CUSTOM_SEARCH_CX'),
+        ],
+        'brave' => [
+            'api_key' => env('BRAVE_SEARCH_API_KEY'),
+        ],
+        'bing' => [
+            'api_key' => env('BING_SEARCH_API_KEY'),
+        ],
+        'official_domains' => array_values(array_filter(array_map(
+            'trim',
+            explode(',', env('QUIZ_OFFICIAL_DOMAINS', implode(',', [
+                'cbse.gov.in',
+                'ncert.nic.in',
+                'nta.ac.in',
+                'jeemain.nta.ac.in',
+                'neet.nta.nic.in',
+                'upsc.gov.in',
+                'ssc.nic.in',
+            ])))
+        ))),
+    ],
+
     'intents' => [
         'tutor' => ['explain', 'teach', 'what is', 'how does', 'define', 'formula', 'theorem'],
         'quiz' => ['quiz', 'mcq', 'test me', 'practice questions'],

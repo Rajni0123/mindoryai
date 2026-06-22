@@ -29,15 +29,18 @@ class QuizService
         if ($questions === []) {
             return [
                 'questions' => [],
-                'source' => 'exa_real_retrieval',
+                'source' => 'verified_real_retrieval',
                 'verified' => false,
                 'message' => 'No verified questions found.',
             ];
         }
 
+        $providers = collect($questions)->pluck('search_provider')->filter()->unique()->values()->all();
+
         return [
             'questions' => $questions,
-            'source' => 'exa_real_retrieval',
+            'source' => 'verified_real_retrieval',
+            'search_providers' => $providers,
             'verified' => true,
             'message' => null,
         ];

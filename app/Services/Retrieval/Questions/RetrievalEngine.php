@@ -2,32 +2,19 @@
 
 namespace App\Services\Retrieval\Questions;
 
-use App\Services\Retrieval\ExaSearchService;
-use App\Services\Retrieval\RetrievalCacheService;
-use App\Services\Retrieval\RetrievalSettingsService;
+use App\Services\Retrieval\Questions\Search\QuizSearchRouter;
 
 class RetrievalEngine
 {
-    public function __construct(
-        protected ExaSearchService $exaSearchService,
-        protected RetrievalCacheService $cache,
-        protected RetrievalSettingsService $settings,
-    ) {}
+  public function __construct(
+    protected QuizSearchRouter $searchRouter,
+  ) {}
 
-    /**
-     * @return list<array<string, mixed>>
-     */
-    public function retrieveQuizDocuments(string $topic, ?string $subject, int $limit): array
-    {
-        if (! $this->settings->isExaEnabled()) {
-            return [];
-        }
-
-        $cacheKey = implode('|', ['quiz-docs', mb_strtolower($topic), mb_strtolower((string) $subject), $limit]);
-
-        return $this->cache->remember('search', $cacheKey, function () use ($topic, $subject, $limit) {
-            return $this->exaSearchService->searchQuizDocuments($topic, $subject, $limit);
-        }, (int) config('retrieval.cache.ttl.search', 3600));
-    }
+  /**
+   * @return list<array<string, mixed>>
+   */
+  public function retrieveQuizDocuments(string $topic, ?string $subject, int $limit): array
+  {
+    return $this->searchRouter->findBestDocuments($topic, $subject, $limit);
+  }
 }
-

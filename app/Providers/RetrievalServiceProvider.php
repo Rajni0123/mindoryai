@@ -23,6 +23,12 @@ use App\Services\Retrieval\Questions\QuestionRanker;
 use App\Services\Retrieval\Questions\QuestionRepository;
 use App\Services\Retrieval\Questions\QuizService;
 use App\Services\Retrieval\Questions\RetrievalEngine;
+use App\Services\Retrieval\Questions\Search\Providers\BingSearchProvider;
+use App\Services\Retrieval\Questions\Search\Providers\BraveSearchProvider;
+use App\Services\Retrieval\Questions\Search\Providers\ExaQuizDocumentProvider;
+use App\Services\Retrieval\Questions\Search\Providers\GoogleCustomSearchProvider;
+use App\Services\Retrieval\Questions\Search\Providers\OfficialWebsiteSearchProvider;
+use App\Services\Retrieval\Questions\Search\QuizSearchRouter;
 use App\Services\Retrieval\QuizRetrievalEngine;
 use App\Services\Retrieval\RetrievalCacheService;
 use App\Services\Retrieval\RetrievalOrchestrator;
@@ -43,6 +49,20 @@ class RetrievalServiceProvider extends ServiceProvider
         $this->app->singleton(TemporaryPdfRetriever::class);
         $this->app->singleton(ExaSearchService::class);
         $this->app->singleton(KnowledgeSourceIngestionService::class);
+        $this->app->singleton(QuizSearchRouter::class, function ($app) {
+            return new QuizSearchRouter([
+                $app->make(OfficialWebsiteSearchProvider::class),
+                $app->make(ExaQuizDocumentProvider::class),
+                $app->make(GoogleCustomSearchProvider::class),
+                $app->make(BraveSearchProvider::class),
+                $app->make(BingSearchProvider::class),
+            ], $app->make(RetrievalCacheService::class));
+        });
+        $this->app->singleton(OfficialWebsiteSearchProvider::class);
+        $this->app->singleton(ExaQuizDocumentProvider::class);
+        $this->app->singleton(GoogleCustomSearchProvider::class);
+        $this->app->singleton(BraveSearchProvider::class);
+        $this->app->singleton(BingSearchProvider::class);
         $this->app->singleton(RetrievalEngine::class);
         $this->app->singleton(PDFQuestionExtractor::class);
         $this->app->singleton(MCQDetector::class);

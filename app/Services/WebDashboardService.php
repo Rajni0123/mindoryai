@@ -11,6 +11,8 @@ use App\Models\MockTest;
 use App\Models\QuizAttempt;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class WebDashboardService
 {
@@ -21,14 +23,14 @@ class WebDashboardService
         $this->syncMockTestAnalytics($userId);
         $user->refresh();
 
-        $revisionProfile = LearningAnalyticsService::getRevisionProfile($userId);
-        $dashboardData = LearningAnalyticsService::getDashboardData($userId);
-        $revisionPlan = LearningAnalyticsService::buildRevisionPlan($userId);
+        $revisionProfile = $this->safeRevisionProfile($userId);
+        $dashboardData = $this->safeDashboardData($userId);
+        $revisionPlan = $this->safeRevisionPlan($userId);
         $quizStats = $this->weeklyQuizStats($userId);
         $latestMock = MockTest::where('user_id', $userId)->completed()->latest('completed_at')->first();
         $mockAccuracy = $latestMock ? (int) round($latestMock->accuracy) : 0;
-        $usageSummary = app(UsageLimitService::class)->getUsageSummary($user);
-        $dailyChallenge = $this->dailyChallengeData($user);
+        $usageSummary = $this->safeUsageSummary($user);
+        $dailyChallenge = $this->safeDailyChallengeData($user);
         $badges = $revisionProfile['badges'] ?? BadgeService::getUserBadges($userId);
 
         $planDays = collect($revisionPlan['days'] ?? []);
@@ -46,7 +48,7 @@ class WebDashboardService
         }
         $weaknessMap = $this->buildWeaknessMap($weakTopics, $userId);
 
-        $leaderboard = app(StudyBattleService::class)->getLeaderboard(7);
+        $leaderboard = $this->safeLeaderboard(7);
         $userRank = $this->findUserRank($leaderboard, $userId);
 
         $streak = max(
@@ -541,20 +543,132 @@ class WebDashboardService
 
     private function syncMockTestAnalytics(int $userId): void
     {
-        MockTest::where('user_id', $userId)
-            ->completed()
-            ->orderByDesc('completed_at')
-            ->limit(10)
-            ->get()
-            ->each(function (MockTest $test) {
-                if (empty($test->config['analytics_recorded'])) {
-                    LearningAnalyticsService::recordMockTestResults($test);
-                }
-            });
+        if (! Schema::hasTable('mock_tests')) {
+            return;
+        }
 
-        $user = User::find($userId);
-        if ($user) {
-            $user->refresh();
+        try {
+            $pending = MockTest::where('user_id', $userId)
+                ->completed()
+                ->orderByDesc('completed_at')
+                ->limit(3)
+                ->get()
+                ->first(fn (MockTest $test) => empty($test->config['analytics_recorded']));
+
+            if ($pending) {
+                LearningAnalyticsService::recordMockTestResults($pending);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard mock analytics sync skipped', [
+                'user_id' => $userId,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function safeRevisionProfile(int $userId): array
+    {
+        try {
+            return LearningAnalyticsService::getRevisionProfile($userId);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard revision profile unavailable', ['error' => $e->getMessage()]);
+
+            return [
+                'weak_topics' => [],
+                'profile' => ['level' => 1, 'total_xp' => 0, 'streak' => 0],
+                'level_progress' => ['progress_percent' => 0, 'xp_needed' => 100],
+                'overall_accuracy' => 0,
+                'strength_score' => 0,
+                'peer_comparison' => [],
+                'badges' => ['primary' => ['streak' => null], 'stats' => ['streak' => 0]],
+            ];
+        }
+    }
+
+    private function safeDashboardData(int $userId): array
+    {
+        try {
+            return LearningAnalyticsService::getDashboardData($userId);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard analytics unavailable', ['error' => $e->getMessage()]);
+
+            return ['today_stats' => []];
+        }
+    }
+
+    private function safeRevisionPlan(int $userId): array
+    {
+        try {
+            return LearningAnalyticsService::buildRevisionPlan($userId);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard revision plan unavailable', ['error' => $e->getMessage()]);
+
+            return ['days' => []];
+        }
+    }
+
+    private function safeLeaderboard(int $limit): array
+    {
+        if (! Schema::hasTable('study_battle_participants') || ! Schema::hasTable('study_battle_rooms')) {
+            return [];
+        }
+
+        try {
+            return app(StudyBattleService::class)->getLeaderboard($limit);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard leaderboard unavailable', ['error' => $e->getMessage()]);
+
+            return [];
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function safeUsageSummary(User $user): array
+    {
+        if (! Schema::hasTable('daily_usage_limits')) {
+            return [];
+        }
+
+        try {
+            return app(UsageLimitService::class)->getUsageSummary($user);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard usage summary unavailable', ['error' => $e->getMessage()]);
+
+            return [];
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function safeDailyChallengeData(User $user): array
+    {
+        if (! Schema::hasTable('daily_challenges')) {
+            return [
+                'available' => false,
+                'completed' => false,
+                'title' => 'Daily Challenge',
+                'description' => 'Daily challenges are currently unavailable.',
+                'participants' => 0,
+                'reward_xp' => 0,
+            ];
+        }
+
+        try {
+            return $this->dailyChallengeData($user);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard daily challenge unavailable', ['error' => $e->getMessage()]);
+
+            return [
+                'available' => false,
+                'completed' => false,
+                'title' => 'Daily Challenge',
+                'description' => 'No challenge today. Check back tomorrow!',
+                'participants' => 0,
+                'reward_xp' => 0,
+            ];
         }
     }
 }
