@@ -25,6 +25,17 @@
         </header>
 
         <div class="p-6 space-y-4">
+            @if(!empty($migrationRequired))
+                <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-sm text-amber-200">
+                    Database tables missing. Run on server:
+                    <code class="block mt-2 text-xs bg-black/40 p-2 rounded">php artisan migrate --force</code>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-sm text-red-300">{{ session('error') }}</div>
+            @endif
+
             @if(session('success'))
                 <div class="p-3 bg-green-500/10 border border-green-500/30 rounded-lg text-sm text-green-300">{{ session('success') }}</div>
             @endif

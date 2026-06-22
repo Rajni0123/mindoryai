@@ -9,6 +9,7 @@ use App\Services\Retrieval\KnowledgeSourceIngestionService;
 use App\Services\Retrieval\RetrievalSettingsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class HybridRetrievalController extends Controller
@@ -16,11 +17,20 @@ class HybridRetrievalController extends Controller
     public function index(RetrievalSettingsService $settings): View
     {
         $config = FrontendConfig::getAllConfigs();
-        $sources = KnowledgeSource::orderByDesc('created_at')->get();
+        $migrationRequired = ! Schema::hasTable('knowledge_sources');
+        $sources = $migrationRequired
+            ? collect()
+            : KnowledgeSource::orderByDesc('created_at')->get();
         $providerPriority = $settings->providerPriority();
         $quizPriority = $settings->quizPriority();
 
-        return view('admin.hybrid-retrieval', compact('config', 'sources', 'providerPriority', 'quizPriority'));
+        return view('admin.hybrid-retrieval', compact(
+            'config',
+            'sources',
+            'providerPriority',
+            'quizPriority',
+            'migrationRequired'
+        ));
     }
 
     public function updateSettings(Request $request): RedirectResponse
@@ -57,6 +67,10 @@ class HybridRetrievalController extends Controller
 
     public function storeKnowledgeSource(Request $request, KnowledgeSourceIngestionService $ingestion): RedirectResponse
     {
+        if (! Schema::hasTable('knowledge_sources')) {
+            return back()->with('error', 'Run php artisan migrate --force first.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'source_type' => 'required|in:pdf,docx,txt,markdown,url,zip,question_bank',
