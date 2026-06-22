@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'BlinkStudy') }} AI - Chat</title>
+    <title>{{ config('app.name', 'BlinkStudy') }} — Dashboard</title>
+    <meta name="theme-color" content="#11131a"/>
 
     <!-- Vite React Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.tsx'])
@@ -15,69 +16,72 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        /* BlinkStudy Brand Theme - Matching Mobile App */
+        /* BlinkStudy — landing page dark gradient theme */
         :root {
-            --primary: #0D9488;
-            --primary-light: #99F6E4;
-            --primary-dark: #0F766E;
-            --secondary: #F59E0B;
-            --secondary-light: #FDE68A;
-            --bg-primary: #F0FDFA;
-            --bg-secondary: #FFFFFF;
-            --bg-hover: #CCFBF1;
-            --text-primary: #0F172A;
-            --text-secondary: #6B7280;
-            --border-color: #E5E7EB;
-            --accent-color: #0D9488;
-            --accent-light: #99F6E4;
-            --message-user: #CCFBF1;
-            --message-ai: #FFFFFF;
-            --input-bg: #FFFFFF;
-            --shadow-sm: 0 1px 2px rgba(13,148,136,0.05);
-            --shadow-md: 0 4px 6px rgba(13,148,136,0.1);
-            --success: #10B981;
-            --error: #EF4444;
-            --warning: #F59E0B;
-            --info: #3B82F6;
-            --gray-50: #F9FAFB;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-400: #9CA3AF;
-            --gray-500: #6B7280;
-            --gray-600: #4B5563;
-            --gray-700: #374151;
-            --gray-800: #1F2937;
-            --gray-900: #111827;
+            --primary: #afc6ff;
+            --primary-light: #c8d8ff;
+            --primary-dark: #528dff;
+            --on-primary: #002d6c;
+            --secondary: #ddb8ff;
+            --secondary-light: #e8ccff;
+            --bg-primary: #0b0e15;
+            --bg-secondary: rgba(29, 31, 39, 0.88);
+            --bg-hover: rgba(175, 198, 255, 0.08);
+            --text-primary: #e1e2ec;
+            --text-secondary: #c2c6d6;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-color: #afc6ff;
+            --accent-light: rgba(175, 198, 255, 0.12);
+            --message-user: rgba(39, 42, 49, 0.9);
+            --message-ai: rgba(25, 27, 34, 0.6);
+            --input-bg: rgba(29, 31, 39, 0.9);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.45);
+            --success: #4ade80;
+            --error: #f87171;
+            --warning: #fbbf24;
+            --info: #528dff;
+            --gray-50: #191b22;
+            --gray-100: #1d1f27;
+            --gray-200: #272a31;
+            --gray-300: #424753;
+            --gray-400: #8b92a8;
+            --gray-500: #c2c6d6;
+            --gray-600: #e1e2ec;
+            --gray-700: #e1e2ec;
+            --gray-800: #191b22;
+            --gray-900: #0b0e15;
         }
 
         .dark {
-            --primary: #0D9488;
-            --primary-light: #14B8A6;
-            --primary-dark: #0F766E;
-            --secondary: #F59E0B;
-            --secondary-light: #FBBF24;
-            --bg-primary: #111827;
-            --bg-secondary: #1F2937;
-            --bg-hover: #374151;
-            --text-primary: #F9FAFB;
-            --text-secondary: #9CA3AF;
-            --border-color: #374151;
-            --accent-color: #0D9488;
-            --accent-light: #0F766E;
-            --message-user: #1F2937;
-            --message-ai: #111827;
-            --input-bg: #1F2937;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-            --shadow-md: 0 4px 6px rgba(0,0,0,0.4);
-            --success: #10B981;
-            --error: #EF4444;
-            --warning: #F59E0B;
-            --info: #3B82F6;
+            --primary: #afc6ff;
+            --primary-light: #c8d8ff;
+            --primary-dark: #528dff;
+            --on-primary: #002d6c;
+            --secondary: #ddb8ff;
+            --secondary-light: #e8ccff;
+            --bg-primary: #0b0e15;
+            --bg-secondary: rgba(29, 31, 39, 0.88);
+            --bg-hover: rgba(175, 198, 255, 0.08);
+            --text-primary: #e1e2ec;
+            --text-secondary: #c2c6d6;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-color: #afc6ff;
+            --accent-light: rgba(175, 198, 255, 0.12);
+            --message-user: rgba(39, 42, 49, 0.9);
+            --message-ai: rgba(25, 27, 34, 0.6);
+            --input-bg: rgba(29, 31, 39, 0.9);
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.45);
+            --success: #4ade80;
+            --error: #f87171;
+            --warning: #fbbf24;
+            --info: #528dff;
         }
 
         * {
@@ -88,15 +92,60 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
+            background: #0b0e15;
             color: var(--text-primary);
             overflow: hidden;
         }
 
+        .chat-ambient {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .chat-ambient::before,
+        .chat-ambient::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+        }
+
+        .chat-ambient::before {
+            width: 520px;
+            height: 520px;
+            top: -120px;
+            left: 8%;
+            background: rgba(175, 198, 255, 0.1);
+        }
+
+        .chat-ambient::after {
+            width: 420px;
+            height: 420px;
+            bottom: -100px;
+            right: 6%;
+            background: rgba(221, 184, 255, 0.08);
+        }
+
+        .chat-shell {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-gradient {
+            background: linear-gradient(135deg, #afc6ff, #ddb8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
         /* ====== CLAUDE-STYLE SIDEBAR ====== */
         .sidebar {
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
+            background: rgba(25, 27, 34, 0.78);
+            backdrop-filter: blur(16px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             z-index: 30;
@@ -364,8 +413,9 @@
         }
 
         .chat-item.active {
-            background: var(--primary);
-            color: white;
+            background: linear-gradient(135deg, rgba(175, 198, 255, 0.18), rgba(221, 184, 255, 0.12));
+            color: var(--text-primary);
+            border: 1px solid rgba(175, 198, 255, 0.22);
         }
 
         .chat-item .chat-title {
@@ -400,16 +450,17 @@
 
         /* ====== CLAUDE-STYLE INPUT ====== */
         .input-wrapper {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: rgba(29, 31, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
             transition: all 0.2s ease;
         }
 
         .input-wrapper:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 2px 20px rgba(13, 148, 136, 0.15);
+            border-color: rgba(175, 198, 255, 0.45);
+            box-shadow: 0 4px 28px rgba(175, 198, 255, 0.15);
         }
 
         .input-wrapper textarea {
@@ -432,6 +483,7 @@
             height: 36px;
             border-radius: 50%;
             background: var(--primary);
+            color: var(--on-primary);
             border: none;
             display: flex;
             align-items: center;
@@ -442,9 +494,9 @@
         }
 
         .send-button:hover:not(:disabled) {
-            background: var(--primary-dark, #0F766E);
+            background: var(--primary-light);
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+            box-shadow: 0 4px 16px rgba(175, 198, 255, 0.35);
         }
 
         .send-button:disabled {
@@ -716,7 +768,7 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 24px;
-            box-shadow: 0 12px 32px rgba(13, 148, 136, 0.25);
+            box-shadow: 0 12px 32px rgba(175, 198, 255, 0.22);
             animation: float 3s ease-in-out infinite;
         }
 
@@ -790,8 +842,9 @@
         }
 
         .suggestion-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+            background: rgba(29, 31, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             padding: 20px;
             text-align: left;
@@ -820,7 +873,7 @@
         .suggestion-card:hover {
             border-color: var(--card-color, var(--primary));
             transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(13, 148, 136, 0.12);
+            box-shadow: 0 12px 24px rgba(175, 198, 255, 0.12);
         }
 
         .suggestion-card:hover::before {
@@ -841,7 +894,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--icon-bg, rgba(13, 148, 136, 0.1));
+            background: var(--icon-bg, rgba(175, 198, 255, 0.1));
             transition: all 0.3s ease;
         }
 
@@ -865,7 +918,7 @@
             background: var(--card-color, var(--accent-color));
             font-size: 11px;
             font-weight: 600;
-            color: white;
+            color: var(--on-primary);
         }
 
         .suggestion-card .title {
@@ -926,13 +979,14 @@
         }
 
         .avatar-user {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
+            background: linear-gradient(135deg, #afc6ff 0%, #ddb8ff 100%);
+            color: #002d6c;
+            font-weight: 700;
         }
 
         .avatar-ai {
-            background: linear-gradient(135deg, var(--secondary) 0%, #FBBF24 100%);
-            color: white;
+            background: linear-gradient(135deg, #528dff 0%, #afc6ff 100%);
+            color: #002d6c;
         }
 
         /* Loading animation */
@@ -1024,7 +1078,7 @@
 
         .quiz-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent-color), #50c878);
+            background: linear-gradient(90deg, #afc6ff, #ddb8ff);
             transition: width 0.3s ease;
         }
 
@@ -1089,8 +1143,8 @@
         }
 
         .quiz-option.selected .quiz-option-letter {
-            background: var(--accent-color);
-            color: white;
+            background: linear-gradient(135deg, #afc6ff, #ddb8ff);
+            color: var(--on-primary);
         }
 
         .quiz-option-text {
@@ -1130,8 +1184,8 @@
         }
 
         .quiz-nav-btn-next {
-            background: var(--accent-color);
-            color: white;
+            background: linear-gradient(135deg, #afc6ff, #ddb8ff);
+            color: var(--on-primary);
             flex: 1;
         }
 
@@ -1149,8 +1203,8 @@
         .quiz-score-header {
             text-align: center;
             padding: 32px 24px;
-            background: linear-gradient(135deg, var(--accent-color), #50c878);
-            color: white;
+            background: linear-gradient(135deg, #afc6ff, #ddb8ff);
+            color: var(--on-primary);
         }
 
         .quiz-score-icon {
@@ -1196,7 +1250,7 @@
         }
 
         .quiz-stat-value.correct {
-            color: #50c878;
+            color: var(--success);
         }
 
         .quiz-stat-value.incorrect {
@@ -1234,8 +1288,8 @@
         }
 
         .quiz-score-btn-primary {
-            background: var(--accent-color);
-            color: white;
+            background: linear-gradient(135deg, #afc6ff, #ddb8ff);
+            color: var(--on-primary);
         }
 
         .quiz-score-btn-secondary {
@@ -1489,8 +1543,8 @@
         .quiz-generate-btn {
             width: 100%;
             padding: 16px;
-            background: var(--accent-color);
-            color: white;
+            background: linear-gradient(135deg, #afc6ff, #ddb8ff);
+            color: var(--on-primary);
             border: none;
             border-radius: 12px;
             font-size: 16px;
@@ -1564,16 +1618,15 @@
     </style>
 </head>
 <body>
-    <div class="flex h-screen relative">
+    <div class="chat-ambient" aria-hidden="true"></div>
+    <div class="flex h-screen relative chat-shell">
         <!-- Sidebar -->
         <aside id="sidebar" class="sidebar w-[280px] min-w-[280px] flex-shrink-0 flex flex-col">
             <!-- Logo & Collapse Button -->
             <div class="sidebar-header p-4 flex items-center justify-between">
-                <h1 class="sidebar-logo-text text-xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-                    <svg class="w-6 h-6 text-[var(--accent-color)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                    </svg>
-                    {{ config('app.name', 'BlinkStudy') }}
+                <h1 class="sidebar-logo-text text-xl font-bold flex items-center gap-2" style="font-family: Manrope, sans-serif;">
+                    <span class="material-symbols-outlined text-[22px]" style="color:#afc6ff">auto_stories</span>
+                    <span class="brand-gradient">{{ config('app.name', 'BlinkStudy') }}</span>
                 </h1>
                 <button onclick="toggleSidebar()" class="sidebar-collapse-btn" title="Toggle sidebar">
                     <svg class="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1583,8 +1636,36 @@
                 </button>
             </div>
 
-            <!-- Navigation Items -->
-            <div class="px-3 pb-3 space-y-1">
+            <!-- App Navigation -->
+            <div class="px-3 pb-2 space-y-1">
+                <button type="button" data-view="dashboard" class="app-nav-item active" onclick="window.switchAppView('dashboard')">
+                    <span class="material-symbols-outlined">dashboard</span>
+                    <span class="sidebar-item-text text-sm">Dashboard</span>
+                </button>
+                <button type="button" data-view="chat" class="app-nav-item" onclick="window.switchAppView('chat')">
+                    <span class="material-symbols-outlined">chat</span>
+                    <span class="sidebar-item-text text-sm">AI Chat</span>
+                </button>
+                <button type="button" data-view="dashboard" class="app-nav-item" onclick="window.switchAppView('dashboard'); setTimeout(()=>document.getElementById('dashRevisionSection')?.scrollIntoView({behavior:'smooth'}), 200);">
+                    <span class="material-symbols-outlined">menu_book</span>
+                    <span class="sidebar-item-text text-sm">Revision</span>
+                </button>
+                <button type="button" class="app-nav-item" onclick="openSettings()">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span class="sidebar-item-text text-sm">Settings</span>
+                </button>
+            </div>
+
+            <!-- Dashboard quick tools -->
+            <div class="sidebar-dash-tools px-3 pb-3 space-y-1">
+                <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-primary)]" onclick="window.switchAppView('chat'); createNewChat();">
+                    <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">add_comment</span>
+                    <span class="sidebar-item-text text-sm">Start new chat</span>
+                </button>
+            </div>
+
+            <!-- Chat tools (visible in chat mode) -->
+            <div class="sidebar-chat-tools px-3 pb-3 space-y-1">
                 <button onclick="createNewChat()" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] transition-all text-[var(--text-primary)]">
                     <svg class="w-5 h-5 text-[var(--text-secondary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -1600,9 +1681,23 @@
             </div>
 
             <!-- Chat History -->
-            <div class="flex-1 overflow-y-auto scrollbar-thin px-2 pt-2">
+            <div class="sidebar-chat-tools flex-1 overflow-y-auto scrollbar-thin px-2 pt-2">
                 <div id="chatHistory" class="space-y-1">
                     <!-- Chat items will be loaded here -->
+                </div>
+            </div>
+
+            <div class="sidebar-dash-tools flex-1 px-3 pt-2">
+                <p class="text-xs uppercase tracking-wide text-[var(--text-secondary)] px-2 mb-2">Quick access</p>
+                <div class="space-y-1">
+                    <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.switchAppView('chat')">
+                        <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">psychology</span>
+                        <span class="sidebar-item-text text-sm">AI Tutor</span>
+                    </button>
+                    <button type="button" class="sidebar-nav-item w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-primary)]" onclick="window.switchAppView('dashboard'); setTimeout(()=>document.getElementById('dashRevisionSection')?.scrollIntoView({behavior:'smooth'}), 200);">
+                        <span class="material-symbols-outlined text-[20px] text-[var(--text-secondary)]">event_note</span>
+                        <span class="sidebar-item-text text-sm">Today's plan</span>
+                    </button>
                 </div>
             </div>
 
@@ -1944,8 +2039,10 @@
             </div>
         </div>
 
+        @include('pages.partials.desktop-dashboard')
+
         <!-- Main Chat Area -->
-        <main class="flex-1 flex flex-col bg-[var(--bg-primary)]">
+        <main id="appChatView" class="flex-1 flex flex-col bg-transparent hidden">
             <!-- Messages Area -->
             <div id="chatMessages" class="flex-1 overflow-y-auto scrollbar-thin">
                 <div id="messagesContainer" class="max-w-3xl mx-auto px-4 py-6">
@@ -1967,7 +2064,7 @@
                         data-csrf="{{ csrf_token() }}"
                         data-endpoint="/api/chat/send"
                         data-placeholder="Message {{ config('app.name', 'BlinkStudy') }}..."
-                        style="min-height: 60px; border-radius: 24px; background: var(--bg-secondary); border: 1px solid var(--border-color);"
+                        style="min-height: 60px; border-radius: 24px; background: rgba(29, 31, 39, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px);"
                     >
                         <div style="padding: 16px; color: var(--text-secondary); text-align: center;">Loading...</div>
                     </div>
@@ -2584,12 +2681,21 @@
 
         // Create New Chat
         function createNewChat() {
+            if (typeof window.switchAppView === 'function') {
+                window.switchAppView('chat');
+            }
             currentChatId = null;
-            welcomeSection.classList.remove('hidden');
-            messagesContainer.innerHTML = welcomeSection.outerHTML;
+            if (welcomeSection) {
+                welcomeSection.classList.remove('hidden');
+                messagesContainer.innerHTML = welcomeSection.outerHTML;
+            } else {
+                messagesContainer.innerHTML = '';
+            }
             updateActiveChatItem(null);
-            messageInput.value = '';
-            messageInput.focus();
+            if (messageInput) {
+                messageInput.value = '';
+                messageInput.focus();
+            }
             window.history.replaceState({}, '', window.location.pathname);
         }
 
@@ -4268,24 +4374,24 @@ Example topics:
 @endphp
 <style>
 #pp-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;transition:opacity 0.25s ease}
-#pp-box{width:100%;max-width:420px;background:#1a1f2e;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.45);transform:scale(0.94) translateY(8px);opacity:0;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease}
+#pp-box{width:100%;max-width:420px;background:rgba(29,31,39,0.95);border:1px solid rgba(255,255,255,0.08);border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.45);transform:scale(0.94) translateY(8px);opacity:0;transition:transform 0.35s cubic-bezier(0.16,1,0.3,1),opacity 0.35s ease}
 #pp-box .pp-body{padding:24px}
-#pp-box h2{font-size:20px;font-weight:700;color:#fff;text-align:center;margin:0}
-#pp-box .pp-sub{font-size:13px;color:#9ca3af;text-align:center;margin:4px 0 20px}
-#pp-box label{display:block;font-size:13px;font-weight:600;color:#d1d5db;margin-bottom:6px}
-#pp-box label span{font-weight:400;color:#6b7280}
-#pp-box input[type=text],#pp-box input[type=email],#pp-box input[type=tel]{width:100%;padding:12px 16px;border-radius:12px;border:1px solid #374151;background:#1f2937;color:#fff;font-size:14px;outline:none;box-sizing:border-box;transition:border-color 0.2s}
-#pp-box input:focus{border-color:#705CF6}
-#pp-box input:read-only{background:#111827;color:#d1d5db;cursor:default}
+#pp-box h2{font-size:20px;font-weight:700;color:#e1e2ec;text-align:center;margin:0;font-family:Manrope,sans-serif}
+#pp-box .pp-sub{font-size:13px;color:#c2c6d6;text-align:center;margin:4px 0 20px}
+#pp-box label{display:block;font-size:13px;font-weight:600;color:#e1e2ec;margin-bottom:6px}
+#pp-box label span{font-weight:400;color:#8b92a8}
+#pp-box input[type=text],#pp-box input[type=email],#pp-box input[type=tel]{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#191b22;color:#e1e2ec;font-size:14px;outline:none;box-sizing:border-box;transition:border-color 0.2s}
+#pp-box input:focus{border-color:#afc6ff}
+#pp-box input:read-only{background:#0b0e15;color:#c2c6d6;cursor:default}
 #pp-box .pp-phone-row{display:flex;align-items:center;gap:8px}
-#pp-box .pp-phone-prefix{padding:12px 14px;border-radius:12px;border:1px solid #374151;background:#111827;color:#9ca3af;font-size:13px;flex-shrink:0}
+#pp-box .pp-phone-prefix{padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#0b0e15;color:#8b92a8;font-size:13px;flex-shrink:0}
 #pp-box .pp-phone-row input{flex:1}
-#pp-box .pp-phone-verified{display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid #374151;background:#111827}
-#pp-box .pp-phone-verified span{font-size:13px;color:#9ca3af}
-#pp-box .pp-phone-verified .pp-num{font-size:13px;color:#e5e7eb}
-#pp-box .pp-phone-verified .pp-check{margin-left:auto;color:#22c55e;font-size:18px}
-#pp-box .pp-btn{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#705CF6,#5B8CFF);color:#fff;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(112,92,246,0.35)}
-#pp-box .pp-btn:hover{transform:scale(1.02);box-shadow:0 4px 20px rgba(112,92,246,0.5)}
+#pp-box .pp-phone-verified{display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#0b0e15}
+#pp-box .pp-phone-verified span{font-size:13px;color:#8b92a8}
+#pp-box .pp-phone-verified .pp-num{font-size:13px;color:#e1e2ec}
+#pp-box .pp-phone-verified .pp-check{margin-left:auto;color:#4ade80;font-size:18px}
+#pp-box .pp-btn{width:100%;padding:14px;border:none;border-radius:999px;background:linear-gradient(135deg,#afc6ff,#ddb8ff);color:#002d6c;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 15px rgba(175,198,255,0.25)}
+#pp-box .pp-btn:hover{transform:scale(1.02);box-shadow:0 4px 20px rgba(175,198,255,0.4)}
 #pp-box .pp-btn:disabled{opacity:0.7;cursor:not-allowed;transform:none}
 #pp-box .pp-field{margin-bottom:16px}
 </style>

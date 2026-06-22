@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
     Route::post('/profile/complete', [ProfileCompletionController::class, 'store']);
 
+    Route::get('/api/web/dashboard', [\App\Http\Controllers\WebDashboardController::class, 'show'])
+        ->name('web.dashboard');
+
     Route::get('/chat', [HomeController::class, 'index'])
         ->middleware('subscription.active')
         ->name('chat');
