@@ -183,7 +183,7 @@
             btn.textContent = 'Signing in...';
 
             try {
-                const response = await fetch('{{ route('admin.login.submit') }}', {
+                const response = await fetch('/admin/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -205,7 +205,7 @@
                 if (data.success) {
                     showAlert(data.message || 'Login successful!', 'success');
                     setTimeout(() => {
-                        window.location.replace(data.redirect || '{{ route('admin.dashboard') }}');
+                        window.location.replace(data.redirect || '/admin/dashboard');
                     }, 800);
                 } else {
                     showAlert(data.message || 'Login failed');
