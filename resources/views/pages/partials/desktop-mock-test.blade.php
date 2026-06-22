@@ -387,7 +387,6 @@
 
 <script>
 (function () {
-    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
     const MOCK_BOOTSTRAP = {
         exams: @json($webMockExams),
         targetExam: @json($webUserTargetExam),
@@ -406,19 +405,24 @@
     };
 
     async function mockApi(path, options = {}) {
-        const res = await fetch('/api/exams' + path, {
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': csrf,
-            },
-            ...options,
+        const fetcher = window.blinkApiFetch || (async (url, opts) => {
+            const res = await fetch(url, {
+                credentials: 'same-origin',
+                ...opts,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+                    ...(opts.headers || {}),
+                },
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.message || 'Request failed');
+            return data;
         });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data.message || 'Request failed');
-        return data;
+
+        return fetcher('/api/exams' + path, options);
     }
 
     function showView(name) {

@@ -2044,6 +2044,58 @@
             </div>
         </div>
 
+        <script>
+        (function () {
+            window.blinkApiHeaders = function (extra) {
+                const headers = {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    ...(extra || {}),
+                };
+                const meta = document.querySelector('meta[name="csrf-token"]')?.content;
+                if (meta) {
+                    headers['X-CSRF-TOKEN'] = meta;
+                }
+                const xsrf = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/);
+                if (xsrf) {
+                    headers['X-XSRF-TOKEN'] = decodeURIComponent(xsrf[1]);
+                }
+                return headers;
+            };
+
+            window.ensureBlinkCsrf = async function () {
+                await fetch('/sanctum/csrf-cookie', {
+                    credentials: 'same-origin',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                });
+            };
+
+            window.blinkApiFetch = async function (url, options, retried) {
+                const opts = options || {};
+                const response = await fetch(url, {
+                    credentials: 'same-origin',
+                    ...opts,
+                    headers: {
+                        ...window.blinkApiHeaders(),
+                        ...(opts.headers || {}),
+                    },
+                });
+
+                if (response.status === 419 && !retried) {
+                    await window.ensureBlinkCsrf();
+                    return window.blinkApiFetch(url, opts, true);
+                }
+
+                const data = await response.json().catch(function () { return {}; });
+                if (!response.ok) {
+                    throw new Error(data.message || ('Request failed (' + response.status + ')'));
+                }
+                return data;
+            };
+        })();
+        </script>
+
         @include('pages.partials.desktop-dashboard')
         @include('pages.partials.desktop-battle')
         @include('pages.partials.desktop-mock-test')
