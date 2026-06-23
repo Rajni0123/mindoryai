@@ -22,9 +22,7 @@ class ExamQuestionGenerator
         string $language = 'english',
     ): int {
         $language = $this->normalizeLanguage($language);
-        $subjects = $subject === 'all'
-            ? ($exam->subjects ?? ['General'])
-            : [$subject];
+        $subjects = $this->resolveSubjects($exam, $subject);
 
         $perSubject = max(1, intdiv($count, count($subjects)));
         $totalSaved = 0;
@@ -336,5 +334,19 @@ PROMPT;
         }
 
         return 'english';
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function resolveSubjects(Exam $exam, string $subject): array
+    {
+        if ($subject !== 'all') {
+            return [$subject];
+        }
+
+        $configured = array_values(array_filter((array) ($exam->subjects ?? []), static fn ($value) => is_string($value) && trim($value) !== ''));
+
+        return $configured !== [] ? $configured : ['General'];
     }
 }

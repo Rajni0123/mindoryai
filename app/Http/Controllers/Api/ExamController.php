@@ -179,8 +179,8 @@ class ExamController extends Controller
         }
 
         try {
-            // Extend execution time for AI question generation (reduced from 300)
-            set_time_limit(120);
+            // Hindi/Hinglish generation can take longer than English-only pool selection.
+            set_time_limit(180);
 
             $mockTest = $this->examService->generateMockTest($user, $request->exam_id, [
                 'subject' => $request->subject,
@@ -196,11 +196,12 @@ class ExamController extends Controller
                 'message' => 'Mock test generated successfully.',
                 'data' => $mockTest,
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('ExamController: generateMockTest failed', [
                 'error' => $e->getMessage(),
                 'user_id' => $user->id,
                 'exam_id' => $request->exam_id,
+                'language' => $request->language,
             ]);
             return response()->json([
                 'success' => false,

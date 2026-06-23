@@ -105,8 +105,10 @@ class ExamService
 
         if ($shouldGenerate) {
             $needed = min(30, $questionCount - $freshQuestionCount + 5); // Generate extra buffer
+            $generationSubject = $this->resolveGenerationSubject($exam, $subject);
             Log::info("ExamService: auto-generating {$needed} questions for {$exam->name}", [
-                'subject' => $subject,
+                'subject' => $generationSubject,
+                'language' => $language,
                 'year' => $year,
                 'existing' => $existingCount,
                 'fresh_available' => $freshQuestionCount,
@@ -115,10 +117,10 @@ class ExamService
             ]);
 
             try {
-                $this->questionGenerator->generate($exam, $subject, $year, $needed, $difficulty, $language);
+                $this->questionGenerator->generate($exam, $generationSubject, $year, $needed, $difficulty, $language);
                 // Refresh count after generation
                 $existingCount = (clone $existingQuery)->count();
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 Log::error("ExamService: auto-generation failed", ['error' => $e->getMessage()]);
                 // Continue with existing questions instead of failing
             }
@@ -126,6 +128,10 @@ class ExamService
 
         // Adjust question count to available questions to prevent empty tests
         if ($existingCount < $questionCount) {
+            if ($existingCount === 0) {
+                throw new \RuntimeException($this->buildNoQuestionsMessage($exam, $language));
+            }
+
             Log::info("ExamService: adjusting question count from {$questionCount} to {$existingCount}", [
                 'exam' => $exam->name,
                 'available' => $existingCount,
@@ -170,13 +176,12 @@ class ExamService
         $questions = $query->inRandomOrder()->limit($questionCount)->get();
 
         if ($questions->isEmpty() && ! $isBoardExam && ($exam->config['auto_generate'] ?? true)) {
-            $fallbackSubject = $subject !== 'all'
-                ? $subject
-                : (($exam->subjects[0] ?? null) ?: 'General');
+            $fallbackSubject = $this->resolveGenerationSubject($exam, $subject);
 
             Log::info('ExamService: no questions in pool, forcing AI generation', [
                 'exam' => $exam->name,
                 'subject' => $fallbackSubject,
+                'language' => $language,
                 'requested' => $questionCount,
             ]);
 
@@ -189,7 +194,7 @@ class ExamService
                     $difficulty,
                     $language
                 );
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 Log::error('ExamService: forced generation failed', ['error' => $e->getMessage()]);
             }
 
@@ -197,9 +202,7 @@ class ExamService
         }
 
         if ($questions->isEmpty()) {
-            throw new \RuntimeException(
-                'No questions available for this exam yet. Try another subject or wait a moment and retry.'
-            );
+            throw new \RuntimeException($this->buildNoQuestionsMessage($exam, $language));
         }
 
         // DYNAMIC TIME CALCULATION based on question count
@@ -538,5 +541,25 @@ class ExamService
         }
 
         return 'english';
+    }
+
+    private function resolveGenerationSubject(Exam $exam, string $subject): string
+    {
+        if ($subject !== 'all') {
+            return $subject;
+        }
+
+        $configured = array_values(array_filter((array) ($exam->subjects ?? []), static fn ($value) => is_string($value) && trim($value) !== ''));
+
+        return $configured[0] ?? 'General Studies';
+    }
+
+    private function buildNoQuestionsMessage(Exam $exam, string $language): string
+    {
+        if ($language !== 'english') {
+            return "No {$language} questions are available for {$exam->name} yet. Try English, pick a specific subject, or ensure AI generation is enabled in admin settings.";
+        }
+
+        return 'No questions available for this exam yet. Try another subject or wait a moment and retry.';
     }
 }
