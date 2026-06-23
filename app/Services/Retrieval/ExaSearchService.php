@@ -111,6 +111,98 @@ class ExaSearchService
         }
     }
 
+    /**
+     * Broader Exa search for chat enrichment (HTML listing pages + PDFs).
+     *
+     * @return list<array{url: string, title: string, snippet: string}>
+     */
+    public function searchChatSources(string $topic, ?string $exam, int $maxResults = 8): array
+    {
+        if (! $this->settings->isExaEnabled()) {
+            return [];
+        }
+
+        $apiKey = \App\Models\FrontendConfig::getValue('retrieval.exa_api_key')
+            ?: config('retrieval.exa.api_key');
+        if (! $apiKey) {
+            return [];
+        }
+
+        $query = trim(implode(' ', array_filter([
+            $exam,
+            $topic,
+            'previous year question paper official pdf',
+        ])));
+
+        try {
+            $payload = [
+                'query' => $query,
+                'type' => (string) config('retrieval.exa.search_type', 'auto'),
+                'numResults' => min(max($maxResults, 5), (int) config('retrieval.exa.max_results', 10)),
+                'contents' => [
+                    'text' => ['maxCharacters' => 6000, 'verbosity' => 'compact'],
+                ],
+            ];
+
+            $includeDomains = config('retrieval.quiz_search.official_domains', []);
+            if (is_array($includeDomains) && $includeDomains !== []) {
+                $payload['includeDomains'] = array_values($includeDomains);
+            }
+
+            $response = Http::withHeaders([
+                'x-api-key' => $apiKey,
+                'Content-Type' => 'application/json',
+            ])
+                ->timeout((int) config('retrieval.exa.timeout', 30))
+                ->retry(2, 500)
+                ->post(rtrim(config('retrieval.exa.base_url'), '/') . '/search', $payload);
+
+            if (! $response->successful()) {
+                return [];
+            }
+
+            $results = $response->json('results') ?? [];
+            if (! is_array($results)) {
+                return [];
+            }
+
+            return collect($results)
+                ->map(function (array $item) {
+                    $url = (string) ($item['url'] ?? '');
+                    $title = (string) ($item['title'] ?? '');
+
+                    return [
+                        'url' => $url,
+                        'title' => $title !== '' ? $title : basename(parse_url($url, PHP_URL_PATH) ?: 'Document'),
+                        'snippet' => $this->extractResultContent($item),
+                    ];
+                })
+                ->filter(fn (array $item) => $item['url'] !== '' && $this->isChatSourceRelevant($item['url'], $item['title']))
+                ->values()
+                ->all();
+        } catch (\Throwable $e) {
+            Log::warning('Exa chat source search failed', ['error' => $e->getMessage()]);
+
+            return [];
+        }
+    }
+
+    protected function isChatSourceRelevant(string $url, string $title): bool
+    {
+        $haystack = mb_strtolower($url . ' ' . $title);
+
+        foreach ([
+            'previous year', 'question paper', 'pyq', 'examination', 'upsc', 'civil services',
+            'prelims', 'mains', 'csat', 'sample', 'ncert', '.pdf', 'paper',
+        ] as $needle) {
+            if (str_contains($haystack, $needle)) {
+                return true;
+            }
+        }
+
+        return str_contains($haystack, '.pdf');
+    }
+
     protected function performSearch(RetrievalQuery $query, string $apiKey, int $maxResults): RetrievalResult
     {
         try {
@@ -186,11 +278,12 @@ class ExaSearchService
     protected function buildSearchPayload(RetrievalQuery $query, int $maxResults): array
     {
         $searchType = $this->resolveSearchType($query);
-        $useHighlights = (bool) config('retrieval.exa.use_highlights', true);
+        $isDocumentRequest = (bool) ($query->metadata['document_request'] ?? false);
+        $useHighlights = ! $isDocumentRequest && (bool) config('retrieval.exa.use_highlights', true);
 
         $contents = $useHighlights
             ? ['highlights' => true]
-            : ['text' => ['maxCharacters' => 8000, 'verbosity' => 'compact']];
+            : ['text' => ['maxCharacters' => $isDocumentRequest ? 12000 : 8000, 'verbosity' => 'compact']];
 
         $maxAgeHours = config('retrieval.exa.max_age_hours');
         if ($maxAgeHours !== null && $maxAgeHours !== '') {

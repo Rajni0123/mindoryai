@@ -1163,6 +1163,11 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             }
 
             $retrievalQuestion = $this->buildRetrievalQuestion($message, $user);
+            $documentService = app(\App\Services\Retrieval\ChatDocumentRetrievalService::class);
+
+            if ($documentService->isDocumentRequest($retrievalQuestion)) {
+                $metadata['document_request'] = true;
+            }
 
             $query = new \App\Services\Retrieval\DTO\RetrievalQuery(
                 question: $retrievalQuestion,
@@ -1175,16 +1180,16 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             );
 
             $result = app(\App\Services\Retrieval\RetrievalOrchestrator::class)->retrieve($query);
-            $enriched = app(\App\Services\Retrieval\ChatDocumentRetrievalService::class)
-                ->enrich($retrievalQuestion, $result);
+            $enriched = $documentService->enrich($retrievalQuestion, $result, $user?->target_exam);
 
             if ($enriched['context'] !== '') {
                 $this->retrievalContext = $enriched['context'];
                 $this->retrievalMeta = [
                     'provider' => $result->provider,
                     'sources' => $enriched['sources'],
-                    'is_document_request' => app(\App\Services\Retrieval\ChatDocumentRetrievalService::class)
-                        ->isDocumentRequest($retrievalQuestion),
+                    'is_document_request' => $documentService->isDocumentRequest($retrievalQuestion),
+                    'has_substantive_content' => $enriched['has_substantive_content'],
+                    'extracted_chars' => $enriched['extracted_chars'],
                 ];
 
                 Log::info('Hybrid retrieval attached', [
@@ -1192,6 +1197,7 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
                     'mode' => $mode,
                     'sources' => count($enriched['sources']),
                     'document_request' => $this->retrievalMeta['is_document_request'],
+                    'has_substantive_content' => $enriched['has_substantive_content'],
                     'context_chars' => strlen($enriched['context']),
                 ]);
             }
@@ -1256,7 +1262,9 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
         }
 
         $rules = ($this->retrievalMeta['is_document_request'] ?? false)
-            ? $this->documentRetrievalPresentationRules()
+            ? (($this->retrievalMeta['has_substantive_content'] ?? false)
+                ? $this->documentRetrievalPresentationRules()
+                : $this->thinDocumentRetrievalPresentationRules())
             : $this->generalRetrievalPresentationRules();
 
         return "\n\n=== RETRIEVED WEB CONTENT (MANDATORY — base your answer on this) ===\n"
@@ -1269,19 +1277,34 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
     protected function documentRetrievalPresentationRules(): string
     {
         return <<<'RULES'
-- Summarize and present the answer in chat — NEVER reply with only a link or "visit the official website".
-- Use retrieved excerpts to explain what papers/resources exist and what they contain.
+- Summarize retrieved PDF/text excerpts in your own words — do NOT reply with only links.
 - Required structure:
   **Papers / Resources Found**
-  • Paper name — Year — Stage (Prelims/Mains/CSAT etc.) — 1-line summary from retrieved text
+  • Paper name — Year — Stage — summary ONLY from retrieved excerpts (exact years/titles from text)
   **Key Details**
-  • Bullet points drawn from retrieved PDF/text excerpts (topics, sections, years)
+  • Bullet points with topics, sections, instructions found in extracted text
+  **Sample Questions**
+  • If "SAMPLE QUESTIONS EXTRACTED FROM PDF" appears above, present those 2-3 questions verbatim (formatted cleanly)
   **Official Sources**
-  • Numbered list using ONLY URLs from SOURCES above
-- If student asked for last year / PYQ, list the most recent years found in retrieved content.
-- If Prelims and Mains both apply, cover both in separate bullets.
+  • Numbered URLs from SOURCES only
+- Do NOT invent GS Paper I-IV lists from memory — only what appears in retrieved content.
 - Match student language (Hinglish/Hindi/English). No repeated Blinky intro.
-- If retrieved text is thin, say honestly what was found and what is missing — still structure the answer.
+RULES;
+    }
+
+    protected function thinDocumentRetrievalPresentationRules(): string
+    {
+        return <<<'RULES'
+- Retrieved content is LIMITED (listing page or link metadata only — PDF text was not extracted).
+- Do NOT invent paper years, GS Paper I-IV breakdown, or exam details from your training memory.
+- Required structure:
+  **What We Found**
+  • Only titles/URLs/snippets actually present in retrieved content
+  **Limitation**
+  • Clearly say PDF full text could not be extracted on server — student can open official source links
+  **Official Sources**
+  • Numbered URLs from SOURCES only
+- Keep answer short and honest. No filler "Bahut easy hai" coaching text.
 RULES;
     }
 
