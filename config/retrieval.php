@@ -108,6 +108,7 @@ return [
             'trim',
             explode(',', env('QUIZ_OFFICIAL_DOMAINS', implode(',', [
                 'cbse.gov.in',
+                'cbseacademic.nic.in',
                 'ncert.nic.in',
                 'nta.ac.in',
                 'jeemain.nta.ac.in',
