@@ -169,8 +169,17 @@ class ExamController extends Controller
         $user = $request->user();
 
         // Check & record exam prep usage
-        $check = $this->usageLimitService->checkAndRecord($user, 'exam_prep');
-        if (!$check['allowed']) {
+        try {
+            $check = $this->usageLimitService->checkAndRecord($user, 'exam_prep');
+        } catch (\Throwable $e) {
+            \Log::warning('ExamController: usage limit check failed', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+            $check = ['allowed' => true, 'reason' => 'Usage check skipped'];
+        }
+
+        if (! $check['allowed']) {
             return response()->json([
                 'success' => false,
                 'message' => $check['reason'],
@@ -179,8 +188,8 @@ class ExamController extends Controller
         }
 
         try {
-            // Hindi/Hinglish generation can take longer than English-only pool selection.
-            set_time_limit(180);
+            // Retrieval + Hindi generation can take longer than pool-only selection.
+            set_time_limit(240);
 
             $mockTest = $this->examService->generateMockTest($user, $request->exam_id, [
                 'subject' => $request->subject,
@@ -212,33 +221,45 @@ class ExamController extends Controller
 
     public function startMockTest(int $mockTest): JsonResponse
     {
-        $mockTest = ResourceAuthorizer::ownedMockTest(auth()->user(), $mockTest);
+        try {
+            $mockTest = ResourceAuthorizer::ownedMockTest(auth()->user(), $mockTest);
 
-        if ($mockTest->status !== 'pending') {
+            if ($mockTest->status !== 'pending') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Mock test has already been started or completed.',
+                ], 400);
+            }
+
+            $mockTest = $this->examService->startMockTest($mockTest);
+
+            $questions = $this->loadOrderedMockQuestions($mockTest);
+
+            if ($questions->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Could not load questions for this mock test. Please start a new test.',
+                ], 422);
+            }
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'mock_test' => $mockTest,
+                    'questions' => $questions,
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('ExamController: startMockTest failed', [
+                'mock_test_id' => $mockTest,
+                'error' => $e->getMessage(),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => 'Mock test has already been started or completed.',
+                'message' => $e->getMessage() ?: 'Failed to start mock test.',
             ], 400);
         }
-
-        $mockTest = $this->examService->startMockTest($mockTest);
-
-        $questions = $this->loadOrderedMockQuestions($mockTest);
-
-        if ($questions->isEmpty()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Could not load questions for this mock test. Please start a new test.',
-            ], 422);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'mock_test' => $mockTest,
-                'questions' => $questions,
-            ],
-        ]);
     }
 
     public function submitMockTest(Request $request, int $mockTest): JsonResponse

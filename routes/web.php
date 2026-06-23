@@ -242,6 +242,7 @@ Route::get('/contact', function() {
             Route::post('/hybrid-retrieval/settings', [\App\Http\Controllers\Admin\HybridRetrievalController::class, 'updateSettings'])->name('hybrid-retrieval.settings');
             Route::post('/hybrid-retrieval/sources', [\App\Http\Controllers\Admin\HybridRetrievalController::class, 'storeKnowledgeSource'])->name('hybrid-retrieval.sources.store');
             Route::post('/hybrid-retrieval/sources/{knowledgeSource}/toggle', [\App\Http\Controllers\Admin\HybridRetrievalController::class, 'toggleKnowledgeSource'])->name('hybrid-retrieval.sources.toggle');
+            Route::post('/hybrid-retrieval/test-exa', [\App\Http\Controllers\Admin\HybridRetrievalController::class, 'testExa'])->name('hybrid-retrieval.test-exa');
 
             // Storage Settings (Cloudflare R2, S3, etc.)
             Route::prefix('storage-settings')->name('storage-settings.')->group(function () {

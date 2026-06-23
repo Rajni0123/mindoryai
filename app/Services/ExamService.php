@@ -6,17 +6,17 @@ use App\Models\Exam;
 use App\Models\ExamQuestion;
 use App\Models\MockTest;
 use App\Models\User;
+use App\Services\Retrieval\RetrievalSettingsService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 class ExamService
 {
-    protected ExamQuestionGenerator $questionGenerator;
-
-    public function __construct(ExamQuestionGenerator $questionGenerator)
-    {
-        $this->questionGenerator = $questionGenerator;
-    }
+    public function __construct(
+        protected ExamQuestionGenerator $questionGenerator,
+        protected MockTestRetrievalService $mockTestRetrieval,
+        protected RetrievalSettingsService $retrievalSettings,
+    ) {}
     public function getAvailableExams(?string $category = null): Collection
     {
         $query = Exam::active()->orderBy('order');
@@ -99,9 +99,35 @@ class ExamService
             ->whereNotIn('id', $attemptedQuestionIds)
             ->count();
 
-        // AUTO-GENERATE: If fresh questions < needed AND auto_generate is enabled
-        $autoGenerate = $exam->config['auto_generate'] ?? true;
-        $shouldGenerate = !$isBoardExam && $autoGenerate && ($freshQuestionCount < $questionCount);
+        // REAL RETRIEVAL: Exa / official PDF search before AI generation
+        if (! $isBoardExam && $freshQuestionCount < $questionCount) {
+            $importNeeded = min(30, $questionCount - $freshQuestionCount + 5);
+
+            try {
+                $imported = $this->mockTestRetrieval->importVerifiedQuestions(
+                    $exam,
+                    $subject,
+                    $language,
+                    $importNeeded,
+                );
+
+                if ($imported > 0) {
+                    $existingCount = (clone $existingQuery)->count();
+                    $freshQuestionCount = (clone $existingQuery)
+                        ->whereNotIn('id', $attemptedQuestionIds)
+                        ->count();
+                }
+            } catch (\Throwable $e) {
+                Log::warning('ExamService: verified retrieval import failed', [
+                    'exam' => $exam->name,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        // AUTO-GENERATE: AI fallback only when enabled in hybrid retrieval settings
+        $autoGenerate = ($exam->config['auto_generate'] ?? true) && $this->retrievalSettings->isAiQuizFallbackEnabled();
+        $shouldGenerate = ! $isBoardExam && $autoGenerate && ($freshQuestionCount < $questionCount);
 
         if ($shouldGenerate) {
             $needed = min(30, $questionCount - $freshQuestionCount + 5); // Generate extra buffer
@@ -175,7 +201,7 @@ class ExamService
 
         $questions = $query->inRandomOrder()->limit($questionCount)->get();
 
-        if ($questions->isEmpty() && ! $isBoardExam && ($exam->config['auto_generate'] ?? true)) {
+        if ($questions->isEmpty() && ! $isBoardExam && ($exam->config['auto_generate'] ?? true) && $this->retrievalSettings->isAiQuizFallbackEnabled()) {
             $fallbackSubject = $this->resolveGenerationSubject($exam, $subject);
 
             Log::info('ExamService: no questions in pool, forcing AI generation', [
@@ -556,8 +582,19 @@ class ExamService
 
     private function buildNoQuestionsMessage(Exam $exam, string $language): string
     {
+        $exaReady = $this->mockTestRetrieval->hasSearchProvider();
+        $aiReady = $this->retrievalSettings->isAiQuizFallbackEnabled();
+
         if ($language !== 'english') {
-            return "No {$language} questions are available for {$exam->name} yet. Try English, pick a specific subject, or ensure AI generation is enabled in admin settings.";
+            if (! $exaReady && ! $aiReady) {
+                return "No {$language} questions found. Enable Exa Search (with API key) or AI Quiz Fallback in Admin → Hybrid Retrieval.";
+            }
+
+            return "No {$language} questions are available for {$exam->name} yet. Try English, pick a specific subject, or check Exa / AI settings in admin.";
+        }
+
+        if (! $exaReady && ! $aiReady) {
+            return 'No questions available. Enable Exa Search or AI Quiz Fallback in Admin → Hybrid Retrieval.';
         }
 
         return 'No questions available for this exam yet. Try another subject or wait a moment and retry.';

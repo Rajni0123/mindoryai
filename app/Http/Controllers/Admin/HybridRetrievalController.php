@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\FrontendConfig;
 use App\Models\KnowledgeSource;
 use App\Services\Retrieval\KnowledgeSourceIngestionService;
+use App\Services\Retrieval\ExaSearchService;
 use App\Services\Retrieval\RetrievalSettingsService;
 use App\Support\AdminUrl;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -47,6 +49,7 @@ class HybridRetrievalController extends Controller
             'pageError' => $pageError ?? null,
             'settingsUrl' => AdminUrl::route('admin.hybrid-retrieval.settings'),
             'storeUrl' => AdminUrl::route('admin.hybrid-retrieval.sources.store'),
+            'testExaUrl' => AdminUrl::route('admin.hybrid-retrieval.test-exa'),
         ]);
     }
 
@@ -132,6 +135,54 @@ class HybridRetrievalController extends Controller
         $knowledgeSource->update(['is_active' => ! $knowledgeSource->is_active]);
 
         return back()->with('success', 'Knowledge source updated.');
+    }
+
+    public function testExa(Request $request, ExaSearchService $exa, RetrievalSettingsService $settings): JsonResponse
+    {
+        $query = trim((string) $request->input('query', 'UPSC previous year question paper official pdf'));
+        $subject = $request->input('subject');
+
+        $enabled = $settings->isExaEnabled();
+        $apiKey = FrontendConfig::getValue('retrieval.exa_api_key')
+            ?: config('retrieval.exa.api_key');
+
+        if (! $enabled) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Exa Search is disabled. Enable it under Feature Toggles and save.',
+            ]);
+        }
+
+        if ($apiKey === '' || $apiKey === null) {
+            return response()->json([
+                'ok' => false,
+                'message' => 'Exa API key is missing. Add it below and save settings.',
+            ]);
+        }
+
+        try {
+            $documents = $exa->searchQuizDocuments($query, is_string($subject) ? $subject : null, 5);
+            $status = $documents !== [] ? 'working' : 'no_documents';
+
+            return response()->json([
+                'ok' => $documents !== [],
+                'status' => $status,
+                'message' => $documents !== []
+                    ? 'Exa is working. Found ' . count($documents) . ' PDF document(s).'
+                    : 'Exa API responded but no quiz PDFs matched. Try a different query or check official domains.',
+                'query' => $query,
+                'documents_found' => count($documents),
+                'sample' => array_slice($documents, 0, 3),
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Hybrid retrieval Exa test failed', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'ok' => false,
+                'status' => 'error',
+                'message' => 'Exa test failed: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

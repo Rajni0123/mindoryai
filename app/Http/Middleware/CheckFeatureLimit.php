@@ -57,9 +57,17 @@ class CheckFeatureLimit
         // Process the request
         $response = $next($request);
 
-        // If request was successful, track the usage
+        // If request was successful, track the usage (never fail the API response if tracking breaks)
         if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
-            $this->featureLimitService->trackUsage($user, $featureSlug);
+            try {
+                $this->featureLimitService->trackUsage($user, $featureSlug);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Feature usage tracking failed', [
+                    'feature' => $featureSlug,
+                    'user_id' => $user->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         return $response;

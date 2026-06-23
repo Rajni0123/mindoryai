@@ -75,6 +75,13 @@
                            class="w-full mt-1 px-3 py-2 rounded bg-gray-900 border border-gray-800 text-sm">
                 </div>
 
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="button" id="testExaBtn" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-xs rounded">
+                        Test Exa Connection
+                    </button>
+                    <span id="testExaStatus" class="text-xs text-gray-400"></span>
+                </div>
+
                 <div>
                     <label class="text-xs text-gray-400">Provider Priority (JSON)</label>
                     <textarea name="provider_priority" rows="4"
@@ -201,6 +208,51 @@
     });
 
     ensureAdminCsrf();
+
+    const testExaBtn = document.getElementById('testExaBtn');
+    const testExaStatus = document.getElementById('testExaStatus');
+    if (testExaBtn && testExaStatus) {
+        testExaBtn.addEventListener('click', async function () {
+            testExaBtn.disabled = true;
+            testExaStatus.textContent = 'Testing Exa...';
+            testExaStatus.className = 'text-xs text-gray-400';
+
+            try {
+                await ensureAdminCsrf();
+                const headers = {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                };
+                const meta = document.querySelector('meta[name="csrf-token"]')?.content;
+                const xsrf = xsrfFromCookie();
+                if (meta) headers['X-CSRF-TOKEN'] = meta;
+                if (xsrf) headers['X-XSRF-TOKEN'] = xsrf;
+
+                const response = await fetch(@json($testExaUrl), {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers,
+                    body: JSON.stringify({
+                        query: 'UPSC previous year question paper official pdf hindi',
+                        subject: 'General Studies',
+                    }),
+                });
+
+                const data = await response.json().catch(function () { return {}; });
+                const message = data.message || ('Request failed (' + response.status + ')');
+                testExaStatus.textContent = message;
+                testExaStatus.className = data.ok
+                    ? 'text-xs text-green-400'
+                    : 'text-xs text-red-400';
+            } catch (e) {
+                testExaStatus.textContent = e.message || 'Exa test failed';
+                testExaStatus.className = 'text-xs text-red-400';
+            } finally {
+                testExaBtn.disabled = false;
+            }
+        });
+    }
 })();
 </script>
 </body>
