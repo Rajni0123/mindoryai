@@ -58,6 +58,9 @@ class ExamService
     {
         $exam = Exam::findOrFail($examId);
 
+        $language = $this->normalizeMockLanguage($options['language'] ?? 'english');
+        $options['language'] = $language;
+
         $questionCount = $options['question_count'] ?? $exam->config['total_questions'] ?? 50;
         $subject = $options['subject'] ?? 'all';
         if ($subject === null || trim((string) $subject) === '') {
@@ -68,7 +71,9 @@ class ExamService
         $isBoardExam = in_array($exam->category, ['board']);
 
         // Check how many UNIQUE questions user hasn't attempted
-        $existingQuery = ExamQuestion::where('exam_id', $examId)->where('is_active', true);
+        $existingQuery = ExamQuestion::where('exam_id', $examId)
+            ->where('is_active', true)
+            ->where('language', $language);
         if ($subject !== 'all') {
             $existingQuery->where('subject', $subject);
         }
@@ -110,9 +115,9 @@ class ExamService
             ]);
 
             try {
-                $this->questionGenerator->generate($exam, $subject, $year, $needed, $difficulty);
+                $this->questionGenerator->generate($exam, $subject, $year, $needed, $difficulty, $language);
                 // Refresh count after generation
-                $existingCount = ExamQuestion::where('exam_id', $examId)->where('is_active', true)->count();
+                $existingCount = (clone $existingQuery)->count();
             } catch (\Exception $e) {
                 Log::error("ExamService: auto-generation failed", ['error' => $e->getMessage()]);
                 // Continue with existing questions instead of failing
@@ -129,7 +134,9 @@ class ExamService
         }
 
         // For board exams: fetch all available real PYQ questions (across years if needed)
-        $query = ExamQuestion::where('exam_id', $examId)->where('is_active', true);
+        $query = ExamQuestion::where('exam_id', $examId)
+            ->where('is_active', true)
+            ->where('language', $language);
 
         if ($subject !== 'all') {
             $query->where('subject', $subject);
@@ -151,7 +158,9 @@ class ExamService
 
             // If no real PYQ found, fallback to all available questions
             if ($query->count() === 0) {
-                $query = ExamQuestion::where('exam_id', $examId)->where('is_active', true);
+                $query = ExamQuestion::where('exam_id', $examId)
+                    ->where('is_active', true)
+                    ->where('language', $language);
                 if ($subject !== 'all') $query->where('subject', $subject);
                 if ($difficulty !== 'mixed') $query->where('difficulty', $difficulty);
                 if (!empty($options['year'])) $query->where('year', $year);
@@ -177,7 +186,8 @@ class ExamService
                     $fallbackSubject,
                     $year,
                     min(30, max(10, $questionCount)),
-                    $difficulty
+                    $difficulty,
+                    $language
                 );
             } catch (\Exception $e) {
                 Log::error('ExamService: forced generation failed', ['error' => $e->getMessage()]);
@@ -513,5 +523,20 @@ class ExamService
             ],
             'status' => 'pending',
         ]);
+    }
+
+    private function normalizeMockLanguage(?string $language): string
+    {
+        $lang = strtolower(trim((string) ($language ?? 'english')));
+
+        if (in_array($lang, ['hindi', 'hi'], true) || str_contains($lang, 'hindi')) {
+            return 'hindi';
+        }
+
+        if (in_array($lang, ['hinglish'], true) || str_contains($lang, 'hinglish')) {
+            return 'hinglish';
+        }
+
+        return 'english';
     }
 }

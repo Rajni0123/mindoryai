@@ -13,8 +13,15 @@ use Illuminate\Support\Facades\Log;
  */
 class ExamQuestionGenerator
 {
-    public function generate(Exam $exam, string $subject = 'all', int $year = 2024, int $count = 10, string $difficulty = 'mixed'): int
-    {
+    public function generate(
+        Exam $exam,
+        string $subject = 'all',
+        int $year = 2024,
+        int $count = 10,
+        string $difficulty = 'mixed',
+        string $language = 'english',
+    ): int {
+        $language = $this->normalizeLanguage($language);
         $subjects = $subject === 'all'
             ? ($exam->subjects ?? ['General'])
             : [$subject];
@@ -24,8 +31,8 @@ class ExamQuestionGenerator
 
         foreach ($subjects as $subj) {
             try {
-                $questions = $this->generateForSubject($exam, $subj, $year, $perSubject, $difficulty);
-                $saved = $this->saveQuestions($exam, $questions, $subj, $year);
+                $questions = $this->generateForSubject($exam, $subj, $year, $perSubject, $difficulty, $language);
+                $saved = $this->saveQuestions($exam, $questions, $subj, $year, $language);
                 $totalSaved += $saved;
             } catch (\Exception $e) {
                 Log::error("ExamQuestionGenerator failed for {$exam->name}/{$subj}", [
@@ -37,14 +44,14 @@ class ExamQuestionGenerator
         return $totalSaved;
     }
 
-    private function generateForSubject(Exam $exam, string $subject, int $year, int $count, string $difficulty): array
+    private function generateForSubject(Exam $exam, string $subject, int $year, int $count, string $difficulty, string $language): array
     {
-        $prompt = $this->buildPrompt($exam, $subject, $year, $count, $difficulty);
+        $prompt = $this->buildPrompt($exam, $subject, $year, $count, $difficulty, $language);
         $errors = [];
 
         if ($this->isOpenAiEnabled()) {
             try {
-                $content = $this->generateWithOpenAi($prompt, $count);
+                $content = $this->generateWithOpenAi($prompt, $count, $language);
                 $questions = $this->parseResponse($content);
                 if ($questions !== []) {
                     Log::info('ExamQuestionGenerator: OpenAI generation succeeded', [
@@ -93,12 +100,17 @@ class ExamQuestionGenerator
         return [];
     }
 
-    private function buildPrompt(Exam $exam, string $subject, int $year, int $count, string $difficulty): string
+    private function buildPrompt(Exam $exam, string $subject, int $year, int $count, string $difficulty, string $language): string
     {
         $markingScheme = $exam->config['marking_scheme'] ?? ['correct' => 4, 'wrong' => -1];
         $difficultyInstruction = $difficulty === 'mixed'
             ? 'Mix of easy (20%), medium (60%), and hard (20%) questions.'
             : "All questions should be {$difficulty} difficulty.";
+        $languageInstruction = match ($language) {
+            'hindi' => '8. Write ALL questions, all four options, and explanations entirely in Hindi using Devanagari script (हिंदी). Use standard Indian competitive exam Hindi terminology.',
+            'hinglish' => '8. Write ALL questions, options, and explanations in Hinglish (Hindi in Roman/Latin script with common English exam terms where natural).',
+            default => '8. Write all questions, options, and explanations in clear English suitable for Indian competitive exams.',
+        };
 
         return <<<PROMPT
 You are an expert Indian competitive exam question paper setter.
@@ -116,6 +128,7 @@ IMPORTANT RULES:
 5. Questions should be challenging and exam-realistic — not textbook-basic.
 6. For numerical questions, include proper units and significant figures.
 7. Marking scheme: +{$markingScheme['correct']} for correct, {$markingScheme['wrong']} for wrong.
+{$languageInstruction}
 
 Return ONLY valid JSON in this exact format, no other text:
 {
@@ -138,7 +151,7 @@ Return ONLY valid JSON in this exact format, no other text:
 PROMPT;
     }
 
-    private function generateWithOpenAi(string $prompt, int $count): string
+    private function generateWithOpenAi(string $prompt, int $count, string $language = 'english'): string
     {
         $apiKey = $this->resolveOpenAiApiKey();
         if ($apiKey === '') {
@@ -147,6 +160,12 @@ PROMPT;
 
         $model = (string) (FrontendConfig::getValue('ai.openai_model', '')
             ?: config('ai.quiz_model', 'gpt-4o-mini'));
+
+        $systemContent = match ($language) {
+            'hindi' => 'You generate Indian competitive exam MCQs in Hindi (Devanagari script). Return ONLY valid JSON with a top-level "questions" array. No markdown.',
+            'hinglish' => 'You generate Indian competitive exam MCQs in Hinglish (Roman Hindi). Return ONLY valid JSON with a top-level "questions" array. No markdown.',
+            default => 'You generate Indian competitive exam MCQs. Return ONLY valid JSON with a top-level "questions" array. No markdown.',
+        };
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $apiKey,
@@ -160,7 +179,7 @@ PROMPT;
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => 'You generate Indian competitive exam MCQs. Return ONLY valid JSON with a top-level "questions" array. No markdown.',
+                        'content' => $systemContent,
                     ],
                     ['role' => 'user', 'content' => $prompt],
                 ],
@@ -250,9 +269,10 @@ PROMPT;
         return [];
     }
 
-    private function saveQuestions(Exam $exam, array $questions, string $subject, int $year): int
+    private function saveQuestions(Exam $exam, array $questions, string $subject, int $year, string $language = 'english'): int
     {
         $saved = 0;
+        $language = $this->normalizeLanguage($language);
 
         foreach ($questions as $q) {
             if (empty($q['question']) || empty($q['correct_answer'])) {
@@ -286,8 +306,8 @@ PROMPT;
                 'correct_answer' => strtoupper(trim((string) $q['correct_answer'])),
                 'explanation' => $q['explanation'] ?? null,
                 'difficulty' => $difficulty,
-                'language' => 'english',
-                'tags' => ['pyq', (string) $year, 'ai-generated'],
+                'language' => $language,
+                'tags' => ['pyq', (string) $year, 'ai-generated', $language],
                 'is_active' => true,
             ]);
 
@@ -301,5 +321,20 @@ PROMPT;
         ]);
 
         return $saved;
+    }
+
+    private function normalizeLanguage(?string $language): string
+    {
+        $lang = strtolower(trim((string) ($language ?? 'english')));
+
+        if (in_array($lang, ['hindi', 'hi'], true) || str_contains($lang, 'hindi')) {
+            return 'hindi';
+        }
+
+        if (in_array($lang, ['hinglish'], true) || str_contains($lang, 'hinglish')) {
+            return 'hinglish';
+        }
+
+        return 'english';
     }
 }
