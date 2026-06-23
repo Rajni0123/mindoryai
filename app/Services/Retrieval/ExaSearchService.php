@@ -59,7 +59,7 @@ class ExaSearchService
         $query = trim(implode(' ', array_filter([
             $topic,
             $subject,
-            'official pdf previous year paper sample paper question bank exam mcq',
+            'official previous year question paper sample paper exam pdf',
         ])));
 
         try {

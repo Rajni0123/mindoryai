@@ -1175,17 +1175,24 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             );
 
             $result = app(\App\Services\Retrieval\RetrievalOrchestrator::class)->retrieve($query);
-            if ($result->success && $result->context !== '') {
-                $this->retrievalContext = $result->context;
+            $enriched = app(\App\Services\Retrieval\ChatDocumentRetrievalService::class)
+                ->enrich($retrievalQuestion, $result);
+
+            if ($enriched['context'] !== '') {
+                $this->retrievalContext = $enriched['context'];
                 $this->retrievalMeta = [
                     'provider' => $result->provider,
-                    'sources' => $result->sources,
+                    'sources' => $enriched['sources'],
+                    'is_document_request' => app(\App\Services\Retrieval\ChatDocumentRetrievalService::class)
+                        ->isDocumentRequest($retrievalQuestion),
                 ];
 
                 Log::info('Hybrid retrieval attached', [
                     'provider' => $result->provider,
                     'mode' => $mode,
-                    'sources' => count($result->sources),
+                    'sources' => count($enriched['sources']),
+                    'document_request' => $this->retrievalMeta['is_document_request'],
+                    'context_chars' => strlen($enriched['context']),
                 ]);
             }
         } catch (\Throwable $e) {
@@ -1240,8 +1247,52 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             return '';
         }
 
-        return "\n\nRETRIEVED KNOWLEDGE (use when relevant, cite sources when possible):\n"
-            . $this->retrievalContext;
+        $sourcesList = '';
+        if (! empty($this->retrievalMeta['sources'])) {
+            $sourcesList = "\n\nSOURCES (cite ONLY these URLs — never invent links):\n";
+            foreach ($this->retrievalMeta['sources'] as $index => $source) {
+                $sourcesList .= ($index + 1) . '. ' . $source . "\n";
+            }
+        }
+
+        $rules = ($this->retrievalMeta['is_document_request'] ?? false)
+            ? $this->documentRetrievalPresentationRules()
+            : $this->generalRetrievalPresentationRules();
+
+        return "\n\n=== RETRIEVED WEB CONTENT (MANDATORY — base your answer on this) ===\n"
+            . $this->retrievalContext
+            . $sourcesList
+            . "\n\n=== RESPONSE RULES FOR RETRIEVED CONTENT ===\n"
+            . $rules;
+    }
+
+    protected function documentRetrievalPresentationRules(): string
+    {
+        return <<<'RULES'
+- Summarize and present the answer in chat — NEVER reply with only a link or "visit the official website".
+- Use retrieved excerpts to explain what papers/resources exist and what they contain.
+- Required structure:
+  **Papers / Resources Found**
+  • Paper name — Year — Stage (Prelims/Mains/CSAT etc.) — 1-line summary from retrieved text
+  **Key Details**
+  • Bullet points drawn from retrieved PDF/text excerpts (topics, sections, years)
+  **Official Sources**
+  • Numbered list using ONLY URLs from SOURCES above
+- If student asked for last year / PYQ, list the most recent years found in retrieved content.
+- If Prelims and Mains both apply, cover both in separate bullets.
+- Match student language (Hinglish/Hindi/English). No repeated Blinky intro.
+- If retrieved text is thin, say honestly what was found and what is missing — still structure the answer.
+RULES;
+    }
+
+    protected function generalRetrievalPresentationRules(): string
+    {
+        return <<<'RULES'
+- Use retrieved content as the primary source for factual claims.
+- Summarize in clear structured bullets or short sections — do not dump raw text.
+- Cite sources from the SOURCES list when giving links or facts.
+- Do not invent URLs or statistics not present in retrieved content.
+RULES;
     }
 
     /**
