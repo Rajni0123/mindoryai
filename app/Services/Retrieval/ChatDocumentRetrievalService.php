@@ -65,10 +65,10 @@ class ChatDocumentRetrievalService
             return $this->buildResult($parts, $sources, $extractedChars);
         }
 
-        $hits = $this->exaSearchService->searchChatSources($question, $exam, 8);
+        $hits = $this->exaSearchService->searchChatSources($question, $exam, 6);
         $pdfUrls = [];
 
-        foreach ($hits as $hit) {
+        foreach (array_slice($hits, 0, 4) as $hit) {
             $url = (string) ($hit['url'] ?? '');
             $title = (string) ($hit['title'] ?? 'Exam document');
 
@@ -89,7 +89,7 @@ class ChatDocumentRetrievalService
             }
         }
 
-        $pdfUrls = array_slice($pdfUrls, 0, 3, true);
+        $pdfUrls = array_slice($pdfUrls, 0, 2, true);
 
         foreach ($pdfUrls as $pdfUrl => $title) {
             if (! $this->settings->isTemporaryPdfEnabled()) {
@@ -126,8 +126,13 @@ class ChatDocumentRetrievalService
      */
     private function buildResult(array $parts, array $sources, int $extractedChars): array
     {
+        $context = trim(implode("\n\n---\n\n", array_filter($parts)));
+        if (strlen($context) > 9000) {
+            $context = substr($context, 0, 9000) . "\n\n[... content truncated before AI handoff ...]";
+        }
+
         return [
-            'context' => trim(implode("\n\n---\n\n", array_filter($parts))),
+            'context' => $context,
             'sources' => array_values(array_unique($sources)),
             'has_substantive_content' => $extractedChars >= 600,
             'extracted_chars' => $extractedChars,
@@ -145,7 +150,7 @@ class ChatDocumentRetrievalService
         }
 
         try {
-            $response = Http::timeout(20)
+            $response = Http::timeout(12)
                 ->withHeaders(['User-Agent' => 'BlinkStudy/1.0 (+https://blinkstudy.in)'])
                 ->get($url);
 

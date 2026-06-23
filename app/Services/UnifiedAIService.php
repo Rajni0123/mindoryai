@@ -649,13 +649,11 @@ class UnifiedAIService
         // This overrides failover/adaptive selection when admin sets a specific model
         // =====================================================================
         $featureModelId = $this->getFeatureSpecificModel($feature);
-        $useFeatureModel = false;
         $aiModel = null;
 
         if ($featureModelId) {
             $aiModel = AiModel::where('id', $featureModelId)->where('is_active', true)->first();
             if ($aiModel && $this->isProviderEnabled($aiModel->provider)) {
-                $useFeatureModel = true;
                 Log::info('Using feature-specific model', [
                     'feature' => $feature,
                     'model' => $aiModel->name,
@@ -667,10 +665,9 @@ class UnifiedAIService
         }
 
         // =====================================================================
-        // STEP 2: Check for user's explicitly selected model (second priority)
-        // Only used if user manually selected a model in the app
+        // STEP 2: User-selected model (non-chat features only — chat uses failover)
         // =====================================================================
-        if (!$aiModel && $modelId) {
+        if (!$aiModel && $modelId && !$this->isChatFeature($feature)) {
             $tempModel = AiModel::where('id', $modelId)->where('is_active', true)->first();
             if ($tempModel && $this->isProviderEnabled($tempModel->provider)) {
                 $aiModel = $tempModel;
@@ -681,11 +678,18 @@ class UnifiedAIService
             }
         }
 
+        if ($this->retrievalContext !== '') {
+            $speedSettings['timeout'] = max((int) ($speedSettings['timeout'] ?? 20), 45);
+            $speedSettings['max_tokens'] = min(
+                max((int) ($speedSettings['max_tokens'] ?? 1536), 2048),
+                4096
+            );
+        }
+
         // =====================================================================
-        // STEP 3: Use FAILOVER + ADAPTIVE MODEL SELECTION
-        // This is the main path for most requests
+        // STEP 3: FAILOVER + ADAPTIVE MODEL SELECTION (default for chat)
         // =====================================================================
-        if (!$aiModel) {
+        if (!$aiModel || $this->isChatFeature($feature)) {
             // Use the new failover system with adaptive model selection
             $result = $this->callWithFailover(
                 $message,
@@ -733,25 +737,29 @@ class UnifiedAIService
         }
 
         // =====================================================================
-        // STEP 4: Direct call for feature-specific or user-selected model
-        // No failover for these cases - use exactly what was specified
+        // STEP 4: Direct call for admin feature-specific model, with failover fallback
         // =====================================================================
         $apiKey = $this->getApiKey($aiModel->provider);
 
         if (!$apiKey) {
-            return [
-                'success' => false,
-                'error' => ucfirst($aiModel->provider) . ' API key not configured. Please contact administrator.',
-            ];
+            return $this->callWithFailover(
+                $message,
+                $conversationHistory,
+                $streamCallback,
+                $imageData,
+                $feature,
+                $userId,
+                $speedSettings,
+                $planSlug
+            );
         }
 
         try {
-            Log::info('AI Request - Direct call (feature/user selected)', [
+            Log::info('AI Request - Direct call (feature-specific)', [
                 'provider' => $aiModel->provider,
                 'model' => $aiModel->model_identifier,
                 'user_id' => $userId,
                 'plan' => $planSlug,
-                'feature_specific' => $useFeatureModel,
             ]);
 
             $result = $this->executeProviderCall(
@@ -766,34 +774,41 @@ class UnifiedAIService
                 $userId
             );
 
-            // Track usage if successful and not streaming
-            if ($result['success'] && !$streamCallback) {
-                $this->trackUsage($result, $aiModel, $feature, $userId);
-            }
-
-            // Update user's study tracking (streak, questions answered, etc.)
             if ($result['success']) {
+                if (!$streamCallback) {
+                    $this->trackUsage($result, $aiModel, $feature, $userId);
+                }
                 $this->updateUserStudyTracking($userId);
+                $result['used_failover'] = false;
+                $result['duration_ms'] = round((microtime(true) - $requestStartedAt) * 1000);
+
+                return $result;
             }
 
-            $result['used_failover'] = false;
-            $result['duration_ms'] = round((microtime(true) - $requestStartedAt) * 1000);
-
-            return $result;
-
-        } catch (\Exception $e) {
-            Log::error('AI Service Error (Direct call)', [
+            Log::warning('Feature-specific model failed, falling back to failover', [
                 'provider' => $aiModel->provider,
-                'model' => $aiModel->model_identifier,
+                'error' => $result['error'] ?? 'Unknown error',
+            ]);
+        } catch (\Exception $e) {
+            Log::warning('Feature-specific model exception, falling back to failover', [
+                'provider' => $aiModel->provider,
                 'error' => $e->getMessage(),
             ]);
-
-            return [
-                'success' => false,
-                'error' => 'Failed to communicate with AI service. Please try again.',
-                'used_failover' => false,
-            ];
         }
+
+        $failoverResult = $this->callWithFailover(
+            $message,
+            $conversationHistory,
+            $streamCallback,
+            $imageData,
+            $feature,
+            $userId,
+            $speedSettings,
+            $planSlug
+        );
+        $failoverResult['duration_ms'] = round((microtime(true) - $requestStartedAt) * 1000);
+
+        return $failoverResult;
     }
 
     /**
@@ -936,7 +951,16 @@ class UnifiedAIService
           ->post($model->api_url, $payload);
 
         if (!$response->successful()) {
-            throw new \Exception('OpenAI API error: ' . $response->body());
+            Log::warning('OpenAI API error', [
+                'status' => $response->status(),
+                'body' => substr($response->body(), 0, 500),
+            ]);
+
+            return [
+                'success' => false,
+                'error' => 'OpenAI API error: ' . $response->status(),
+                'provider' => 'openai',
+            ];
         }
 
         $data = $response->json();
@@ -1183,7 +1207,7 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             $enriched = $documentService->enrich($retrievalQuestion, $result, $user?->target_exam);
 
             if ($enriched['context'] !== '') {
-                $this->retrievalContext = $enriched['context'];
+                $this->retrievalContext = $this->truncateRetrievalContext($enriched['context']);
                 $this->retrievalMeta = [
                     'provider' => $result->provider,
                     'sources' => $enriched['sources'],
@@ -1239,12 +1263,37 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
 
         $parts = array_filter([
             $user?->target_exam,
+            $this->extractExamFromMessage($topic),
             $topic,
             $followUp,
             'previous year question paper official pdf',
         ]);
 
         return trim(implode(' ', $parts));
+    }
+
+    protected function extractExamFromMessage(string $message): ?string
+    {
+        $lower = mb_strtolower($message);
+
+        foreach (['neet', 'jee', 'upsc', 'cbse', 'nta', 'clat', 'cat'] as $exam) {
+            if (str_contains($lower, $exam)) {
+                return strtoupper($exam);
+            }
+        }
+
+        return null;
+    }
+
+    protected function truncateRetrievalContext(string $context, int $maxChars = 8000): string
+    {
+        $context = $this->sanitizeUtf8($context);
+
+        if (strlen($context) <= $maxChars) {
+            return $context;
+        }
+
+        return substr($context, 0, $maxChars) . "\n\n[... retrieval content truncated for AI context limit ...]";
     }
 
     protected function formatRetrievalContextBlock(): string
