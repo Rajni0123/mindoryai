@@ -118,6 +118,26 @@ return [
         ))),
     ],
 
+    /*
+    | Coaching aggregators — never treat as official PYQ sources in chat retrieval.
+    */
+    'pyq_blocked_domains' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', env('RETRIEVAL_PYQ_BLOCKED_DOMAINS', implode(',', [
+            'vedantu.com',
+            'collegedekho.com',
+            'byjus.com',
+            'toppr.com',
+            'unacademy.com',
+            'pw.live',
+            'physicswallah.live',
+            'careers360.com',
+            'shiksha.com',
+            'askiitians.com',
+            'embibe.com',
+        ])))
+    ))),
+
     'intents' => [
         'tutor' => ['explain', 'teach', 'what is', 'how does', 'define', 'formula', 'theorem'],
         'quiz' => ['quiz', 'mcq', 'test me', 'practice questions'],

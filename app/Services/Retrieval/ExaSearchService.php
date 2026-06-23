@@ -134,19 +134,39 @@ class ExaSearchService
             'previous year question paper official pdf',
         ])));
 
+        $official = $this->fetchChatSourceResults($query, $apiKey, $maxResults, officialOnly: true);
+        if ($official !== []) {
+            return $official;
+        }
+
+        return $this->fetchChatSourceResults($query, $apiKey, $maxResults, officialOnly: false);
+    }
+
+    /**
+     * @return list<array{url: string, title: string, snippet: string}>
+     */
+    protected function fetchChatSourceResults(string $query, string $apiKey, int $maxResults, bool $officialOnly): array
+    {
         try {
             $payload = [
                 'query' => $query,
                 'type' => (string) config('retrieval.exa.search_type', 'auto'),
                 'numResults' => min(max($maxResults, 5), (int) config('retrieval.exa.max_results', 10)),
                 'contents' => [
-                    'text' => ['maxCharacters' => 6000, 'verbosity' => 'compact'],
+                    'text' => ['maxCharacters' => 4000, 'verbosity' => 'compact'],
                 ],
             ];
 
-            $includeDomains = config('retrieval.quiz_search.official_domains', []);
-            if (is_array($includeDomains) && $includeDomains !== []) {
-                $payload['includeDomains'] = array_values($includeDomains);
+            if ($officialOnly) {
+                $officialDomains = PyqSourceFilter::officialDomains();
+                if ($officialDomains !== []) {
+                    $payload['includeDomains'] = $officialDomains;
+                }
+            }
+
+            $blocked = PyqSourceFilter::blockedDomains();
+            if ($blocked !== []) {
+                $payload['excludeDomains'] = $blocked;
             }
 
             $response = Http::withHeaders([
@@ -177,11 +197,20 @@ class ExaSearchService
                         'snippet' => $this->extractResultContent($item),
                     ];
                 })
-                ->filter(fn (array $item) => $item['url'] !== '' && $this->isChatSourceRelevant($item['url'], $item['title']))
+                ->filter(function (array $item) {
+                    if ($item['url'] === '' || PyqSourceFilter::isBlockedUrl($item['url'])) {
+                        return false;
+                    }
+
+                    return $this->isChatSourceRelevant($item['url'], $item['title']);
+                })
                 ->values()
                 ->all();
         } catch (\Throwable $e) {
-            Log::warning('Exa chat source search failed', ['error' => $e->getMessage()]);
+            Log::warning('Exa chat source search failed', [
+                'official_only' => $officialOnly,
+                'error' => $e->getMessage(),
+            ]);
 
             return [];
         }
@@ -193,7 +222,7 @@ class ExaSearchService
 
         foreach ([
             'previous year', 'question paper', 'pyq', 'examination', 'upsc', 'civil services',
-            'prelims', 'mains', 'csat', 'sample', 'ncert', '.pdf', 'paper',
+            'prelims', 'mains', 'csat', 'sample', 'ncert', 'neet', 'jee', 'nta', '.pdf', 'paper',
         ] as $needle) {
             if (str_contains($haystack, $needle)) {
                 return true;
@@ -233,6 +262,11 @@ class ExaSearchService
             foreach ($results as $index => $item) {
                 $title = $item['title'] ?? 'Web Result';
                 $url = $item['url'] ?? '';
+
+                if ($url !== '' && PyqSourceFilter::isBlockedUrl($url)) {
+                    continue;
+                }
+
                 $text = $this->extractResultContent($item);
 
                 if ($this->settings->isTemporaryPdfEnabled()
@@ -299,13 +333,25 @@ class ExaSearchService
 
         $includeDomains = config('retrieval.exa.include_domains', []);
         $excludeDomains = config('retrieval.exa.exclude_domains', []);
+        $blockedDomains = PyqSourceFilter::blockedDomains();
 
-        if (is_array($includeDomains) && $includeDomains !== []) {
+        if ($isDocumentRequest) {
+            $officialDomains = PyqSourceFilter::officialDomains();
+            if ($officialDomains !== []) {
+                $payload['includeDomains'] = array_values($officialDomains);
+            }
+            $excludeDomains = array_values(array_unique(array_merge(
+                is_array($excludeDomains) ? $excludeDomains : [],
+                $blockedDomains
+            )));
+        } elseif (is_array($includeDomains) && $includeDomains !== []) {
             $payload['includeDomains'] = array_values($includeDomains);
         }
 
         if (is_array($excludeDomains) && $excludeDomains !== []) {
             $payload['excludeDomains'] = array_values($excludeDomains);
+        } elseif (! $isDocumentRequest && $blockedDomains !== []) {
+            $payload['excludeDomains'] = $blockedDomains;
         }
 
         return $payload;

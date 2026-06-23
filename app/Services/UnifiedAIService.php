@@ -1204,7 +1204,8 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             );
 
             $result = app(\App\Services\Retrieval\RetrievalOrchestrator::class)->retrieve($query);
-            $enriched = $documentService->enrich($retrievalQuestion, $result, $user?->target_exam);
+            $exam = $user?->target_exam ?: $this->extractExamFromMessage($retrievalQuestion);
+            $enriched = $documentService->enrich($retrievalQuestion, $result, $exam);
 
             if ($enriched['context'] !== '') {
                 $this->retrievalContext = $this->truncateRetrievalContext($enriched['context']);
@@ -1214,6 +1215,8 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
                     'is_document_request' => $documentService->isDocumentRequest($retrievalQuestion),
                     'has_substantive_content' => $enriched['has_substantive_content'],
                     'extracted_chars' => $enriched['extracted_chars'],
+                    'pdf_extracted_chars' => $enriched['pdf_extracted_chars'] ?? 0,
+                    'has_official_source' => $enriched['has_official_source'] ?? false,
                 ];
 
                 Log::info('Hybrid retrieval attached', [
@@ -1316,9 +1319,18 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
                 : $this->thinDocumentRetrievalPresentationRules())
             : $this->generalRetrievalPresentationRules();
 
+        $dateAnchor = '';
+        if ($this->retrievalMeta['is_document_request'] ?? false) {
+            $lastYear = now()->year - 1;
+            $dateAnchor = "\n\nDATE ANCHOR: Today is " . now()->toDateString()
+                . ". When the student says \"last year paper\", they mean the {$lastYear} exam cycle unless retrieved text explicitly names a different year.\n"
+                . "NEVER list exam years that are NOT verbatim in retrieved excerpts. NEVER invent future papers.\n";
+        }
+
         return "\n\n=== RETRIEVED WEB CONTENT (MANDATORY — base your answer on this) ===\n"
             . $this->retrievalContext
             . $sourcesList
+            . $dateAnchor
             . "\n\n=== RESPONSE RULES FOR RETRIEVED CONTENT ===\n"
             . $rules;
     }
@@ -1326,34 +1338,38 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
     protected function documentRetrievalPresentationRules(): string
     {
         return <<<'RULES'
-- Summarize retrieved PDF/text excerpts in your own words — do NOT reply with only links.
+- Summarize ONLY from retrieved PDF/text excerpts — do NOT use training memory for paper lists.
+- NEVER cite Vedantu, CollegeDekho, Byju's, or other coaching sites as "official" sources.
+- NEVER list exam years unless they appear verbatim in retrieved excerpts above.
 - Required structure:
   **Papers / Resources Found**
-  • Paper name — Year — Stage — summary ONLY from retrieved excerpts (exact years/titles from text)
+  • Paper name — Year — summary ONLY from extracted PDF text (exact years from text)
   **Key Details**
-  • Bullet points with topics, sections, instructions found in extracted text
+  • Topics/sections found in extracted PDF text only
   **Sample Questions**
-  • If "SAMPLE QUESTIONS EXTRACTED FROM PDF" appears above, present those 2-3 questions verbatim (formatted cleanly)
+  • If "SAMPLE QUESTIONS EXTRACTED FROM PDF" appears above, present those verbatim
   **Official Sources**
-  • Numbered URLs from SOURCES only
-- Do NOT invent GS Paper I-IV lists from memory — only what appears in retrieved content.
-- Match student language (Hinglish/Hindi/English). No repeated Blinky intro.
+  • Numbered URLs from SOURCES only (prefer nta.ac.in / neet.nta.nic.in / upsc.gov.in)
+- No coaching fluff ("Great choice!", "Bahut easy hai"). Match student language. No Blinky intro.
 RULES;
     }
 
     protected function thinDocumentRetrievalPresentationRules(): string
     {
         return <<<'RULES'
-- Retrieved content is LIMITED (listing page or link metadata only — PDF text was not extracted).
-- Do NOT invent paper years, GS Paper I-IV breakdown, or exam details from your training memory.
+- PDF text was NOT extracted — you only have link metadata or listing snippets.
+- Do NOT invent paper years, paper names, or exam sections from memory or SEO page titles.
+- Do NOT list NEET/JEE years like "2025" or "2026" unless that exact year string appears in retrieved excerpts.
+- Do NOT cite Vedantu, CollegeDekho, Byju's as official — they are coaching aggregators.
 - Required structure:
   **What We Found**
-  • Only titles/URLs/snippets actually present in retrieved content
+  • Only exact titles/URLs from retrieved content (may be empty if only junk was filtered)
   **Limitation**
-  • Clearly say PDF full text could not be extracted on server — student can open official source links
+  • Say honestly: official NTA/UPSC PDF could not be extracted on server right now
+  • Suggest student check: https://neet.nta.nic.in or https://nta.ac.in for NEET PYQs
   **Official Sources**
-  • Numbered URLs from SOURCES only
-- Keep answer short and honest. No filler "Bahut easy hai" coaching text.
+  • Only URLs from SOURCES list — if none are official (.gov.in / nta.ac.in), say so clearly
+- Keep answer short and honest. No filler coaching text. No Blinky intro.
 RULES;
     }
 
