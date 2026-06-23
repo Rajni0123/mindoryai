@@ -263,24 +263,42 @@ class ChatController extends Controller
     private function getAIResponse($user, $message, $chatId, $modelId, $imageData = null)
     {
         try {
-            // Get previous messages for context (excluding the current message)
+            // Normalize roles for AI providers
             $previousMessages = ChatMessage::where('mobile_chat_id', $chatId)
                 ->orderBy('created_at', 'desc')
-                ->limit(10)
+                ->limit(12)
                 ->get()
                 ->reverse()
                 ->map(function ($msg) {
+                    $role = $msg->sender === 'assistant' ? 'assistant' : 'user';
+
                     return [
-                        'role' => $msg->sender,
-                        'content' => $msg->content
+                        'role' => $role,
+                        'content' => (string) $msg->content,
                     ];
                 })
                 ->toArray();
 
-            // Remove the last message (current user message) from previous messages if it exists
-            if (!empty($previousMessages) && end($previousMessages)['content'] === $message) {
-                array_pop($previousMessages);
+            // Remove the current user message duplicate if present
+            if ($previousMessages !== [] && end($previousMessages)['role'] === 'user') {
+                $last = end($previousMessages);
+                if (trim($last['content']) === trim($message) || trim($last['content']) === trim('[Search: ' . $message . ']')) {
+                    array_pop($previousMessages);
+                }
             }
+
+            // Also strip search prefix from stored history for cleaner model context
+            $previousMessages = array_map(function (array $msg) {
+                $content = $msg['content'];
+                if (preg_match('/^\[(Search|Think|Canvas):\s*(.+)\]$/su', trim($content), $matches)) {
+                    $content = trim($matches[2]);
+                }
+
+                return [
+                    'role' => $msg['role'],
+                    'content' => $content,
+                ];
+            }, $previousMessages);
 
             // Call AI service with correct parameters
             $response = $this->aiService->chat(

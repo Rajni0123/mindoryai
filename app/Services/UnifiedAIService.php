@@ -634,6 +634,8 @@ class UnifiedAIService
         $parsed = $this->parseChatModePrefix($message);
         $message = $parsed['message'];
 
+        $message = app(ChatContinuationService::class)->expandMessage($message, $conversationHistory);
+
         $this->maybeAttachRetrievalContext($message, $feature, $userId, $parsed['mode']);
 
         // Get user's plan for feature gating
@@ -1080,12 +1082,11 @@ LANGUAGE: Match the student's language!
 - English → Reply in English
 
 GREETING HANDLING (IMPORTANT!):
-If user says hi/hii/hello/hey/namaste or any greeting:
-- Reply with a SHORT friendly greeting (1-2 lines max)
-- Ask what they want to learn today
-- Example: \"Hey! 👋 Main Blinky hoon, tumhara AI tutor! Aaj kya padhna hai?\"
-- DO NOT give educational content for greetings
-- DO NOT explain any topic unless specifically asked
+ONLY treat as a greeting when the user message is PURELY hi/hello/hey/namaste with no other request.
+Short follow-ups like \"dono chahiye\", \"haan\", \"prelims\", \"mains\", \"both\", \"yes\" are NOT greetings — use conversation history and continue the same topic.
+If this is NOT the first message in the conversation, NEVER repeat your introduction (\"Main Blinky hoon...\") or ask \"Aaj kya padhna hai?\" again.
+For a first-time pure greeting only: reply with a SHORT friendly greeting (1-2 lines max) and ask what they want to learn.
+DO NOT give educational content for pure greetings only.
 
 REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
 
@@ -1161,10 +1162,13 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
                 $metadata['force_route'] = 'exa_only';
             }
 
+            $retrievalQuestion = $this->buildRetrievalQuestion($message, $user);
+
             $query = new \App\Services\Retrieval\DTO\RetrievalQuery(
-                question: $message,
+                question: $retrievalQuestion,
                 classLevel: $user?->student_class,
                 subject: null,
+                exam: $user?->target_exam,
                 userId: $userId,
                 feature: $feature,
                 metadata: $metadata,
@@ -1204,6 +1208,30 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
         }
 
         return ['mode' => 'default', 'message' => $message];
+    }
+
+    protected function buildRetrievalQuestion(string $message, ?User $user): string
+    {
+        $topic = $message;
+        $followUp = '';
+
+        if (str_starts_with($message, '[FOLLOW-UP REPLY]')) {
+            if (preg_match('/ORIGINAL STUDENT TOPIC:\s*"(.+?)"/s', $message, $topicMatch)) {
+                $topic = trim($topicMatch[1]);
+            }
+            if (preg_match('/STUDENT FOLLOW-UP:\s*"(.+?)"/s', $message, $followUpMatch)) {
+                $followUp = trim($followUpMatch[1]);
+            }
+        }
+
+        $parts = array_filter([
+            $user?->target_exam,
+            $topic,
+            $followUp,
+            'previous year question paper official pdf',
+        ]);
+
+        return trim(implode(' ', $parts));
     }
 
     protected function formatRetrievalContextBlock(): string
