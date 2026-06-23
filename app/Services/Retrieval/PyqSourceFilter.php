@@ -49,6 +49,26 @@ class PyqSourceFilter
         return false;
     }
 
+    /**
+     * Broad web PYQ fallback — allow coaching/university PDFs; block only non-PDF listing spam.
+     */
+    public static function isAllowedPyqPdfUrl(string $url): bool
+    {
+        $lower = mb_strtolower($url);
+
+        if (! str_contains($lower, '.pdf')) {
+            return false;
+        }
+
+        foreach (['bit.ly', 'tinyurl.com', 'adf.ly', 'malware'] as $spam) {
+            if (str_contains($lower, $spam)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static function isOfficialUrl(string $url): bool
     {
         $host = mb_strtolower((string) parse_url($url, PHP_URL_HOST));

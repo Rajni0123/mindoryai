@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Contracts\Retrieval\IntentClassifierInterface;
 use App\Models\KnowledgeSource;
+use App\Services\Retrieval\BroadPyqPdfSearcher;
 use App\Services\Retrieval\ExaSearchService;
 use App\Services\Retrieval\HybridContextMerger;
 use App\Services\Retrieval\IntentClassifier;
@@ -61,6 +62,7 @@ class RetrievalServiceProvider extends ServiceProvider
         $this->app->singleton(OfficialWebsiteSearchProvider::class);
         $this->app->singleton(ExaQuizDocumentProvider::class);
         $this->app->singleton(GoogleCustomSearchProvider::class);
+        $this->app->singleton(BroadPyqPdfSearcher::class);
         $this->app->singleton(BraveSearchProvider::class);
         $this->app->singleton(BingSearchProvider::class);
         $this->app->singleton(RetrievalEngine::class);

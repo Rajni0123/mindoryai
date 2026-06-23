@@ -5,11 +5,11 @@ namespace App\Services\Retrieval;
 use App\Services\Retrieval\DTO\RetrievalResult;
 use App\Services\Retrieval\Questions\MCQDetector;
 use App\Services\Retrieval\Questions\QuestionParser;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
  * Enriches chat retrieval with PDF text from Exa document hits (PYQ / exam papers).
+ * Official sources first; open-web PDF fallback when extraction fails.
  */
 class ChatDocumentRetrievalService
 {
@@ -20,6 +20,7 @@ class ChatDocumentRetrievalService
         protected MCQDetector $mcqDetector,
         protected QuestionParser $questionParser,
         protected OfficialPyqArchiveCrawler $officialArchiveCrawler,
+        protected BroadPyqPdfSearcher $broadPyqPdfSearcher,
     ) {}
 
     public function isDocumentRequest(string $question): bool
@@ -49,7 +50,15 @@ class ChatDocumentRetrievalService
     }
 
     /**
-     * @return array{context: string, sources: list<string>, has_substantive_content: bool, extracted_chars: int}
+     * @return array{
+     *   context: string,
+     *   sources: list<string>,
+     *   has_substantive_content: bool,
+     *   extracted_chars: int,
+     *   pdf_extracted_chars: int,
+     *   has_official_source: bool,
+     *   used_broad_fallback: bool
+     * }
      */
     public function enrich(string $question, RetrievalResult $base, ?string $exam = null): array
     {
@@ -58,6 +67,7 @@ class ChatDocumentRetrievalService
         $extractedChars = 0;
         $pdfExtractedChars = 0;
         $hasOfficialSource = false;
+        $usedBroadFallback = false;
 
         if ($base->success && $base->context !== '') {
             $parts[] = $base->context;
@@ -65,10 +75,9 @@ class ChatDocumentRetrievalService
         }
 
         if (! $this->isDocumentRequest($question) || ! $this->settings->isExaEnabled()) {
-            return $this->buildResult($parts, $sources, $extractedChars, $pdfExtractedChars, $hasOfficialSource);
+            return $this->buildResult($parts, $sources, $extractedChars, $pdfExtractedChars, $hasOfficialSource, $usedBroadFallback);
         }
 
-        $hits = $this->exaSearchService->searchChatSources($question, $exam, 6);
         $pdfUrls = [];
 
         foreach ($this->officialArchiveCrawler->discoverPdfUrls($exam, $question) as $archivePdf) {
@@ -78,6 +87,7 @@ class ChatDocumentRetrievalService
             }
         }
 
+        $hits = $this->exaSearchService->searchChatSources($question, $exam, 6);
         foreach (array_slice($hits, 0, 4) as $hit) {
             $url = (string) ($hit['url'] ?? '');
             $title = (string) ($hit['title'] ?? 'Exam document');
@@ -93,7 +103,7 @@ class ChatDocumentRetrievalService
             $sources[] = $title . ' (' . $url . ')';
 
             $snippet = trim((string) ($hit['snippet'] ?? ''));
-            if ($snippet !== '' && ! PyqSourceFilter::isBlockedUrl($url)) {
+            if ($snippet !== '') {
                 $parts[] = "[WEB SNIPPET — {$title}]\nSource: {$url}\n\n{$snippet}";
                 $extractedChars += strlen($snippet);
             }
@@ -105,8 +115,73 @@ class ChatDocumentRetrievalService
             }
         }
 
-        $pdfUrls = array_slice($pdfUrls, 0, 2, true);
+        [$pdfExtractedChars, $extractedChars] = $this->extractFromPdfMap(
+            array_slice($pdfUrls, 0, 2, true),
+            $question,
+            $parts,
+            $sources,
+            $pdfExtractedChars,
+            $extractedChars,
+            $hasOfficialSource
+        );
 
+        if ($pdfExtractedChars < 400 && $this->settings->isTemporaryPdfEnabled()) {
+            Log::info('ChatDocumentRetrieval: official PDF extract insufficient, trying broad web PYQ fallback');
+
+            $broadDocs = $this->broadPyqPdfSearcher->findPdfDocuments($question, $exam, 8);
+            $broadPdfUrls = [];
+
+            foreach ($broadDocs as $doc) {
+                $url = (string) ($doc['url'] ?? '');
+                $title = (string) ($doc['title'] ?? 'Web PYQ PDF');
+                if ($url === '') {
+                    continue;
+                }
+
+                $broadPdfUrls[$url] = $title . ' [' . ($doc['search_provider'] ?? 'web') . ']';
+                $sources[] = $title . ' (' . $url . ')';
+            }
+
+            foreach ($this->discoverPdfUrlsFromHits($broadDocs) as $url => $title) {
+                $broadPdfUrls[$url] = $title;
+            }
+
+            if ($broadPdfUrls !== []) {
+                $usedBroadFallback = true;
+                $parts[] = '[BROAD WEB PYQ SEARCH — official PDF text was not available; scanning open-web PDFs for real questions]';
+
+                [$pdfExtractedChars, $extractedChars] = $this->extractFromPdfMap(
+                    array_slice($broadPdfUrls, 0, 4, true),
+                    $question,
+                    $parts,
+                    $sources,
+                    $pdfExtractedChars,
+                    $extractedChars,
+                    $hasOfficialSource,
+                    maxQuestions: 8
+                );
+            }
+        }
+
+        return $this->buildResult($parts, $sources, $extractedChars, $pdfExtractedChars, $hasOfficialSource, $usedBroadFallback);
+    }
+
+    /**
+     * @param  array<string, string>  $pdfUrls
+     * @param  list<string>  $parts
+     * @param  list<string>  $sources
+     * @return array{0: int, 1: int}
+     */
+    protected function extractFromPdfMap(
+        array $pdfUrls,
+        string $question,
+        array &$parts,
+        array &$sources,
+        int $pdfExtractedChars,
+        int $extractedChars,
+        bool &$hasOfficialSource,
+        int $maxQuestions = 3,
+    ): array {
         foreach ($pdfUrls as $pdfUrl => $title) {
             if (PyqSourceFilter::isOfficialUrl($pdfUrl)) {
                 $hasOfficialSource = true;
@@ -126,7 +201,7 @@ class ChatDocumentRetrievalService
             $pdfExtractedChars += strlen($extracted);
             $extractedChars += strlen($extracted);
             $summary = $this->summarizeExtractedText($extracted);
-            $sampleQuestions = $this->formatSampleQuestions($extracted);
+            $sampleQuestions = $this->formatSampleQuestions($extracted, $maxQuestions);
 
             $section = "[EXTRACTED PDF CONTENT — {$title}]\nSource: {$pdfUrl}\n\n{$summary}";
             if ($sampleQuestions !== '') {
@@ -135,15 +210,55 @@ class ChatDocumentRetrievalService
             }
 
             $parts[] = $section;
+            $sources[] = $title . ' (' . $pdfUrl . ')';
+
+            if ($pdfExtractedChars >= 400 && $sampleQuestions !== '') {
+                break;
+            }
         }
 
-        return $this->buildResult($parts, $sources, $extractedChars, $pdfExtractedChars, $hasOfficialSource);
+        return [$pdfExtractedChars, $extractedChars];
+    }
+
+    /**
+     * @param  list<array{url: string, title: string}>  $docs
+     * @return array<string, string>
+     */
+    protected function discoverPdfUrlsFromHits(array $docs): array
+    {
+        $map = [];
+        foreach ($docs as $doc) {
+            $url = (string) ($doc['url'] ?? '');
+            $title = (string) ($doc['title'] ?? 'PYQ PDF');
+            if ($url === '') {
+                continue;
+            }
+
+            if (str_contains(mb_strtolower($url), '.pdf')) {
+                $map[$url] = $title;
+                continue;
+            }
+
+            foreach ($this->discoverPdfUrls($url) as $pdfUrl) {
+                $map[$pdfUrl] = $title;
+            }
+        }
+
+        return $map;
     }
 
     /**
      * @param  list<string>  $parts
      * @param  list<string>  $sources
-     * @return array{context: string, sources: list<string>, has_substantive_content: bool, extracted_chars: int}
+     * @return array{
+     *   context: string,
+     *   sources: list<string>,
+     *   has_substantive_content: bool,
+     *   extracted_chars: int,
+     *   pdf_extracted_chars: int,
+     *   has_official_source: bool,
+     *   used_broad_fallback: bool
+     * }
      */
     private function buildResult(
         array $parts,
@@ -151,15 +266,20 @@ class ChatDocumentRetrievalService
         int $extractedChars,
         int $pdfExtractedChars = 0,
         bool $hasOfficialSource = false,
+        bool $usedBroadFallback = false,
     ): array {
         $context = trim(implode("\n\n---\n\n", array_filter($parts)));
-        if (strlen($context) > 9000) {
-            $context = substr($context, 0, 9000) . "\n\n[... content truncated before AI handoff ...]";
+        if (strlen($context) > 12000) {
+            $context = substr($context, 0, 12000) . "\n\n[... content truncated before AI handoff ...]";
         }
 
-        $sources = PyqSourceFilter::filterOfficialSourceLabels(array_values(array_unique($sources)));
+        $sources = array_values(array_unique($sources));
+        if (! $usedBroadFallback) {
+            $sources = PyqSourceFilter::filterOfficialSourceLabels($sources);
+        } else {
+            $sources = PyqSourceFilter::filterSourceLabels($sources);
+        }
 
-        // Substantive = real PDF text extracted, NOT coaching-site SEO snippets
         $hasSubstantive = $pdfExtractedChars >= 400;
 
         return [
@@ -169,6 +289,7 @@ class ChatDocumentRetrievalService
             'extracted_chars' => $extractedChars,
             'pdf_extracted_chars' => $pdfExtractedChars,
             'has_official_source' => $hasOfficialSource,
+            'used_broad_fallback' => $usedBroadFallback,
         ];
     }
 
@@ -197,9 +318,9 @@ class ChatDocumentRetrievalService
         return $head . "\n\n[... middle content truncated ...]\n\n" . $tail;
     }
 
-    protected function formatSampleQuestions(string $text): string
+    protected function formatSampleQuestions(string $text, int $maxQuestions = 3): string
     {
-        $blocks = array_slice($this->mcqDetector->detectBlocks($text), 0, 6);
+        $blocks = array_slice($this->mcqDetector->detectBlocks($text), 0, $maxQuestions * 2);
         $formatted = [];
 
         foreach ($blocks as $block) {
@@ -224,7 +345,7 @@ class ChatDocumentRetrievalService
 
             $formatted[] = $line;
 
-            if (count($formatted) >= 3) {
+            if (count($formatted) >= $maxQuestions) {
                 break;
             }
         }

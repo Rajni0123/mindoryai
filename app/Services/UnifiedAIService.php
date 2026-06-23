@@ -1241,6 +1241,7 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
                     'extracted_chars' => $enriched['extracted_chars'],
                     'pdf_extracted_chars' => $enriched['pdf_extracted_chars'] ?? 0,
                     'has_official_source' => $enriched['has_official_source'] ?? false,
+                    'used_broad_fallback' => $enriched['used_broad_fallback'] ?? false,
                 ];
 
                 Log::info('Hybrid retrieval attached', [
@@ -1339,7 +1340,9 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
 
         $rules = ($this->retrievalMeta['is_document_request'] ?? false)
             ? (($this->retrievalMeta['has_substantive_content'] ?? false)
-                ? $this->documentRetrievalPresentationRules()
+                ? (($this->retrievalMeta['used_broad_fallback'] ?? false)
+                    ? $this->broadPyqRetrievalPresentationRules()
+                    : $this->documentRetrievalPresentationRules())
                 : $this->thinDocumentRetrievalPresentationRules())
             : $this->generalRetrievalPresentationRules();
 
@@ -1357,6 +1360,22 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             . $dateAnchor
             . "\n\n=== RESPONSE RULES FOR RETRIEVED CONTENT ===\n"
             . $rules;
+    }
+
+    protected function broadPyqRetrievalPresentationRules(): string
+    {
+        return <<<'RULES'
+- Official NTA PDF text was not available; questions below were EXTRACTED from open-web PYQ PDFs (Google/Exa search).
+- Required structure:
+  **Sample Questions (from PDF scan)**
+  • Present ALL questions from "SAMPLE QUESTIONS EXTRACTED FROM PDF" verbatim — formatted cleanly with options
+  **Paper Details**
+  • Only facts visible in extracted PDF text (year, exam, sections)
+  **Sources**
+  • List PDF URLs from SOURCES (may include coaching sites — label as "Web PYQ PDF", not "official")
+- Do NOT invent questions from memory — only extracted PDF content.
+- No coaching fluff intro. Match student language.
+RULES;
     }
 
     protected function documentRetrievalPresentationRules(): string
@@ -1389,8 +1408,8 @@ RULES;
   **What We Found**
   • Only exact titles/URLs from retrieved content (may be empty if only junk was filtered)
   **Limitation**
-  • Say honestly: official NTA/UPSC PDF could not be extracted on server right now
-  • Suggest student check: https://neet.nta.nic.in or https://nta.ac.in for NEET PYQs
+  • Say honestly: official PDF could not be extracted — system will try open-web PDFs automatically on next retry, or student can search Google for "NEET {last year} question paper pdf"
+  • Suggest: https://neet.nta.nic.in for official archive
   **Official Sources**
   • ONLY .gov.in / nta.ac.in / neet.nta.nic.in URLs from SOURCES — never label Aakash/Vedantu as official
 - Keep answer short and honest. No filler coaching text. No Blinky intro.

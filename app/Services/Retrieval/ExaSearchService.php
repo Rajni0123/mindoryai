@@ -143,9 +143,55 @@ class ExaSearchService
     }
 
     /**
+     * Open-web PYQ PDF search (no official-domain restriction) for chat fallback.
+     *
+     * @return list<array{url: string, title: string, search_provider: string}>
+     */
+    public function searchBroadPyqPdfs(string $topic, ?string $exam, int $maxResults = 10): array
+    {
+        if (! $this->settings->isExaEnabled()) {
+            return [];
+        }
+
+        $apiKey = \App\Models\FrontendConfig::getValue('retrieval.exa_api_key')
+            ?: config('retrieval.exa.api_key');
+        if (! $apiKey) {
+            return [];
+        }
+
+        $lastYear = now()->year - 1;
+        $query = trim(implode(' ', array_filter([
+            $exam,
+            $topic,
+            (string) $lastYear,
+            'previous year question paper pdf answers solutions',
+        ])));
+
+        $hits = $this->fetchChatSourceResults($query, $apiKey, $maxResults, officialOnly: false, broadPyq: true);
+
+        return array_values(array_filter(array_map(function (array $hit) {
+            $url = (string) ($hit['url'] ?? '');
+            if ($url === '') {
+                return null;
+            }
+
+            $lower = mb_strtolower($url);
+            if (! str_contains($lower, '.pdf') && ! PyqSourceFilter::isAllowedPyqPdfUrl($url)) {
+                return null;
+            }
+
+            return [
+                'url' => $url,
+                'title' => (string) ($hit['title'] ?? 'PYQ PDF'),
+                'search_provider' => 'exa',
+            ];
+        }, $hits)));
+    }
+
+    /**
      * @return list<array{url: string, title: string, snippet: string}>
      */
-    protected function fetchChatSourceResults(string $query, string $apiKey, int $maxResults, bool $officialOnly): array
+    protected function fetchChatSourceResults(string $query, string $apiKey, int $maxResults, bool $officialOnly, bool $broadPyq = false): array
     {
         try {
             $payload = [
@@ -165,7 +211,7 @@ class ExaSearchService
             }
 
             $blocked = PyqSourceFilter::blockedDomains();
-            if ($blocked !== []) {
+            if ($blocked !== [] && ! $broadPyq) {
                 $payload['excludeDomains'] = $blocked;
             }
 
@@ -197,8 +243,19 @@ class ExaSearchService
                         'snippet' => $this->extractResultContent($item),
                     ];
                 })
-                ->filter(function (array $item) {
-                    if ($item['url'] === '' || PyqSourceFilter::isBlockedUrl($item['url'])) {
+                ->filter(function (array $item) use ($broadPyq) {
+                    if ($item['url'] === '') {
+                        return false;
+                    }
+
+                    if ($broadPyq) {
+                        $lower = mb_strtolower($item['url']);
+
+                        return str_contains($lower, '.pdf')
+                            || $this->isChatSourceRelevant($item['url'], $item['title']);
+                    }
+
+                    if (PyqSourceFilter::isBlockedUrl($item['url'])) {
                         return false;
                     }
 
