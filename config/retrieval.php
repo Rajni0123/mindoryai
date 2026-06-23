@@ -135,6 +135,10 @@ return [
             'shiksha.com',
             'askiitians.com',
             'embibe.com',
+            'aakash.ac.in',
+            'aakash.com',
+            'aakashitutor.com',
+            'allen.ac.in',
         ])))
     ))),
 

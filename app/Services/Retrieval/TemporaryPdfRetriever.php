@@ -38,13 +38,26 @@ class TemporaryPdfRetriever
     {
         try {
             $maxMb = (int) config('retrieval.temporary_pdf.max_size_mb', 15);
-            $response = Http::timeout(30)->retry(1, 300)->get($url);
+            $response = Http::timeout(45)
+                ->retry(2, 500)
+                ->withHeaders([
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                    'Accept' => 'application/pdf,application/octet-stream,*/*',
+                ])
+                ->get($url);
 
             if (! $response->successful()) {
+                Log::warning('Temporary PDF download failed', ['url' => $url, 'status' => $response->status()]);
+
                 return '';
             }
 
             $body = $response->body();
+            if ($body === '' || ! str_starts_with($body, '%PDF')) {
+                Log::warning('Temporary PDF invalid content', ['url' => $url, 'bytes' => strlen($body)]);
+
+                return '';
+            }
             if (strlen($body) > $maxMb * 1024 * 1024) {
                 Log::warning('Temporary PDF too large', ['url' => $url]);
 

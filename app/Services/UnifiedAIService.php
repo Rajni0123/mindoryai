@@ -1392,7 +1392,7 @@ RULES;
   • Say honestly: official NTA/UPSC PDF could not be extracted on server right now
   • Suggest student check: https://neet.nta.nic.in or https://nta.ac.in for NEET PYQs
   **Official Sources**
-  • Only URLs from SOURCES list — if none are official (.gov.in / nta.ac.in), say so clearly
+  • ONLY .gov.in / nta.ac.in / neet.nta.nic.in URLs from SOURCES — never label Aakash/Vedantu as official
 - Keep answer short and honest. No filler coaching text. No Blinky intro.
 RULES;
     }

@@ -19,6 +19,7 @@ class ChatDocumentRetrievalService
         protected RetrievalSettingsService $settings,
         protected MCQDetector $mcqDetector,
         protected QuestionParser $questionParser,
+        protected OfficialPyqArchiveCrawler $officialArchiveCrawler,
     ) {}
 
     public function isDocumentRequest(string $question): bool
@@ -69,6 +70,13 @@ class ChatDocumentRetrievalService
 
         $hits = $this->exaSearchService->searchChatSources($question, $exam, 6);
         $pdfUrls = [];
+
+        foreach ($this->officialArchiveCrawler->discoverPdfUrls($exam, $question) as $archivePdf) {
+            $pdfUrls[$archivePdf] = 'Official archive';
+            if (PyqSourceFilter::isOfficialUrl($archivePdf)) {
+                $hasOfficialSource = true;
+            }
+        }
 
         foreach (array_slice($hits, 0, 4) as $hit) {
             $url = (string) ($hit['url'] ?? '');
@@ -149,7 +157,7 @@ class ChatDocumentRetrievalService
             $context = substr($context, 0, 9000) . "\n\n[... content truncated before AI handoff ...]";
         }
 
-        $sources = PyqSourceFilter::filterSourceLabels(array_values(array_unique($sources)));
+        $sources = PyqSourceFilter::filterOfficialSourceLabels(array_values(array_unique($sources)));
 
         // Substantive = real PDF text extracted, NOT coaching-site SEO snippets
         $hasSubstantive = $pdfExtractedChars >= 400;
@@ -169,59 +177,7 @@ class ChatDocumentRetrievalService
      */
     protected function discoverPdfUrls(string $url): array
     {
-        $lower = mb_strtolower($url);
-        if (str_contains($lower, '.pdf')) {
-            return [$url];
-        }
-
-        try {
-            $response = Http::timeout(12)
-                ->withHeaders(['User-Agent' => 'BlinkStudy/1.0 (+https://blinkstudy.in)'])
-                ->get($url);
-
-            if (! $response->successful()) {
-                return [];
-            }
-
-            $html = $response->body();
-            if (! is_string($html) || $html === '') {
-                return [];
-            }
-
-            $base = $this->resolveBaseUrl($url);
-            preg_match_all('/href=["\']([^"\']+\.pdf[^"\']*)["\']/i', $html, $matches);
-
-            $urls = [];
-            foreach ($matches[1] ?? [] as $href) {
-                $href = html_entity_decode(trim($href));
-                if ($href === '') {
-                    continue;
-                }
-
-                if (str_starts_with($href, 'http://') || str_starts_with($href, 'https://')) {
-                    $urls[] = $href;
-                } elseif (str_starts_with($href, '/')) {
-                    $urls[] = $base . $href;
-                }
-            }
-
-            return array_values(array_unique($urls));
-        } catch (\Throwable $e) {
-            Log::warning('ChatDocumentRetrieval: HTML PDF discovery failed', [
-                'url' => $url,
-                'error' => $e->getMessage(),
-            ]);
-
-            return [];
-        }
-    }
-
-    protected function resolveBaseUrl(string $url): string
-    {
-        $scheme = parse_url($url, PHP_URL_SCHEME) ?: 'https';
-        $host = parse_url($url, PHP_URL_HOST) ?: '';
-
-        return $scheme . '://' . $host;
+        return $this->officialArchiveCrawler->scrapePdfLinks($url);
     }
 
     protected function summarizeExtractedText(string $text): string

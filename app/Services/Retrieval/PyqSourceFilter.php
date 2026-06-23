@@ -85,4 +85,23 @@ class PyqSourceFilter
             return true;
         }));
     }
+
+    /**
+     * For PYQ replies — only keep government / NTA URLs in the sources list shown to AI.
+     *
+     * @param  list<string>  $sources
+     * @return list<string>
+     */
+    public static function filterOfficialSourceLabels(array $sources): array
+    {
+        $official = array_values(array_filter($sources, function (string $source) {
+            if (preg_match('/\((https?:\/\/[^)]+)\)/', $source, $matches)) {
+                return self::isOfficialUrl($matches[1]);
+            }
+
+            return false;
+        }));
+
+        return $official !== [] ? $official : self::filterSourceLabels($sources);
+    }
 }
