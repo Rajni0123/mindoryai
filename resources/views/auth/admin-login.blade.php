@@ -60,7 +60,7 @@
                 </button>
             </div>
 
-            <form method="POST" action="/admin/login" class="space-y-4" id="admin-login-form">
+            <form method="POST" action="{{ url('/admin/login') }}" class="space-y-4" id="admin-login-form">
                 @csrf
                 <input type="hidden" name="login_method" id="login_method" value="{{ $loginMethod }}">
 

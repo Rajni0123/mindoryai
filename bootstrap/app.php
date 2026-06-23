@@ -62,9 +62,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ])
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (\Illuminate\Session\TokenMismatchException $e, \Illuminate\Http\Request $request) {
-            if ($request->is('admin/*')) {
-                return redirect()
-                    ->back()
+            if ($request->is('admin') || $request->is('admin/*')) {
+                $target = ($request->is('admin/login') || $request->routeIs('admin.login.submit'))
+                    ? redirect()->route('admin.login')
+                    : redirect()->back();
+
+                return $target
                     ->withInput($request->except('_token', 'password', 'exa_api_key'))
                     ->with('error', 'Session expired. Refresh the page and try again.');
             }

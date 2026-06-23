@@ -20,10 +20,14 @@ class AdminAuthController extends Controller
         private readonly AdminCredentialService $credentials
     ) {}
 
-    public function showLoginForm(): View|RedirectResponse
+    public function showLoginForm(Request $request): View|RedirectResponse
     {
         if (Auth::check() && Auth::user()->isAdmin()) {
             return redirect('/admin/dashboard');
+        }
+
+        if ($request->hasSession()) {
+            $request->session()->regenerateToken();
         }
 
         return view('auth.admin-login');
