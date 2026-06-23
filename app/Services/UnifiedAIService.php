@@ -536,11 +536,11 @@ class UnifiedAIService
     {
         // FREE plan defaults - standard speed (paid users get priority)
         $defaults = [
-            'max_tokens' => 1536,       // Standard tokens for free
-            'timeout' => 20,            // Standard timeout
-            'connect_timeout' => 6,     // Standard connection
-            'priority' => 'low',        // Lower priority than paid users
-            'use_best_model' => false,  // Use basic model only
+            'max_tokens' => 1536,
+            'timeout' => 35,
+            'connect_timeout' => 12,
+            'priority' => 'low',
+            'use_best_model' => false,
         ];
 
         if (!$userId) {
@@ -679,7 +679,9 @@ class UnifiedAIService
         }
 
         if ($this->retrievalContext !== '') {
-            $speedSettings['timeout'] = max((int) ($speedSettings['timeout'] ?? 20), 45);
+            $isDocument = (bool) ($this->retrievalMeta['is_document_request'] ?? false);
+            $speedSettings['timeout'] = max((int) ($speedSettings['timeout'] ?? 20), $isDocument ? 90 : 60);
+            $speedSettings['connect_timeout'] = max((int) ($speedSettings['connect_timeout'] ?? 8), 15);
             $speedSettings['max_tokens'] = min(
                 max((int) ($speedSettings['max_tokens'] ?? 1536), 2048),
                 4096
@@ -941,24 +943,41 @@ class UnifiedAIService
             return $this->streamOpenAI($apiKey, $payload, $streamCallback);
         }
 
-        $connectTimeout = $speedSettings['connect_timeout'] ?? 8;
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $apiKey,
-            'Content-Type' => 'application/json',
-        ])->withOptions(['verify' => config('app.env') !== 'local'])
-          ->connectTimeout($connectTimeout)
-          ->timeout($timeout)
-          ->post($model->api_url, $payload);
+        $connectTimeout = $speedSettings['connect_timeout'] ?? 12;
 
-        if (!$response->successful()) {
-            Log::warning('OpenAI API error', [
-                'status' => $response->status(),
-                'body' => substr($response->body(), 0, 500),
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Content-Type' => 'application/json',
+            ])->withOptions(['verify' => config('app.env') !== 'local'])
+              ->connectTimeout($connectTimeout)
+              ->timeout($timeout)
+              ->retry(1, 500, throw: false)
+              ->post($model->api_url, $payload);
+        } catch (\Throwable $e) {
+            Log::warning('OpenAI HTTP request failed', [
+                'model' => $model->model_identifier,
+                'timeout' => $timeout,
+                'error' => $e->getMessage(),
             ]);
 
             return [
                 'success' => false,
-                'error' => 'OpenAI API error: ' . $response->status(),
+                'error' => $e->getMessage(),
+                'provider' => 'openai',
+            ];
+        }
+
+        if ($response === null || $response->failed()) {
+            $status = $response?->status() ?? 0;
+            Log::warning('OpenAI API error', [
+                'status' => $status,
+                'body' => substr((string) ($response?->body() ?? ''), 0, 500),
+            ]);
+
+            return [
+                'success' => false,
+                'error' => 'OpenAI API error' . ($status ? ": {$status}" : ' (timeout or connection failure)'),
                 'provider' => 'openai',
             ];
         }
@@ -1139,6 +1158,11 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
     {
         $languageInstruction = $this->getLanguageInstruction();
         $retrievalBlock = $this->formatRetrievalContextBlock();
+
+        // Large retrieval payloads: skip heavy analytics prompt to reduce tokens + latency
+        if ($retrievalBlock !== '') {
+            return $this->getSystemPrompt() . $retrievalBlock . "\n\n" . $languageInstruction;
+        }
 
         // Fast mode: skip heavy analytics DB work before AI call (GPT-like speed)
         if (config('ai.chat_fast_mode', true) && $this->isChatFeature($this->currentFeature)) {
@@ -1828,7 +1852,11 @@ Write your ENTIRE response in देवनागरी script!",
                 'error' => $e->getMessage(),
             ]);
 
-            throw new \Exception('Gemini API error: ' . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => $e->getMessage(),
+                'provider' => 'google',
+            ];
         }
     }
 
