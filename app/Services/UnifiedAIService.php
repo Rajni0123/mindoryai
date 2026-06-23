@@ -1228,29 +1228,40 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
             );
 
             $result = app(\App\Services\Retrieval\RetrievalOrchestrator::class)->retrieve($query);
-            $exam = $user?->target_exam ?: $this->extractExamFromMessage($retrievalQuestion);
-            $enriched = $documentService->enrich($retrievalQuestion, $result, $exam);
+            $isDocumentRequest = $documentService->isDocumentRequest($retrievalQuestion);
+            $exam = $documentService->buildExamLabel(
+                $user?->target_exam ?: $this->extractExamFromMessage($retrievalQuestion),
+                $retrievalQuestion
+            );
+            $enriched = $documentService->enrich($retrievalQuestion, $result, $exam !== '' ? $exam : null);
+
+            $this->retrievalMeta = [
+                'provider' => $result->provider,
+                'sources' => $enriched['sources'],
+                'is_document_request' => $isDocumentRequest,
+                'has_substantive_content' => $enriched['has_substantive_content'],
+                'extracted_chars' => $enriched['extracted_chars'],
+                'pdf_extracted_chars' => $enriched['pdf_extracted_chars'] ?? 0,
+                'has_official_source' => $enriched['has_official_source'] ?? false,
+                'used_broad_fallback' => $enriched['used_broad_fallback'] ?? false,
+            ];
 
             if ($enriched['context'] !== '') {
                 $this->retrievalContext = $this->truncateRetrievalContext($enriched['context']);
-                $this->retrievalMeta = [
-                    'provider' => $result->provider,
-                    'sources' => $enriched['sources'],
-                    'is_document_request' => $documentService->isDocumentRequest($retrievalQuestion),
-                    'has_substantive_content' => $enriched['has_substantive_content'],
-                    'extracted_chars' => $enriched['extracted_chars'],
-                    'pdf_extracted_chars' => $enriched['pdf_extracted_chars'] ?? 0,
-                    'has_official_source' => $enriched['has_official_source'] ?? false,
-                    'used_broad_fallback' => $enriched['used_broad_fallback'] ?? false,
-                ];
+            } elseif ($isDocumentRequest) {
+                $this->retrievalContext = '[RETRIEVAL NOTE] Student asked for last-year / PYQ exam materials. '
+                    . 'No PDF text was extracted yet — do NOT reply with generic timetable/NCERT tip lists. '
+                    . 'Share only retrieved links or say papers could not be extracted and point to cbse.gov.in / official board site.';
+            }
 
+            if ($enriched['context'] !== '' || $isDocumentRequest) {
                 Log::info('Hybrid retrieval attached', [
                     'provider' => $result->provider,
                     'mode' => $mode,
                     'sources' => count($enriched['sources']),
-                    'document_request' => $this->retrievalMeta['is_document_request'],
+                    'document_request' => $isDocumentRequest,
                     'has_substantive_content' => $enriched['has_substantive_content'],
-                    'context_chars' => strlen($enriched['context']),
+                    'context_chars' => strlen($this->retrievalContext),
                 ]);
             }
         } catch (\Throwable $e) {
@@ -1292,9 +1303,10 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
         $parts = array_filter([
             $user?->target_exam,
             $this->extractExamFromMessage($topic),
+            app(\App\Services\Retrieval\ChatDocumentRetrievalService::class)->extractClassLevel($topic),
             $topic,
             $followUp,
-            'previous year question paper official pdf',
+            'previous year question paper sample paper pdf',
         ]);
 
         return trim(implode(' ', $parts));
@@ -1303,14 +1315,17 @@ REMEMBER: You are BLINKY - make learning VISUAL and FUN with icons!";
     protected function extractExamFromMessage(string $message): ?string
     {
         $lower = mb_strtolower($message);
+        $class = app(\App\Services\Retrieval\ChatDocumentRetrievalService::class)->extractClassLevel($message);
 
-        foreach (['neet', 'jee', 'upsc', 'cbse', 'nta', 'clat', 'cat'] as $exam) {
+        foreach (['neet', 'jee', 'upsc', 'cbse', 'icse', 'nta', 'clat', 'cat'] as $exam) {
             if (str_contains($lower, $exam)) {
-                return strtoupper($exam);
+                $label = strtoupper($exam);
+
+                return $class ? "{$label} {$class}" : $label;
             }
         }
 
-        return null;
+        return $class;
     }
 
     protected function truncateRetrievalContext(string $context, int $maxChars = 8000): string
@@ -1413,6 +1428,8 @@ RULES;
   **Official Sources**
   • ONLY .gov.in / nta.ac.in / neet.nta.nic.in URLs from SOURCES — never label Aakash/Vedantu as official
 - Keep answer short and honest. No filler coaching text. No Blinky intro.
+- FORBIDDEN when student asked for last-year/board papers: generic "Time Table Banalo", "NCERT focus", "Relax & Recharge" tip lists — they want PAPERS and extracted questions, not life coaching.
+- For CBSE Class 10/12: suggest https://cbse.gov.in/cbsenew/question-paper.html and cbseacademic.nic.in sample papers if no PDF extracted.
 RULES;
     }
 

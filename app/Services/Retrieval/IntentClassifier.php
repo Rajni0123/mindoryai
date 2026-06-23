@@ -50,6 +50,8 @@ class IntentClassifier implements IntentClassifierInterface
         $wantsHybrid = str_contains($text, 'latest')
             || str_contains($text, 'pyq')
             || str_contains($text, 'previous year')
+            || str_contains($text, 'last year')
+            || (str_contains($text, 'cbse') && (str_contains($text, '10') || str_contains($text, '12')))
             || (str_contains($text, 'explain') && str_contains($text, 'and'));
 
         if ($wantsHybrid || $intent === 'pyq') {

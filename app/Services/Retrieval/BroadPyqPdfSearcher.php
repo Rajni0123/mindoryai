@@ -96,9 +96,11 @@ class BroadPyqPdfSearcher
     protected function buildTopic(string $question, ?string $exam): string
     {
         $lastYear = now()->year - 1;
+        $class = app(ChatDocumentRetrievalService::class)->extractClassLevel($question);
 
         return trim(implode(' ', array_filter([
             $exam,
+            $class,
             $question,
             (string) $lastYear,
             'previous year question paper pdf',

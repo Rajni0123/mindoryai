@@ -40,13 +40,60 @@ class ChatDocumentRetrievalService
             'paper pdf',
             'prelims paper',
             'mains paper',
+            'board paper',
+            'model paper',
         ] as $keyword) {
             if (str_contains($lower, $keyword)) {
                 return true;
             }
         }
 
+        // "last year CBSE class 10 preparation" → wants PYQ/materials, not generic tips
+        if (str_contains($lower, 'last year') || str_contains($lower, 'previous year')) {
+            foreach (['cbse', 'icse', 'board', 'class 10', 'class 12', '10th', '12th', '10 th', '12 th'] as $examHint) {
+                if (str_contains($lower, $examHint)) {
+                    return true;
+                }
+            }
+        }
+
         return false;
+    }
+
+    public function extractClassLevel(string $question): ?string
+    {
+        if (preg_match('/\b(?:class\s*)?10\s*(?:th)?\b/i', $question)) {
+            return 'Class 10';
+        }
+        if (preg_match('/\b(?:class\s*)?12\s*(?:th)?\b/i', $question)) {
+            return 'Class 12';
+        }
+
+        return null;
+    }
+
+    public function buildExamLabel(?string $exam, string $question): string
+    {
+        $class = $this->extractClassLevel($question);
+        $board = null;
+        $lower = mb_strtolower($question);
+
+        foreach (['cbse', 'icse', 'nta', 'upsc', 'neet', 'jee'] as $tag) {
+            if (str_contains($lower, $tag)) {
+                $board = strtoupper($tag);
+                break;
+            }
+        }
+
+        if ($exam) {
+            $board = strtoupper($exam);
+        }
+
+        if ($board && $class) {
+            return "{$board} {$class}";
+        }
+
+        return $board ?? $class ?? '';
     }
 
     /**
@@ -78,16 +125,19 @@ class ChatDocumentRetrievalService
             return $this->buildResult($parts, $sources, $extractedChars, $pdfExtractedChars, $hasOfficialSource, $usedBroadFallback);
         }
 
+        $examLabel = $this->buildExamLabel($exam, $question);
+        $searchExam = $examLabel !== '' ? $examLabel : $exam;
+
+        $hits = $this->exaSearchService->searchChatSources($question, $searchExam, 6);
         $pdfUrls = [];
 
-        foreach ($this->officialArchiveCrawler->discoverPdfUrls($exam, $question) as $archivePdf) {
+        foreach ($this->officialArchiveCrawler->discoverPdfUrls($searchExam, $question) as $archivePdf) {
             $pdfUrls[$archivePdf] = 'Official archive';
             if (PyqSourceFilter::isOfficialUrl($archivePdf)) {
                 $hasOfficialSource = true;
             }
         }
 
-        $hits = $this->exaSearchService->searchChatSources($question, $exam, 6);
         foreach (array_slice($hits, 0, 4) as $hit) {
             $url = (string) ($hit['url'] ?? '');
             $title = (string) ($hit['title'] ?? 'Exam document');
@@ -128,7 +178,7 @@ class ChatDocumentRetrievalService
         if ($pdfExtractedChars < 400 && $this->settings->isTemporaryPdfEnabled()) {
             Log::info('ChatDocumentRetrieval: official PDF extract insufficient, trying broad web PYQ fallback');
 
-            $broadDocs = $this->broadPyqPdfSearcher->findPdfDocuments($question, $exam, 8);
+            $broadDocs = $this->broadPyqPdfSearcher->findPdfDocuments($question, $searchExam, 8);
             $broadPdfUrls = [];
 
             foreach ($broadDocs as $doc) {

@@ -147,7 +147,7 @@ return [
         'quiz' => ['quiz', 'mcq', 'test me', 'practice questions'],
         'scan' => ['scan', 'solve this', 'image', 'photo'],
         'revision' => ['revise', 'revision', 'recap', 'flashcard'],
-        'pyq' => ['previous year', 'pyq', 'past paper', 'last year question'],
+        'pyq' => ['previous year', 'pyq', 'past paper', 'last year', 'last year paper', 'question paper', 'sample paper', 'board paper', 'class 10', 'class 12'],
         'current_affairs' => ['current affairs', 'latest news', 'today news'],
         'government' => ['government notification', 'circular', 'official notice', 'upsc notification'],
         'exam_update' => ['exam date', 'exam update', 'admit card', 'result date', 'neet update', 'jee update'],

@@ -147,11 +147,16 @@ class OfficialPyqArchiveCrawler
             'jee' => 'JEE',
             'upsc' => 'UPSC',
             'cbse' => 'CBSE',
+            'icse' => 'ICSE',
             'nta' => 'NEET',
         ] as $needle => $label) {
             if (str_contains($haystack, $needle)) {
                 return $label;
             }
+        }
+
+        if (preg_match('/\b(?:class\s*)?10\s*(?:th)?\b/i', $haystack)) {
+            return 'CBSE';
         }
 
         return null;
@@ -178,6 +183,8 @@ class OfficialPyqArchiveCrawler
             ],
             'CBSE' => [
                 'https://cbse.gov.in/cbsenew/question-paper.html',
+                'https://cbseacademic.nic.in/web_material/SQP/ClassX_2024-25/',
+                'https://cbseacademic.nic.in/SQP.html',
             ],
             default => [],
         };
@@ -198,6 +205,10 @@ class OfficialPyqArchiveCrawler
 
         if (str_contains($lower, mb_strtolower($examKey))) {
             $score += 10;
+        }
+
+        if ($examKey === 'CBSE' && (str_contains($lower, 'classx') || str_contains($lower, 'class-x') || str_contains($lower, 'class_10'))) {
+            $score += 15;
         }
 
         if (PyqSourceFilter::isOfficialUrl($url)) {
