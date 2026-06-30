@@ -65,6 +65,20 @@ class ApiService {
     return Map<String, dynamic>.from(res.data as Map);
   }
 
+  /// Website-style OAuth: exchange authorization code (no Android SHA-1 required).
+  Future<Map<String, dynamic>> loginWithGoogleCode({
+    required String code,
+    required String platform,
+    required String redirectUri,
+  }) async {
+    final res = await _dio.post('/login/google', data: {
+      'code': code,
+      'platform': platform,
+      'redirect_uri': redirectUri,
+    });
+    return Map<String, dynamic>.from(res.data as Map);
+  }
+
   Future<Map<String, dynamic>> getUser() async {
     final res = await _dio.get('/user');
     return Map<String, dynamic>.from(res.data as Map);

@@ -982,6 +982,7 @@ class UnifiedLoginController extends Controller
         $validator = Validator::make($request->all(), [
             'id_token' => ['required_without:code', 'nullable', 'string'],
             'code' => ['required_without:id_token', 'nullable', 'string'],
+            'redirect_uri' => ['nullable', 'string', 'max:500'],
             'platform' => ['required', 'in:android,ios,web,expo'],
             'referral_code' => ['nullable', 'string', 'max:20'],
         ], [
@@ -997,15 +998,20 @@ class UnifiedLoginController extends Controller
         }
 
         try {
-            $clientId = config('services.google.client_id');
-            $clientSecret = config('services.google.client_secret');
-            $redirectUri = config('services.google.redirect');
+            $clientId = config('services.google.client_id')
+                ?: \App\Models\FrontendConfig::getValue('auth.social.google.client_id');
+            $clientSecret = config('services.google.client_secret')
+                ?: \App\Models\FrontendConfig::getValue('auth.social.google.client_secret');
+            $redirectUri = $request->input('redirect_uri')
+                ?: \App\Models\FrontendConfig::getValue('auth.social.google.redirect_url')
+                ?: config('services.google.redirect');
 
             // Initialize Google Client
             $client = new \Google_Client([
                 'client_id' => $clientId,
                 'client_secret' => $clientSecret,
             ]);
+            $client->setClientId($clientId);
 
             $payload = null;
 
@@ -1033,15 +1039,7 @@ class UnifiedLoginController extends Controller
             }
             // If ID token is provided (native app flow)
             elseif ($request->has('id_token') && !empty($request->id_token)) {
-                // For mobile apps, use platform-specific client ID if available
-                if ($request->platform === 'android' && config('services.google.android_client_id')) {
-                    $clientId = config('services.google.android_client_id');
-                } elseif ($request->platform === 'ios' && config('services.google.ios_client_id')) {
-                    $clientId = config('services.google.ios_client_id');
-                }
-
-                $client->setClientId($clientId);
-                $payload = $client->verifyIdToken($request->id_token);
+                $payload = $this->verifyGoogleIdToken($client, $request->id_token, $request->platform);
             }
 
             if (!$payload) {
@@ -1163,5 +1161,47 @@ class UnifiedLoginController extends Controller
                 'message' => 'Authentication failed. Please try again.'
             ], 500);
         }
+    }
+
+    /**
+     * Verify a Google ID token against all configured OAuth client IDs.
+     *
+     * Flutter passes serverClientId (web client) so aud is usually the web client ID,
+     * not the Android client ID.
+     */
+    private function verifyGoogleIdToken(\Google_Client $client, string $idToken, string $platform): ?array
+    {
+        $clientIds = array_values(array_unique(array_filter([
+            config('services.google.client_id'),
+            config('services.google.android_client_id'),
+            config('services.google.ios_client_id'),
+            \App\Models\FrontendConfig::getValue('auth.social.google.client_id'),
+            \App\Models\FrontendConfig::getValue('auth.social.google.android_client_id'),
+        ])));
+
+        if ($platform === 'android') {
+            // Web client ID first — matches Flutter serverClientId / default_web_client_id.
+            usort($clientIds, function ($a, $b) {
+                $web = config('services.google.client_id');
+                if ($a === $web) {
+                    return -1;
+                }
+                if ($b === $web) {
+                    return 1;
+                }
+
+                return 0;
+            });
+        }
+
+        foreach ($clientIds as $clientId) {
+            $client->setClientId($clientId);
+            $payload = $client->verifyIdToken($idToken);
+            if ($payload) {
+                return $payload;
+            }
+        }
+
+        return null;
     }
 }

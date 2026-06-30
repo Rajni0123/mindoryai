@@ -13,6 +13,7 @@ use App\Models\UserAchievement;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 
 class LearningAnalyticsService
 {
@@ -982,6 +983,10 @@ class LearningAnalyticsService
      */
     public static function getWeakTopicsFromMockTests(int $userId, int $limit = 5): array
     {
+        if (! Schema::hasTable('mock_tests')) {
+            return [];
+        }
+
         $tests = MockTest::where('user_id', $userId)
             ->completed()
             ->orderByDesc('completed_at')
@@ -1093,7 +1098,7 @@ class LearningAnalyticsService
             return $fromQuiz;
         }
 
-        $hasHistory = MockTest::where('user_id', $userId)->completed()->exists()
+        $hasHistory = (Schema::hasTable('mock_tests') && MockTest::where('user_id', $userId)->completed()->exists())
             || QuizAttempt::where('user_id', $userId)->completed()->exists();
 
         if (! $hasHistory) {

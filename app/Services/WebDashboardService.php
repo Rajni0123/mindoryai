@@ -18,20 +18,38 @@ class WebDashboardService
 {
     public function build(User $user): array
     {
+        try {
+            return $this->assembleDashboard($user);
+        } catch (\Throwable $e) {
+            Log::error('Web dashboard assemble failed', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            return $this->minimalDashboard($user);
+        }
+    }
+
+    private function assembleDashboard(User $user): array
+    {
         $userId = $user->id;
 
-        $this->syncMockTestAnalytics($userId);
-        $user->refresh();
+        try {
+            $this->syncMockTestAnalytics($userId);
+            $user->refresh();
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard user refresh skipped', ['user_id' => $userId, 'error' => $e->getMessage()]);
+        }
 
         $revisionProfile = $this->safeRevisionProfile($userId);
         $dashboardData = $this->safeDashboardData($userId);
         $revisionPlan = $this->safeRevisionPlan($userId);
-        $quizStats = $this->weeklyQuizStats($userId);
-        $latestMock = MockTest::where('user_id', $userId)->completed()->latest('completed_at')->first();
+        $quizStats = $this->safeWeeklyQuizStats($userId);
+        $latestMock = $this->safeLatestMockTest($userId);
         $mockAccuracy = $latestMock ? (int) round($latestMock->accuracy) : 0;
         $usageSummary = $this->safeUsageSummary($user);
         $dailyChallenge = $this->safeDailyChallengeData($user);
-        $badges = $revisionProfile['badges'] ?? BadgeService::getUserBadges($userId);
+        $badges = $this->safeBadges($userId, $revisionProfile);
 
         $planDays = collect($revisionPlan['days'] ?? []);
         $planCompleted = $planDays->where('completed', true)->count();
@@ -44,7 +62,7 @@ class WebDashboardService
             fn ($topic) => ($topic['source'] ?? '') !== 'default'
         ));
         if ($weakTopics === []) {
-            $weakTopics = LearningAnalyticsService::getWeakTopicsFromMockTests($userId, 6);
+            $weakTopics = $this->safeWeakTopicsFromMockTests($userId, 6);
         }
         $weaknessMap = $this->buildWeaknessMap($weakTopics, $userId);
 
@@ -70,12 +88,17 @@ class WebDashboardService
             $strengthScore = $mockAccuracy;
         }
 
-        $continueLearning = $this->continueLearning($user, $revisionPlan, $weakTopics, $quizStats, (int) ($revisionProfile['strength_score'] ?? 0));
-        $upcomingExam = $this->upcomingExam($user);
+        $continueLearning = $this->safeContinueLearning($user, $revisionPlan, $weakTopics, $quizStats, (int) ($revisionProfile['strength_score'] ?? 0));
+        $upcomingExam = $this->safeUpcomingExam($user);
         $todayPlan = $this->todayPlanTasks($revisionPlan, $weakTopics, $quizStats);
         $coachNote = $this->coachNote($dailyProgress, $planCompleted, $planTotal, $planDays->isNotEmpty());
 
-        $plan = $user->plan;
+        $plan = null;
+        try {
+            $plan = $user->plan;
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard plan lookup failed', ['user_id' => $userId, 'error' => $e->getMessage()]);
+        }
         $isFree = ! $plan || (float) ($plan->price_monthly ?? $plan->price ?? 0) <= 0;
         $mainUrl = rtrim((string) (config('domains.main_url') ?: config('app.url')), '/');
 
@@ -146,6 +169,221 @@ class WebDashboardService
         ];
     }
 
+    /**
+     * Last-resort payload so the dashboard UI can still render.
+     */
+    private function minimalDashboard(User $user): array
+    {
+        $name = trim($user->name ?? '') ?: 'Student';
+        $firstName = explode(' ', $name)[0];
+        $mainUrl = rtrim((string) (config('domains.main_url') ?: config('app.url')), '/');
+
+        return [
+            'success' => true,
+            'degraded' => true,
+            'user' => [
+                'id' => $user->id,
+                'name' => $name,
+                'first_name' => $firstName,
+                'initial' => strtoupper(substr($name, 0, 1)),
+                'target_exam' => $user->target_exam,
+                'student_class' => $user->student_class,
+            ],
+            'greeting' => 'Hi, ' . $firstName . '!',
+            'coach_note' => 'Complete a session to unlock your personalised daily plan.',
+            'streak' => (int) ($user->current_streak ?? 0),
+            'streak_label' => ((int) ($user->current_streak ?? 0)) === 1 ? '1 DAY STREAK' : ((int) ($user->current_streak ?? 0)) . ' DAY STREAK',
+            'streak_badge' => null,
+            'level' => (int) ($user->current_level ?? 1),
+            'xp' => (int) ($user->total_xp ?? 0),
+            'level_progress' => ['progress_percent' => 0, 'xp_needed' => 100],
+            'accuracy' => 0,
+            'quiz_accuracy' => 0,
+            'strength_score' => 0,
+            'accuracy_rings' => [
+                ['label' => 'Quizzes', 'value' => 0, 'color' => '#528dff'],
+                ['label' => 'Strength', 'value' => 0, 'color' => '#afc6ff'],
+            ],
+            'daily_progress' => 0,
+            'plan_completed' => 0,
+            'plan_total' => 0,
+            'weak_topics' => [],
+            'weakness_map' => [],
+            'weakness_has_data' => false,
+            'weakness_message' => 'Complete quizzes to reveal your weakness map.',
+            'revision_plan' => ['days' => []],
+            'today_plan' => [],
+            'leaderboard' => [],
+            'user_leaderboard_rank' => null,
+            'daily_challenge' => [
+                'available' => false,
+                'completed' => false,
+                'title' => 'Daily Challenge',
+                'description' => 'Daily challenges are currently unavailable.',
+                'participants' => 0,
+                'reward_xp' => 0,
+            ],
+            'continue_learning' => [
+                'exam_name' => $user->target_exam ?: 'Your Exam',
+                'exam_id' => null,
+                'subject' => 'General',
+                'topic' => 'Continue your prep',
+                'topics_done' => 0,
+                'topics_total' => 25,
+                'progress_percent' => 0,
+            ],
+            'upcoming_exam' => [
+                'exam_name' => $user->target_exam ?: 'Your Exam',
+                'days_left' => null,
+                'exam_date' => null,
+                'has_date' => false,
+            ],
+            'today_stats' => [],
+            'quiz_stats' => [
+                'totalQuizzes' => 0,
+                'mockTestsThisWeek' => 0,
+                'quizAttemptsThisWeek' => 0,
+                'averageScore' => 0,
+                'bestScore' => 0,
+                'totalQuestions' => 0,
+                'totalTimeSeconds' => 0,
+                'studyHoursWeek' => 0,
+                'dayStreak' => 0,
+            ],
+            'latest_mock_test' => null,
+            'peer_comparison' => [],
+            'badges' => ['primary' => ['streak' => null], 'stats' => ['streak' => 0]],
+            'usage' => [],
+            'is_free_plan' => true,
+            'plan_name' => 'Free',
+            'upgrade_url' => $mainUrl . '/pricing',
+            'quick_actions' => $this->quickActions(true, ['totalQuizzes' => 0], $mainUrl),
+            'messages' => [
+                'revision_empty' => 'Take a quiz to unlock your personalised revision plan.',
+                'leaderboard_empty' => 'Play study battles to climb the leaderboard.',
+                'weakness_empty' => 'Complete quizzes to reveal your weakness map.',
+            ],
+        ];
+    }
+
+    private function safeUpcomingExam(User $user): array
+    {
+        try {
+            return $this->upcomingExam($user);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard upcoming exam unavailable', ['error' => $e->getMessage()]);
+
+            return [
+                'exam_name' => $user->target_exam ?: 'Your Exam',
+                'days_left' => null,
+                'exam_date' => null,
+                'has_date' => false,
+            ];
+        }
+    }
+
+    private function hasMockTestsTable(): bool
+    {
+        return Schema::hasTable('mock_tests');
+    }
+
+    private function safeWeeklyQuizStats(int $userId): array
+    {
+        try {
+            return $this->weeklyQuizStats($userId);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard weekly quiz stats unavailable', ['error' => $e->getMessage()]);
+
+            return [
+                'totalQuizzes' => 0,
+                'mockTestsThisWeek' => 0,
+                'quizAttemptsThisWeek' => 0,
+                'averageScore' => 0,
+                'bestScore' => 0,
+                'totalQuestions' => 0,
+                'totalTimeSeconds' => 0,
+                'studyHoursWeek' => 0,
+                'dayStreak' => 0,
+            ];
+        }
+    }
+
+    private function safeLatestMockTest(int $userId): ?MockTest
+    {
+        if (! $this->hasMockTestsTable()) {
+            return null;
+        }
+
+        try {
+            return MockTest::where('user_id', $userId)->completed()->latest('completed_at')->first();
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard latest mock test unavailable', ['error' => $e->getMessage()]);
+
+            return null;
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function safeBadges(int $userId, array $revisionProfile): array
+    {
+        if (! empty($revisionProfile['badges'])) {
+            return $revisionProfile['badges'];
+        }
+
+        try {
+            return BadgeService::getUserBadges($userId);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard badges unavailable', ['error' => $e->getMessage()]);
+
+            return [
+                'primary' => ['streak' => null],
+                'stats' => ['streak' => 0],
+            ];
+        }
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    private function safeWeakTopicsFromMockTests(int $userId, int $limit): array
+    {
+        if (! $this->hasMockTestsTable()) {
+            return [];
+        }
+
+        try {
+            return LearningAnalyticsService::getWeakTopicsFromMockTests($userId, $limit);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard mock weak topics unavailable', ['error' => $e->getMessage()]);
+
+            return [];
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function safeContinueLearning(User $user, array $revisionPlan, array $weakTopics, array $quizStats, int $readiness): array
+    {
+        try {
+            return $this->continueLearning($user, $revisionPlan, $weakTopics, $quizStats, $readiness);
+        } catch (\Throwable $e) {
+            Log::warning('Dashboard continue learning unavailable', ['error' => $e->getMessage()]);
+
+            return [
+                'exam_name' => $user->target_exam ?: 'Your Exam',
+                'exam_id' => null,
+                'subject' => 'General',
+                'topic' => 'Continue your prep',
+                'topics_done' => 0,
+                'topics_total' => 25,
+                'progress_percent' => 0,
+            ];
+        }
+    }
+
     private function weeklyQuizStats(int $userId): array
     {
         $start = now()->startOfWeek();
@@ -156,10 +394,12 @@ class WebDashboardService
             ->whereBetween('created_at', [$start, $end])
             ->get();
 
-        $mockTests = MockTest::where('user_id', $userId)
-            ->completed()
-            ->whereBetween('completed_at', [$start, $end])
-            ->get();
+        $mockTests = $this->hasMockTestsTable()
+            ? MockTest::where('user_id', $userId)
+                ->completed()
+                ->whereBetween('completed_at', [$start, $end])
+                ->get()
+            : collect();
 
         $total = $quizAttempts->count() + $mockTests->count();
 
@@ -193,7 +433,7 @@ class WebDashboardService
                 ->whereDate('created_at', $checkDate)
                 ->exists();
 
-            $hasMock = MockTest::where('user_id', $userId)
+            $hasMock = $this->hasMockTestsTable() && MockTest::where('user_id', $userId)
                 ->completed()
                 ->whereDate('completed_at', $checkDate)
                 ->exists();
@@ -297,13 +537,12 @@ class WebDashboardService
             ->latest()
             ->first();
 
-        $lastMock = MockTest::where('user_id', $user->id)
-            ->completed()
-            ->latest('completed_at')
-            ->first();
+        $lastMock = $this->hasMockTestsTable()
+            ? MockTest::where('user_id', $user->id)->completed()->latest('completed_at')->first()
+            : null;
 
         if ($lastMock) {
-            $weakFromMock = LearningAnalyticsService::getWeakTopicsFromMockTests($user->id, 1);
+            $weakFromMock = $this->safeWeakTopicsFromMockTests($user->id, 1);
             if (! empty($weakFromMock)) {
                 $subject = $weakFromMock[0]['subject'] ?? $subject;
                 $topic = $weakFromMock[0]['topic'] ?? $topic;

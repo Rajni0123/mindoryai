@@ -621,6 +621,9 @@ Route::get('/app-config', function () {
         $googleEnabledOnWeb = (bool) \App\Models\SystemSetting::get('auth.google_login_enabled', true);
         $googleClientId = \App\Models\FrontendConfig::getValue('auth.social.google.client_id') ?: $googleWebClientId;
         $googleEnabled = $googleEnabledInAdmin || ($googleEnabledOnWeb && !empty($googleWebClientId));
+        $googleRedirectUrl = \App\Models\FrontendConfig::getValue('auth.social.google.redirect_url')
+            ?: config('services.google.redirect')
+            ?: rtrim((string) config('domains.main_url', config('app.url')), '/') . '/auth/google/callback';
 
         $authConfig = [
             'otp' => [
@@ -659,7 +662,7 @@ Route::get('/app-config', function () {
                 'googleWebClientId' => $googleWebClientId,
                 'googleAndroidClientId' => $googleAndroidClientId,
                 'googleIosClientId' => $googleIosClientId,
-                'googleRedirectUrl' => \App\Models\FrontendConfig::getValue('auth.social.google.redirect_url', url('/auth/google/callback')),
+                'googleRedirectUrl' => $googleRedirectUrl,
                 'appleEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.social.apple.enabled', false),
                 'facebookEnabled' => (bool) \App\Models\FrontendConfig::getValue('auth.social.facebook.enabled', false),
                 'dividerText' => \App\Models\FrontendConfig::getValue('auth.social.divider_text', 'OR'),

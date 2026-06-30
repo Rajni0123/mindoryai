@@ -18,11 +18,14 @@ class AiTutorScreen extends ConsumerStatefulWidget {
 }
 
 class _AiTutorScreenState extends ConsumerState<AiTutorScreen> {
+  static const _webSearchColor = Color(0xFF0D9488);
+
   final _controller = TextEditingController();
   final _scrollController = ScrollController();
   final List<ChatMessage> _messages = [];
   String? _chatId;
   bool _loading = false;
+  bool _webSearchEnabled = false;
   final stt.SpeechToText _speech = stt.SpeechToText();
   bool _listening = false;
 
@@ -59,11 +62,20 @@ class _AiTutorScreenState extends ConsumerState<AiTutorScreen> {
   Future<void> _send(String text) async {
     if (text.trim().isEmpty || _loading) return;
     final userText = text.trim();
+    final useWebSearch = _webSearchEnabled;
+    final apiText = ChatMessage(
+      id: '',
+      content: userText,
+      isUser: true,
+      webSearch: useWebSearch,
+    ).formatForApi(webSearch: useWebSearch);
+
     setState(() {
       _messages.add(ChatMessage(
         id: 'user_${_messages.length}',
         content: userText,
         isUser: true,
+        webSearch: useWebSearch,
       ));
       _loading = true;
     });
@@ -76,7 +88,7 @@ class _AiTutorScreenState extends ConsumerState<AiTutorScreen> {
         final lang = ref.read(languageProvider.notifier).apiValue;
         final result = await api.sendChatMessage(
           _chatId!,
-          content: userText,
+          content: apiText,
           language: lang,
         );
         setState(() {
@@ -426,6 +438,7 @@ Where:
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (isUser && msg.webSearch) _webSearchBadge(),
             MarkdownBody(
               data: msg.content,
               styleSheet: MarkdownStyleSheet(
@@ -466,6 +479,35 @@ Where:
                 ],
               ),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _webSearchBadge() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: BoxDecoration(
+          color: _webSearchColor.withValues(alpha: 0.15),
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: _webSearchColor.withValues(alpha: 0.35)),
+        ),
+        child: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.language_rounded, size: 12, color: _webSearchColor),
+            SizedBox(width: 4),
+            Text(
+              'Web Search',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: _webSearchColor,
+              ),
+            ),
           ],
         ),
       ),
@@ -543,54 +585,126 @@ Where:
         ],
       ),
       child: SafeArea(
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(
-              icon: Icon(
-                _listening ? Icons.mic : Icons.mic_rounded,
-                color: _listening ? AppColors.error : AppColors.primary,
-              ),
-              onPressed: _startVoice,
-            ),
-            Expanded(
-              child: TextField(
-                controller: _controller,
-                style: TextStyle(color: c.textPrimary),
-                cursorColor: AppColors.primary,
-                decoration: InputDecoration(
-                  hintText: 'Ask anything...',
-                  hintStyle: TextStyle(color: c.textMuted),
-                  filled: true,
-                  fillColor: c.card,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(color: c.cardBorder),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(color: c.cardBorder),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(color: AppColors.primary),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            if (_webSearchEnabled)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  children: [
+                    Icon(Icons.language_rounded, size: 14, color: _webSearchColor),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Web search on — finds live PYQs & sources from the web',
+                      style: TextStyle(fontSize: 11, color: _webSearchColor),
+                    ),
+                  ],
                 ),
-                onSubmitted: _send,
               ),
-            ),
-            GestureDetector(
-              onTap: () => _send(_controller.text),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
-                  borderRadius: BorderRadius.circular(14),
+            Row(
+              children: [
+                _webSearchToggle(),
+                IconButton(
+                  icon: Icon(
+                    _listening ? Icons.mic : Icons.mic_rounded,
+                    color: _listening ? AppColors.error : AppColors.primary,
+                  ),
+                  onPressed: _startVoice,
                 ),
-                child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
-              ),
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    style: TextStyle(color: c.textPrimary),
+                    cursorColor: AppColors.primary,
+                    decoration: InputDecoration(
+                      hintText: _webSearchEnabled
+                          ? 'Search the web for PYQs, papers...'
+                          : 'Ask anything...',
+                      hintStyle: TextStyle(color: c.textMuted),
+                      filled: true,
+                      fillColor: c.card,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(color: c.cardBorder),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(color: c.cardBorder),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(color: AppColors.primary),
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                    ),
+                    onSubmitted: _send,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => _send(_controller.text),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      gradient: AppColors.primaryGradient,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
+                  ),
+                ),
+              ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _webSearchToggle() {
+    final active = _webSearchEnabled;
+    return Padding(
+      padding: const EdgeInsets.only(left: 4, right: 2),
+      child: Material(
+        color: active
+            ? _webSearchColor.withValues(alpha: 0.15)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        child: InkWell(
+          onTap: () => setState(() => _webSearchEnabled = !active),
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: active
+                    ? _webSearchColor
+                    : context.dash.cardBorder,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.language_rounded,
+                  size: 20,
+                  color: active ? _webSearchColor : context.dash.textMuted,
+                ),
+                if (active) ...[
+                  const SizedBox(width: 4),
+                  const Text(
+                    'Search',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: _webSearchColor,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );

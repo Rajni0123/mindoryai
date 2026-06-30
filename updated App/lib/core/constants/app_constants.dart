@@ -13,6 +13,19 @@ class AppConstants {
     defaultValue: 'https://blinkstudy.in',
   );
 
+  /// Google OAuth web client ID (serverClientId). Override via --dart-define if needed.
+  static const String googleWebClientId = String.fromEnvironment(
+    'GOOGLE_WEB_CLIENT_ID',
+    defaultValue:
+        '1049240109464-3s91jnceb09kmcuretpab57d1dr69dip.apps.googleusercontent.com',
+  );
+
+  /// Must match the redirect URI registered in Google Cloud Console (same as website).
+  static const String googleRedirectUri = String.fromEnvironment(
+    'GOOGLE_REDIRECT_URI',
+    defaultValue: 'https://blinkstudy.in/auth/google/callback',
+  );
+
   static const String tokenKey = 'auth_token';
   static const String userKey = 'user_data';
 

@@ -84,6 +84,7 @@ class ChatMessage {
   final DateTime? createdAt;
   final String? question;
   final String? feedback;
+  final bool webSearch;
 
   ChatMessage({
     required this.id,
@@ -92,6 +93,7 @@ class ChatMessage {
     this.createdAt,
     this.question,
     this.feedback,
+    this.webSearch = false,
   });
 
   ChatMessage copyWith({
@@ -101,6 +103,7 @@ class ChatMessage {
     DateTime? createdAt,
     String? question,
     String? feedback,
+    bool? webSearch,
   }) {
     return ChatMessage(
       id: id ?? this.id,
@@ -109,7 +112,25 @@ class ChatMessage {
       createdAt: createdAt ?? this.createdAt,
       question: question ?? this.question,
       feedback: feedback ?? this.feedback,
+      webSearch: webSearch ?? this.webSearch,
     );
+  }
+
+  /// Strip `[Search: ...]` prefix used by web + mobile globe mode.
+  static ({String text, bool webSearch}) parseDisplayContent(String raw) {
+    final trimmed = raw.trim();
+    if (trimmed.startsWith('[Search: ') && trimmed.endsWith(']')) {
+      return (
+        text: trimmed.substring(9, trimmed.length - 1).trim(),
+        webSearch: true,
+      );
+    }
+    return (text: raw, webSearch: false);
+  }
+
+  String formatForApi({required bool webSearch}) {
+    if (!webSearch) return content;
+    return '[Search: $content]';
   }
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {

@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:io' show Platform;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../core/constants/app_constants.dart';
 import '../core/utils/study_profile_utils.dart';
 import '../models/models.dart';
 import '../services/api_service.dart';
+import '../services/google_oauth_service.dart';
 import '../services/saved_notes_service.dart';
 
 final apiServiceProvider = Provider<ApiService>((ref) => ApiService());
@@ -211,39 +212,34 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<bool> signInWithGoogle({required String webClientId}) async {
-    if (webClientId.trim().isEmpty) {
+  Future<bool> signInWithGoogle({
+    required String webClientId,
+    required String redirectUri,
+  }) async {
+    final resolvedClientId = webClientId.trim().isNotEmpty
+        ? webClientId.trim()
+        : AppConstants.googleWebClientId;
+    final resolvedRedirect = redirectUri.trim().isNotEmpty
+        ? redirectUri.trim()
+        : AppConstants.googleRedirectUri;
+
+    if (resolvedClientId.isEmpty || resolvedRedirect.isEmpty) {
       state = state.copyWith(error: 'Google login is not configured yet.');
       return false;
     }
 
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final googleSignIn = GoogleSignIn(
-        scopes: const ['email', 'profile'],
-        serverClientId: webClientId,
+      final code = await GoogleOAuthService.signIn(
+        clientId: resolvedClientId,
+        redirectUri: resolvedRedirect,
       );
 
-      final account = await googleSignIn.signIn();
-      if (account == null) {
-        state = state.copyWith(isLoading: false);
-        return false;
-      }
-
-      final auth = await account.authentication;
-      final idToken = auth.idToken;
-      if (idToken == null || idToken.isEmpty) {
-        state = state.copyWith(
-          isLoading: false,
-          error: 'Could not get Google credentials. Try again.',
-        );
-        return false;
-      }
-
       final platform = Platform.isIOS ? 'ios' : 'android';
-      final data = await _api.loginWithGoogle(
-        idToken: idToken,
+      final data = await _api.loginWithGoogleCode(
+        code: code,
         platform: platform,
+        redirectUri: resolvedRedirect,
       );
 
       if (data['success'] == false) {
@@ -255,6 +251,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
       }
 
       return _completeLogin(data);
+    } on GoogleOAuthException catch (e) {
+      state = state.copyWith(isLoading: false, error: e.message);
+      return false;
     } on DioException catch (e) {
       state = state.copyWith(isLoading: false, error: _extractMessage(e));
       return false;

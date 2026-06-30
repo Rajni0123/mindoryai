@@ -30,10 +30,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   String _otpValue = '';
   bool _googleEnabled = false;
   String? _googleWebClientId;
+  String? _googleRedirectUri;
 
   @override
   void initState() {
     super.initState();
+    _googleWebClientId = AppConstants.googleWebClientId;
+    _googleRedirectUri = AppConstants.googleRedirectUri;
+    _googleEnabled = _googleWebClientId!.isNotEmpty;
     _loadGoogleConfig();
   }
 
@@ -53,10 +57,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final social = auth?['social'] as Map<String, dynamic>?;
       if (!mounted) return;
       setState(() {
-        _googleEnabled = social?['googleEnabled'] == true;
+        _googleEnabled = social?['googleEnabled'] == true ||
+            AppConstants.googleWebClientId.isNotEmpty;
         _googleWebClientId = (social?['googleWebClientId'] ??
-                social?['googleClientId'])
-            ?.toString();
+                social?['googleClientId'] ??
+                AppConstants.googleWebClientId)
+            .toString();
+        _googleRedirectUri = (social?['googleRedirectUrl'] ??
+                AppConstants.googleRedirectUri)
+            .toString();
       });
     } catch (_) {}
   }
@@ -65,6 +74,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final clientId = _googleWebClientId?.trim() ?? '';
     final ok = await ref.read(authProvider.notifier).signInWithGoogle(
           webClientId: clientId,
+          redirectUri: _googleRedirectUri ?? AppConstants.googleRedirectUri,
         );
     if (!mounted) return;
 
