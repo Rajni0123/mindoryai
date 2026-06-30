@@ -219,9 +219,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     final resolvedClientId = webClientId.trim().isNotEmpty
         ? webClientId.trim()
         : AppConstants.googleWebClientId;
-    final resolvedRedirect = redirectUri.trim().isNotEmpty
-        ? redirectUri.trim()
-        : AppConstants.googleRedirectUri;
+    final resolvedRedirect = GoogleOAuthService.resolveRedirectUri(redirectUri);
 
     if (resolvedClientId.isEmpty || resolvedRedirect.isEmpty) {
       state = state.copyWith(error: 'Google login is not configured yet.');

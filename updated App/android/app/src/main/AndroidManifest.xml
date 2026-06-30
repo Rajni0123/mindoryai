@@ -32,28 +32,16 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2"/>
-        <!-- Google OAuth callback (same redirect URI as website) -->
+        <!-- Google OAuth: app deep-link return after website callback -->
         <activity
             android:name="com.linusu.flutter_web_auth_2.CallbackActivity"
             android:exported="true"
             android:launchMode="singleTask">
-            <intent-filter android:label="flutter_web_auth_2">
+            <intent-filter android:label="blinkstudy_oauth">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="api.blinkstudy.in" android:pathPrefix="/auth/google/callback"/>
-            </intent-filter>
-            <intent-filter android:label="flutter_web_auth_2_blinkstudy">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="blinkstudy.in" android:pathPrefix="/auth/google/callback"/>
-            </intent-filter>
-            <intent-filter android:label="flutter_web_auth_2_www">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="www.blinkstudy.in" android:pathPrefix="/auth/google/callback"/>
+                <data android:scheme="com.blinkstudy.app" android:host="oauth2callback"/>
             </intent-filter>
         </activity>
     </application>

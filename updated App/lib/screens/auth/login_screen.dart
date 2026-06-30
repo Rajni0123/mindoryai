@@ -9,6 +9,7 @@ import '../../core/router/app_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/theme/dashboard_theme.dart';
 import '../../providers/providers.dart';
+import '../../services/google_oauth_service.dart';
 import '../../widgets/common_widgets.dart';
 import '../../widgets/otp_input.dart';
 
@@ -36,7 +37,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void initState() {
     super.initState();
     _googleWebClientId = AppConstants.googleWebClientId;
-    _googleRedirectUri = AppConstants.googleRedirectUri;
+        _googleRedirectUri = '${AppConstants.websiteUrl}/auth/google/callback';
     _googleEnabled = _googleWebClientId!.isNotEmpty;
     _loadGoogleConfig();
   }
@@ -63,9 +64,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 social?['googleClientId'] ??
                 AppConstants.googleWebClientId)
             .toString();
-        _googleRedirectUri = (social?['googleRedirectUrl'] ??
-                AppConstants.googleRedirectUri)
-            .toString();
+        _googleRedirectUri = GoogleOAuthService.resolveRedirectUri(
+          social?['googleRedirectUrl']?.toString(),
+        );
       });
     } catch (_) {}
   }
@@ -74,7 +75,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final clientId = _googleWebClientId?.trim() ?? '';
     final ok = await ref.read(authProvider.notifier).signInWithGoogle(
           webClientId: clientId,
-          redirectUri: _googleRedirectUri ?? AppConstants.googleRedirectUri,
+          redirectUri: _googleRedirectUri ??
+              '${AppConstants.websiteUrl}/auth/google/callback',
         );
     if (!mounted) return;
 

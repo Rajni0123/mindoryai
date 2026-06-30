@@ -624,6 +624,9 @@ Route::get('/app-config', function () {
         $googleRedirectUrl = \App\Models\FrontendConfig::getValue('auth.social.google.redirect_url')
             ?: config('services.google.redirect')
             ?: rtrim((string) config('domains.main_url', config('app.url')), '/') . '/auth/google/callback';
+        if (str_contains((string) $googleRedirectUrl, 'api.blinkstudy.in')) {
+            $googleRedirectUrl = rtrim((string) config('domains.main_url', 'https://blinkstudy.in'), '/') . '/auth/google/callback';
+        }
 
         $authConfig = [
             'otp' => [

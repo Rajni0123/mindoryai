@@ -1017,6 +1017,15 @@ class UnifiedLoginController extends Controller
 
             // If authorization code is provided (Expo/web flow)
             if ($request->has('code') && !empty($request->code)) {
+                if (empty($clientSecret)) {
+                    Log::error('Google mobile login missing client secret');
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Google login is not configured on the server. Please contact support.',
+                    ], 500);
+                }
+
                 // Exchange authorization code for tokens
                 $client->setRedirectUri($redirectUri);
                 $token = $client->fetchAccessTokenWithAuthCode($request->code);
@@ -1025,16 +1034,19 @@ class UnifiedLoginController extends Controller
                     Log::error('Google token exchange error', [
                         'error' => $token['error'],
                         'error_description' => $token['error_description'] ?? '',
+                        'redirect_uri' => $redirectUri,
                     ]);
                     return response()->json([
                         'success' => false,
-                        'message' => 'Failed to exchange authorization code. Please try again.'
+                        'message' => $token['error_description'] ?? 'Failed to exchange authorization code. Please try again.',
                     ], 401);
                 }
 
                 // Verify the ID token
                 if (isset($token['id_token'])) {
                     $payload = $client->verifyIdToken($token['id_token']);
+                } elseif (! empty($token['access_token'])) {
+                    $payload = $this->fetchGoogleUserFromAccessToken($token['access_token']);
                 }
             }
             // If ID token is provided (native app flow)
@@ -1203,5 +1215,37 @@ class UnifiedLoginController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function fetchGoogleUserFromAccessToken(string $accessToken): ?array
+    {
+        try {
+            $response = \Illuminate\Support\Facades\Http::withToken($accessToken)
+                ->get('https://www.googleapis.com/oauth2/v3/userinfo');
+
+            if (! $response->successful()) {
+                return null;
+            }
+
+            $data = $response->json();
+            if (empty($data['email'])) {
+                return null;
+            }
+
+            return [
+                'sub' => $data['sub'] ?? $data['id'] ?? null,
+                'email' => $data['email'],
+                'name' => $data['name'] ?? null,
+                'picture' => $data['picture'] ?? null,
+                'email_verified' => $data['email_verified'] ?? true,
+            ];
+        } catch (\Throwable $e) {
+            Log::warning('Google userinfo fetch failed', ['error' => $e->getMessage()]);
+
+            return null;
+        }
     }
 }

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use App\Support\ChatSubdomainUrl;
 use App\Support\StudyProfileCatalog;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -16,6 +17,8 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
 {
+    public const MOBILE_OAUTH_STATE = 'blinkstudy_mobile_app';
+
     /**
      * Redirect to Google OAuth page
      */
@@ -32,8 +35,15 @@ class SocialAuthController extends Controller
     /**
      * Handle Google OAuth callback
      */
-    public function handleGoogleCallback()
+    public function handleGoogleCallback(Request $request)
     {
+        if ($request->get('state') === self::MOBILE_OAUTH_STATE) {
+            return response()->view('auth.google-mobile-return', [
+                'code' => $request->get('code'),
+                'error' => $request->get('error'),
+            ]);
+        }
+
         try {
             $googleUser = Socialite::driver('google')->user();
             $email = $googleUser->getEmail();
